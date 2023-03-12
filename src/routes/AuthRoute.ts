@@ -3,13 +3,13 @@ import HTTP_METHODS from "../constants/HttpMethods";
 
 class AuthRoutes {
     
-    public static routes: Route[] = [
-      { url: '/users', method: HTTP_METHODS.GET },
-      { url: '/users/:id', method: 'GET' },
-      { url: '/users', method: 'POST' },
-      { url: '/users/:id', method: 'PUT' },
-      { url: '/users/:id', method: 'DELETE' },
-    ];
+    public static routes: { [key: string]: Route } = {
+      login: { url: '/auth/login', method: HTTP_METHODS.POST },
+      register: { url: '/auth/register', method: HTTP_METHODS.POST  },
+      one_time_login : { url: '/auth/oneTimeLoginWithToken', method: HTTP_METHODS.POST  },
+      forgot_password  :{ url: '/auth/forgotpasswor', method: HTTP_METHODS.POST  },
+      reset_password : { url: '/auth/resetpassword', method: HTTP_METHODS.POST },
+    };
 
   }
 
