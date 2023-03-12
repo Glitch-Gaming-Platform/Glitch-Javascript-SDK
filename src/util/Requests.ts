@@ -1,4 +1,6 @@
 import axios from 'axios';
+import HTTP_METHODS from '../constants/HttpMethods';
+import Route from '../routes/interface';
 
 interface Response<T> {
   data: T;
@@ -56,6 +58,28 @@ class Requests {
 
   public static async delete<T>(url: string): Promise<Response<T>> {
     return this.request<T>('DELETE', url);
+  }
+
+  /**
+   *  The Route class contains the method and url, thereforce items can be
+   *  automatically routed depending on the configuration.
+   * 
+   * @param route
+   * @param data 
+   * @returns 
+   */
+  public static async processRoute(route : Route, data? : object) {
+
+    if(route.method == HTTP_METHODS.GET) {
+      return this.get(route.url);
+    } else if(route.method == HTTP_METHODS.POST) {
+      return this.post(route.url, data);
+    } else if(route.method == HTTP_METHODS.PUT) {
+      return this.put(route.url, data);
+    } else if(route.method == HTTP_METHODS.DELETE) {
+      return this.delete(route.url);
+    }
+
   }
 
 }
