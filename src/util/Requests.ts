@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Config from '../config/Config';
 import HTTP_METHODS from '../constants/HttpMethods';
 import Route from '../routes/interface';
 
@@ -10,9 +11,23 @@ interface Response<T> {
 
 class Requests {
 
-  private static readonly baseUrl = 'https://example.com/api';
+  config: Config;
 
-  private static readonly authToken = 'your-jwt-token-here';
+  private static baseUrl = "";
+
+  private static authToken = "";
+
+
+  constructor(config: Config) {
+    this.config = config;
+  }
+
+  public static setConfig(config: Config) {
+
+    this.baseUrl = config.baseUrl;
+
+    this.authToken = config.authToken;
+  }
 
 
   private static async request<T>(

@@ -23,6 +23,9 @@ The API coincendes with the Glitch Backend.
 ```
 import Glitch from tbd-import;
 
+//Set the config
+new Glitch.config.Config("http://www.baseUrl.com/", 'some-auth-otken');
+
 Glitch.Api.Auth.login("john@example.com", "abc123").then(()=> {
 }).catch(error => {
 )

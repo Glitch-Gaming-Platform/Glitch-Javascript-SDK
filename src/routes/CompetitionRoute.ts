@@ -1,16 +1,16 @@
 import Route from "./interface";
 import HTTP_METHODS from "../constants/HttpMethods";
 
-class AuthRoutes {
+class CompetitionRoutes {
     
     public static routes: { [key: string]: Route } = {
-      login: { url: '/auth/login', method: HTTP_METHODS.POST },
-      register: { url: '/auth/register', method: HTTP_METHODS.POST  },
-      one_time_login : { url: '/auth/oneTimeLoginWithToken', method: HTTP_METHODS.POST  },
-      forgot_password  :{ url: '/auth/forgotpassword', method: HTTP_METHODS.POST  },
-      reset_password : { url: '/auth/resetpassword', method: HTTP_METHODS.POST },
+      list: { url: '/auth/login', method: HTTP_METHODS.POST },
+      create: { url: '/auth/register', method: HTTP_METHODS.POST  },
+      view : { url: '/auth/oneTimeLoginWithToken', method: HTTP_METHODS.POST  },
+      update  :{ url: '/auth/forgotpassword', method: HTTP_METHODS.POST  },
+      delete : { url: '/auth/resetpassword', method: HTTP_METHODS.POST },
     };
 
   }
 
-  export default AuthRoutes;
+  export default CompetitionRoutes;
