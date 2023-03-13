@@ -1,7 +1,16 @@
 import Requests from "../util/Requests";
 
+/**
+ * Config
+ * 
+ * The configuration class will hold the configuration information used when accessing the
+ * API.
+ */
 class Config {
+    //The base url of the API, ie: http://api.example.com/v1/
     baseUrl: string;
+
+    //The JWT token used to access the api.
     authToken: string;
   
     constructor(baseUrl: string, authToken: string) {

@@ -83,16 +83,26 @@ class Requests {
    * @param data 
    * @returns 
    */
-  public static async processRoute(route : Route, data? : object) {
+  public static async processRoute(route : Route, data? : object, routeReplace? : object) {
+
+    let url = route.url;
+
+    if(routeReplace) {
+
+      for (let key in routeReplace) {
+        url = url.replace("{" + key + "}", routeReplace[key]);
+      }
+      
+    }
 
     if(route.method == HTTP_METHODS.GET) {
-      return this.get(route.url);
+      return this.get(url);
     } else if(route.method == HTTP_METHODS.POST) {
-      return this.post(route.url, data);
+      return this.post(url, data);
     } else if(route.method == HTTP_METHODS.PUT) {
-      return this.put(route.url, data);
+      return this.put(url, data);
     } else if(route.method == HTTP_METHODS.DELETE) {
-      return this.delete(route.url);
+      return this.delete(url);
     }
 
   }
