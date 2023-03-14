@@ -50,12 +50,13 @@ class Requests {
         success: true,
       };
     } catch (error) {
-      const message = error.response?.data?.message || 'An error occurred';
+      
+      /*const message = error.response?.data?.message || 'An error occurred';
       return {
         data: null,
         success: false,
         message,
-      };
+      };*/
     }
   }
 
@@ -90,9 +91,9 @@ class Requests {
     if(routeReplace) {
 
       for (let key in routeReplace) {
-        url = url.replace("{" + key + "}", routeReplace[key]);
+        //url = url.replace("{" + key + "}", routeReplace[key]);
       }
-      
+
     }
 
     if(route.method == HTTP_METHODS.GET) {

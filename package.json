@@ -4,12 +4,24 @@
   "description": "Javascrip SDK for GLitch",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -Rf dist && rollup -c --bundleConfigAsCjs",
+    "build-docs": "rm  -rf docs && typedoc  --tsconfig tsconfig.json src/"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^18.14.0",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/isomorphic-form-data": "^2.0.1",
+    "@types/node": "^18.15.3",
+    "get-file-object-from-local-path": "^1.0.2",
+    "rollup": "^3.19.1",
+    "rollup-plugin-dts": "^5.2.0",
+    "rollup-plugin-polyfill-node": "^0.12.0",
+    "typedoc": "^0.23.26",
     "typescript": "^4.9.5"
   },
   "dependencies": {
