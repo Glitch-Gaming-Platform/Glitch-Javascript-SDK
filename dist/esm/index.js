@@ -1,56 +1,3 @@
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __awaiter(thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
 function getDefaultExportFromCjs (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
@@ -4254,30 +4201,30 @@ var _polyfillNode_util = {
 };
 
 var _polyfillNode_util$1 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    _extend: _extend,
-    debuglog: debuglog,
-    default: _polyfillNode_util,
-    deprecate: deprecate,
-    format: format$1,
-    inherits: inherits$1,
-    inspect: inspect$1,
-    isArray: isArray$1,
-    isBoolean: isBoolean,
-    isBuffer: isBuffer,
-    isDate: isDate,
-    isError: isError,
-    isFunction: isFunction,
-    isNull: isNull,
-    isNullOrUndefined: isNullOrUndefined,
-    isNumber: isNumber,
-    isObject: isObject,
-    isPrimitive: isPrimitive,
-    isRegExp: isRegExp,
-    isString: isString,
-    isSymbol: isSymbol,
-    isUndefined: isUndefined,
-    log: log
+	__proto__: null,
+	_extend: _extend,
+	debuglog: debuglog,
+	default: _polyfillNode_util,
+	deprecate: deprecate,
+	format: format$1,
+	inherits: inherits$1,
+	inspect: inspect$1,
+	isArray: isArray$1,
+	isBoolean: isBoolean,
+	isBuffer: isBuffer,
+	isDate: isDate,
+	isError: isError,
+	isFunction: isFunction,
+	isNull: isNull,
+	isNullOrUndefined: isNullOrUndefined,
+	isNumber: isNumber,
+	isObject: isObject,
+	isPrimitive: isPrimitive,
+	isRegExp: isRegExp,
+	isString: isString,
+	isSymbol: isSymbol,
+	isUndefined: isUndefined,
+	log: log
 });
 
 var domain;
@@ -6645,14 +6592,14 @@ Stream.prototype.pipe = function(dest, options) {
 };
 
 var _polyfillNode_stream = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    Duplex: Duplex,
-    PassThrough: PassThrough,
-    Readable: Readable,
-    Stream: Stream,
-    Transform: Transform,
-    Writable: Writable,
-    default: Stream
+	__proto__: null,
+	Duplex: Duplex,
+	PassThrough: PassThrough,
+	Readable: Readable,
+	Stream: Stream,
+	Transform: Transform,
+	Writable: Writable,
+	default: Stream
 });
 
 var rStates = {
@@ -8311,16 +8258,16 @@ function parseHost(self) {
 }
 
 var _polyfillNode_url$1 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    URL: URL,
-    URLSearchParams: URLSearchParams,
-    Url: Url,
-    default: _polyfillNode_url,
-    fileURLToPath: urlFileURLToPath,
-    format: urlFormat,
-    parse: urlParse,
-    resolve: urlResolve,
-    resolveObject: urlResolveObject
+	__proto__: null,
+	URL: URL,
+	URLSearchParams: URLSearchParams,
+	Url: Url,
+	default: _polyfillNode_url,
+	fileURLToPath: urlFileURLToPath,
+	format: urlFormat,
+	parse: urlParse,
+	resolve: urlResolve,
+	resolveObject: urlResolveObject
 });
 
 function request$1(opts, cb) {
@@ -8460,13 +8407,13 @@ var _polyfillNode_http = {
 };
 
 var _polyfillNode_http$1 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    Agent: Agent$1,
-    METHODS: METHODS$1,
-    STATUS_CODES: STATUS_CODES$1,
-    default: _polyfillNode_http,
-    get: get$1,
-    request: request$1
+	__proto__: null,
+	Agent: Agent$1,
+	METHODS: METHODS$1,
+	STATUS_CODES: STATUS_CODES$1,
+	default: _polyfillNode_http,
+	get: get$1,
+	request: request$1
 });
 
 var require$$3 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_http$1);
@@ -8608,13 +8555,13 @@ var _polyfillNode_https = {
 };
 
 var _polyfillNode_https$1 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    Agent: Agent,
-    METHODS: METHODS,
-    STATUS_CODES: STATUS_CODES,
-    default: _polyfillNode_https,
-    get: get,
-    request: request
+	__proto__: null,
+	Agent: Agent,
+	METHODS: METHODS,
+	STATUS_CODES: STATUS_CODES,
+	default: _polyfillNode_https,
+	get: get,
+	request: request
 });
 
 var require$$4$1 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_https$1);
@@ -9089,23 +9036,23 @@ function ifError(err) {
 }
 
 var _polyfillNode_assert = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    AssertionError: AssertionError,
-    assert: ok,
-    deepEqual: deepEqual,
-    deepStrictEqual: deepStrictEqual,
-    default: assert$1,
-    doesNotThrow: doesNotThrow,
-    equal: equal,
-    fail: fail,
-    ifError: ifError,
-    notDeepEqual: notDeepEqual,
-    notDeepStrictEqual: notDeepStrictEqual,
-    notEqual: notEqual,
-    notStrictEqual: notStrictEqual,
-    ok: ok,
-    strictEqual: strictEqual,
-    throws: throws
+	__proto__: null,
+	AssertionError: AssertionError,
+	assert: ok,
+	deepEqual: deepEqual,
+	deepStrictEqual: deepStrictEqual,
+	default: assert$1,
+	doesNotThrow: doesNotThrow,
+	equal: equal,
+	fail: fail,
+	ifError: ifError,
+	notDeepEqual: notDeepEqual,
+	notDeepStrictEqual: notDeepStrictEqual,
+	notEqual: notEqual,
+	notStrictEqual: notStrictEqual,
+	ok: ok,
+	strictEqual: strictEqual,
+	throws: throws
 });
 
 var require$$4 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_assert);
@@ -15335,43 +15282,43 @@ Zlib$1.prototype._error = function(status) {
 };
 
 var _binding = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    DEFLATE: DEFLATE,
-    DEFLATERAW: DEFLATERAW,
-    GUNZIP: GUNZIP,
-    GZIP: GZIP,
-    INFLATE: INFLATE,
-    INFLATERAW: INFLATERAW,
-    NONE: NONE,
-    UNZIP: UNZIP,
-    Z_BEST_COMPRESSION: Z_BEST_COMPRESSION,
-    Z_BEST_SPEED: Z_BEST_SPEED,
-    Z_BINARY: Z_BINARY,
-    Z_BLOCK: Z_BLOCK,
-    Z_BUF_ERROR: Z_BUF_ERROR,
-    Z_DATA_ERROR: Z_DATA_ERROR,
-    Z_DEFAULT_COMPRESSION: Z_DEFAULT_COMPRESSION,
-    Z_DEFAULT_STRATEGY: Z_DEFAULT_STRATEGY,
-    Z_DEFLATED: Z_DEFLATED,
-    Z_ERRNO: Z_ERRNO,
-    Z_FILTERED: Z_FILTERED,
-    Z_FINISH: Z_FINISH,
-    Z_FIXED: Z_FIXED,
-    Z_FULL_FLUSH: Z_FULL_FLUSH,
-    Z_HUFFMAN_ONLY: Z_HUFFMAN_ONLY,
-    Z_NEED_DICT: Z_NEED_DICT,
-    Z_NO_COMPRESSION: Z_NO_COMPRESSION,
-    Z_NO_FLUSH: Z_NO_FLUSH,
-    Z_OK: Z_OK,
-    Z_PARTIAL_FLUSH: Z_PARTIAL_FLUSH,
-    Z_RLE: Z_RLE,
-    Z_STREAM_END: Z_STREAM_END,
-    Z_STREAM_ERROR: Z_STREAM_ERROR,
-    Z_SYNC_FLUSH: Z_SYNC_FLUSH,
-    Z_TEXT: Z_TEXT,
-    Z_TREES: Z_TREES,
-    Z_UNKNOWN: Z_UNKNOWN,
-    Zlib: Zlib$1
+	__proto__: null,
+	DEFLATE: DEFLATE,
+	DEFLATERAW: DEFLATERAW,
+	GUNZIP: GUNZIP,
+	GZIP: GZIP,
+	INFLATE: INFLATE,
+	INFLATERAW: INFLATERAW,
+	NONE: NONE,
+	UNZIP: UNZIP,
+	Z_BEST_COMPRESSION: Z_BEST_COMPRESSION,
+	Z_BEST_SPEED: Z_BEST_SPEED,
+	Z_BINARY: Z_BINARY,
+	Z_BLOCK: Z_BLOCK,
+	Z_BUF_ERROR: Z_BUF_ERROR,
+	Z_DATA_ERROR: Z_DATA_ERROR,
+	Z_DEFAULT_COMPRESSION: Z_DEFAULT_COMPRESSION,
+	Z_DEFAULT_STRATEGY: Z_DEFAULT_STRATEGY,
+	Z_DEFLATED: Z_DEFLATED,
+	Z_ERRNO: Z_ERRNO,
+	Z_FILTERED: Z_FILTERED,
+	Z_FINISH: Z_FINISH,
+	Z_FIXED: Z_FIXED,
+	Z_FULL_FLUSH: Z_FULL_FLUSH,
+	Z_HUFFMAN_ONLY: Z_HUFFMAN_ONLY,
+	Z_NEED_DICT: Z_NEED_DICT,
+	Z_NO_COMPRESSION: Z_NO_COMPRESSION,
+	Z_NO_FLUSH: Z_NO_FLUSH,
+	Z_OK: Z_OK,
+	Z_PARTIAL_FLUSH: Z_PARTIAL_FLUSH,
+	Z_RLE: Z_RLE,
+	Z_STREAM_END: Z_STREAM_END,
+	Z_STREAM_ERROR: Z_STREAM_ERROR,
+	Z_SYNC_FLUSH: Z_SYNC_FLUSH,
+	Z_TEXT: Z_TEXT,
+	Z_TREES: Z_TREES,
+	Z_UNKNOWN: Z_UNKNOWN,
+	Zlib: Zlib$1
 });
 
 function assert (a, msg) {
@@ -15987,38 +15934,38 @@ var _polyfillNode_zlib = {
 };
 
 var _polyfillNode_zlib$1 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    Deflate: Deflate,
-    DeflateRaw: DeflateRaw,
-    Gunzip: Gunzip,
-    Gzip: Gzip,
-    Inflate: Inflate,
-    InflateRaw: InflateRaw,
-    Unzip: Unzip,
-    Zlib: Zlib,
-    codes: codes,
-    createDeflate: createDeflate,
-    createDeflateRaw: createDeflateRaw,
-    createGunzip: createGunzip,
-    createGzip: createGzip,
-    createInflate: createInflate,
-    createInflateRaw: createInflateRaw,
-    createUnzip: createUnzip,
-    default: _polyfillNode_zlib,
-    deflate: deflate,
-    deflateRaw: deflateRaw,
-    deflateRawSync: deflateRawSync,
-    deflateSync: deflateSync,
-    gunzip: gunzip,
-    gunzipSync: gunzipSync,
-    gzip: gzip,
-    gzipSync: gzipSync,
-    inflate: inflate,
-    inflateRaw: inflateRaw,
-    inflateRawSync: inflateRawSync,
-    inflateSync: inflateSync,
-    unzip: unzip,
-    unzipSync: unzipSync
+	__proto__: null,
+	Deflate: Deflate,
+	DeflateRaw: DeflateRaw,
+	Gunzip: Gunzip,
+	Gzip: Gzip,
+	Inflate: Inflate,
+	InflateRaw: InflateRaw,
+	Unzip: Unzip,
+	Zlib: Zlib,
+	codes: codes,
+	createDeflate: createDeflate,
+	createDeflateRaw: createDeflateRaw,
+	createGunzip: createGunzip,
+	createGzip: createGzip,
+	createInflate: createInflate,
+	createInflateRaw: createInflateRaw,
+	createUnzip: createUnzip,
+	default: _polyfillNode_zlib,
+	deflate: deflate,
+	deflateRaw: deflateRaw,
+	deflateRawSync: deflateRawSync,
+	deflateSync: deflateSync,
+	gunzip: gunzip,
+	gunzipSync: gunzipSync,
+	gzip: gzip,
+	gzipSync: gzipSync,
+	inflate: inflate,
+	inflateRaw: inflateRaw,
+	inflateRawSync: inflateRawSync,
+	inflateSync: inflateSync,
+	unzip: unzip,
+	unzipSync: unzipSync
 });
 
 var require$$8 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_zlib$1);
@@ -17040,18 +16987,18 @@ var substr = 'ab'.substr(-1) === 'b' ?
 ;
 
 var _polyfillNode_path$1 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    basename: basename,
-    default: _polyfillNode_path,
-    delimiter: delimiter,
-    dirname: dirname,
-    extname: extname,
-    isAbsolute: isAbsolute,
-    join: join,
-    normalize: normalize,
-    relative: relative,
-    resolve: resolve,
-    sep: sep
+	__proto__: null,
+	basename: basename,
+	default: _polyfillNode_path,
+	delimiter: delimiter,
+	dirname: dirname,
+	extname: extname,
+	isAbsolute: isAbsolute,
+	join: join,
+	normalize: normalize,
+	relative: relative,
+	resolve: resolve,
+	sep: sep
 });
 
 var require$$2 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_path$1);
@@ -17059,8 +17006,8 @@ var require$$2 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_path$1);
 var _polyfillNode_fs = {};
 
 var _polyfillNode_fs$1 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    default: _polyfillNode_fs
+	__proto__: null,
+	default: _polyfillNode_fs
 });
 
 var require$$6 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_fs$1);
@@ -29873,79 +29820,60 @@ var Requests = /** @class */ (function () {
     function Requests(config) {
         this.config = config;
     }
+    /**
+     * Sets the configuration of the system.
+     *
+     * @param config Config The config class.
+     */
     Requests.setConfig = function (config) {
         this.baseUrl = config.baseUrl;
         this.authToken = config.authToken;
     };
+    /**
+     * Sets the base url of the API.
+     *
+     * @param url The url to of the API.
+     */
     Requests.setBaseUrl = function (url) {
         this.baseUrl = url;
     };
+    /**
+     * Sets the JSON Web token
+     *
+     * @param token
+     */
     Requests.setAuthToken = function (token) {
         this.authToken = token;
     };
     Requests.request = function (method, url, data) {
-        var _a, _b;
-        return __awaiter(this, void 0, void 0, function () {
-            var response, error_1, message;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios({
-                                method: method,
-                                url: "".concat(this.baseUrl).concat(url),
-                                data: data,
-                                headers: {
-                                    Authorization: "Bearer ".concat(this.authToken),
-                                    'Content-Type': 'application/json',
-                                },
-                            })];
-                    case 1:
-                        response = _c.sent();
-                        return [2 /*return*/, {
-                                data: response.data,
-                                success: true,
-                            }];
-                    case 2:
-                        error_1 = _c.sent();
-                        message = ((_b = (_a = error_1.response) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.message) || 'An error occurred';
-                        return [2 /*return*/, {
-                                data: null,
-                                success: false,
-                                message: message,
-                            }];
-                    case 3: return [2 /*return*/];
-                }
-            });
+        var axiosPromise = axios({
+            method: method,
+            url: "".concat(this.baseUrl).concat(url),
+            data: data,
+            headers: {
+                Authorization: "Bearer ".concat(this.authToken),
+                'Content-Type': 'application/json',
+            },
         });
+        return axiosPromise;
     };
+    /**
+     * Calls a GET request to the url endpoint.
+     *
+     * @param url
+     * @returns
+     */
     Requests.get = function (url) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.request('GET', url)];
-            });
-        });
+        return this.request('GET', url);
     };
     Requests.post = function (url, data) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.request('POST', url, data)];
-            });
-        });
+        return this.request('POST', url, data);
     };
     Requests.put = function (url, data) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.request('PUT', url, data)];
-            });
-        });
+        return this.request('PUT', url, data);
     };
     Requests.delete = function (url) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.request('DELETE', url)];
-            });
-        });
+        return this.request('DELETE', url);
     };
     /**
      *  The Route class contains the method and url, thereforce items can be
@@ -29956,27 +29884,29 @@ var Requests = /** @class */ (function () {
      * @returns
      */
     Requests.processRoute = function (route, data, routeReplace) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                url = route.url;
-                if (route.method == HTTP_METHODS.GET) {
-                    return [2 /*return*/, this.get(url)];
-                }
-                else if (route.method == HTTP_METHODS.POST) {
-                    return [2 /*return*/, this.post(url, data)];
-                }
-                else if (route.method == HTTP_METHODS.PUT) {
-                    return [2 /*return*/, this.put(url, data)];
-                }
-                else if (route.method == HTTP_METHODS.DELETE) {
-                    return [2 /*return*/, this.delete(url)];
-                }
-                return [2 /*return*/];
-            });
-        });
+        var url = route.url;
+        if (routeReplace) {
+            for (var key in routeReplace) {
+                url = url.replace("{" + key + "}", routeReplace[key]);
+            }
+        }
+        if (route.method == HTTP_METHODS.GET) {
+            return this.get(url);
+        }
+        else if (route.method == HTTP_METHODS.POST) {
+            return this.post(url, data);
+        }
+        else if (route.method == HTTP_METHODS.PUT) {
+            return this.put(url, data);
+        }
+        else if (route.method == HTTP_METHODS.DELETE) {
+            return this.delete(url);
+        }
+        return this.get(url);
     };
+    //The base url of the API.
     Requests.baseUrl = "";
+    //The Json Web Token to send in the header
     Requests.authToken = "";
     return Requests;
 }());
@@ -30020,9 +29950,41 @@ var AuthRoutes = /** @class */ (function () {
 var Auth = /** @class */ (function () {
     function Auth() {
     }
-    Auth.login = function (login, password) {
-        return Requests.post(AuthRoutes.routes.login.url, { email: login, password: password });
+    /**
+     * Attempts to authenticate a user using their email address.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     *
+     * @param email The email address of the user
+     * @param password The password of the user
+     *
+     * @returns A promise
+     */
+    Auth.loginWithEmail = function (email, password) {
+        return Requests.post(AuthRoutes.routes.login.url, { email: email, password: password });
     };
+    /**
+     * Attempts to authenticate a user using their username.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     *
+     * @param username The username of the user
+     * @param password The password of the user
+     *
+     * @returns A promise
+     */
+    Auth.loginWithUsername = function (username, password) {
+        return Requests.post(AuthRoutes.routes.login.url, { username: username, password: password });
+    };
+    /**
+     * Attempts to register a user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authRegister
+     *
+     * @param data The data the user can register with.
+     *
+     * @returns A promise
+     */
     Auth.register = function (data) {
         return Requests.processRoute(AuthRoutes.routes.register, data);
     };
@@ -30045,18 +30007,61 @@ var CompetitionRoutes = /** @class */ (function () {
 var Competitions = /** @class */ (function () {
     function Competitions() {
     }
+    /**
+     * List all the competitions
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceList
+     *
+     * @returns promise
+     */
     Competitions.list = function () {
         return Requests.processRoute(CompetitionRoutes.routes.list);
     };
+    /**
+     * Create a new competition
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/newResourceStorage
+     *
+     * @param data The date to be passed when creating a competiton.
+     *
+     * @returns Promise
+     */
     Competitions.create = function (data) {
         return Requests.processRoute(CompetitionRoutes.routes.create, data);
     };
+    /**
+     * Update a competition
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/updateStorage
+     *
+     * @param competition_id The id of the competition to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
     Competitions.update = function (competition_id, data) {
         return Requests.processRoute(CompetitionRoutes.routes.create, data, { competition_id: competition_id });
     };
+    /**
+     * Retrieve the information for a single competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/showStorage
+     *
+     * @param competition_id The id fo the competition to retrieve.
+     *
+     * @returns promise
+     */
     Competitions.view = function (competition_id) {
         return Requests.processRoute(CompetitionRoutes.routes.view, {}, { competition_id: competition_id });
     };
+    /**
+     * Deletes a competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/destoryStorage
+     *
+     * @param competition_id The id of the competition to delete.
+     * @returns promise
+     */
     Competitions.delete = function (competition_id) {
         return Requests.processRoute(CompetitionRoutes.routes.delete, {}, { competition_id: competition_id });
     };
