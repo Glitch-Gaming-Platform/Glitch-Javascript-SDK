@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    // Default
+    "target": "es5",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+
+    // Added
+    "resolveJsonModule": true,
+    "jsx": "react",
+    "module": "ESNext",
+    "sourceMap": true,
+    "rootDir": "./src",
+    "sourceRoot": "./src",
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "emitDeclarationOnly": false, /* Skip type checking all .d.ts files. */
+    "types": ["node"],
+    "lib": [
+      "ES6",
+      "ESNext",
+      "ES2021.String",
+      "dom"
+    ],
+  },
+  "typedocOptions": {
+    "entryPoints": ["src/index.ts"],
+    "out": "docs"
+  }
+}
