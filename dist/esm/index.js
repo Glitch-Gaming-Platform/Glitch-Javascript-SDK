@@ -488,7 +488,7 @@ var isTypedArray = (function(TypedArray) {
   };
 })(typeof Uint8Array !== 'undefined' && Object.getPrototypeOf(Uint8Array));
 
-var utils$b = {
+var utils$9 = {
   isArray: isArray$3,
   isArrayBuffer: isArrayBuffer,
   isBuffer: isBuffer$2,
@@ -521,7 +521,7 @@ var utils$b = {
   isFileList: isFileList
 };
 
-var utils$a = utils$b;
+var utils$8 = utils$9;
 
 function encode$1(val) {
   return encodeURIComponent(val).
@@ -549,26 +549,26 @@ var buildURL$1 = function buildURL(url, params, paramsSerializer) {
   var serializedParams;
   if (paramsSerializer) {
     serializedParams = paramsSerializer(params);
-  } else if (utils$a.isURLSearchParams(params)) {
+  } else if (utils$8.isURLSearchParams(params)) {
     serializedParams = params.toString();
   } else {
     var parts = [];
 
-    utils$a.forEach(params, function serialize(val, key) {
+    utils$8.forEach(params, function serialize(val, key) {
       if (val === null || typeof val === 'undefined') {
         return;
       }
 
-      if (utils$a.isArray(val)) {
+      if (utils$8.isArray(val)) {
         key = key + '[]';
       } else {
         val = [val];
       }
 
-      utils$a.forEach(val, function parseValue(v) {
-        if (utils$a.isDate(v)) {
+      utils$8.forEach(val, function parseValue(v) {
+        if (utils$8.isDate(v)) {
           v = v.toISOString();
-        } else if (utils$a.isObject(v)) {
+        } else if (utils$8.isObject(v)) {
           v = JSON.stringify(v);
         }
         parts.push(encode$1(key) + '=' + encode$1(v));
@@ -590,7 +590,7 @@ var buildURL$1 = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-var utils$9 = utils$b;
+var utils$7 = utils$9;
 
 function InterceptorManager$1() {
   this.handlers = [];
@@ -634,7 +634,7 @@ InterceptorManager$1.prototype.eject = function eject(id) {
  * @param {Function} fn The function to call for each interceptor
  */
 InterceptorManager$1.prototype.forEach = function forEach(fn) {
-  utils$9.forEach(this.handlers, function forEachHandler(h) {
+  utils$7.forEach(this.handlers, function forEachHandler(h) {
     if (h !== null) {
       fn(h);
     }
@@ -869,10 +869,10 @@ var browser$1 = {
   uptime: uptime
 };
 
-var utils$8 = utils$b;
+var utils$6 = utils$9;
 
 var normalizeHeaderName$1 = function normalizeHeaderName(headers, normalizedName) {
-  utils$8.forEach(headers, function processHeader(value, name) {
+  utils$6.forEach(headers, function processHeader(value, name) {
     if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
       headers[normalizedName] = value;
       delete headers[name];
@@ -880,90 +880,99 @@ var normalizeHeaderName$1 = function normalizeHeaderName(headers, normalizedName
   });
 };
 
-var utils$7 = utils$b;
+var AxiosError_1;
+var hasRequiredAxiosError;
 
-/**
- * Create an Error with the specified message, config, error code, request and response.
- *
- * @param {string} message The error message.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- * @param {Object} [config] The config.
- * @param {Object} [request] The request.
- * @param {Object} [response] The response.
- * @returns {Error} The created error.
- */
-function AxiosError$2(message, code, config, request, response) {
-  Error.call(this);
-  this.message = message;
-  this.name = 'AxiosError';
-  code && (this.code = code);
-  config && (this.config = config);
-  request && (this.request = request);
-  response && (this.response = response);
+function requireAxiosError () {
+	if (hasRequiredAxiosError) return AxiosError_1;
+	hasRequiredAxiosError = 1;
+
+	var utils = utils$9;
+
+	/**
+	 * Create an Error with the specified message, config, error code, request and response.
+	 *
+	 * @param {string} message The error message.
+	 * @param {string} [code] The error code (for example, 'ECONNABORTED').
+	 * @param {Object} [config] The config.
+	 * @param {Object} [request] The request.
+	 * @param {Object} [response] The response.
+	 * @returns {Error} The created error.
+	 */
+	function AxiosError(message, code, config, request, response) {
+	  Error.call(this);
+	  this.message = message;
+	  this.name = 'AxiosError';
+	  code && (this.code = code);
+	  config && (this.config = config);
+	  request && (this.request = request);
+	  response && (this.response = response);
+	}
+
+	utils.inherits(AxiosError, Error, {
+	  toJSON: function toJSON() {
+	    return {
+	      // Standard
+	      message: this.message,
+	      name: this.name,
+	      // Microsoft
+	      description: this.description,
+	      number: this.number,
+	      // Mozilla
+	      fileName: this.fileName,
+	      lineNumber: this.lineNumber,
+	      columnNumber: this.columnNumber,
+	      stack: this.stack,
+	      // Axios
+	      config: this.config,
+	      code: this.code,
+	      status: this.response && this.response.status ? this.response.status : null
+	    };
+	  }
+	});
+
+	var prototype = AxiosError.prototype;
+	var descriptors = {};
+
+	[
+	  'ERR_BAD_OPTION_VALUE',
+	  'ERR_BAD_OPTION',
+	  'ECONNABORTED',
+	  'ETIMEDOUT',
+	  'ERR_NETWORK',
+	  'ERR_FR_TOO_MANY_REDIRECTS',
+	  'ERR_DEPRECATED',
+	  'ERR_BAD_RESPONSE',
+	  'ERR_BAD_REQUEST',
+	  'ERR_CANCELED'
+	// eslint-disable-next-line func-names
+	].forEach(function(code) {
+	  descriptors[code] = {value: code};
+	});
+
+	Object.defineProperties(AxiosError, descriptors);
+	Object.defineProperty(prototype, 'isAxiosError', {value: true});
+
+	// eslint-disable-next-line func-names
+	AxiosError.from = function(error, code, config, request, response, customProps) {
+	  var axiosError = Object.create(prototype);
+
+	  utils.toFlatObject(error, axiosError, function filter(obj) {
+	    return obj !== Error.prototype;
+	  });
+
+	  AxiosError.call(axiosError, error.message, code, config, request, response);
+
+	  axiosError.name = error.name;
+
+	  customProps && Object.assign(axiosError, customProps);
+
+	  return axiosError;
+	};
+
+	AxiosError_1 = AxiosError;
+	return AxiosError_1;
 }
-
-utils$7.inherits(AxiosError$2, Error, {
-  toJSON: function toJSON() {
-    return {
-      // Standard
-      message: this.message,
-      name: this.name,
-      // Microsoft
-      description: this.description,
-      number: this.number,
-      // Mozilla
-      fileName: this.fileName,
-      lineNumber: this.lineNumber,
-      columnNumber: this.columnNumber,
-      stack: this.stack,
-      // Axios
-      config: this.config,
-      code: this.code,
-      status: this.response && this.response.status ? this.response.status : null
-    };
-  }
-});
-
-var prototype = AxiosError$2.prototype;
-var descriptors = {};
-
-[
-  'ERR_BAD_OPTION_VALUE',
-  'ERR_BAD_OPTION',
-  'ECONNABORTED',
-  'ETIMEDOUT',
-  'ERR_NETWORK',
-  'ERR_FR_TOO_MANY_REDIRECTS',
-  'ERR_DEPRECATED',
-  'ERR_BAD_RESPONSE',
-  'ERR_BAD_REQUEST',
-  'ERR_CANCELED'
-// eslint-disable-next-line func-names
-].forEach(function(code) {
-  descriptors[code] = {value: code};
-});
-
-Object.defineProperties(AxiosError$2, descriptors);
-Object.defineProperty(prototype, 'isAxiosError', {value: true});
-
-// eslint-disable-next-line func-names
-AxiosError$2.from = function(error, code, config, request, response, customProps) {
-  var axiosError = Object.create(prototype);
-
-  utils$7.toFlatObject(error, axiosError, function filter(obj) {
-    return obj !== Error.prototype;
-  });
-
-  AxiosError$2.call(axiosError, error.message, code, config, request, response);
-
-  axiosError.name = error.name;
-
-  customProps && Object.assign(axiosError, customProps);
-
-  return axiosError;
-};
-
-var AxiosError_1 = AxiosError$2;
 
 var transitional = {
   silentJSONParsing: true,
@@ -2946,76 +2955,85 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isFastBuffer(obj.slice(0, 0))
 }
 
-var utils$6 = utils$b;
+var toFormData_1;
+var hasRequiredToFormData;
 
-/**
- * Convert a data object to FormData
- * @param {Object} obj
- * @param {?Object} [formData]
- * @returns {Object}
- **/
+function requireToFormData () {
+	if (hasRequiredToFormData) return toFormData_1;
+	hasRequiredToFormData = 1;
 
-function toFormData$1(obj, formData) {
-  // eslint-disable-next-line no-param-reassign
-  formData = formData || new FormData();
+	var utils = utils$9;
 
-  var stack = [];
+	/**
+	 * Convert a data object to FormData
+	 * @param {Object} obj
+	 * @param {?Object} [formData]
+	 * @returns {Object}
+	 **/
 
-  function convertValue(value) {
-    if (value === null) return '';
+	function toFormData(obj, formData) {
+	  // eslint-disable-next-line no-param-reassign
+	  formData = formData || new FormData();
 
-    if (utils$6.isDate(value)) {
-      return value.toISOString();
-    }
+	  var stack = [];
 
-    if (utils$6.isArrayBuffer(value) || utils$6.isTypedArray(value)) {
-      return typeof Blob === 'function' ? new Blob([value]) : Buffer.from(value);
-    }
+	  function convertValue(value) {
+	    if (value === null) return '';
 
-    return value;
-  }
+	    if (utils.isDate(value)) {
+	      return value.toISOString();
+	    }
 
-  function build(data, parentKey) {
-    if (utils$6.isPlainObject(data) || utils$6.isArray(data)) {
-      if (stack.indexOf(data) !== -1) {
-        throw Error('Circular reference detected in ' + parentKey);
-      }
+	    if (utils.isArrayBuffer(value) || utils.isTypedArray(value)) {
+	      return typeof Blob === 'function' ? new Blob([value]) : Buffer.from(value);
+	    }
 
-      stack.push(data);
+	    return value;
+	  }
 
-      utils$6.forEach(data, function each(value, key) {
-        if (utils$6.isUndefined(value)) return;
-        var fullKey = parentKey ? parentKey + '.' + key : key;
-        var arr;
+	  function build(data, parentKey) {
+	    if (utils.isPlainObject(data) || utils.isArray(data)) {
+	      if (stack.indexOf(data) !== -1) {
+	        throw Error('Circular reference detected in ' + parentKey);
+	      }
 
-        if (value && !parentKey && typeof value === 'object') {
-          if (utils$6.endsWith(key, '{}')) {
-            // eslint-disable-next-line no-param-reassign
-            value = JSON.stringify(value);
-          } else if (utils$6.endsWith(key, '[]') && (arr = utils$6.toArray(value))) {
-            // eslint-disable-next-line func-names
-            arr.forEach(function(el) {
-              !utils$6.isUndefined(el) && formData.append(fullKey, convertValue(el));
-            });
-            return;
-          }
-        }
+	      stack.push(data);
 
-        build(value, fullKey);
-      });
+	      utils.forEach(data, function each(value, key) {
+	        if (utils.isUndefined(value)) return;
+	        var fullKey = parentKey ? parentKey + '.' + key : key;
+	        var arr;
 
-      stack.pop();
-    } else {
-      formData.append(parentKey, convertValue(data));
-    }
-  }
+	        if (value && !parentKey && typeof value === 'object') {
+	          if (utils.endsWith(key, '{}')) {
+	            // eslint-disable-next-line no-param-reassign
+	            value = JSON.stringify(value);
+	          } else if (utils.endsWith(key, '[]') && (arr = utils.toArray(value))) {
+	            // eslint-disable-next-line func-names
+	            arr.forEach(function(el) {
+	              !utils.isUndefined(el) && formData.append(fullKey, convertValue(el));
+	            });
+	            return;
+	          }
+	        }
 
-  build(obj);
+	        build(value, fullKey);
+	      });
 
-  return formData;
+	      stack.pop();
+	    } else {
+	      formData.append(parentKey, convertValue(data));
+	    }
+	  }
+
+	  build(obj);
+
+	  return formData;
+	}
+
+	toFormData_1 = toFormData;
+	return toFormData_1;
 }
-
-var toFormData_1 = toFormData$1;
 
 var settle;
 var hasRequiredSettle;
@@ -3024,7 +3042,7 @@ function requireSettle () {
 	if (hasRequiredSettle) return settle;
 	hasRequiredSettle = 1;
 
-	var AxiosError = AxiosError_1;
+	var AxiosError = requireAxiosError();
 
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -3057,7 +3075,7 @@ function requireCookies () {
 	if (hasRequiredCookies) return cookies;
 	hasRequiredCookies = 1;
 
-	var utils = utils$b;
+	var utils = utils$9;
 
 	cookies = (
 	  utils.isStandardBrowserEnv() ?
@@ -3163,7 +3181,7 @@ function requireParseHeaders () {
 	if (hasRequiredParseHeaders) return parseHeaders;
 	hasRequiredParseHeaders = 1;
 
-	var utils = utils$b;
+	var utils = utils$9;
 
 	// Headers whose duplicates are ignored by node
 	// c.f. https://nodejs.org/api/http.html#http_message_headers
@@ -3224,7 +3242,7 @@ function requireIsURLSameOrigin () {
 	if (hasRequiredIsURLSameOrigin) return isURLSameOrigin;
 	hasRequiredIsURLSameOrigin = 1;
 
-	var utils = utils$b;
+	var utils = utils$9;
 
 	isURLSameOrigin = (
 	  utils.isStandardBrowserEnv() ?
@@ -3300,8 +3318,8 @@ function requireCanceledError () {
 	if (hasRequiredCanceledError) return CanceledError_1;
 	hasRequiredCanceledError = 1;
 
-	var AxiosError = AxiosError_1;
-	var utils = utils$b;
+	var AxiosError = requireAxiosError();
+	var utils = utils$9;
 
 	/**
 	 * A `CanceledError` is an object that is thrown when an operation is canceled.
@@ -3344,7 +3362,7 @@ function requireXhr () {
 	if (hasRequiredXhr) return xhr$1;
 	hasRequiredXhr = 1;
 
-	var utils = utils$b;
+	var utils = utils$9;
 	var settle = requireSettle();
 	var cookies = requireCookies();
 	var buildURL = buildURL$1;
@@ -3352,7 +3370,7 @@ function requireXhr () {
 	var parseHeaders = requireParseHeaders();
 	var isURLSameOrigin = requireIsURLSameOrigin();
 	var transitionalDefaults = transitional;
-	var AxiosError = AxiosError_1;
+	var AxiosError = requireAxiosError();
 	var CanceledError = requireCanceledError();
 	var parseProtocol = requireParseProtocol();
 
@@ -15989,7 +16007,7 @@ function requireHttp () {
 	if (hasRequiredHttp) return http_1;
 	hasRequiredHttp = 1;
 
-	var utils = utils$b;
+	var utils = utils$9;
 	var settle = requireSettle();
 	var buildFullPath = buildFullPath$1;
 	var buildURL = buildURL$1;
@@ -16001,7 +16019,7 @@ function requireHttp () {
 	var zlib = require$$8;
 	var VERSION = requireData().version;
 	var transitionalDefaults = transitional;
-	var AxiosError = AxiosError_1;
+	var AxiosError = requireAxiosError();
 	var CanceledError = requireCanceledError();
 
 	var isHttps = /https:?/;
@@ -28949,11 +28967,11 @@ function requireFormData () {
 	return FormDataExports;
 }
 
-var utils$5 = utils$b;
+var utils$5 = utils$9;
 var normalizeHeaderName = normalizeHeaderName$1;
-var AxiosError$1 = AxiosError_1;
+var AxiosError$1 = requireAxiosError();
 var transitionalDefaults = transitional;
-var toFormData = toFormData_1;
+var toFormData = requireToFormData();
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -29094,7 +29112,7 @@ utils$5.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method)
 
 var defaults_1 = defaults$3;
 
-var utils$4 = utils$b;
+var utils$4 = utils$9;
 var defaults$2 = defaults_1;
 
 /**
@@ -29128,7 +29146,7 @@ function requireIsCancel () {
 	return isCancel$1;
 }
 
-var utils$3 = utils$b;
+var utils$3 = utils$9;
 var transformData = transformData$1;
 var isCancel = requireIsCancel();
 var defaults$1 = defaults_1;
@@ -29214,7 +29232,7 @@ var dispatchRequest$1 = function dispatchRequest(config) {
   });
 };
 
-var utils$2 = utils$b;
+var utils$2 = utils$9;
 
 /**
  * Config-specific merge-function which creates a new config-object
@@ -29314,7 +29332,7 @@ var mergeConfig$2 = function mergeConfig(config1, config2) {
 };
 
 var VERSION = requireData().version;
-var AxiosError = AxiosError_1;
+var AxiosError = requireAxiosError();
 
 var validators$1 = {};
 
@@ -29398,7 +29416,7 @@ var validator$1 = {
   validators: validators$1
 };
 
-var utils$1 = utils$b;
+var utils$1 = utils$9;
 var buildURL = buildURL$1;
 var InterceptorManager = InterceptorManager_1;
 var dispatchRequest = dispatchRequest$1;
@@ -29726,7 +29744,7 @@ function requireIsAxiosError () {
 	if (hasRequiredIsAxiosError) return isAxiosError;
 	hasRequiredIsAxiosError = 1;
 
-	var utils = utils$b;
+	var utils = utils$9;
 
 	/**
 	 * Determines whether the payload is an error thrown by Axios
@@ -29740,7 +29758,7 @@ function requireIsAxiosError () {
 	return isAxiosError;
 }
 
-var utils = utils$b;
+var utils = utils$9;
 var bind = bind$2;
 var Axios = Axios_1;
 var mergeConfig = mergeConfig$2;
@@ -29781,10 +29799,10 @@ axios$1.CanceledError = requireCanceledError();
 axios$1.CancelToken = requireCancelToken();
 axios$1.isCancel = requireIsCancel();
 axios$1.VERSION = requireData().version;
-axios$1.toFormData = toFormData_1;
+axios$1.toFormData = requireToFormData();
 
 // Expose AxiosError class
-axios$1.AxiosError = AxiosError_1;
+axios$1.AxiosError = requireAxiosError();
 
 // alias for CanceledError for backward compatibility
 axios$1.Cancel = axios$1.CanceledError;
