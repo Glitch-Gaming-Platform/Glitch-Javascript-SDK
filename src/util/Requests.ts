@@ -3,19 +3,27 @@ import Config from '../config/Config';
 import HTTP_METHODS from '../constants/HttpMethods';
 import Route from '../routes/interface';
 import Response from './Response';
+import { AxiosPromise } from 'axios';
 
 class Requests {
 
   config: Config;
 
+  //The base url of the API.
   private static baseUrl = "";
 
+  //The Json Web Token to send in the header
   private static authToken = "";
 
   constructor(config: Config) {
     this.config = config;
   }
 
+  /**
+   * Sets the configuration of the system.
+   * 
+   * @param config Config The config class.
+   */
   public static setConfig(config: Config) {
 
     this.baseUrl = config.baseUrl;
@@ -23,57 +31,62 @@ class Requests {
     this.authToken = config.authToken;
   }
 
+  /**
+   * Sets the base url of the API.
+   * 
+   * @param url The url to of the API.
+   */
   public static setBaseUrl(url : string) {
     this.baseUrl = url;
   }
 
+  /**
+   * Sets the JSON Web token
+   * 
+   * @param token 
+   */
   public static setAuthToken(token : string) {
     this.authToken = token;
   }
 
-  private static async request<T>(
+  
+  private static request<T>(
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
     url: string,
     data?: any
-  ): Promise<Response<T>> {
-    try {
-      const response = await axios({
-        method,
-        url: `${this.baseUrl}${url}`,
-        data,
-        headers: {
-          Authorization: `Bearer ${this.authToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      return {
-        data: response.data,
-        success: true,
-      };
-    } catch (error) {
-      
-      const message = error.response?.data?.message || 'An error occurred';
-      return {
-        data: null,
-        success: false,
-        message,
-      };
-    }
+  ): AxiosPromise<Response<T>> {
+    const axiosPromise = axios({
+      method,
+      url: `${this.baseUrl}${url}`,
+      data,
+      headers: {
+        Authorization: `Bearer ${this.authToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return axiosPromise;
   }
 
-  public static async get<T>(url: string): Promise<Response<T>> {
+  /**
+   * Calls a GET request to the url endpoint.
+   * 
+   * @param url 
+   * @returns 
+   */
+  public static get<T>(url: string): AxiosPromise<Response<T>> {
     return this.request<T>('GET', url);
   }
 
-  public static async post<T>(url: string, data: any): Promise<Response<T>> {
+  public static post<T>(url: string, data: any): AxiosPromise<Response<T>> {
     return this.request<T>('POST', url, data);
   }
 
-  public static async put<T>(url: string, data: any): Promise<Response<T>> {
+  public static put<T>(url: string, data: any): AxiosPromise<Response<T>> {
     return this.request<T>('PUT', url, data);
   }
 
-  public static async delete<T>(url: string): Promise<Response<T>> {
+  public static delete<T>(url: string): AxiosPromise<Response<T>> {
     return this.request<T>('DELETE', url);
   }
 
@@ -85,14 +98,14 @@ class Requests {
    * @param data 
    * @returns 
    */
-  public static async processRoute(route : Route, data? : object, routeReplace? : object) {
+  public static processRoute<T>(route : Route, data? : object, routeReplace? : object) : AxiosPromise<Response<T>> {
 
     let url = route.url;
 
     if(routeReplace) {
 
       for (let key in routeReplace) {
-        //url = url.replace("{" + key + "}", routeReplace[key]);
+        url = url.replace("{" + key + "}", routeReplace[key]);
       }
 
     }
@@ -106,6 +119,8 @@ class Requests {
     } else if(route.method == HTTP_METHODS.DELETE) {
       return this.delete(url);
     }
+
+    return this.get(url);
 
   }
 

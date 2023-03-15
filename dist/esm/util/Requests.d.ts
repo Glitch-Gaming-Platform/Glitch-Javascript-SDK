@@ -1,19 +1,41 @@
 import Config from '../config/Config';
 import Route from '../routes/interface';
 import Response from './Response';
+import { AxiosPromise } from 'axios';
 declare class Requests {
     config: Config;
     private static baseUrl;
     private static authToken;
     constructor(config: Config);
+    /**
+     * Sets the configuration of the system.
+     *
+     * @param config Config The config class.
+     */
     static setConfig(config: Config): void;
+    /**
+     * Sets the base url of the API.
+     *
+     * @param url The url to of the API.
+     */
     static setBaseUrl(url: string): void;
+    /**
+     * Sets the JSON Web token
+     *
+     * @param token
+     */
     static setAuthToken(token: string): void;
     private static request;
-    static get<T>(url: string): Promise<Response<T>>;
-    static post<T>(url: string, data: any): Promise<Response<T>>;
-    static put<T>(url: string, data: any): Promise<Response<T>>;
-    static delete<T>(url: string): Promise<Response<T>>;
+    /**
+     * Calls a GET request to the url endpoint.
+     *
+     * @param url
+     * @returns
+     */
+    static get<T>(url: string): AxiosPromise<Response<T>>;
+    static post<T>(url: string, data: any): AxiosPromise<Response<T>>;
+    static put<T>(url: string, data: any): AxiosPromise<Response<T>>;
+    static delete<T>(url: string): AxiosPromise<Response<T>>;
     /**
      *  The Route class contains the method and url, thereforce items can be
      *  automatically routed depending on the configuration.
@@ -22,6 +44,6 @@ declare class Requests {
      * @param data
      * @returns
      */
-    static processRoute(route: Route, data?: object, routeReplace?: object): Promise<Response<unknown> | undefined>;
+    static processRoute<T>(route: Route, data?: object, routeReplace?: object): AxiosPromise<Response<T>>;
 }
 export default Requests;
