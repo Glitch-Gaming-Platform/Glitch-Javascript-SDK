@@ -22,10 +22,14 @@ class Config {
 
     setBaseUrl(baseUrl: string) {
       this.baseUrl = baseUrl;
+
+      Requests.setBaseUrl(baseUrl);
     }
 
     setAuthToken(authToken: string) {
       this.authToken = authToken;
+
+      Requests.setAuthToken(authToken);
     }
 
   }

@@ -2,12 +2,7 @@ import axios from 'axios';
 import Config from '../config/Config';
 import HTTP_METHODS from '../constants/HttpMethods';
 import Route from '../routes/interface';
-
-interface Response<T> {
-  data: T;
-  success: boolean;
-  message?: string;
-}
+import Response from './Response';
 
 class Requests {
 
@@ -16,7 +11,6 @@ class Requests {
   private static baseUrl = "";
 
   private static authToken = "";
-
 
   constructor(config: Config) {
     this.config = config;
@@ -29,6 +23,13 @@ class Requests {
     this.authToken = config.authToken;
   }
 
+  public static setBaseUrl(url : string) {
+    this.baseUrl = url;
+  }
+
+  public static setAuthToken(token : string) {
+    this.authToken = token;
+  }
 
   private static async request<T>(
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
@@ -51,12 +52,12 @@ class Requests {
       };
     } catch (error) {
       
-      /*const message = error.response?.data?.message || 'An error occurred';
+      const message = error.response?.data?.message || 'An error occurred';
       return {
         data: null,
         success: false,
         message,
-      };*/
+      };
     }
   }
 

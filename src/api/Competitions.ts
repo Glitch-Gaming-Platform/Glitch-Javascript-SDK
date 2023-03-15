@@ -24,7 +24,7 @@ class Competitions {
 
     public static delete(competition_id : string) {
 
-        return Requests.processRoute(CompetitionRoutes.routes.delete, {} {competition_id : competition_id});
+        return Requests.processRoute(CompetitionRoutes.routes.delete, {}, {competition_id : competition_id});
     }
 
     

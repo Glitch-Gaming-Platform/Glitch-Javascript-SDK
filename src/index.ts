@@ -3,10 +3,10 @@
 import Config from "./config/Config";
 
 //API
-import Auth from "./api/Auth";
-import Competitions from "./api/Competitions";
+import { Auth } from "./api";
+import { Competitions } from "./api";
 
-export class Glitch {
+class Glitch {
 
     public static config: typeof Config = Config;
 
@@ -15,3 +15,5 @@ export class Glitch {
 
 
   }
+
+  export {Glitch};

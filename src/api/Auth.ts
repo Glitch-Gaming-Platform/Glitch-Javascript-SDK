@@ -10,9 +10,6 @@ class Auth {
     public static register(data : object) {
         return Requests.processRoute(AuthRoutes.routes.register, data);
     }
-
-    
-
 }
 
 export default Auth;
