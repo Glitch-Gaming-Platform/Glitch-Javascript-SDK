@@ -7,6 +7,7 @@ import { Auth } from "./api";
 import { Competitions } from "./api";
 import { Users } from "./api";
 import {Events} from "./api";
+import {Teams} from "./api";
 
 class Glitch {
 
@@ -15,8 +16,9 @@ class Glitch {
     public static api : {
         Auth : typeof Auth,
         Competitions: typeof Competitions,
-        Users: typeof Users
-        Events : typeof Events
+        Users: typeof Users,
+        Events : typeof Events,
+        Teams : typeof Teams
     }
 
 
