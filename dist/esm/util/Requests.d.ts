@@ -46,6 +46,8 @@ declare class Requests {
      * @param data
      * @returns
      */
-    static processRoute<T>(route: Route, data?: object, routeReplace?: object): AxiosPromise<Response<T>>;
+    static processRoute<T>(route: Route, data?: object, routeReplace?: {
+        [key: string]: any;
+    }): AxiosPromise<Response<T>>;
 }
 export default Requests;

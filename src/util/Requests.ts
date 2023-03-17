@@ -57,7 +57,7 @@ class Requests {
     fileData?: any
   ): AxiosPromise<Response<T>> {
 
-    let headers = {
+    let headers : { [key: string]: string } = {
       'Content-Type': 'application/json',
     };
 
@@ -145,7 +145,7 @@ class Requests {
    * @param data 
    * @returns 
    */
-  public static processRoute<T>(route : Route, data? : object, routeReplace? : object) : AxiosPromise<Response<T>> {
+  public static processRoute<T>(route : Route, data? : object, routeReplace? : {[key: string]: any}) : AxiosPromise<Response<T>> {
 
     let url = route.url;
 
