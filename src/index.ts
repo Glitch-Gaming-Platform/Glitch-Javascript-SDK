@@ -11,14 +11,14 @@ import {Teams} from "./api";
 
 class Glitch {
 
-    public static config: typeof Config = Config;
+    public static config: Config;
 
     public static api : {
-        Auth : typeof Auth,
-        Competitions: typeof Competitions,
-        Users: typeof Users,
-        Events : typeof Events,
-        Teams : typeof Teams
+        Auth : Auth,
+        Competitions: Competitions,
+        Users:  Users,
+        Events :  Events,
+        Teams :  Teams
     }
 
 
