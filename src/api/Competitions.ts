@@ -557,10 +557,6 @@ class Competitions {
     public static uploadVenueMainImage<T>(competition_id : string, venue_id : string): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.uploadVenueMainImage, {competition_id : competition_id}, {venue_id : venue_id});
     }
-
-    public static addRTMPSource<T>(rtmp_source : string): AxiosPromise<Response<T>>{
-        return Requests.processRoute(CompetitionRoutes.routes.competition_id, {rtmp_source : rtmp_source});
-    }
 }
 
 export default Competitions;

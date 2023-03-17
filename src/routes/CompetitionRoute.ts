@@ -47,7 +47,6 @@ class CompetitionRoutes {
       updateVenue : { url: '/competitions/{competition_id}/venues/{venue_id}', method: HTTP_METHODS.PUT },
       destroyVenue : { url: '/competitions/{competition_id}/venues/{venue_id}', method: HTTP_METHODS.DELETE },
       uploadVenueMainImage : { url: '/competitions/{competition_id}/venues/{venue_id}/uploadMainImage', method: HTTP_METHODS.POST },
-      addRTMPSource : { url: 'events/{competition_id}/addRTMPSource', method: HTTP_METHODS.POST },
     };
 
 
