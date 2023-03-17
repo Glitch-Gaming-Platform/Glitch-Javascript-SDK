@@ -53,16 +53,27 @@ class Requests {
   private static request<T>(
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
     url: string,
-    data?: any
+    data?: any,
+    fileData?: any
   ): AxiosPromise<Response<T>> {
+
+    let headers = {
+      'Content-Type': 'application/json',
+    };
+
+     if(this.authToken) {
+      headers['Authorization'] = `Bearer ${this.authToken}`;
+     }
+
+    if (fileData) {
+      headers['Content-Type'] = 'multipart/form-data';
+    }
+
     const axiosPromise = axios({
       method,
       url: `${this.baseUrl}${url}`,
-      data,
-      headers: {
-        Authorization: `Bearer ${this.authToken}`,
-        'Content-Type': 'application/json',
-      },
+      data: fileData || data,
+      headers,
     });
 
     return axiosPromise;
@@ -88,6 +99,42 @@ class Requests {
 
   public static delete<T>(url: string): AxiosPromise<Response<T>> {
     return this.request<T>('DELETE', url);
+  }
+
+  public static uploadFile<T>(
+    url: string,
+    filename : string,
+    file: File,
+    data?: any
+  ): AxiosPromise<Response<T>> {
+    
+    const formData = new FormData();
+
+    formData.append(filename, file);
+
+    for (let key in data) {
+      formData.append(key, data[key]);
+    }
+
+    return this.request<T>('POST', url, data, formData);
+  }
+
+  public static uploadBlob<T>(
+    url: string,
+    filename : string,
+    blob: Blob,
+    data?: any
+  ): AxiosPromise<Response<T>> {
+
+    const formData = new FormData();
+
+    formData.append(filename, blob);
+
+    for (let key in data) {
+      formData.append(key, data[key]);
+    }
+
+    return this.request<T>('POST', url, data, formData);
   }
 
   /**

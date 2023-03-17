@@ -7,7 +7,7 @@ class UserRoutes {
       list: { url: '/users', method: HTTP_METHODS.GET },
       update: { url: '/users', method: HTTP_METHODS.PUT  },
       follow : { url: '/users/{user_id}/follow', method: HTTP_METHODS.POST  },
-      profile  :{ url: '/users/{uuid}/profile', method: HTTP_METHODS.GET  },
+      profile  :{ url: '/users/{user_id}/profile', method: HTTP_METHODS.GET  },
       me : { url: '/users/me', method: HTTP_METHODS.GET },
       oneTimeToken : { url: '/users/oneTimeToken', method: HTTP_METHODS.GET },
       uploadAvatar : { url: '/users/uploadAvatarImage', method: HTTP_METHODS.POST },

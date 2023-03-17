@@ -15623,15 +15623,21 @@ var Requests = /** @class */ (function () {
     Requests.setAuthToken = function (token) {
         this.authToken = token;
     };
-    Requests.request = function (method, url, data) {
+    Requests.request = function (method, url, data, fileData) {
+        var headers = {
+            'Content-Type': 'application/json',
+        };
+        if (this.authToken) {
+            headers['Authorization'] = "Bearer ".concat(this.authToken);
+        }
+        if (fileData) {
+            headers['Content-Type'] = 'multipart/form-data';
+        }
         var axiosPromise = axios({
             method: method,
             url: "".concat(this.baseUrl).concat(url),
-            data: data,
-            headers: {
-                Authorization: "Bearer ".concat(this.authToken),
-                'Content-Type': 'application/json',
-            },
+            data: fileData || data,
+            headers: headers,
         });
         return axiosPromise;
     };
@@ -15652,6 +15658,22 @@ var Requests = /** @class */ (function () {
     };
     Requests.delete = function (url) {
         return this.request('DELETE', url);
+    };
+    Requests.uploadFile = function (url, filename, file, data) {
+        var formData = new FormData();
+        formData.append(filename, file);
+        for (var key in data) {
+            formData.append(key, data[key]);
+        }
+        return this.request('POST', url, data, formData);
+    };
+    Requests.uploadBlob = function (url, filename, blob, data) {
+        var formData = new FormData();
+        formData.append(filename, blob);
+        for (var key in data) {
+            formData.append(key, data[key]);
+        }
+        return this.request('POST', url, data, formData);
     };
     /**
      *  The Route class contains the method and url, thereforce items can be

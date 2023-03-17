@@ -36,6 +36,8 @@ declare class Requests {
     static post<T>(url: string, data: any): AxiosPromise<Response<T>>;
     static put<T>(url: string, data: any): AxiosPromise<Response<T>>;
     static delete<T>(url: string): AxiosPromise<Response<T>>;
+    static uploadFile<T>(url: string, filename: string, file: File, data?: any): AxiosPromise<Response<T>>;
+    static uploadBlob<T>(url: string, filename: string, blob: Blob, data?: any): AxiosPromise<Response<T>>;
     /**
      *  The Route class contains the method and url, thereforce items can be
      *  automatically routed depending on the configuration.

@@ -58,5 +58,58 @@ declare class Users {
      * @returns promise
      */
     static oneTimeLoginToken<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Updates the avatar image for the user using a File object.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userUploadAvatarImage
+     *
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    static uploadAvatarImageFile<T>(file: File, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Updates the avatar image for the user using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userUploadAvatarImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    static uploadAvatarImageBlob<T>(blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Upload a banner image for the user, as a File object.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userUploadBannerImage
+     *
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    static uploadBannerImageFile<T>(file: File, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Upload a banner image for the user, as a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userUploadBannerImage
+     *
+     * @param file The blob to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    static uploadBannerImageBlob<T>(blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Creates a donation page for that user by syncing their information with various
+     * payment service.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static createDonationPage<T>(): AxiosPromise<Response<T>>;
 }
 export default Users;
