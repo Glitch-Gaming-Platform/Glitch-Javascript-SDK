@@ -5,13 +5,13 @@ import { Users } from "./api";
 import { Events } from "./api";
 import { Teams } from "./api";
 declare class Glitch {
-    static config: typeof Config;
+    static config: Config;
     static api: {
-        Auth: typeof Auth;
-        Competitions: typeof Competitions;
-        Users: typeof Users;
-        Events: typeof Events;
-        Teams: typeof Teams;
+        Auth: Auth;
+        Competitions: Competitions;
+        Users: Users;
+        Events: Events;
+        Teams: Teams;
     };
 }
 export { Glitch };

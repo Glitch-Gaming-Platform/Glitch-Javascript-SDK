@@ -42,7 +42,7 @@ class Events {
      */
     public static update<T>(event_id: string, data: object): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.create, data, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.update, data, { event_id: event_id });
     }
 
     /**

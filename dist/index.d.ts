@@ -104,6 +104,378 @@ declare class Competitions {
      * @returns promise
      */
     static delete<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Add a team
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/addTeam
+     *
+     * @param competition_id
+     * @param team_id
+     * @returns promise
+     */
+    static addTeam<T>(competition_id: string, team_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Adds participant
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/addParticipant
+     *
+     * @param competition_id
+     * @param user_id
+     * @returns promise
+     */
+    static addParticipant<T>(competition_id: string, user_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Register a team
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/registerTeam
+     *
+     * @param competition_id
+     * @param team_id
+     * @returns promise
+     */
+    static registerTeam<T>(competition_id: string, team_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Register a user
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/registerParticipant
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static registerUser<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Sync rounds
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/syncRounds
+     *
+     * @param competition_id
+     * @param number_of_competitors
+     * @param competitors_per_bracket
+     * @returns promise
+     */
+    static syncRounds<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * auto generate team brackets
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/autoGenerateTeamBrackets
+     *
+     * @param competition_id
+     * @param round_id
+     * @returns promise
+     */
+    static autoGenerate<T>(competition_id: string, round_id: number): AxiosPromise<Response<T>>;
+    /**
+     * auto generate user brackets
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/autoGenerateUserBrackets
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static autoGenerateUserBrackets<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Upload main image
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadMainImage
+     *
+     * @param competition_id
+     * @param image
+     * @returns promise
+     */
+    static uploadMainImage<T>(competition_id: string, image: string): AxiosPromise<Response<T>>;
+    /**
+     * Upload banner image
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadBannerImage
+     *
+     * @param competition_id
+     * @param image
+     * @returns promise
+     */
+    static uploadBannerImage<T>(competition_id: string, image: string): AxiosPromise<Response<T>>;
+    /**
+     * Invites
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserInviteList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static invites<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Sends invite
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionSendInvite
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static sendInvite<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Accept invite
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionAcceptInvite
+     *
+     * @param competition_id
+     * @param token
+     * @returns promise
+     */
+    static acceptInvite<T>(competition_id: string, token: string): AxiosPromise<Response<T>>;
+    /**
+     * Round brackets
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceRoundBracketList1
+     *
+     * @param competition_id
+     * @param round_id
+     * @returns promise
+     */
+    static brackets<T>(competition_id: string, round_id: number): AxiosPromise<Response<T>>;
+    /**
+     * Store round brackets
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceRoundBracketStorage
+     *
+     * @param competition_id
+     * @param round_id
+     * @returns promise
+     */
+    static bracketStore<T>(competition_id: string, round_id: number): AxiosPromise<Response<T>>;
+    /**
+     * Show round bracket
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceRoundBracketShow
+     *
+     * @param competition_id
+     * @param round_id
+     * @param bracket_id
+     * @returns promise
+     */
+    static showBracket<T>(competition_id: string, round_id: number, bracket_id: number): AxiosPromise<Response<T>>;
+    /**
+     * Update bracket
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/updateRoundBracket
+     *
+     * @param competition_id
+     * @param round_id
+     * @param bracket_id
+     * @returns promise
+     */
+    static updateBracket<T>(competition_id: string, round_id: number, bracket_id: number): AxiosPromise<Response<T>>;
+    /**
+     * Delete bracket
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/destoryRoundBracket
+     *
+     * @param competition_id
+     * @param round_id
+     * @param bracket_id
+     * @returns promise
+     */
+    static destroyBracket<T>(competition_id: string, round_id: number, bracket_id: number): AxiosPromise<Response<T>>;
+    /**
+     * List round
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceRoundList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static rounds<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Create a new round for competition
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceRoundStorage
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static roundStore<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve the information for a single round.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceRoundShow
+     *
+     * @param competition_id
+     * @param round_id
+     * @returns promise
+     */
+    static showRound<T>(competition_id: string, round_id: number): AxiosPromise<Response<T>>;
+    /**
+     * Updating resource in storage with new information.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/updateRound
+     *
+     * @param competition_id
+     * @param round_id
+     * @returns promise
+     */
+    static updateRound<T>(competition_id: string, round_id: number): AxiosPromise<Response<T>>;
+    /**
+     * Deletes the round for the competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/destoryRound
+     *
+     * @param competition_id
+     * @param round_id
+     * @returns promise
+     */
+    static destroyRound<T>(competition_id: string, round_id: number): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve a list of teams associated with the competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceCompetitionTeamList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static team<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Associate a new team with the competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceCompetitionTeamStorage
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static teamStore<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Display the contents of a single team associated with the competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceTeamShow
+     *
+     * @param competition_id
+     * @param team
+     * @returns promise
+     */
+    static showTeam<T>(competition_id: string, team: string): AxiosPromise<Response<T>>;
+    /**
+     * Update the team information associated with the competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/updateTeam
+     *
+     * @param competition_id
+     * @param team_id
+     * @returns promise
+     */
+    static updateTeam<T>(competition_id: string, team_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Removes the team from the competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/destoryTeam
+     *
+     * @param competition_id
+     * @param team_id
+     * @returns promise
+     */
+    static destroyTeam<T>(competition_id: string, team_id: string): AxiosPromise<Response<T>>;
+    /**
+     * List all the users associated with a competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static users<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Associate a new users with the competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/createCompetitionUser
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static competitionUser<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Show a single user by its ID.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/showCompetitionUser
+     *
+     * @param competition_id
+     * @param user_id
+     * @returns promise
+     */
+    static showCompetitionUser<T>(competition_id: string, user_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Update the user associated with competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/updateCompetitionUser
+     *
+     * @param competition_id
+     * @param user_id
+     * @returns promise
+     */
+    static updateCompetitionUser<T>(competition_id: string, user_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Remove the associated user from the competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/removeCompetitionUser
+     *
+     * @param competition_id
+     * @param user_id
+     * @returns promise
+     */
+    static destroyCompetitionUser<T>(competition_id: string, user_id: string): AxiosPromise<Response<T>>;
+    /**
+     * List all the venues associated with a competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/venueList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static venues<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Creating a new venue.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/createVenue
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static newVenue<T>(competition_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Show a single venue by its ID.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/showVenue
+     *
+     * @param competition_id
+     * @param venue_id
+     * @returns promise
+     */
+    static showVenue<T>(competition_id: string, venue_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Update the venue.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/updateVenue
+     *
+     * @param competition_id
+     * @param venue_id
+     * @returns promise
+     */
+    static updateVenue<T>(competition_id: string, venue_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Deletes the venue from the competition.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/removeCompetitionVenue
+     *
+     * @param competition_id
+     * @param venue_id
+     * @returns promise
+     */
+    static destroyVenue<T>(competition_id: string, venue_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Upload venue main image to storage.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadVenueMainImage
+     *
+     * @param competition_id
+     * @param venue_id
+     * @returns promise
+     */
+    static uploadVenueMainImage<T>(competition_id: string, venue_id: string): AxiosPromise<Response<T>>;
 }
 
 declare class Users {
@@ -653,13 +1025,13 @@ declare class Teams {
 }
 
 declare class Glitch {
-    static config: typeof Config;
+    static config: Config;
     static api: {
-        Auth: typeof Auth;
-        Competitions: typeof Competitions;
-        Users: typeof Users;
-        Events: typeof Events;
-        Teams: typeof Teams;
+        Auth: Auth;
+        Competitions: Competitions;
+        Users: Users;
+        Events: Events;
+        Teams: Teams;
     };
 }
 
