@@ -1,6 +1,6 @@
 
 //Configuration
-import Config from "./config/Config";
+import { Config } from "./config";
 
 //API
 import { Auth } from "./api";

@@ -19,7 +19,7 @@ class Config {
    * @param baseUrl The url base endpoint of the api
    * @param authToken The JSON Web Token
    */
-  static setConfig(baseUrl: string, authToken: string, lock? : boolean) {
+  public static setConfig(baseUrl: string, authToken: string, lock? : boolean) {
 
     this.setBaseUrl(baseUrl, lock);
 
@@ -35,7 +35,7 @@ class Config {
    * @param baseUrl The url that connects to the APIs base
    * @param lock If set to true, will lock the baseUrl so it cannot be changed
    */
-  static setBaseUrl(baseUrl: string, lock? : boolean) {
+  public static setBaseUrl(baseUrl: string, lock? : boolean) {
 
     if(!this._baseUrlLocked) {
       Config._baseUrl = baseUrl;
@@ -53,7 +53,7 @@ class Config {
    * 
    * @param authToken The JWT
    */
-  static setAuthToken(authToken: string) {
+  public static setAuthToken(authToken: string) {
     Config._authToken = authToken;
 
     Requests.setAuthToken(authToken);
@@ -62,14 +62,14 @@ class Config {
   /**
    * Gets base url
    */
-  static get baseUrl(): string {
+  public static get baseUrl(): string {
     return Config._baseUrl;
   }
 
   /**
    * Gets auth token
    */
-  static get authToken(): string {
+  public static get authToken(): string {
     return Config._authToken;
   }
 }

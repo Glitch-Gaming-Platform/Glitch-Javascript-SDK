@@ -1,4 +1,4 @@
-import Config from "./config/Config";
+import { Config } from "./config";
 import { Auth } from "./api";
 import { Competitions } from "./api";
 import { Users } from "./api";
