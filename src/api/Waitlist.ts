@@ -1,9 +1,9 @@
-import WaitlistRoutes from "../routes/TeamsRoute";
+import WaitlistRoutes from "../routes/WaitlistRoutes";
 import Requests from "../util/Requests";
 import Response from "../util/Response";
 import { AxiosPromise } from "axios";
 
-class Teams {
+class Waitlists {
 
     /**
      * List all the waitlist sign-ups.
@@ -75,4 +75,4 @@ class Teams {
 
 }
 
-export default Teams;
+export default Waitlists;

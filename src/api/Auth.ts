@@ -36,7 +36,7 @@ class Auth {
     /**
      * Attempts to register a user.
      * 
-     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authRegister
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/oneTimeLoginToken
      * 
      * @param data The data the user can register with.
      * 
@@ -45,6 +45,44 @@ class Auth {
     public static register<T>(data : object) : AxiosPromise<Response<T>> {
         return Requests.processRoute(AuthRoutes.routes.register, data);
     }
+
+    /**
+     * Request an authentication token to faciliate a one time login of an user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/oneTimeLoginToken
+     * 
+     * @returns promise
+     */
+    public static oneTimeLogin<T>() : AxiosPromise<Response<T>> {
+        return Requests.processRoute(AuthRoutes.routes.one_time_login, {});
+    }
+    
+    /**
+     * Execute the password reset process using a user's email address.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authForgotPassword
+     * 
+     * @param email The email address
+     * 
+     * @returns promise
+     */
+    public static forgotPasswordWithEmail<T>(email: string) : AxiosPromise<Response<T>> {
+        return Requests.processRoute(AuthRoutes.routes.forgot_password, {email: email});
+    }
+
+    /**
+     * Resets the users password after the forgot password has been executed.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authResetPassword
+     * 
+     * @param data The parameters required to reset the password.
+     * 
+     * @returns promise
+     */
+    public static resetPassword<T>(data : object) : AxiosPromise<Response<T>> {
+        return Requests.processRoute(AuthRoutes.routes.forgot_password, data);
+    }
+
 }
 
 export default Auth;

@@ -72,13 +72,41 @@ declare class Auth {
     /**
      * Attempts to register a user.
      *
-     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authRegister
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/oneTimeLoginToken
      *
      * @param data The data the user can register with.
      *
      * @returns A promise
      */
     static register<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Request an authentication token to faciliate a one time login of an user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/oneTimeLoginToken
+     *
+     * @returns promise
+     */
+    static oneTimeLogin<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Execute the password reset process using a user's email address.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authForgotPassword
+     *
+     * @param email The email address
+     *
+     * @returns promise
+     */
+    static forgotPasswordWithEmail<T>(email: string): AxiosPromise<Response<T>>;
+    /**
+     * Resets the users password after the forgot password has been executed.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authResetPassword
+     *
+     * @param data The parameters required to reset the password.
+     *
+     * @returns promise
+     */
+    static resetPassword<T>(data: object): AxiosPromise<Response<T>>;
 }
 
 declare class Competitions {
@@ -1050,14 +1078,68 @@ declare class Teams {
     static removetUser<T>(team_id: string, user_id: string): AxiosPromise<Response<T>>;
 }
 
+declare class Waitlists {
+    /**
+     * List all the waitlist sign-ups.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Waitlist%20Route/waitlistList
+     *
+     * @returns promise
+     */
+    static list<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Sign-up to the waitlist.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Waitlist%20Route/waitlistCreate
+     *
+     * @param data The data to be passed when creating a team.
+     *
+     * @returns Promise
+     */
+    static create<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Update a waitlist.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Waitlist%20Route/waitlistUpdate
+     *
+     * @param waitlist_id The id of the team to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static update<T>(waitlist_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve the information for a single user who signed-up to the waitlist.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Waitlist%20Route/waitlistUpdate
+     *
+     * @param waitlist_id The id fo the team to retrieve.
+     *
+     * @returns promise
+     */
+    static view<T>(waitlist_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Deletes an entry from the waitlist.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Waitlist%20Route/waitlistDelete
+     *
+     * @param waitlist_id The id of the team to delete.
+     * @returns promise
+     */
+    static delete<T>(waitlist_id: string): AxiosPromise<Response<T>>;
+}
+
 declare class Glitch {
-    static config: Config;
+    static config: {
+        Config: Config;
+    };
     static api: {
         Auth: Auth;
         Competitions: Competitions;
         Users: Users;
         Events: Events;
         Teams: Teams;
+        Waitlists: Waitlists;
     };
 }
 

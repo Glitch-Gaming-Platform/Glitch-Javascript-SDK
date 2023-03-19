@@ -1,6 +1,6 @@
 import Response from "../util/Response";
 import { AxiosPromise } from "axios";
-declare class Teams {
+declare class Waitlists {
     /**
      * List all the waitlist sign-ups.
      *
@@ -50,4 +50,4 @@ declare class Teams {
      */
     static delete<T>(waitlist_id: string): AxiosPromise<Response<T>>;
 }
-export default Teams;
+export default Waitlists;
