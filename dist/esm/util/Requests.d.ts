@@ -8,12 +8,6 @@ declare class Requests {
     private static authToken;
     constructor(config: Config);
     /**
-     * Sets the configuration of the system.
-     *
-     * @param config Config The config class.
-     */
-    static setConfig(config: Config): void;
-    /**
      * Sets the base url of the API.
      *
      * @param url The url to of the API.

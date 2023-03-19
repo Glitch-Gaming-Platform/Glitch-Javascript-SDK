@@ -20,18 +20,6 @@ class Requests {
   }
 
   /**
-   * Sets the configuration of the system.
-   * 
-   * @param config Config The config class.
-   */
-  public static setConfig(config: Config) {
-
-    this.baseUrl = config.baseUrl;
-
-    this.authToken = config.authToken;
-  }
-
-  /**
    * Sets the base url of the API.
    * 
    * @param url The url to of the API.

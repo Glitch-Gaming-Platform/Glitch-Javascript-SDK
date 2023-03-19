@@ -7,31 +7,71 @@ import Requests from "../util/Requests";
  * API.
  */
 class Config {
-    //The base url of the API, ie: http://api.example.com/v1/
-    baseUrl: string;
 
-    //The JWT token used to access the api.
-    authToken: string;
-  
-    constructor(baseUrl: string, authToken: string) {
-      this.baseUrl = baseUrl;
-      this.authToken = authToken;
+  private static _baseUrl: string;
+  private static _authToken: string;
 
-      Requests.setConfig(this);
-    }
+  private static _baseUrlLocked: boolean = false;
 
-    setBaseUrl(baseUrl: string) {
-      this.baseUrl = baseUrl;
+  /**
+   * Set the configuration
+   * 
+   * @param baseUrl The url base endpoint of the api
+   * @param authToken The JSON Web Token
+   */
+  static setConfig(baseUrl: string, authToken: string, lock? : boolean) {
+
+    this.setBaseUrl(baseUrl, lock);
+
+    this.setAuthToken(authToken);
+
+    Requests.setBaseUrl(baseUrl);
+    Requests.setAuthToken(authToken);
+  }
+
+  /**
+   * Sets the endpoint for the API
+   * 
+   * @param baseUrl The url that connects to the APIs base
+   * @param lock If set to true, will lock the baseUrl so it cannot be changed
+   */
+  static setBaseUrl(baseUrl: string, lock? : boolean) {
+
+    if(!this._baseUrlLocked) {
+      Config._baseUrl = baseUrl;
 
       Requests.setBaseUrl(baseUrl);
     }
 
-    setAuthToken(authToken: string) {
-      this.authToken = authToken;
-
-      Requests.setAuthToken(authToken);
+    if(lock) {
+      this._baseUrlLocked = true;
     }
-
   }
 
-  export default Config;
+  /**
+   * Set the JSON Web Token (JWT) that will be passed to the API
+   * 
+   * @param authToken The JWT
+   */
+  static setAuthToken(authToken: string) {
+    Config._authToken = authToken;
+
+    Requests.setAuthToken(authToken);
+  }
+
+  /**
+   * Gets base url
+   */
+  static get baseUrl(): string {
+    return Config._baseUrl;
+  }
+
+  /**
+   * Gets auth token
+   */
+  static get authToken(): string {
+    return Config._authToken;
+  }
+}
+
+export default Config;
