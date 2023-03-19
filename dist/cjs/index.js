@@ -6,5 +6,5 @@ var Glitch = /** @class */ (function () {
     return Glitch;
 }());
 
-exports.Glitch = Glitch;
+module.exports = Glitch;
 //# sourceMappingURL=index.js.map

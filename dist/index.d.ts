@@ -1134,7 +1134,7 @@ declare class Glitch {
         Config: Config;
     };
     static api: {
-        Auth: Auth;
+        Auth: typeof Auth;
         Competitions: Competitions;
         Users: Users;
         Events: Events;
@@ -1143,4 +1143,4 @@ declare class Glitch {
     };
 }
 
-export { Glitch };
+export { Glitch as default };

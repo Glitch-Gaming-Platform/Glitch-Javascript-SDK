@@ -4,5 +4,5 @@ var Glitch = /** @class */ (function () {
     return Glitch;
 }());
 
-export { Glitch };
+export { Glitch as default };
 //# sourceMappingURL=index.js.map

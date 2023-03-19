@@ -17,7 +17,7 @@ class Glitch {
     };
 
     public static api: {
-        Auth: Auth,
+        Auth: typeof Auth,
         Competitions: Competitions,
         Users: Users,
         Events: Events,
@@ -28,4 +28,4 @@ class Glitch {
 
 }
 
-export { Glitch };
+export default Glitch;
