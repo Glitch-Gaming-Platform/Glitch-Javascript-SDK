@@ -15624,9 +15624,11 @@ var Requests = /** @class */ (function () {
         if (fileData) {
             headers['Content-Type'] = 'multipart/form-data';
         }
+        var uri = "".concat(this.baseUrl).concat(url);
+        var validUri = uri.replace(/\/\//g, '/');
         var axiosPromise = axios({
             method: method,
-            url: "".concat(this.baseUrl).concat(url),
+            url: validUri,
             data: fileData || data,
             headers: headers,
         });

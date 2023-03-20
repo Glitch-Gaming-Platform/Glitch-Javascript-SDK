@@ -57,9 +57,13 @@ class Requests {
       headers['Content-Type'] = 'multipart/form-data';
     }
 
+    const uri = `${this.baseUrl}${url}`;
+
+    const validUri = uri.replace(/\/\//g, '/');
+
     const axiosPromise = axios({
       method,
-      url: `${this.baseUrl}${url}`,
+      url: validUri,
       data: fileData || data,
       headers,
     });
