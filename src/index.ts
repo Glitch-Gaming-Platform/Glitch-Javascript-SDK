@@ -10,6 +10,9 @@ import { Events } from "./api";
 import { Teams } from "./api";
 import { Waitlists } from "./api";
 
+import Requests from "./util/Requests";
+import Parser from "./util/Parser";
+
 class Glitch {
 
     public static config =  {
@@ -23,6 +26,11 @@ class Glitch {
         Events: Events,
         Teams: Teams,
         Waitlists: Waitlists
+    }
+
+    public static util = {
+        Requests : Requests,
+        Parser : Parser
     }
 
 

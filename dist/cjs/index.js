@@ -17248,6 +17248,29 @@ var Waitlists = /** @class */ (function () {
     return Waitlists;
 }());
 
+var Parser = /** @class */ (function () {
+    function Parser() {
+    }
+    /**
+     * To be used inside a catch close, this function will parse out any JSON in a error response from the api.
+     *
+     * @param error The Error object from the catch clause
+     *
+     * @returns Either returns a JSON object or false.
+     */
+    Parser.parseJSONFromError = function (error) {
+        var errorString = error.toString();
+        errorString = errorString.replace('Error: ', '');
+        try {
+            return JSON.parse(errorString);
+        }
+        catch (e) {
+            return false;
+        }
+    };
+    return Parser;
+}());
+
 //Configuration
 var Glitch = /** @class */ (function () {
     function Glitch() {
@@ -17262,6 +17285,10 @@ var Glitch = /** @class */ (function () {
         Events: Events,
         Teams: Teams,
         Waitlists: Waitlists
+    };
+    Glitch.util = {
+        Requests: Requests,
+        Parser: Parser
     };
     return Glitch;
 }());
