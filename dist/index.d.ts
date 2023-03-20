@@ -1188,6 +1188,46 @@ declare class Parser {
     static parseJSONFromError(error: Error): object | boolean;
 }
 
+declare class Session {
+    private static _id_key;
+    private static _first_name_key;
+    private static _last_name_key;
+    private static _username_key;
+    private static _email_key;
+    static isLoggedIn(): boolean;
+    static getAuthToken(): string | null;
+    static getID(): string | null;
+    static getFirstName(): string | null;
+    static getLastName(): string | null;
+    static getEmail(): string | null;
+    static end(): void;
+    static processAuthentication(data: {
+        token: {
+            access_token: string;
+        };
+        id: string;
+        first_name: string;
+        last_name: string;
+        email: string;
+    }): void;
+}
+
+declare class Storage {
+    private static data;
+    static set(key: string, value: any): void;
+    static get(key: string): any;
+    static setAuthToken(token: string | null): void;
+    static getAuthToken(): string | null;
+    private static setCookie;
+    private static getCookie;
+    static eraseCookie(name: string): void;
+}
+
+declare class Data {
+    static dataURItoBlob(dataURI: string): Blob;
+    static convertToHHMMSS(time: string | undefined): string | undefined;
+}
+
 declare class Glitch {
     static config: {
         Config: typeof Config;
@@ -1203,6 +1243,9 @@ declare class Glitch {
     static util: {
         Requests: typeof Requests;
         Parser: typeof Parser;
+        Session: typeof Session;
+        Storage: typeof Storage;
+        Data: typeof Data;
     };
 }
 

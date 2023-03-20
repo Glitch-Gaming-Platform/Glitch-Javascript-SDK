@@ -17271,6 +17271,164 @@ var Parser = /** @class */ (function () {
     return Parser;
 }());
 
+var Storage = /** @class */ (function () {
+    function Storage() {
+    }
+    Storage.set = function (key, value) {
+        try {
+            window.localStorage.setItem(key, value);
+        }
+        catch (e) {
+            try {
+                window.sessionStorage.setItem(key, value);
+            }
+            catch (e) {
+                this.setCookie(key, value, 31);
+                //fallback if set cookie fails
+                Storage.data[key] = value;
+            }
+        }
+    };
+    Storage.get = function (key) {
+        try {
+            return window.localStorage.getItem(key);
+        }
+        catch (e) {
+            try {
+                return window.sessionStorage.getItem(key);
+            }
+            catch (e) {
+                var value = Storage.getCookie(key);
+                if (!value) {
+                    value = Storage.data[key];
+                }
+                return value;
+            }
+        }
+    };
+    Storage.setAuthToken = function (token) {
+        Storage.set('glitch_auth_token', token);
+    };
+    Storage.getAuthToken = function () {
+        return Storage.get('glitch_auth_token');
+    };
+    Storage.setCookie = function (name, value, days) {
+        var expires = '';
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+            expires = '; expires=' + date.toUTCString();
+        }
+        //IFrames require HttpyOnly to be false, Chrome require SameSite to be none, and must be secure
+        document.cookie =
+            name +
+                '=' +
+                (value || '') +
+                expires +
+                '; path=/; HttpOnly=false; SameSite=none; Secure';
+    };
+    Storage.getCookie = function (name) {
+        var nameEQ = name + '=';
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ')
+                c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0)
+                return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    };
+    Storage.eraseCookie = function (name) {
+        document.cookie =
+            name +
+                '=; Secure; HttpOnly=false; SameSite=none; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    };
+    //Back up data type if no storage is working.
+    Storage.data = {};
+    return Storage;
+}());
+
+var Session = /** @class */ (function () {
+    function Session() {
+    }
+    Session.isLoggedIn = function () {
+        var authToken = Storage.getAuthToken();
+        return authToken !== null && authToken !== 'null' && authToken !== undefined;
+    };
+    Session.getAuthToken = function () {
+        return Storage.getAuthToken();
+    };
+    Session.getID = function () {
+        return Storage.get(Session._id_key);
+    };
+    Session.getFirstName = function () {
+        return Storage.get(Session._first_name_key);
+    };
+    Session.getLastName = function () {
+        return Storage.get(Session._last_name_key);
+    };
+    Session.getEmail = function () {
+        return Storage.get(Session._email_key);
+    };
+    Session.end = function () {
+        Storage.setAuthToken(null);
+        Storage.set(Session._id_key, null);
+        Storage.set(Session._first_name_key, null);
+        Storage.set(Session._last_name_key, null);
+        Storage.set(Session._email_key, null);
+    };
+    Session.processAuthentication = function (data) {
+        Storage.setAuthToken(data.token.access_token);
+        Storage.set(Session._id_key, data.id);
+        Storage.set(Session._first_name_key, data.first_name);
+        Storage.set(Session._last_name_key, data.last_name);
+        Storage.set(Session._email_key, data.email);
+    };
+    Session._id_key = 'user_id';
+    Session._first_name_key = 'user_first_name';
+    Session._last_name_key = 'user_last_name';
+    Session._username_key = 'username';
+    Session._email_key = 'email';
+    return Session;
+}());
+
+var Data = /** @class */ (function () {
+    function Data() {
+    }
+    Data.dataURItoBlob = function (dataURI) {
+        var byteString = atob(dataURI.split(',')[1]);
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        var blob = new Blob([ab], { type: mimeString });
+        return blob;
+    };
+    Data.convertToHHMMSS = function (time) {
+        if (!time) {
+            return time;
+        }
+        var sec_num = parseInt(time, 10);
+        var hours = Math.floor(sec_num / 3600);
+        var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+        var seconds = sec_num - (hours * 3600) - (minutes * 60);
+        if (hours < 10) {
+            hours = Number('0' + hours);
+        }
+        if (minutes < 10) {
+            minutes = Number('0' + minutes);
+        }
+        if (seconds < 10) {
+            seconds = Number('0' + seconds);
+        }
+        return "".concat(hours, ":").concat(minutes, ":").concat(seconds);
+    };
+    return Data;
+}());
+
 //Configuration
 var Glitch = /** @class */ (function () {
     function Glitch() {
@@ -17288,7 +17446,10 @@ var Glitch = /** @class */ (function () {
     };
     Glitch.util = {
         Requests: Requests,
-        Parser: Parser
+        Parser: Parser,
+        Session: Session,
+        Storage: Storage,
+        Data: Data,
     };
     return Glitch;
 }());
