@@ -1131,15 +1131,15 @@ declare class Waitlists {
 
 declare class Glitch {
     static config: {
-        Config: Config;
+        Config: typeof Config;
     };
     static api: {
         Auth: typeof Auth;
-        Competitions: Competitions;
-        Users: Users;
-        Events: Events;
-        Teams: Teams;
-        Waitlists: Waitlists;
+        Competitions: typeof Competitions;
+        Users: typeof Users;
+        Events: typeof Events;
+        Teams: typeof Teams;
+        Waitlists: typeof Waitlists;
     };
 }
 

@@ -12,12 +12,12 @@ import { Waitlists } from "./api";
 
 class Glitch {
 
-    public static config: {
+    public static config =  {
         Config: Config
     };
 
-    public static api: {
-        Auth: typeof Auth,
+    public static api = {
+        Auth: Auth,
         Competitions: Competitions,
         Users: Users,
         Events: Events,

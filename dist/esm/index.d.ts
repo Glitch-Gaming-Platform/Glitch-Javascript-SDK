@@ -7,15 +7,15 @@ import { Teams } from "./api";
 import { Waitlists } from "./api";
 declare class Glitch {
     static config: {
-        Config: Config;
+        Config: typeof Config;
     };
     static api: {
         Auth: typeof Auth;
-        Competitions: Competitions;
-        Users: Users;
-        Events: Events;
-        Teams: Teams;
-        Waitlists: Waitlists;
+        Competitions: typeof Competitions;
+        Users: typeof Users;
+        Events: typeof Events;
+        Teams: typeof Teams;
+        Waitlists: typeof Waitlists;
     };
 }
 export default Glitch;
