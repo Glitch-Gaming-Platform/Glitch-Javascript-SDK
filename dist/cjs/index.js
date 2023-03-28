@@ -17384,6 +17384,7 @@ var Session = /** @class */ (function () {
         Storage.set(Session._first_name_key, data.first_name);
         Storage.set(Session._last_name_key, data.last_name);
         Storage.set(Session._email_key, data.email);
+        Config.setAuthToken(data.token.access_token);
     };
     Session._id_key = 'user_id';
     Session._first_name_key = 'user_first_name';

@@ -1,3 +1,4 @@
+import { Config } from "../config";
 import Storage from "./Storage";
 
 class Session {
@@ -47,6 +48,8 @@ class Session {
     Storage.set(Session._first_name_key, data.first_name);
     Storage.set(Session._last_name_key, data.last_name);
     Storage.set(Session._email_key, data.email);
+
+    Config.setAuthToken(data.token.access_token);
   }
 }
 
