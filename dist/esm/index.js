@@ -31651,6 +31651,86 @@ var Data = /** @class */ (function () {
     return Data;
 }());
 
+var AcceptanceStatus = Object.freeze({
+    UNAPPROVED: 0,
+    APPROVED: 1,
+    IN_REVIEW: 2,
+    PENDING: 3,
+    REQUIRE_MORE_INFORMATION: 4,
+    DENIED: 5,
+    BANNED: 6,
+    PROBATION: 7,
+});
+
+var AddressLocationType = Object.freeze({
+    VIRTUAL: 1,
+    IN_PERSON: 2,
+    HYBRID: 3,
+});
+
+var CompetitionTypes = Object.freeze({
+    SINGLE_ELIMINATION: 1,
+    DOUBLE_ELIMINATION: 2,
+    MULTILEVEL: 3,
+    STRAIGHT_ROUND_ROBIN: 4,
+    ROUND_ROBIN_DOUBLE_SPLIT: 5,
+    ROUND_ROBIN_TRIPLE_SPLIT: 6,
+    ROUND_ROBIN_QUADRUPLE_SPLIT: 7,
+    SEMI_ROUND_ROBINS: 8,
+    EXTENDED: 9,
+});
+
+var Modes;
+(function (Modes) {
+    Modes[Modes["BROADCAST"] = 0] = "BROADCAST";
+    Modes[Modes["OBS"] = 1] = "OBS";
+    Modes[Modes["RTMP"] = 2] = "RTMP";
+})(Modes || (Modes = {}));
+
+var Roles;
+(function (Roles) {
+    Roles[Roles["NONE"] = 0] = "NONE";
+    Roles[Roles["SUPER_ADMINISTRATOR"] = 1] = "SUPER_ADMINISTRATOR";
+    Roles[Roles["ADMINISTRATOR"] = 2] = "ADMINISTRATOR";
+    Roles[Roles["MODERATOR"] = 3] = "MODERATOR";
+    Roles[Roles["SPEAKER"] = 4] = "SPEAKER";
+    Roles[Roles["SUBSCRIBER"] = 5] = "SUBSCRIBER";
+    Roles[Roles["BLOCKED"] = 6] = "BLOCKED";
+    Roles[Roles["PRODUCER"] = 7] = "PRODUCER";
+    Roles[Roles["PARTICIPANT"] = 8] = "PARTICIPANT";
+})(Roles || (Roles = {}));
+
+var TeamJoinProcess;
+(function (TeamJoinProcess) {
+    TeamJoinProcess[TeamJoinProcess["ANYONE"] = 1] = "ANYONE";
+    TeamJoinProcess[TeamJoinProcess["INVITE"] = 2] = "INVITE";
+    TeamJoinProcess[TeamJoinProcess["APPROVAL"] = 3] = "APPROVAL";
+})(TeamJoinProcess || (TeamJoinProcess = {}));
+
+var TicketTypes;
+(function (TicketTypes) {
+    TicketTypes[TicketTypes["PAID"] = 1] = "PAID";
+    TicketTypes[TicketTypes["FREE"] = 2] = "FREE";
+    TicketTypes[TicketTypes["DONATION"] = 3] = "DONATION";
+})(TicketTypes || (TicketTypes = {}));
+var TicketTypes$1 = TicketTypes;
+
+var TicketUsageTypes;
+(function (TicketUsageTypes) {
+    TicketUsageTypes[TicketUsageTypes["REGULAR"] = 1] = "REGULAR";
+    TicketUsageTypes[TicketUsageTypes["DAY_PASS"] = 2] = "DAY_PASS";
+    TicketUsageTypes[TicketUsageTypes["TRACK_PASS"] = 3] = "TRACK_PASS";
+    TicketUsageTypes[TicketUsageTypes["WHOLE_EVENT_PASS"] = 4] = "WHOLE_EVENT_PASS";
+})(TicketUsageTypes || (TicketUsageTypes = {}));
+
+var TicketVisibility;
+(function (TicketVisibility) {
+    TicketVisibility[TicketVisibility["VISIBLE"] = 1] = "VISIBLE";
+    TicketVisibility[TicketVisibility["HIDDEN"] = 2] = "HIDDEN";
+    TicketVisibility[TicketVisibility["HIDDEN_WHEN_NO_SALE"] = 3] = "HIDDEN_WHEN_NO_SALE";
+    TicketVisibility[TicketVisibility["SCHEDULED"] = 4] = "SCHEDULED";
+})(TicketVisibility || (TicketVisibility = {}));
+
 //Configuration
 var Glitch = /** @class */ (function () {
     function Glitch() {
@@ -31672,6 +31752,17 @@ var Glitch = /** @class */ (function () {
         Session: Session,
         Storage: Storage,
         Data: Data,
+    };
+    Glitch.constants = {
+        AcceptanceStatus: AcceptanceStatus,
+        AddressLocationType: AddressLocationType,
+        CompetitionTypes: CompetitionTypes,
+        Modes: Modes,
+        Roles: Roles,
+        TeamJoinProcess: TeamJoinProcess,
+        TicketTypes: TicketTypes$1,
+        TicketUsageTypes: TicketUsageTypes,
+        TicketVisibility: TicketVisibility
     };
     return Glitch;
 }());

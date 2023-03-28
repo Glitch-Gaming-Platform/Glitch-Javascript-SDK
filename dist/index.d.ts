@@ -1228,6 +1228,50 @@ declare class Data {
     static convertToHHMMSS(time: string | undefined): string | undefined;
 }
 
+declare enum Modes {
+    BROADCAST = 0,
+    OBS = 1,
+    RTMP = 2
+}
+
+declare enum Roles {
+    NONE = 0,
+    SUPER_ADMINISTRATOR = 1,
+    ADMINISTRATOR = 2,
+    MODERATOR = 3,
+    SPEAKER = 4,
+    SUBSCRIBER = 5,
+    BLOCKED = 6,
+    PRODUCER = 7,
+    PARTICIPANT = 8
+}
+
+declare enum TeamJoinProcess {
+    ANYONE = 1,
+    INVITE = 2,
+    APPROVAL = 3
+}
+
+declare enum TicketTypes {
+    PAID = 1,
+    FREE = 2,
+    DONATION = 3
+}
+
+declare enum TicketUsageTypes {
+    REGULAR = 1,
+    DAY_PASS = 2,
+    TRACK_PASS = 3,
+    WHOLE_EVENT_PASS = 4
+}
+
+declare enum TicketVisibility {
+    VISIBLE = 1,
+    HIDDEN = 2,
+    HIDDEN_WHEN_NO_SALE = 3,
+    SCHEDULED = 4
+}
+
 declare class Glitch {
     static config: {
         Config: typeof Config;
@@ -1246,6 +1290,40 @@ declare class Glitch {
         Session: typeof Session;
         Storage: typeof Storage;
         Data: typeof Data;
+    };
+    static constants: {
+        AcceptanceStatus: Readonly<{
+            UNAPPROVED: 0;
+            APPROVED: 1;
+            IN_REVIEW: 2;
+            PENDING: 3;
+            REQUIRE_MORE_INFORMATION: 4;
+            DENIED: 5;
+            BANNED: 6;
+            PROBATION: 7;
+        }>;
+        AddressLocationType: Readonly<{
+            VIRTUAL: 1;
+            IN_PERSON: 2;
+            HYBRID: 3;
+        }>;
+        CompetitionTypes: Readonly<{
+            SINGLE_ELIMINATION: 1;
+            DOUBLE_ELIMINATION: 2;
+            MULTILEVEL: 3;
+            STRAIGHT_ROUND_ROBIN: 4;
+            ROUND_ROBIN_DOUBLE_SPLIT: 5;
+            ROUND_ROBIN_TRIPLE_SPLIT: 6;
+            ROUND_ROBIN_QUADRUPLE_SPLIT: 7;
+            SEMI_ROUND_ROBINS: 8;
+            EXTENDED: 9;
+        }>;
+        Modes: typeof Modes;
+        Roles: typeof Roles;
+        TeamJoinProcess: typeof TeamJoinProcess;
+        TicketTypes: typeof TicketTypes;
+        TicketUsageTypes: typeof TicketUsageTypes;
+        TicketVisibility: typeof TicketVisibility;
     };
 }
 
