@@ -31275,8 +31275,8 @@ var Teams = /** @class */ (function () {
      * @returns promise
      */
     Teams.uploadBannerImageFile = function (team_id, file, data) {
-        TeamsRoute.routes.uploadBannerImage.url.replace('{team_id}', team_id);
-        return Requests.uploadFile(TeamsRoute.routes.uploadBannerImage.url, 'image', file, data);
+        var url = TeamsRoute.routes.uploadBannerImage.url.replace('{team_id}', team_id);
+        return Requests.uploadFile(url, 'image', file, data);
     };
     /**
      * Updates the banner image for the team using a Blob.
@@ -31732,6 +31732,24 @@ var TicketVisibility;
     TicketVisibility[TicketVisibility["SCHEDULED"] = 4] = "SCHEDULED";
 })(TicketVisibility || (TicketVisibility = {}));
 
+/**
+ * Select what kind of venue this is for the event.
+ * @readonly
+ * @enum {integer}
+ */
+var VenueType;
+(function (VenueType) {
+    /** @member {integer} */
+    /** A virtual only event. */
+    VenueType[VenueType["VIRTUAL"] = 1] = "VIRTUAL";
+    /** @member {integer} */
+    /** An in person only event (IRL). */
+    VenueType[VenueType["IN_PERSON"] = 2] = "IN_PERSON";
+    /** @member {integer} */
+    /** Combination of IRL and in-person. */
+    VenueType[VenueType["HYBRID"] = 3] = "HYBRID";
+})(VenueType || (VenueType = {}));
+
 //Configuration
 var Glitch = /** @class */ (function () {
     function Glitch() {
@@ -31763,7 +31781,8 @@ var Glitch = /** @class */ (function () {
         TeamJoinProcess: TeamJoinProcess,
         TicketTypes: TicketTypes$1,
         TicketUsageTypes: TicketUsageTypes,
-        TicketVisibility: TicketVisibility
+        TicketVisibility: TicketVisibility,
+        VenueType: VenueType
     };
     return Glitch;
 }());

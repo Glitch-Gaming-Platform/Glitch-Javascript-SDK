@@ -1,7 +1,7 @@
 {
   "name": "glitch-javascript-sdk",
-  "version": "0.1.7",
-  "description": "Javascrip SDK for GLitch",
+  "version": "0.1.8",
+  "description": "Javascript SDK for Glitch",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [

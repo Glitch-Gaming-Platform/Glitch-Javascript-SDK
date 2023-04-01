@@ -25,6 +25,7 @@ import { TeamJoinProcess } from "./constants/TeamJoinProcess";
 import TicketTypes from "./constants/TicketTypes";
 import { TicketUsageTypes } from "./constants/TicketUsageTypes";
 import { TicketVisibility } from "./constants/TicketVisbility";
+import { VenueType } from "./constants/VenueTypes";
 
 class Glitch {
 
@@ -58,7 +59,8 @@ class Glitch {
        TeamJoinProcess : TeamJoinProcess,
        TicketTypes : TicketTypes,
        TicketUsageTypes : TicketUsageTypes,
-       TicketVisibility : TicketVisibility
+       TicketVisibility : TicketVisibility,
+       VenueType : VenueType
     }
 
 

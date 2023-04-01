@@ -16,6 +16,7 @@ import { TeamJoinProcess } from "./constants/TeamJoinProcess";
 import TicketTypes from "./constants/TicketTypes";
 import { TicketUsageTypes } from "./constants/TicketUsageTypes";
 import { TicketVisibility } from "./constants/TicketVisbility";
+import { VenueType } from "./constants/VenueTypes";
 declare class Glitch {
     static config: {
         Config: typeof Config;
@@ -68,6 +69,7 @@ declare class Glitch {
         TicketTypes: typeof TicketTypes;
         TicketUsageTypes: typeof TicketUsageTypes;
         TicketVisibility: typeof TicketVisibility;
+        VenueType: typeof VenueType;
     };
 }
 export default Glitch;

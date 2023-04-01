@@ -1272,6 +1272,23 @@ declare enum TicketVisibility {
     SCHEDULED = 4
 }
 
+/**
+ * Select what kind of venue this is for the event.
+ * @readonly
+ * @enum {integer}
+ */
+declare enum VenueType {
+    /** @member {integer} */
+    /** A virtual only event. */
+    VIRTUAL = 1,
+    /** @member {integer} */
+    /** An in person only event (IRL). */
+    IN_PERSON = 2,
+    /** @member {integer} */
+    /** Combination of IRL and in-person. */
+    HYBRID = 3
+}
+
 declare class Glitch {
     static config: {
         Config: typeof Config;
@@ -1324,6 +1341,7 @@ declare class Glitch {
         TicketTypes: typeof TicketTypes;
         TicketUsageTypes: typeof TicketUsageTypes;
         TicketVisibility: typeof TicketVisibility;
+        VenueType: typeof VenueType;
     };
 }
 

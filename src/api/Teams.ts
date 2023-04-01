@@ -120,7 +120,7 @@ class Teams {
 
         let url = TeamsRoutes.routes.uploadBannerImage.url.replace('{team_id}', team_id);
 
-        return Requests.uploadFile(TeamsRoutes.routes.uploadBannerImage.url, 'image', file, data);
+        return Requests.uploadFile(url, 'image', file, data);
     }
 
     /**
