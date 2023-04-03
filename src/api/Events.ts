@@ -194,7 +194,7 @@ class Events {
     public static uploadBannerImageFile<T>(event_id: string, file: File, data?: object): AxiosPromise<Response<T>> {
 
         let url = EventsRoutes.routes.uploadBannerImage.url.replace('{event_id}', event_id);
-    
+
         return Requests.uploadFile(url, 'image', file, data);
     }
 
@@ -253,7 +253,7 @@ class Events {
      * 
      * @returns promise
      */
-    public static sendOnScreenContent<T>(event_id: string, data : object): AxiosPromise<Response<T>> {
+    public static sendOnScreenContent<T>(event_id: string, data: object): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, data, { event_id: event_id });
     }
@@ -272,7 +272,7 @@ class Events {
     public static addOverlayAsFile<T>(event_id: string, file: File, data?: object): AxiosPromise<Response<T>> {
 
         let url = EventsRoutes.routes.addOverlay.url.replace('{event_id}', event_id);
-    
+
         return Requests.uploadFile(url, 'image', file, data);
     }
 
@@ -290,7 +290,7 @@ class Events {
     public static addOverlayAsBlob<T>(event_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>> {
 
         let url = EventsRoutes.routes.addOverlay.url.replace('{event_id}', event_id);
-    
+
         return Requests.uploadBlob(url, 'image', blob, data);
     }
 
@@ -304,9 +304,9 @@ class Events {
      * 
      * @returns promise
      */
-    public static removeOverlay<T>(event_id: string, overlay_id : string): AxiosPromise<Response<T>> {
+    public static removeOverlay<T>(event_id: string, overlay_id: string): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.removeOverlay, {}, { event_id: event_id, subid : overlay_id });
+        return Requests.processRoute(EventsRoutes.routes.removeOverlay, {}, { event_id: event_id, subid: overlay_id });
     }
 
     /**
@@ -319,9 +319,9 @@ class Events {
      * 
      * @returns promise
      */
-    public static enableOverlay<T>(event_id: string, overlay_id : string): AxiosPromise<Response<T>> {
+    public static enableOverlay<T>(event_id: string, overlay_id: string): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.enableOverlay, {}, { event_id: event_id, subid : overlay_id });
+        return Requests.processRoute(EventsRoutes.routes.enableOverlay, {}, { event_id: event_id, subid: overlay_id });
     }
 
     /**
@@ -363,14 +363,14 @@ class Events {
         return Requests.processRoute(EventsRoutes.routes.disableDonations, {}, { event_id: event_id });
     }
 
-    public static sendInvite<T>(event_id: string, data : object): AxiosPromise<Response<T>> {
+    public static sendInvite<T>(event_id: string, data: object): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.sendInvite, data, { event_id: event_id });
     }
 
-    public static acceptInvite<T>(event_id: string, token : string): AxiosPromise<Response<T>> {
+    public static acceptInvite<T>(event_id: string, token: string): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.acceptInvite, {token : token}, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.acceptInvite, { token: token }, { event_id: event_id });
     }
 
 

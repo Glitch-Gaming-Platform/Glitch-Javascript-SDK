@@ -119,25 +119,49 @@ declare class Competitions {
      */
     static autoGenerateUserBrackets<T>(competition_id: string): AxiosPromise<Response<T>>;
     /**
-     * Upload main image
+         * Updates the main image for the event using a File object.
+         *
+         * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadMainImage
+         *
+         * @param file The file object to upload.
+         * @param data Any additional data to pass along to the upload.
+         *
+         * @returns promise
+         */
+    static uploadCompetitionMainImageFile<T>(competition_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Updates the main image for the competition using a Blob.
      *
      * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadMainImage
      *
-     * @param competition_id
-     * @param image
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
      * @returns promise
      */
-    static uploadMainImage<T>(competition_id: string, image: string): AxiosPromise<Response<T>>;
+    static uploadCompetitionMainImageBlob<T>(competition_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
     /**
-     * Upload banner image
+     * Updates the banner image for the competition using a File object.
      *
      * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadBannerImage
      *
-     * @param competition_id
-     * @param image
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
      * @returns promise
      */
-    static uploadBannerImage<T>(competition_id: string, image: string): AxiosPromise<Response<T>>;
+    static uploadCompetitionBannerImageFile<T>(competition_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Updates the banner image for the competition using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadBannerImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    static uploadCompetitionsBannerImageBlob<T>(competition_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
     /**
      * Invites
      *
@@ -185,7 +209,7 @@ declare class Competitions {
      * @param round_id
      * @returns promise
      */
-    static bracketStore<T>(competition_id: string, round_id: number): AxiosPromise<Response<T>>;
+    static createBracjet<T>(competition_id: string, round_id: number, data?: object): AxiosPromise<Response<T>>;
     /**
      * Show round bracket
      *
@@ -207,7 +231,7 @@ declare class Competitions {
      * @param bracket_id
      * @returns promise
      */
-    static updateBracket<T>(competition_id: string, round_id: number, bracket_id: number): AxiosPromise<Response<T>>;
+    static updateBracket<T>(competition_id: string, round_id: number, bracket_id: number, data?: object): AxiosPromise<Response<T>>;
     /**
      * Delete bracket
      *
@@ -236,7 +260,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static roundStore<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static createRound<T>(competition_id: string, data?: object): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single round.
      *
@@ -256,7 +280,7 @@ declare class Competitions {
      * @param round_id
      * @returns promise
      */
-    static updateRound<T>(competition_id: string, round_id: number): AxiosPromise<Response<T>>;
+    static updateRound<T>(competition_id: string, round_id: number, data?: object): AxiosPromise<Response<T>>;
     /**
      * Deletes the round for the competition.
      *
@@ -284,7 +308,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static teamStore<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static createCompetitionTeam<T>(competition_id: string, data?: object): AxiosPromise<Response<T>>;
     /**
      * Display the contents of a single team associated with the competition.
      *
@@ -304,7 +328,7 @@ declare class Competitions {
      * @param team_id
      * @returns promise
      */
-    static updateTeam<T>(competition_id: string, team_id: string): AxiosPromise<Response<T>>;
+    static updateTeam<T>(competition_id: string, team_id: string, data?: object): AxiosPromise<Response<T>>;
     /**
      * Removes the team from the competition.
      *
@@ -332,7 +356,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static competitionUser<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static createCompetitionUser<T>(competition_id: string, data?: object): AxiosPromise<Response<T>>;
     /**
      * Show a single user by its ID.
      *
@@ -352,7 +376,7 @@ declare class Competitions {
      * @param user_id
      * @returns promise
      */
-    static updateCompetitionUser<T>(competition_id: string, user_id: string): AxiosPromise<Response<T>>;
+    static updateCompetitionUser<T>(competition_id: string, user_id: string, data?: object): AxiosPromise<Response<T>>;
     /**
      * Remove the associated user from the competition.
      *
@@ -380,7 +404,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static newVenue<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static createVenue<T>(competition_id: string, data: object): AxiosPromise<Response<T>>;
     /**
      * Show a single venue by its ID.
      *
@@ -400,7 +424,7 @@ declare class Competitions {
      * @param venue_id
      * @returns promise
      */
-    static updateVenue<T>(competition_id: string, venue_id: string): AxiosPromise<Response<T>>;
+    static updateVenue<T>(competition_id: string, venue_id: string, data: object): AxiosPromise<Response<T>>;
     /**
      * Deletes the venue from the competition.
      *
@@ -412,14 +436,26 @@ declare class Competitions {
      */
     static destroyVenue<T>(competition_id: string, venue_id: string): AxiosPromise<Response<T>>;
     /**
-     * Upload venue main image to storage.
+         * Updates the main image for the venue using a File object.
+         *
+         * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadVenueMainImage
+         *
+         * @param file The file object to upload.
+         * @param data Any additional data to pass along to the upload.
+         *
+         * @returns promise
+         */
+    static uploadVenueMainImageFile<T>(competition_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Updates the main image for the venue using a Blob.
      *
      * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadVenueMainImage
      *
-     * @param competition_id
-     * @param venue_id
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
      * @returns promise
      */
-    static uploadVenueMainImage<T>(competition_id: string, venue_id: string): AxiosPromise<Response<T>>;
+    static uploadVenueMainImageBlob<T>(competition_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
 }
 export default Competitions;

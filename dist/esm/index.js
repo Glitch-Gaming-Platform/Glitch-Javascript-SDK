@@ -30282,28 +30282,60 @@ var Competitions = /** @class */ (function () {
         return Requests.processRoute(CompetitionRoutes.routes.autoGenerateUserBrackets, { competition_id: competition_id });
     };
     /**
-     * Upload main image
+         * Updates the main image for the event using a File object.
+         *
+         * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadMainImage
+         *
+         * @param file The file object to upload.
+         * @param data Any additional data to pass along to the upload.
+         *
+         * @returns promise
+         */
+    Competitions.uploadCompetitionMainImageFile = function (competition_id, file, data) {
+        var url = CompetitionRoutes.routes.uploadMainImage.url.replace('{competition_id}', competition_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the main image for the competition using a Blob.
      *
      * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadMainImage
      *
-     * @param competition_id
-     * @param image
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
      * @returns promise
      */
-    Competitions.uploadMainImage = function (competition_id, image) {
-        return Requests.processRoute(CompetitionRoutes.routes.uploadMainImage, { competition_id: competition_id }, { image: image });
+    Competitions.uploadCompetitionMainImageBlob = function (competition_id, blob, data) {
+        var url = CompetitionRoutes.routes.uploadMainImage.url.replace('{competition_id}', competition_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
     };
     /**
-     * Upload banner image
+     * Updates the banner image for the competition using a File object.
      *
      * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadBannerImage
      *
-     * @param competition_id
-     * @param image
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
      * @returns promise
      */
-    Competitions.uploadBannerImage = function (competition_id, image) {
-        return Requests.processRoute(CompetitionRoutes.routes.uploadBannerImage, { competition_id: competition_id }, { image: image });
+    Competitions.uploadCompetitionBannerImageFile = function (competition_id, file, data) {
+        var url = CompetitionRoutes.routes.uploadBannerImage.url.replace('{competition_id}', competition_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the banner image for the competition using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadBannerImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    Competitions.uploadCompetitionsBannerImageBlob = function (competition_id, blob, data) {
+        var url = CompetitionRoutes.routes.uploadBannerImage.url.replace('{competition_id}', competition_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
     };
     /**
      * Invites
@@ -30349,7 +30381,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.brackets = function (competition_id, round_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.brackets, { competition_id: competition_id }, { round_id: round_id });
+        return Requests.processRoute(CompetitionRoutes.routes.brackets, {}, { round_id: round_id, competition_id: competition_id });
     };
     /**
      * Store round brackets
@@ -30360,8 +30392,8 @@ var Competitions = /** @class */ (function () {
      * @param round_id
      * @returns promise
      */
-    Competitions.bracketStore = function (competition_id, round_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.bracketStore, { competition_id: competition_id }, { round_id: round_id });
+    Competitions.createBracjet = function (competition_id, round_id, data) {
+        return Requests.processRoute(CompetitionRoutes.routes.bracketStore, data, { round_id: round_id, competition_id: competition_id });
     };
     /**
      * Show round bracket
@@ -30374,7 +30406,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.showBracket = function (competition_id, round_id, bracket_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.showBracket, { competition_id: competition_id }, { round_id: round_id, bracket_id: bracket_id });
+        return Requests.processRoute(CompetitionRoutes.routes.showBracket, {}, { round_id: round_id, bracket_id: bracket_id, competition_id: competition_id });
     };
     /**
      * Update bracket
@@ -30386,8 +30418,8 @@ var Competitions = /** @class */ (function () {
      * @param bracket_id
      * @returns promise
      */
-    Competitions.updateBracket = function (competition_id, round_id, bracket_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.updateBracket, { competition_id: competition_id }, { round_id: round_id, bracket_id: bracket_id });
+    Competitions.updateBracket = function (competition_id, round_id, bracket_id, data) {
+        return Requests.processRoute(CompetitionRoutes.routes.updateBracket, data, { round_id: round_id, bracket_id: bracket_id, competition_id: competition_id });
     };
     /**
      * Delete bracket
@@ -30400,7 +30432,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.destroyBracket = function (competition_id, round_id, bracket_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.destroyBracket, { competition_id: competition_id }, { round_id: round_id, bracket_id: bracket_id });
+        return Requests.processRoute(CompetitionRoutes.routes.destroyBracket, {}, { round_id: round_id, bracket_id: bracket_id, competition_id: competition_id });
     };
     /**
      * List round
@@ -30411,7 +30443,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.rounds = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.rounds, { competition_id: competition_id });
+        return Requests.processRoute(CompetitionRoutes.routes.rounds, {}, { competition_id: competition_id });
     };
     /**
      * Create a new round for competition
@@ -30421,8 +30453,8 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.roundStore = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.roundStore, { competition_id: competition_id });
+    Competitions.createRound = function (competition_id, data) {
+        return Requests.processRoute(CompetitionRoutes.routes.roundStore, data, { competition_id: competition_id });
     };
     /**
      * Retrieve the information for a single round.
@@ -30434,7 +30466,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.showRound = function (competition_id, round_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.showRound, { competition_id: competition_id }, { round_id: round_id });
+        return Requests.processRoute(CompetitionRoutes.routes.showRound, {}, { round_id: round_id, competition_id: competition_id });
     };
     /**
      * Updating resource in storage with new information.
@@ -30445,8 +30477,8 @@ var Competitions = /** @class */ (function () {
      * @param round_id
      * @returns promise
      */
-    Competitions.updateRound = function (competition_id, round_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.updateBracket, { competition_id: competition_id }, { round_id: round_id });
+    Competitions.updateRound = function (competition_id, round_id, data) {
+        return Requests.processRoute(CompetitionRoutes.routes.updateBracket, data, { round_id: round_id, competition_id: competition_id });
     };
     /**
      * Deletes the round for the competition.
@@ -30458,7 +30490,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.destroyRound = function (competition_id, round_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.destroyRound, { competition_id: competition_id }, { round_id: round_id });
+        return Requests.processRoute(CompetitionRoutes.routes.destroyRound, {}, { round_id: round_id, competition_id: competition_id });
     };
     /**
      * Retrieve a list of teams associated with the competition.
@@ -30469,7 +30501,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.team = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.team, { competition_id: competition_id });
+        return Requests.processRoute(CompetitionRoutes.routes.team, {}, { competition_id: competition_id });
     };
     /**
      * Associate a new team with the competition.
@@ -30479,8 +30511,8 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.teamStore = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.teamStore, { competition_id: competition_id });
+    Competitions.createCompetitionTeam = function (competition_id, data) {
+        return Requests.processRoute(CompetitionRoutes.routes.teamStore, data, { competition_id: competition_id });
     };
     /**
      * Display the contents of a single team associated with the competition.
@@ -30503,8 +30535,8 @@ var Competitions = /** @class */ (function () {
      * @param team_id
      * @returns promise
      */
-    Competitions.updateTeam = function (competition_id, team_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.updateTeam, { competition_id: competition_id }, { team_id: team_id });
+    Competitions.updateTeam = function (competition_id, team_id, data) {
+        return Requests.processRoute(CompetitionRoutes.routes.updateTeam, data, { team_id: team_id, competition_id: competition_id });
     };
     /**
      * Removes the team from the competition.
@@ -30516,7 +30548,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.destroyTeam = function (competition_id, team_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.destroyTeam, { competition_id: competition_id }, { team_id: team_id });
+        return Requests.processRoute(CompetitionRoutes.routes.destroyTeam, {}, { team_id: team_id, competition_id: competition_id });
     };
     /**
      * List all the users associated with a competition.
@@ -30527,7 +30559,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.users = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.users, { competition_id: competition_id });
+        return Requests.processRoute(CompetitionRoutes.routes.users, {}, { competition_id: competition_id });
     };
     /**
      * Associate a new users with the competition.
@@ -30537,8 +30569,8 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.competitionUser = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.competitionUser, { competition_id: competition_id });
+    Competitions.createCompetitionUser = function (competition_id, data) {
+        return Requests.processRoute(CompetitionRoutes.routes.competitionUser, {}, { competition_id: competition_id });
     };
     /**
      * Show a single user by its ID.
@@ -30550,7 +30582,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.showCompetitionUser = function (competition_id, user_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.showCompetitionUser, { competition_id: competition_id }, { user_id: user_id });
+        return Requests.processRoute(CompetitionRoutes.routes.showCompetitionUser, {}, { user_id: user_id, competition_id: competition_id });
     };
     /**
      * Update the user associated with competition.
@@ -30561,8 +30593,8 @@ var Competitions = /** @class */ (function () {
      * @param user_id
      * @returns promise
      */
-    Competitions.updateCompetitionUser = function (competition_id, user_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.updateCompetitionUser, { competition_id: competition_id }, { user_id: user_id });
+    Competitions.updateCompetitionUser = function (competition_id, user_id, data) {
+        return Requests.processRoute(CompetitionRoutes.routes.updateCompetitionUser, data, { user_id: user_id, competition_id: competition_id });
     };
     /**
      * Remove the associated user from the competition.
@@ -30574,7 +30606,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.destroyCompetitionUser = function (competition_id, user_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.destroyCompetitionUser, { competition_id: competition_id }, { user_id: user_id });
+        return Requests.processRoute(CompetitionRoutes.routes.destroyCompetitionUser, {}, { user_id: user_id, competition_id: competition_id });
     };
     /**
      * List all the venues associated with a competition.
@@ -30585,7 +30617,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.venues = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.venues, { competition_id: competition_id });
+        return Requests.processRoute(CompetitionRoutes.routes.venues, {}, { competition_id: competition_id });
     };
     /**
      * Creating a new venue.
@@ -30595,8 +30627,8 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.newVenue = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.newVenue, { competition_id: competition_id });
+    Competitions.createVenue = function (competition_id, data) {
+        return Requests.processRoute(CompetitionRoutes.routes.newVenue, data, { competition_id: competition_id });
     };
     /**
      * Show a single venue by its ID.
@@ -30608,7 +30640,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.showVenue = function (competition_id, venue_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.showVenue, { competition_id: competition_id }, { venue_id: venue_id });
+        return Requests.processRoute(CompetitionRoutes.routes.showVenue, {}, { venue_id: venue_id, competition_id: competition_id });
     };
     /**
      * Update the venue.
@@ -30619,8 +30651,8 @@ var Competitions = /** @class */ (function () {
      * @param venue_id
      * @returns promise
      */
-    Competitions.updateVenue = function (competition_id, venue_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.updateVenue, { competition_id: competition_id }, { venue_id: venue_id });
+    Competitions.updateVenue = function (competition_id, venue_id, data) {
+        return Requests.processRoute(CompetitionRoutes.routes.updateVenue, data, { competition_id: competition_id, venue_id: venue_id });
     };
     /**
      * Deletes the venue from the competition.
@@ -30632,19 +30664,35 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.destroyVenue = function (competition_id, venue_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.destroyVenue, { competition_id: competition_id }, { venue_id: venue_id });
+        return Requests.processRoute(CompetitionRoutes.routes.destroyVenue, {}, { competition_id: competition_id, venue_id: venue_id });
     };
     /**
-     * Upload venue main image to storage.
+         * Updates the main image for the venue using a File object.
+         *
+         * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadVenueMainImage
+         *
+         * @param file The file object to upload.
+         * @param data Any additional data to pass along to the upload.
+         *
+         * @returns promise
+         */
+    Competitions.uploadVenueMainImageFile = function (competition_id, file, data) {
+        var url = CompetitionRoutes.routes.uploadVenueMainImage.url.replace('{competition_id}', competition_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the main image for the venue using a Blob.
      *
      * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/uploadVenueMainImage
      *
-     * @param competition_id
-     * @param venue_id
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
      * @returns promise
      */
-    Competitions.uploadVenueMainImage = function (competition_id, venue_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.uploadVenueMainImage, { competition_id: competition_id }, { venue_id: venue_id });
+    Competitions.uploadVenueMainImageBlob = function (competition_id, blob, data) {
+        var url = CompetitionRoutes.routes.uploadVenueMainImage.url.replace('{competition_id}', competition_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
     };
     return Competitions;
 }());
