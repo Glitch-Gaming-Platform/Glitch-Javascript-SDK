@@ -15951,7 +15951,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.update = function (competition_id, data) {
-        return Requests.processRoute(CompetitionRoutes.routes.create, data, { competition_id: competition_id });
+        return Requests.processRoute(CompetitionRoutes.routes.update, data, { competition_id: competition_id });
     };
     /**
      * Retrieve the information for a single competition.
@@ -16021,7 +16021,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.registerUser = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.registerUser, { competition_id: competition_id });
+        return Requests.processRoute(CompetitionRoutes.routes.registerUser, {}, { competition_id: competition_id });
     };
     /**
      * Sync rounds
@@ -16046,7 +16046,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.autoGenerate = function (competition_id, round_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.autoGenerate, { round_id: round_id }, { competition_id: competition_id });
+        return Requests.processRoute(CompetitionRoutes.routes.autoGenerate, {}, { competition_id: competition_id, round_id: round_id });
     };
     /**
      * auto generate user brackets
@@ -16057,7 +16057,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.autoGenerateUserBrackets = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.autoGenerateUserBrackets, { competition_id: competition_id });
+        return Requests.processRoute(CompetitionRoutes.routes.autoGenerateUserBrackets, {}, { competition_id: competition_id });
     };
     /**
          * Updates the main image for the event using a File object.
@@ -16124,7 +16124,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.invites = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.invites, { competition_id: competition_id });
+        return Requests.processRoute(CompetitionRoutes.routes.invites, {}, { competition_id: competition_id });
     };
     /**
      * Sends invite
@@ -16135,7 +16135,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.sendInvite = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.sendInvite, { competition_id: competition_id });
+        return Requests.processRoute(CompetitionRoutes.routes.sendInvite, {}, { competition_id: competition_id });
     };
     /**
      * Accept invite
@@ -16147,7 +16147,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.acceptInvite = function (competition_id, token) {
-        return Requests.processRoute(CompetitionRoutes.routes.acceptInvite, { competition_id: competition_id }, { token: token });
+        return Requests.processRoute(CompetitionRoutes.routes.acceptInvite, { token: token }, { competition_id: competition_id });
     };
     /**
      * Round brackets
@@ -16170,7 +16170,7 @@ var Competitions = /** @class */ (function () {
      * @param round_id
      * @returns promise
      */
-    Competitions.createBracjet = function (competition_id, round_id, data) {
+    Competitions.createBracket = function (competition_id, round_id, data) {
         return Requests.processRoute(CompetitionRoutes.routes.bracketStore, data, { round_id: round_id, competition_id: competition_id });
     };
     /**
@@ -16297,12 +16297,12 @@ var Competitions = /** @class */ (function () {
      *
      * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceTeamShow
      *
-     * @param competition_id
-     * @param team
+     * @param competition_id The id of the competition
+     * @param team_id The id of the team
      * @returns promise
      */
-    Competitions.showTeam = function (competition_id, team) {
-        return Requests.processRoute(CompetitionRoutes.routes.showTeam, { competition_id: competition_id }, { team: team });
+    Competitions.showTeam = function (competition_id, team_id) {
+        return Requests.processRoute(CompetitionRoutes.routes.showTeam, {}, { team_id: team_id, competition_id: competition_id });
     };
     /**
      * Update the team information associated with the competition.
@@ -16348,7 +16348,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.createCompetitionUser = function (competition_id, data) {
-        return Requests.processRoute(CompetitionRoutes.routes.competitionUser, {}, { competition_id: competition_id });
+        return Requests.processRoute(CompetitionRoutes.routes.competitionUser, data, { competition_id: competition_id });
     };
     /**
      * Show a single user by its ID.

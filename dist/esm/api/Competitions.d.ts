@@ -209,7 +209,7 @@ declare class Competitions {
      * @param round_id
      * @returns promise
      */
-    static createBracjet<T>(competition_id: string, round_id: number, data?: object): AxiosPromise<Response<T>>;
+    static createBracket<T>(competition_id: string, round_id: number, data?: object): AxiosPromise<Response<T>>;
     /**
      * Show round bracket
      *
@@ -314,11 +314,11 @@ declare class Competitions {
      *
      * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/resourceTeamShow
      *
-     * @param competition_id
-     * @param team
+     * @param competition_id The id of the competition
+     * @param team_id The id of the team
      * @returns promise
      */
-    static showTeam<T>(competition_id: string, team: string): AxiosPromise<Response<T>>;
+    static showTeam<T>(competition_id: string, team_id: string): AxiosPromise<Response<T>>;
     /**
      * Update the team information associated with the competition.
      *
