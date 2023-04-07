@@ -63,7 +63,8 @@ class Requests {
 
     const axiosPromise = axios({
       method,
-      url: validUri,
+      url: uri,
+      baseURL: this.baseUrl,
       data: fileData || data,
       headers,
     });
