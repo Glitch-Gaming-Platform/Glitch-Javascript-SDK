@@ -1,9 +1,11 @@
 import { Config } from "./config";
 import Auth from "./api/Auth";
 import Competitions from "./api/Competitions";
+import { Communities } from "./api";
 import { Users } from "./api";
 import { Events } from "./api";
 import { Teams } from "./api";
+import { Templates } from "./api";
 import { Waitlists } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -24,9 +26,11 @@ declare class Glitch {
     static api: {
         Auth: typeof Auth;
         Competitions: typeof Competitions;
+        Communities: typeof Communities;
         Users: typeof Users;
         Events: typeof Events;
         Teams: typeof Teams;
+        Templates: typeof Templates;
         Waitlists: typeof Waitlists;
     };
     static util: {

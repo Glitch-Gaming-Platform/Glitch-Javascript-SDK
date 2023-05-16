@@ -5,9 +5,11 @@ import { Config } from "./config";
 //API
 import Auth  from "./api/Auth";
 import Competitions  from "./api/Competitions";
+import {Communities} from "./api";
 import { Users } from "./api";
 import { Events } from "./api";
 import { Teams } from "./api";
+import {Templates} from "./api";
 import { Waitlists } from "./api";
 
 import Requests from "./util/Requests";
@@ -36,9 +38,11 @@ class Glitch {
     public static api = {
         Auth: Auth,
         Competitions: Competitions,
+        Communities : Communities,
         Users: Users,
         Events: Events,
         Teams: Teams,
+        Templates : Templates,
         Waitlists: Waitlists
     }
 

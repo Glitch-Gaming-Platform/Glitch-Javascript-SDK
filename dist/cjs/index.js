@@ -16475,6 +16475,276 @@ var Competitions = /** @class */ (function () {
     return Competitions;
 }());
 
+var CommunitiesRoute = /** @class */ (function () {
+    function CommunitiesRoute() {
+    }
+    CommunitiesRoute.routes = {
+        list: { url: '/communities', method: HTTP_METHODS.GET },
+        create: { url: '/communities', method: HTTP_METHODS.POST },
+        view: { url: '/communities/{community_id}', method: HTTP_METHODS.GET },
+        update: { url: '/communities/{community_id}', method: HTTP_METHODS.PUT },
+        delete: { url: '/communities/{community_id}', method: HTTP_METHODS.DELETE },
+        uploadLogo: { url: '/communities/{community_id}/uploadLogo', method: HTTP_METHODS.POST },
+        uploadBannerImage: { url: '/communities/{community_id}/uploadBannerImage', method: HTTP_METHODS.POST },
+        uploadVideoLogo: { url: '/communities/{community_id}/uploadVideoLogo', method: HTTP_METHODS.POST },
+        listInvites: { url: '/communities/{community_id}/invites', method: HTTP_METHODS.GET },
+        sendInvite: { url: '/communities/{community_id}/sendInvite', method: HTTP_METHODS.POST },
+        acceptInvite: { url: '/communities/{community_id}/acceptInvite', method: HTTP_METHODS.POST },
+        listUsers: { url: '/communities/{community_id}/users', method: HTTP_METHODS.GET },
+        addUser: { url: '/communities/{community_id}/users', method: HTTP_METHODS.POST },
+        showUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.GET },
+        updateUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.PUT },
+        removeUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.DELETE }
+    };
+    return CommunitiesRoute;
+}());
+
+var Communities = /** @class */ (function () {
+    function Communities() {
+    }
+    /**
+     * List all the communities.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/resourceCommunityList
+     *
+     * @returns promise
+     */
+    Communities.list = function () {
+        return Requests.processRoute(CommunitiesRoute.routes.list);
+    };
+    /**
+     * Create a new community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/newCommunityResourceStorage
+     *
+     * @param data The data to be passed when creating a community.
+     *
+     * @returns Promise
+     */
+    Communities.create = function (data) {
+        return Requests.processRoute(CommunitiesRoute.routes.create, data);
+    };
+    /**
+     * Update a community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/updateCommunityStorage
+     *
+     * @param community_id The id of the community to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Communities.update = function (community_id, data) {
+        return Requests.processRoute(CommunitiesRoute.routes.create, data, { community_id: community_id });
+    };
+    /**
+     * Retrieve the information for a single community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/showCommunityStorage
+     *
+     * @param community_id The id fo the community to retrieve.
+     *
+     * @returns promise
+     */
+    Communities.view = function (community_id) {
+        return Requests.processRoute(CommunitiesRoute.routes.view, {}, { community_id: community_id });
+    };
+    /**
+     * Deletes a community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/destoryCommunityStorage
+     *
+     * @param community_id The id of the community to delete.
+     * @returns promise
+     */
+    Communities.delete = function (community_id) {
+        return Requests.processRoute(CommunitiesRoute.routes.delete, {}, { community_id: community_id });
+    };
+    /**
+     * Updates the main image for the community using a File object.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/uploadLogoCommunityImage
+     *
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    Communities.uploadLogoFile = function (community_id, file, data) {
+        var url = CommunitiesRoute.routes.uploadLogo.url.replace('{community_id}', community_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the main image for the community using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/uploadLogoCommunityImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    Communities.uploadLogoBlob = function (community_id, blob, data) {
+        var url = CommunitiesRoute.routes.uploadLogo.url.replace('{community_id}', community_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    /**
+     * Updates the banner image for the community using a File object.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/uploadBannerCommunityImage
+     *
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    Communities.uploadBannerImageFile = function (community_id, file, data) {
+        var url = CommunitiesRoute.routes.uploadBannerImage.url.replace('{community_id}', community_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the banner image for the community using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/uploadBannerCommunityImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    Communities.uploadBannerImageBlob = function (community_id, blob, data) {
+        var url = CommunitiesRoute.routes.uploadBannerImage.url.replace('{community_id}', community_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    /**
+    * Updates the banner image for the community using a File object.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Community%20Route/uploadBannerCommunityImage
+    *
+    * @param file The file object to upload.
+    * @param data Any additional data to pass along to the upload.
+    *
+    * @returns promise
+    */
+    Communities.uploadVideoLogoFile = function (community_id, file, data) {
+        var url = CommunitiesRoute.routes.uploadVideoLogo.url.replace('{community_id}', community_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the banner image for the community using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/uploadBannerCommunityImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    Communities.uploadVideoLogoBlob = function (community_id, blob, data) {
+        var url = CommunitiesRoute.routes.uploadVideoLogo.url.replace('{community_id}', community_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    /**
+     * List the invites that have been sent for the community to users.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communitysUserInviteList
+     *
+     * @param community_id The id of the community
+     *
+     * @returns promise
+     */
+    Communities.listInvites = function (community_id) {
+        return Requests.processRoute(CommunitiesRoute.routes.listInvites, {}, { community_id: community_id });
+    };
+    /**
+     * Send an invitation to a user to join the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communitySendInvite
+     *
+     * @param community_id The id of the community.
+     * @param data The data that will be passed into sending an invite.
+     *
+     * @returns promise
+     */
+    Communities.sendInvite = function (community_id, data) {
+        return Requests.processRoute(CommunitiesRoute.routes.sendInvite, data, { community_id: community_id });
+    };
+    /**
+     * Accept an invite to a community. The JSON Web Token (JWT) must be related to the token.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communityAcceptInvite
+     *
+     * @param community_id The id of the community
+     * @param token The token required to accept the user.
+     *
+     * @returns promise
+     */
+    Communities.acceptInvite = function (community_id, token) {
+        return Requests.processRoute(CommunitiesRoute.routes.acceptInvite, {}, { community_id: community_id });
+    };
+    /**
+     * List the users who are currently associated with the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communityUserList
+     *
+     * @param community_id The id of the community.
+     *
+     * @returns promise
+     */
+    Communities.listUsers = function (community_id) {
+        return Requests.processRoute(CommunitiesRoute.routes.listUsers, {}, { community_id: community_id });
+    };
+    /**
+     * Add a user to a community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/createcommunityUser
+     *
+     * @param community_id The id of the community.
+     * @param data The data to be passed when adding a user.
+     *
+     * @returns promise
+     */
+    Communities.addUser = function (community_id, data) {
+        return Requests.processRoute(CommunitiesRoute.routes.addUser, data, { community_id: community_id });
+    };
+    /**
+     * Retrieves a single user and their information that is associated with a community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/showcommunityUser
+     *
+     * @param community_id The id of the community.
+     * @param user_id The id of the user.
+     *
+     * @returns promise
+     */
+    Communities.getUser = function (community_id, user_id) {
+        return Requests.processRoute(CommunitiesRoute.routes.showUser, {}, { community_id: community_id, user_id: user_id });
+    };
+    /**
+     * Updates the users information associated with the community.
+     *
+     * @param community_id The id of the community.
+     * @param user_id The id of the user.
+     *
+     * @returns promise
+     */
+    Communities.updatetUser = function (community_id, user_id, data) {
+        return Requests.processRoute(CommunitiesRoute.routes.updateUser, data, { community_id: community_id, user_id: user_id });
+    };
+    /**
+     * Removes a user from a community.
+     *
+     * @param community_id The id of community.
+     * @param user_id The id of the user.
+     *
+     * @returns promise
+     */
+    Communities.removetUser = function (community_id, user_id) {
+        return Requests.processRoute(CommunitiesRoute.routes.removeUser, {}, { community_id: community_id, user_id: user_id });
+    };
+    return Communities;
+}());
+
 var UserRoutes = /** @class */ (function () {
     function UserRoutes() {
     }
@@ -17296,6 +17566,141 @@ var Waitlists = /** @class */ (function () {
     return Waitlists;
 }());
 
+var TemplatesRoute = /** @class */ (function () {
+    function TemplatesRoute() {
+    }
+    TemplatesRoute.routes = {
+        list: { url: '/templates', method: HTTP_METHODS.GET },
+        create: { url: '/templates', method: HTTP_METHODS.POST },
+        view: { url: '/templates/{template_id}', method: HTTP_METHODS.GET },
+        update: { url: '/templates/{template_id}', method: HTTP_METHODS.PUT },
+        delete: { url: '/templates/{template_id}', method: HTTP_METHODS.DELETE },
+        uploadLogo: { url: '/templates/{template_id}/uploadLogo', method: HTTP_METHODS.POST },
+        uploadMainImage: { url: '/templates/{template_id}/uploadMainImage', method: HTTP_METHODS.POST },
+    };
+    return TemplatesRoute;
+}());
+
+var Templates = /** @class */ (function () {
+    function Templates() {
+    }
+    /**
+     * List all the templates.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Template%20Route/resourceTemplateList
+     *
+     * @returns promise
+     */
+    Templates.list = function () {
+        return Requests.processRoute(TemplatesRoute.routes.list);
+    };
+    /**
+     * Create a new template.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Template%20Route/newTemplateResourceStorage
+     *
+     * @param data The data to be passed when creating a template.
+     *
+     * @returns Promise
+     */
+    Templates.create = function (data) {
+        return Requests.processRoute(TemplatesRoute.routes.create, data);
+    };
+    /**
+     * Update a template.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Template%20Route/updateTemplateStorage
+     *
+     * @param template_id The id of the template to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Templates.update = function (template_id, data) {
+        return Requests.processRoute(TemplatesRoute.routes.create, data, { template_id: template_id });
+    };
+    /**
+     * Retrieve the information for a single template.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Template%20Route/showTemplateStorage
+     *
+     * @param template_id The id fo the template to retrieve.
+     *
+     * @returns promise
+     */
+    Templates.view = function (template_id) {
+        return Requests.processRoute(TemplatesRoute.routes.view, {}, { template_id: template_id });
+    };
+    /**
+     * Deletes a template.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Template%20Route/destoryTemplateStorage
+     *
+     * @param template_id The id of the template to delete.
+     * @returns promise
+     */
+    Templates.delete = function (template_id) {
+        return Requests.processRoute(TemplatesRoute.routes.delete, {}, { template_id: template_id });
+    };
+    /**
+     * Updates the logo for the template using a File object.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Template%20Route/uploadLogoTemplateImage
+     *
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    Templates.uploadLogoFile = function (template_id, file, data) {
+        var url = TemplatesRoute.routes.uploadLogo.url.replace('{template_id}', template_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the logo for the template using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Template%20Route/uploadLogoTemplateImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    Templates.uploadLogoBlob = function (template_id, blob, data) {
+        var url = TemplatesRoute.routes.uploadLogo.url.replace('{template_id}', template_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    /**
+     * Updates the main image for the template using a File object.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Template%20Route/uploadMainTemplateImage
+     *
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    Templates.uploadMainImageFile = function (template_id, file, data) {
+        var url = TemplatesRoute.routes.uploadMainImage.url.replace('{template_id}', template_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the main image for the template using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Template%20Route/uploadMainTemplateImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    Templates.uploadMainImageBlob = function (template_id, blob, data) {
+        var url = TemplatesRoute.routes.uploadMainImage.url.replace('{template_id}', template_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    return Templates;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -17586,9 +17991,11 @@ var Glitch = /** @class */ (function () {
     Glitch.api = {
         Auth: Auth,
         Competitions: Competitions,
+        Communities: Communities,
         Users: Users,
         Events: Events,
         Teams: Teams,
+        Templates: Templates,
         Waitlists: Waitlists
     };
     Glitch.util = {
