@@ -57,6 +57,9 @@ class Requests {
       headers['Content-Type'] = 'multipart/form-data';
     }
 
+    //Remove double slashes
+    url = url.replace(/\/\//g, '/');
+
     const uri = `${this.baseUrl}${url}`;
 
     const validUri = uri.replace(/\/\//g, '/');
