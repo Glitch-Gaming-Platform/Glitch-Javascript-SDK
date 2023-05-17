@@ -30718,7 +30718,8 @@ var CommunitiesRoute = /** @class */ (function () {
         addUser: { url: '/communities/{community_id}/users', method: HTTP_METHODS.POST },
         showUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.GET },
         updateUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.PUT },
-        removeUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.DELETE }
+        removeUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.DELETE },
+        findByDomain: { url: '/communities/findByDomain/{domain}', method: HTTP_METHODS.GET }
     };
     return CommunitiesRoute;
 }());
@@ -30965,6 +30966,16 @@ var Communities = /** @class */ (function () {
      */
     Communities.removetUser = function (community_id, user_id) {
         return Requests.processRoute(CommunitiesRoute.routes.removeUser, {}, { community_id: community_id, user_id: user_id });
+    };
+    /**
+     * Finds a community either by its subdomain or cname. The cname must be active.
+     *
+     * @param domain The subcname of the community.
+     *
+     * @returns promise
+     */
+    Communities.findByDomain = function (domain) {
+        return Requests.processRoute(CommunitiesRoute.routes.findByDomain, {}, { domain: domain });
     };
     return Communities;
 }());

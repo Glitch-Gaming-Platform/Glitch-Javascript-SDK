@@ -197,5 +197,13 @@ declare class Communities {
      * @returns promise
      */
     static removetUser<T>(community_id: string, user_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Finds a community either by its subdomain or cname. The cname must be active.
+     *
+     * @param domain The subcname of the community.
+     *
+     * @returns promise
+     */
+    static findByDomain<T>(domain: string): AxiosPromise<Response<T>>;
 }
 export default Communities;

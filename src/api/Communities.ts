@@ -280,6 +280,17 @@ class Communities {
         return Requests.processRoute(CommunitiesRoute.routes.removeUser, {}, {community_id : community_id, user_id});  
     }
 
+    /**
+     * Finds a community either by its subdomain or cname. The cname must be active.
+     * 
+     * @param domain The subcname of the community.
+     * 
+     * @returns promise
+     */
+    public static findByDomain<T>(domain : string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.findByDomain, {}, {domain : domain});  
+    }
+
 
     
 
