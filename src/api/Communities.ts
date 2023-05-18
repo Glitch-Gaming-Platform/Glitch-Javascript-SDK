@@ -42,7 +42,7 @@ class Communities {
      */
     public static update<T>(community_id : string, data : object)  :  AxiosPromise<Response<T>>{
 
-        return Requests.processRoute(CommunitiesRoute.routes.create, data, {community_id : community_id});
+        return Requests.processRoute(CommunitiesRoute.routes.update, data, {community_id : community_id});
     }
 
     /**

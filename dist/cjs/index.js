@@ -16538,7 +16538,7 @@ var Communities = /** @class */ (function () {
      * @returns promise
      */
     Communities.update = function (community_id, data) {
-        return Requests.processRoute(CommunitiesRoute.routes.create, data, { community_id: community_id });
+        return Requests.processRoute(CommunitiesRoute.routes.update, data, { community_id: community_id });
     };
     /**
      * Retrieve the information for a single community.
@@ -17630,7 +17630,7 @@ var Templates = /** @class */ (function () {
      * @returns promise
      */
     Templates.update = function (template_id, data) {
-        return Requests.processRoute(TemplatesRoute.routes.create, data, { template_id: template_id });
+        return Requests.processRoute(TemplatesRoute.routes.update, data, { template_id: template_id });
     };
     /**
      * Retrieve the information for a single template.

@@ -42,7 +42,7 @@ class Templates {
      */
     public static update<T>(template_id : string, data : object)  :  AxiosPromise<Response<T>>{
 
-        return Requests.processRoute(TemplatesRoute.routes.create, data, {template_id : template_id});
+        return Requests.processRoute(TemplatesRoute.routes.update, data, {template_id : template_id});
     }
 
     /**
