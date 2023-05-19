@@ -992,7 +992,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static removeRTMPSource<T>(event_id: string, stream_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static removeRTMPSource<T>(event_id: string, stream_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * A function that should be run on an interval to set the event as live when the live stream is active.
      *
@@ -1002,7 +1002,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static syncAsLive<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static syncAsLive<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
          * Updates the main image for the event using a File object.
          *
@@ -1057,7 +1057,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static enableBroadcastMode<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static enableBroadcastMode<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Enable livestream mode, in which the stream will be delivered to the invirtu RTMP endpoint for
      * streaming.
@@ -1066,7 +1066,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static enableLivestreamMode<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static enableLivestreamMode<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Sends content that will appear on-screen to the user.
      *
@@ -1101,7 +1101,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static addOverlayAsBlob<T>(event_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    static addOverlayAsBlob<T>(event_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deletes an overlay image.
      *
@@ -1112,7 +1112,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static removeOverlay<T>(event_id: string, overlay_id: string): AxiosPromise<Response<T>>;
+    static removeOverlay<T>(event_id: string, overlay_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Enables an overlay so that it will appear on screen.
      *
@@ -1123,7 +1123,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static enableOverlay<T>(event_id: string, overlay_id: string): AxiosPromise<Response<T>>;
+    static enableOverlay<T>(event_id: string, overlay_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Disables the overlay so it no longer appears on-screen.
      *
@@ -1133,7 +1133,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static disableOverlay<T>(event_id: string): AxiosPromise<Response<T>>;
+    static disableOverlay<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Enable the donations to appear on-screen
      *
@@ -1143,16 +1143,16 @@ declare class Events {
      *
      * @returns promise
      */
-    static enableDonations<T>(event_id: string): AxiosPromise<Response<T>>;
+    static enableDonations<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Disable the donations and remove from the screen.
      *
      * @param event_id
      * @returns
      */
-    static disableDonations<T>(event_id: string): AxiosPromise<Response<T>>;
-    static sendInvite<T>(event_id: string, data: object): AxiosPromise<Response<T>>;
-    static acceptInvite<T>(event_id: string, token: string): AxiosPromise<Response<T>>;
+    static disableDonations<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static sendInvite<T>(event_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static acceptInvite<T>(event_id: string, token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Teams {

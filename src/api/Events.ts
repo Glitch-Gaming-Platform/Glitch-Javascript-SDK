@@ -69,7 +69,7 @@ class Events {
      */
     public static delete<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.delete, {}, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.delete, {}, { event_id: event_id }, params);
     }
 
     /**
@@ -85,7 +85,7 @@ class Events {
      */
     public static updateInvirtuEvent<T>(event_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.updateInvirtu, data, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.updateInvirtu, data, { event_id: event_id }, params);
     }
 
     /**
@@ -100,7 +100,7 @@ class Events {
      */
     public static addRTMPSource<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.addRTMPSource, data, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.addRTMPSource, data, { event_id: event_id }, params);
     }
 
     /**
@@ -115,7 +115,7 @@ class Events {
      */
     public static updateRTMPSource<T>(event_id: string, stream_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.updateRTMPSource, data, { event_id: event_id, subid: stream_id });
+        return Requests.processRoute(EventsRoutes.routes.updateRTMPSource, data, { event_id: event_id, subid: stream_id }, params);
     }
 
     /**
@@ -128,9 +128,9 @@ class Events {
      *  
      * @returns promise
      */
-    public static removeRTMPSource<T>(event_id: string, stream_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static removeRTMPSource<T>(event_id: string, stream_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.removeRTMPSource, {}, { event_id: event_id, subid: stream_id });
+        return Requests.processRoute(EventsRoutes.routes.removeRTMPSource, data, { event_id: event_id, subid: stream_id }, params);
     }
 
     /**
@@ -142,9 +142,9 @@ class Events {
      *  
      * @returns promise
      */
-    public static syncAsLive<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static syncAsLive<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.syncAsLive, {}, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.syncAsLive, data, { event_id: event_id }, params);
     }
 
     /**
@@ -225,9 +225,9 @@ class Events {
      * 
      * @returns promise
      */
-    public static enableBroadcastMode<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static enableBroadcastMode<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.enableBroadcastMode, {}, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.enableBroadcastMode, data, { event_id: event_id }, params);
     }
 
     /**
@@ -238,9 +238,9 @@ class Events {
      *  
      * @returns promise
      */
-    public static enableLivestreamMode<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static enableLivestreamMode<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, {}, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, data, { event_id: event_id }, params);
     }
 
     /**
@@ -255,7 +255,7 @@ class Events {
      */
     public static sendOnScreenContent<T>(event_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, data, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, data, { event_id: event_id }, params);
     }
 
     /**
@@ -287,7 +287,7 @@ class Events {
      * 
      * @returns promise
      */
-    public static addOverlayAsBlob<T>(event_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>> {
+    public static addOverlayAsBlob<T>(event_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = EventsRoutes.routes.addOverlay.url.replace('{event_id}', event_id);
 
@@ -304,9 +304,9 @@ class Events {
      * 
      * @returns promise
      */
-    public static removeOverlay<T>(event_id: string, overlay_id: string): AxiosPromise<Response<T>> {
+    public static removeOverlay<T>(event_id: string, overlay_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.removeOverlay, {}, { event_id: event_id, subid: overlay_id });
+        return Requests.processRoute(EventsRoutes.routes.removeOverlay, {}, { event_id: event_id, subid: overlay_id }, params);
     }
 
     /**
@@ -319,9 +319,9 @@ class Events {
      * 
      * @returns promise
      */
-    public static enableOverlay<T>(event_id: string, overlay_id: string): AxiosPromise<Response<T>> {
+    public static enableOverlay<T>(event_id: string, overlay_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.enableOverlay, {}, { event_id: event_id, subid: overlay_id });
+        return Requests.processRoute(EventsRoutes.routes.enableOverlay, data, { event_id: event_id, subid: overlay_id }, params);
     }
 
     /**
@@ -333,9 +333,9 @@ class Events {
      * 
      * @returns promise
      */
-    public static disableOverlay<T>(event_id: string): AxiosPromise<Response<T>> {
+    public static disableOverlay<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.disableOverlay, {}, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.disableOverlay, data, { event_id: event_id }, params);
     }
 
     /**
@@ -347,30 +347,30 @@ class Events {
      * 
      * @returns promise
      */
-    public static enableDonations<T>(event_id: string): AxiosPromise<Response<T>> {
+    public static enableDonations<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.enableDonations, {}, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.enableDonations, data, { event_id: event_id }, params);
     }
 
     /**
      * Disable the donations and remove from the screen.
      * 
      * @param event_id 
-     * @returns 
+     * @returns
      */
-    public static disableDonations<T>(event_id: string): AxiosPromise<Response<T>> {
+    public static disableDonations<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.disableDonations, {}, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.disableDonations, data, { event_id: event_id }, params);
     }
 
-    public static sendInvite<T>(event_id: string, data: object): AxiosPromise<Response<T>> {
+    public static sendInvite<T>(event_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.sendInvite, data, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.sendInvite, data, { event_id: event_id }, params);
     }
 
-    public static acceptInvite<T>(event_id: string, token: string): AxiosPromise<Response<T>> {
+    public static acceptInvite<T>(event_id: string, token: string , params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.acceptInvite, { token: token }, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.acceptInvite, { token: token }, { event_id: event_id }, params);
     }
 
 

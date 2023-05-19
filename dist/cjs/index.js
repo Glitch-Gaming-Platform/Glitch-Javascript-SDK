@@ -15646,7 +15646,6 @@ var Requests = /** @class */ (function () {
      * @param token
      */
     Requests.setCommunityID = function (community_id) {
-        console.log("setting communty_id", community_id);
         this.community_id = community_id;
     };
     Requests.request = function (method, url, data, fileData) {
@@ -15687,7 +15686,6 @@ var Requests = /** @class */ (function () {
                 .join('&');
             url = "".concat(url, "?").concat(queryString);
         }
-        console.log("Community ID in Request", this.community_id);
         if (this.community_id) {
             // Check if the URL already contains query parameters
             var separator = url.includes('?') ? '&' : '?';
@@ -17134,7 +17132,7 @@ var Events = /** @class */ (function () {
      * @returns promise
      */
     Events.delete = function (event_id, params) {
-        return Requests.processRoute(EventsRoutes.routes.delete, {}, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.delete, {}, { event_id: event_id }, params);
     };
     /**
      * The event is synced with Invirtu for the lie streams. This will allow you to update
@@ -17148,7 +17146,7 @@ var Events = /** @class */ (function () {
      * @returns promise
      */
     Events.updateInvirtuEvent = function (event_id, data, params) {
-        return Requests.processRoute(EventsRoutes.routes.updateInvirtu, data, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.updateInvirtu, data, { event_id: event_id }, params);
     };
     /**
      * Add an RTMP source to multicast a stream too.
@@ -17161,7 +17159,7 @@ var Events = /** @class */ (function () {
      * @returns promise
      */
     Events.addRTMPSource = function (event_id, data, params) {
-        return Requests.processRoute(EventsRoutes.routes.addRTMPSource, data, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.addRTMPSource, data, { event_id: event_id }, params);
     };
     /**
      * Update an RTMP Source for multicasing.
@@ -17174,7 +17172,7 @@ var Events = /** @class */ (function () {
      * @returns promise
      */
     Events.updateRTMPSource = function (event_id, stream_id, data, params) {
-        return Requests.processRoute(EventsRoutes.routes.updateRTMPSource, data, { event_id: event_id, subid: stream_id });
+        return Requests.processRoute(EventsRoutes.routes.updateRTMPSource, data, { event_id: event_id, subid: stream_id }, params);
     };
     /**
      * Remove a RTMP source for multicasing.
@@ -17186,8 +17184,8 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.removeRTMPSource = function (event_id, stream_id, params) {
-        return Requests.processRoute(EventsRoutes.routes.removeRTMPSource, {}, { event_id: event_id, subid: stream_id });
+    Events.removeRTMPSource = function (event_id, stream_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.removeRTMPSource, data, { event_id: event_id, subid: stream_id }, params);
     };
     /**
      * A function that should be run on an interval to set the event as live when the live stream is active.
@@ -17198,8 +17196,8 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.syncAsLive = function (event_id, params) {
-        return Requests.processRoute(EventsRoutes.routes.syncAsLive, {}, { event_id: event_id });
+    Events.syncAsLive = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.syncAsLive, data, { event_id: event_id }, params);
     };
     /**
          * Updates the main image for the event using a File object.
@@ -17267,8 +17265,8 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.enableBroadcastMode = function (event_id, params) {
-        return Requests.processRoute(EventsRoutes.routes.enableBroadcastMode, {}, { event_id: event_id });
+    Events.enableBroadcastMode = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.enableBroadcastMode, data, { event_id: event_id }, params);
     };
     /**
      * Enable livestream mode, in which the stream will be delivered to the invirtu RTMP endpoint for
@@ -17278,8 +17276,8 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.enableLivestreamMode = function (event_id, params) {
-        return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, {}, { event_id: event_id });
+    Events.enableLivestreamMode = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, data, { event_id: event_id }, params);
     };
     /**
      * Sends content that will appear on-screen to the user.
@@ -17292,7 +17290,7 @@ var Events = /** @class */ (function () {
      * @returns promise
      */
     Events.sendOnScreenContent = function (event_id, data, params) {
-        return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, data, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, data, { event_id: event_id }, params);
     };
     /**
      * Uploads an image that can be used and overlay later. A File object is used.
@@ -17320,7 +17318,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.addOverlayAsBlob = function (event_id, blob, data) {
+    Events.addOverlayAsBlob = function (event_id, blob, data, params) {
         var url = EventsRoutes.routes.addOverlay.url.replace('{event_id}', event_id);
         return Requests.uploadBlob(url, 'image', blob, data);
     };
@@ -17334,8 +17332,8 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.removeOverlay = function (event_id, overlay_id) {
-        return Requests.processRoute(EventsRoutes.routes.removeOverlay, {}, { event_id: event_id, subid: overlay_id });
+    Events.removeOverlay = function (event_id, overlay_id, params) {
+        return Requests.processRoute(EventsRoutes.routes.removeOverlay, {}, { event_id: event_id, subid: overlay_id }, params);
     };
     /**
      * Enables an overlay so that it will appear on screen.
@@ -17347,8 +17345,8 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.enableOverlay = function (event_id, overlay_id) {
-        return Requests.processRoute(EventsRoutes.routes.enableOverlay, {}, { event_id: event_id, subid: overlay_id });
+    Events.enableOverlay = function (event_id, overlay_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.enableOverlay, data, { event_id: event_id, subid: overlay_id }, params);
     };
     /**
      * Disables the overlay so it no longer appears on-screen.
@@ -17359,8 +17357,8 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.disableOverlay = function (event_id) {
-        return Requests.processRoute(EventsRoutes.routes.disableOverlay, {}, { event_id: event_id });
+    Events.disableOverlay = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.disableOverlay, data, { event_id: event_id }, params);
     };
     /**
      * Enable the donations to appear on-screen
@@ -17371,8 +17369,8 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.enableDonations = function (event_id) {
-        return Requests.processRoute(EventsRoutes.routes.enableDonations, {}, { event_id: event_id });
+    Events.enableDonations = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.enableDonations, data, { event_id: event_id }, params);
     };
     /**
      * Disable the donations and remove from the screen.
@@ -17380,14 +17378,14 @@ var Events = /** @class */ (function () {
      * @param event_id
      * @returns
      */
-    Events.disableDonations = function (event_id) {
-        return Requests.processRoute(EventsRoutes.routes.disableDonations, {}, { event_id: event_id });
+    Events.disableDonations = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.disableDonations, data, { event_id: event_id }, params);
     };
-    Events.sendInvite = function (event_id, data) {
-        return Requests.processRoute(EventsRoutes.routes.sendInvite, data, { event_id: event_id });
+    Events.sendInvite = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.sendInvite, data, { event_id: event_id }, params);
     };
-    Events.acceptInvite = function (event_id, token) {
-        return Requests.processRoute(EventsRoutes.routes.acceptInvite, { token: token }, { event_id: event_id });
+    Events.acceptInvite = function (event_id, token, params) {
+        return Requests.processRoute(EventsRoutes.routes.acceptInvite, { token: token }, { event_id: event_id }, params);
     };
     return Events;
 }());
