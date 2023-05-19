@@ -253,7 +253,7 @@ class Communities {
      * @returns promise
      */
     public static getUser<T>(community_id : string, user_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.showUser, {}, {community_id : community_id, user_id}, params);  
+        return Requests.processRoute(CommunitiesRoute.routes.showUser, {}, {community_id : community_id, user_id : user_id}, params);  
     }
 
     /**
@@ -265,7 +265,7 @@ class Communities {
      * @returns promise
      */
     public static updatetUser<T>(community_id : string, user_id : string, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.updateUser, data, {community_id : community_id, user_id}, params);  
+        return Requests.processRoute(CommunitiesRoute.routes.updateUser, data, {community_id : community_id, user_id : user_id}, params);  
     }
 
     /**
@@ -277,7 +277,7 @@ class Communities {
      * @returns promise
      */
     public static removetUser<T>(community_id : string, user_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.removeUser, {}, {community_id : community_id, user_id}, params);  
+        return Requests.processRoute(CommunitiesRoute.routes.removeUser, {}, {community_id : community_id, user_id : user_id}, params);  
     }
 
     /**
@@ -290,6 +290,21 @@ class Communities {
     public static findByDomain<T>(domain : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(CommunitiesRoute.routes.findByDomain, {}, {domain : domain}, params);  
     }
+
+    /**
+     * Has a user join a community. The join is executed using the current user's authentication token.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/updateCommunityStorage
+     * 
+     * @param community_id The id of the community to update.
+     * 
+     * @returns promise
+     */
+    public static join<T>(community_id : string, data : object, params?: Record<string, any>)  :  AxiosPromise<Response<T>>{
+
+        return Requests.processRoute(CommunitiesRoute.routes.join, data, {community_id : community_id}, params);
+    }
+
 
 
     

@@ -16626,6 +16626,7 @@ var CommunitiesRoute = /** @class */ (function () {
         showUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.GET },
         updateUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.PUT },
         removeUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.DELETE },
+        join: { url: '/communities/{community_id}/join', method: HTTP_METHODS.POST },
         findByDomain: { url: '/communities/findByDomain/{domain}', method: HTTP_METHODS.GET }
     };
     return CommunitiesRoute;
@@ -16883,6 +16884,18 @@ var Communities = /** @class */ (function () {
      */
     Communities.findByDomain = function (domain, params) {
         return Requests.processRoute(CommunitiesRoute.routes.findByDomain, {}, { domain: domain }, params);
+    };
+    /**
+     * Has a user join a community. The join is executed using the current user's authentication token.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/updateCommunityStorage
+     *
+     * @param community_id The id of the community to update.
+     *
+     * @returns promise
+     */
+    Communities.join = function (community_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.join, data, { community_id: community_id }, params);
     };
     return Communities;
 }());

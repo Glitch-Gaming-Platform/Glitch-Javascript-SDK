@@ -205,5 +205,15 @@ declare class Communities {
      * @returns promise
      */
     static findByDomain<T>(domain: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Has a user join a community. The join is executed using the current user's authentication token.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/updateCommunityStorage
+     *
+     * @param community_id The id of the community to update.
+     *
+     * @returns promise
+     */
+    static join<T>(community_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Communities;

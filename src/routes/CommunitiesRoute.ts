@@ -20,6 +20,7 @@ class CommunitiesRoute {
       showUser : {url : '/communities/{community_id}/users/{user_id}', method : HTTP_METHODS.GET},
       updateUser : {url : '/communities/{community_id}/users/{user_id}', method : HTTP_METHODS.PUT},
       removeUser : {url : '/communities/{community_id}/users/{user_id}', method : HTTP_METHODS.DELETE},
+      join : {url : '/communities/{community_id}/join', method : HTTP_METHODS.POST},
       findByDomain : {url : '/communities/findByDomain/{domain}', method : HTTP_METHODS.GET}
     };
 
