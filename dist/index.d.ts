@@ -1,87 +1,5 @@
 import { AxiosPromise } from 'axios';
 
-interface Template {
-    id?: string;
-    name?: string;
-    description?: string;
-    version?: string;
-    directory?: string;
-    entry_point_file?: string;
-    author_name?: string;
-    author_website?: string;
-    author_email?: string;
-    main_image?: string;
-    logo?: string;
-    is_private?: boolean;
-}
-
-interface User {
-    id?: string;
-    first_name?: string;
-    last_name?: string;
-    username?: string;
-    display_name?: string;
-    bio?: string;
-    avatar?: string;
-    banner_image?: string;
-    twitter_page?: string;
-    facebook_page?: string;
-    instagram_page?: string;
-    snapchat_page?: string;
-    tiktok_page?: string;
-    twitch_page?: string;
-    youtube_page?: string;
-    paetron_page?: string;
-    twitter_handle?: string;
-    facebook_handle?: string;
-    instagram_handle?: string;
-    snapchat_handle?: string;
-    tiktok_handle?: string;
-    twitch_handle?: string;
-    youtube_handle?: string;
-    paetron_handle?: string;
-    created_at?: string;
-    updated_at?: string;
-}
-
-interface Community {
-    id?: string;
-    name?: string;
-    description?: string;
-    logo?: string;
-    banner_image?: string;
-    video_logo?: string;
-    subdomain?: string;
-    cname?: string;
-    bannner_image?: string;
-    cname_enabled?: boolean;
-    require_attendee_rsvp?: boolean;
-    is_private?: boolean;
-    disable_streams?: boolean;
-    disable_competitions?: boolean;
-    disable_forums?: boolean;
-    disable_teams?: boolean;
-    custom_css?: boolean;
-    twitter_page?: string;
-    facebook_page?: string;
-    instagram_page?: string;
-    snapchat_page?: string;
-    tiktok_page?: string;
-    twitch_page?: string;
-    youtube_page?: string;
-    paetron_page?: string;
-    twitter_handle?: string;
-    facebook_handle?: string;
-    instagram_handle?: string;
-    snapchat_handle?: string;
-    tiktok_handle?: string;
-    twitch_handle?: string;
-    youtube_handle?: string;
-    paetron_handle?: string;
-    template?: Template;
-    admins?: User[];
-}
-
 /**
  * Config
  *
@@ -116,9 +34,9 @@ declare class Config {
     /**
      * Set the community to be associated with this config through
      *
-     * @param authToken The JWT
+     * @param community The object of the community
      */
-    static setCommunity(community: Community): void;
+    static setCommunity(community: Record<string, any>): void;
     /**
      * Gets base url
      */
@@ -130,7 +48,7 @@ declare class Config {
     /**
      * Gets the community currently associated
      */
-    static get getCommunity(): Community;
+    static get getCommunity(): object;
 }
 
 interface Response<T> {

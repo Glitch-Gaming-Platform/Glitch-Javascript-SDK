@@ -64,9 +64,9 @@ class Config {
   /**
    * Set the community to be associated with this config through
    * 
-   * @param authToken The JWT
+   * @param community The object of the community
    */
-  public static setCommunity(community: Community) {
+  public static setCommunity(community: Record<string, any>) {
     Config._community = community;
 
     Requests.setCommunityID(community.id);
@@ -89,7 +89,7 @@ class Config {
   /**
    * Gets the community currently associated
    */
-  public static get getCommunity(): Community {
+  public static get getCommunity(): object {
     return Config._community;
   }
 }

@@ -46,6 +46,7 @@ class Requests {
    * @param token 
    */
   public static setCommunityID(community_id : string | undefined) {
+    console.log("setting communty_id", community_id);
     this.community_id = community_id;
   }
 
@@ -103,6 +104,7 @@ class Requests {
       url = `${url}?${queryString}`;
     }
 
+    console.log("Community ID in Request", this.community_id);
     if (this.community_id) {
       // Check if the URL already contains query parameters
       const separator = url.includes('?') ? '&' : '?';

@@ -15646,6 +15646,7 @@ var Requests = /** @class */ (function () {
      * @param token
      */
     Requests.setCommunityID = function (community_id) {
+        console.log("setting communty_id", community_id);
         this.community_id = community_id;
     };
     Requests.request = function (method, url, data, fileData) {
@@ -15686,6 +15687,7 @@ var Requests = /** @class */ (function () {
                 .join('&');
             url = "".concat(url, "?").concat(queryString);
         }
+        console.log("Community ID in Request", this.community_id);
         if (this.community_id) {
             // Check if the URL already contains query parameters
             var separator = url.includes('?') ? '&' : '?';
@@ -15864,7 +15866,7 @@ var Config = /** @class */ (function () {
     /**
      * Set the community to be associated with this config through
      *
-     * @param authToken The JWT
+     * @param community The object of the community
      */
     Config.setCommunity = function (community) {
         Config._community = community;

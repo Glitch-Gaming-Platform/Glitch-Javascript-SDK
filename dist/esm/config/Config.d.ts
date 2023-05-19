@@ -1,4 +1,3 @@
-import Community from "../models/community";
 /**
  * Config
  *
@@ -33,9 +32,9 @@ declare class Config {
     /**
      * Set the community to be associated with this config through
      *
-     * @param authToken The JWT
+     * @param community The object of the community
      */
-    static setCommunity(community: Community): void;
+    static setCommunity(community: Record<string, any>): void;
     /**
      * Gets base url
      */
@@ -47,6 +46,6 @@ declare class Config {
     /**
      * Gets the community currently associated
      */
-    static get getCommunity(): Community;
+    static get getCommunity(): object;
 }
 export default Config;
