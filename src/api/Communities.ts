@@ -12,8 +12,8 @@ class Communities {
      * 
      * @returns promise
      */
-    public static list<T>() :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.list);
+    public static list<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.list, undefined, undefined, params);
     }
 
     /**
@@ -25,9 +25,9 @@ class Communities {
      * 
      * @returns Promise
      */
-    public static create<T>(data : object) :  AxiosPromise<Response<T>> {
+    public static create<T>(data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CommunitiesRoute.routes.create, data);
+        return Requests.processRoute(CommunitiesRoute.routes.create, data, undefined, params);
     }
 
     /**
@@ -40,9 +40,9 @@ class Communities {
      * 
      * @returns promise
      */
-    public static update<T>(community_id : string, data : object)  :  AxiosPromise<Response<T>>{
+    public static update<T>(community_id : string, data : object, params?: Record<string, any>)  :  AxiosPromise<Response<T>>{
 
-        return Requests.processRoute(CommunitiesRoute.routes.update, data, {community_id : community_id});
+        return Requests.processRoute(CommunitiesRoute.routes.update, data, {community_id : community_id}, params);
     }
 
     /**
@@ -54,9 +54,9 @@ class Communities {
      * 
      * @returns promise
      */
-    public static view<T>(community_id : string) :  AxiosPromise<Response<T>> {
+    public static view<T>(community_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CommunitiesRoute.routes.view, {}, {community_id : community_id});
+        return Requests.processRoute(CommunitiesRoute.routes.view, {}, {community_id : community_id}, params);
     }
 
     /**
@@ -67,7 +67,7 @@ class Communities {
      * @param community_id The id of the community to delete.
      * @returns promise
      */
-    public static delete<T>(community_id : string) :  AxiosPromise<Response<T>> {
+    public static delete<T>(community_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
         return Requests.processRoute(CommunitiesRoute.routes.delete, {}, {community_id : community_id});
     }
@@ -82,11 +82,11 @@ class Communities {
      * 
      * @returns promise
      */
-    public static uploadLogoFile<T>(community_id: string, file : File, data? : object): AxiosPromise<Response<T>> {
+    public static uploadLogoFile<T>(community_id: string, file : File, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CommunitiesRoute.routes.uploadLogo.url.replace('{community_id}', community_id);
 
-        return Requests.uploadFile(url, 'image', file, data);
+        return Requests.uploadFile(url, 'image', file, data, params);
     }
 
     /**
@@ -99,11 +99,11 @@ class Communities {
      * 
      * @returns promise
      */
-    public static uploadLogoBlob<T>(community_id: string, blob : Blob, data? : object): AxiosPromise<Response<T>> {
+    public static uploadLogoBlob<T>(community_id: string, blob : Blob, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CommunitiesRoute.routes.uploadLogo.url.replace('{community_id}', community_id);
 
-        return Requests.uploadBlob(url, 'image', blob, data);
+        return Requests.uploadBlob(url, 'image', blob, data, params);
     }
 
     /**
@@ -116,11 +116,11 @@ class Communities {
      * 
      * @returns promise
      */
-    public static uploadBannerImageFile<T>(community_id: string, file : File, data? : object): AxiosPromise<Response<T>> {
+    public static uploadBannerImageFile<T>(community_id: string, file : File, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CommunitiesRoute.routes.uploadBannerImage.url.replace('{community_id}', community_id);
 
-        return Requests.uploadFile(url, 'image', file, data);
+        return Requests.uploadFile(url, 'image', file, data, params);
     }
 
     /**
@@ -133,11 +133,11 @@ class Communities {
      * 
      * @returns promise
      */
-    public static uploadBannerImageBlob<T>(community_id: string, blob : Blob, data? : object): AxiosPromise<Response<T>> {
+    public static uploadBannerImageBlob<T>(community_id: string, blob : Blob, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CommunitiesRoute.routes.uploadBannerImage.url.replace('{community_id}', community_id);
 
-        return Requests.uploadBlob(url, 'image', blob, data);
+        return Requests.uploadBlob(url, 'image', blob, data, params);
     }
 
      /**
@@ -150,11 +150,11 @@ class Communities {
      * 
      * @returns promise
      */
-     public static uploadVideoLogoFile<T>(community_id: string, file : File, data? : object): AxiosPromise<Response<T>> {
+     public static uploadVideoLogoFile<T>(community_id: string, file : File, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CommunitiesRoute.routes.uploadVideoLogo.url.replace('{community_id}', community_id);
 
-        return Requests.uploadFile(url, 'image', file, data);
+        return Requests.uploadFile(url, 'image', file, data, params);
     }
 
     /**
@@ -167,11 +167,11 @@ class Communities {
      * 
      * @returns promise
      */
-    public static uploadVideoLogoBlob<T>(community_id: string, blob : Blob, data? : object): AxiosPromise<Response<T>> {
+    public static uploadVideoLogoBlob<T>(community_id: string, blob : Blob, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CommunitiesRoute.routes.uploadVideoLogo.url.replace('{community_id}', community_id);
 
-        return Requests.uploadBlob(url, 'image', blob, data);
+        return Requests.uploadBlob(url, 'image', blob, data, params);
     }
 
     /**
@@ -183,8 +183,8 @@ class Communities {
      * 
      * @returns promise
      */
-    public static listInvites<T>(community_id : string): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.listInvites, {}, {community_id : community_id});  
+    public static listInvites<T>(community_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.listInvites, {}, {community_id : community_id}, params);  
     }
 
     /**
@@ -197,8 +197,8 @@ class Communities {
      * 
      * @returns promise
      */
-    public static sendInvite<T>(community_id : string, data? : object): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.sendInvite, data, {community_id : community_id});  
+    public static sendInvite<T>(community_id : string, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.sendInvite, data, {community_id : community_id}, params);  
     }
 
     /**
@@ -211,8 +211,8 @@ class Communities {
      * 
      * @returns promise
      */
-    public static acceptInvite<T>(community_id : string, token : string): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.acceptInvite, {}, {community_id : community_id});  
+    public static acceptInvite<T>(community_id : string, token : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.acceptInvite, {}, {community_id : community_id}, params);  
     }
 
     /**
@@ -224,8 +224,8 @@ class Communities {
      * 
      * @returns promise
      */
-    public static listUsers<T>(community_id : string): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.listUsers, {}, {community_id : community_id});  
+    public static listUsers<T>(community_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.listUsers, {}, {community_id : community_id}, params);  
     }
 
     /**
@@ -238,8 +238,8 @@ class Communities {
      * 
      * @returns promise
      */
-    public static addUser<T>(community_id : string, data? : object): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.addUser, data, {community_id : community_id});  
+    public static addUser<T>(community_id : string, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.addUser, data, {community_id : community_id}, params);  
     }
 
     /**
@@ -252,8 +252,8 @@ class Communities {
      * 
      * @returns promise
      */
-    public static getUser<T>(community_id : string, user_id : string): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.showUser, {}, {community_id : community_id, user_id});  
+    public static getUser<T>(community_id : string, user_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.showUser, {}, {community_id : community_id, user_id}, params);  
     }
 
     /**
@@ -264,8 +264,8 @@ class Communities {
      * 
      * @returns promise
      */
-    public static updatetUser<T>(community_id : string, user_id : string, data? : object): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.updateUser, data, {community_id : community_id, user_id});  
+    public static updatetUser<T>(community_id : string, user_id : string, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.updateUser, data, {community_id : community_id, user_id}, params);  
     }
 
     /**
@@ -276,8 +276,8 @@ class Communities {
      * 
      * @returns promise
      */
-    public static removetUser<T>(community_id : string, user_id : string): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.removeUser, {}, {community_id : community_id, user_id});  
+    public static removetUser<T>(community_id : string, user_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.removeUser, {}, {community_id : community_id, user_id}, params);  
     }
 
     /**
@@ -287,8 +287,8 @@ class Communities {
      * 
      * @returns promise
      */
-    public static findByDomain<T>(domain : string): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.findByDomain, {}, {domain : domain});  
+    public static findByDomain<T>(domain : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.findByDomain, {}, {domain : domain}, params);  
     }
 
 

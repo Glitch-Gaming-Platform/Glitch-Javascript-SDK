@@ -12,8 +12,8 @@ class Events {
      * 
      * @returns promise
      */
-    public static list<T>(): AxiosPromise<Response<T>> {
-        return Requests.processRoute(EventsRoutes.routes.list);
+    public static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EventsRoutes.routes.list, undefined, undefined, params);
     }
 
     /**
@@ -25,9 +25,9 @@ class Events {
      * 
      * @returns Promise
      */
-    public static create<T>(data: object): AxiosPromise<Response<T>> {
+    public static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.create, data);
+        return Requests.processRoute(EventsRoutes.routes.create, data, undefined, params);
     }
 
     /**
@@ -40,9 +40,9 @@ class Events {
      * 
      * @returns promise
      */
-    public static update<T>(event_id: string, data: object): AxiosPromise<Response<T>> {
+    public static update<T>(event_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.update, data, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.update, data, { event_id: event_id }, params);
     }
 
     /**
@@ -54,9 +54,9 @@ class Events {
      * 
      * @returns promise
      */
-    public static view<T>(event_id: string): AxiosPromise<Response<T>> {
+    public static view<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(EventsRoutes.routes.view, {}, { event_id: event_id });
+        return Requests.processRoute(EventsRoutes.routes.view, {}, { event_id: event_id }, params);
     }
 
     /**
@@ -67,7 +67,7 @@ class Events {
      * @param event_id The id of the event to delete.
      * @returns promise
      */
-    public static delete<T>(event_id: string): AxiosPromise<Response<T>> {
+    public static delete<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.delete, {}, { event_id: event_id });
     }
@@ -83,7 +83,7 @@ class Events {
      * 
      * @returns promise
      */
-    public static updateInvirtuEvent<T>(event_id: string, data: object): AxiosPromise<Response<T>> {
+    public static updateInvirtuEvent<T>(event_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.updateInvirtu, data, { event_id: event_id });
     }
@@ -98,7 +98,7 @@ class Events {
      *  
      * @returns promise
      */
-    public static addRTMPSource<T>(event_id: string, data?: object): AxiosPromise<Response<T>> {
+    public static addRTMPSource<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.addRTMPSource, data, { event_id: event_id });
     }
@@ -113,7 +113,7 @@ class Events {
      *  
      * @returns promise
      */
-    public static updateRTMPSource<T>(event_id: string, stream_id: string, data?: object): AxiosPromise<Response<T>> {
+    public static updateRTMPSource<T>(event_id: string, stream_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.updateRTMPSource, data, { event_id: event_id, subid: stream_id });
     }
@@ -128,7 +128,7 @@ class Events {
      *  
      * @returns promise
      */
-    public static removeRTMPSource<T>(event_id: string, stream_id: string): AxiosPromise<Response<T>> {
+    public static removeRTMPSource<T>(event_id: string, stream_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.removeRTMPSource, {}, { event_id: event_id, subid: stream_id });
     }
@@ -142,7 +142,7 @@ class Events {
      *  
      * @returns promise
      */
-    public static syncAsLive<T>(event_id: string): AxiosPromise<Response<T>> {
+    public static syncAsLive<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.syncAsLive, {}, { event_id: event_id });
     }
@@ -157,7 +157,7 @@ class Events {
          * 
          * @returns promise
          */
-    public static uploadMainImageFile<T>(event_id: string, file: File, data?: object): AxiosPromise<Response<T>> {
+    public static uploadMainImageFile<T>(event_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = EventsRoutes.routes.uploadMainImage.url.replace('{event_id}', event_id);
 
@@ -174,7 +174,7 @@ class Events {
      * 
      * @returns promise
      */
-    public static uploadMainImageBlob<T>(event_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>> {
+    public static uploadMainImageBlob<T>(event_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = EventsRoutes.routes.uploadMainImage.url.replace('{event_id}', event_id);
 
@@ -191,7 +191,7 @@ class Events {
      * 
      * @returns promise
      */
-    public static uploadBannerImageFile<T>(event_id: string, file: File, data?: object): AxiosPromise<Response<T>> {
+    public static uploadBannerImageFile<T>(event_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = EventsRoutes.routes.uploadBannerImage.url.replace('{event_id}', event_id);
 
@@ -208,7 +208,7 @@ class Events {
      * 
      * @returns promise
      */
-    public static uploadBannerImageBlob<T>(event_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>> {
+    public static uploadBannerImageBlob<T>(event_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = EventsRoutes.routes.uploadBannerImage.url.replace('{event_id}', event_id);
 
@@ -225,7 +225,7 @@ class Events {
      * 
      * @returns promise
      */
-    public static enableBroadcastMode<T>(event_id: string): AxiosPromise<Response<T>> {
+    public static enableBroadcastMode<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.enableBroadcastMode, {}, { event_id: event_id });
     }
@@ -238,7 +238,7 @@ class Events {
      *  
      * @returns promise
      */
-    public static enableLivestreamMode<T>(event_id: string): AxiosPromise<Response<T>> {
+    public static enableLivestreamMode<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, {}, { event_id: event_id });
     }
@@ -253,7 +253,7 @@ class Events {
      * 
      * @returns promise
      */
-    public static sendOnScreenContent<T>(event_id: string, data: object): AxiosPromise<Response<T>> {
+    public static sendOnScreenContent<T>(event_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, data, { event_id: event_id });
     }

@@ -10,6 +10,32 @@ var require$$1$1 = require('util');
 var require$$1$2 = require('path');
 var require$$6 = require('fs');
 
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
 function getDefaultExportFromCjs (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
@@ -15614,6 +15640,14 @@ var Requests = /** @class */ (function () {
     Requests.setAuthToken = function (token) {
         this.authToken = token;
     };
+    /**
+     * Sets the community id that will be associated with all requests
+     *
+     * @param token
+     */
+    Requests.setCommunityID = function (community_id) {
+        this.community_id = community_id;
+    };
     Requests.request = function (method, url, data, fileData) {
         var headers = {
             'Content-Type': 'application/json',
@@ -15642,19 +15676,84 @@ var Requests = /** @class */ (function () {
      * @param url
      * @returns
      */
-    Requests.get = function (url) {
+    Requests.get = function (url, params) {
+        if (params && Object.keys(params).length > 0) {
+            var queryString = Object.entries(params)
+                .map(function (_a) {
+                var key = _a[0], value = _a[1];
+                return "".concat(key, "=").concat(encodeURIComponent(value));
+            })
+                .join('&');
+            url = "".concat(url, "?").concat(queryString);
+        }
+        if (this.community_id) {
+            // Check if the URL already contains query parameters
+            var separator = url.includes('?') ? '&' : '?';
+            // Append the community_id query parameter
+            url = "".concat(url).concat(separator, "community_id=").concat(this.community_id);
+        }
         return this.request('GET', url);
     };
-    Requests.post = function (url, data) {
+    Requests.post = function (url, data, params) {
+        if (params && Object.keys(params).length > 0) {
+            var queryString = Object.entries(params)
+                .map(function (_a) {
+                var key = _a[0], value = _a[1];
+                return "".concat(key, "=").concat(encodeURIComponent(value));
+            })
+                .join('&');
+            url = "".concat(url, "?").concat(queryString);
+        }
+        if (this.community_id) {
+            // Add the community_id to the request body
+            data = __assign(__assign({}, data), { communities: [this.community_id] });
+        }
         return this.request('POST', url, data);
     };
-    Requests.put = function (url, data) {
+    Requests.put = function (url, data, params) {
+        if (params && Object.keys(params).length > 0) {
+            var queryString = Object.entries(params)
+                .map(function (_a) {
+                var key = _a[0], value = _a[1];
+                return "".concat(key, "=").concat(encodeURIComponent(value));
+            })
+                .join('&');
+            url = "".concat(url, "?").concat(queryString);
+        }
+        if (this.community_id) {
+            // Add the community_id to the request body
+            data = __assign(__assign({}, data), { community_id: this.community_id });
+        }
         return this.request('PUT', url, data);
     };
-    Requests.delete = function (url) {
+    Requests.delete = function (url, params) {
+        if (params && Object.keys(params).length > 0) {
+            var queryString = Object.entries(params)
+                .map(function (_a) {
+                var key = _a[0], value = _a[1];
+                return "".concat(key, "=").concat(encodeURIComponent(value));
+            })
+                .join('&');
+            url = "".concat(url, "?").concat(queryString);
+        }
+        if (this.community_id) {
+            // Check if the URL already contains query parameters
+            var separator = url.includes('?') ? '&' : '?';
+            // Append the community_id query parameter
+            url = "".concat(url).concat(separator, "community_id=").concat(this.community_id);
+        }
         return this.request('DELETE', url);
     };
-    Requests.uploadFile = function (url, filename, file, data) {
+    Requests.uploadFile = function (url, filename, file, data, params) {
+        if (params && Object.keys(params).length > 0) {
+            var queryString = Object.entries(params)
+                .map(function (_a) {
+                var key = _a[0], value = _a[1];
+                return "".concat(key, "=").concat(encodeURIComponent(value));
+            })
+                .join('&');
+            url = "".concat(url, "?").concat(queryString);
+        }
         var formData = new FormData();
         formData.append(filename, file);
         for (var key in data) {
@@ -15662,7 +15761,16 @@ var Requests = /** @class */ (function () {
         }
         return this.request('POST', url, data, formData);
     };
-    Requests.uploadBlob = function (url, filename, blob, data) {
+    Requests.uploadBlob = function (url, filename, blob, data, params) {
+        if (params && Object.keys(params).length > 0) {
+            var queryString = Object.entries(params)
+                .map(function (_a) {
+                var key = _a[0], value = _a[1];
+                return "".concat(key, "=").concat(encodeURIComponent(value));
+            })
+                .join('&');
+            url = "".concat(url, "?").concat(queryString);
+        }
         var formData = new FormData();
         formData.append(filename, blob);
         for (var key in data) {
@@ -15678,7 +15786,7 @@ var Requests = /** @class */ (function () {
      * @param data
      * @returns
      */
-    Requests.processRoute = function (route, data, routeReplace) {
+    Requests.processRoute = function (route, data, routeReplace, params) {
         var url = route.url;
         if (routeReplace) {
             for (var key in routeReplace) {
@@ -15686,16 +15794,16 @@ var Requests = /** @class */ (function () {
             }
         }
         if (route.method == HTTP_METHODS.GET) {
-            return this.get(url);
+            return this.get(url, params);
         }
         else if (route.method == HTTP_METHODS.POST) {
-            return this.post(url, data);
+            return this.post(url, data, params);
         }
         else if (route.method == HTTP_METHODS.PUT) {
-            return this.put(url, data);
+            return this.put(url, data, params);
         }
         else if (route.method == HTTP_METHODS.DELETE) {
-            return this.delete(url);
+            return this.delete(url, params);
         }
         return this.get(url);
     };
@@ -15703,6 +15811,8 @@ var Requests = /** @class */ (function () {
     Requests.baseUrl = "";
     //The Json Web Token to send in the header
     Requests.authToken = "";
+    //The ID of the community that will be added to request
+    Requests.community_id = "";
     return Requests;
 }());
 
@@ -15751,6 +15861,15 @@ var Config = /** @class */ (function () {
         Config._authToken = authToken;
         Requests.setAuthToken(authToken);
     };
+    /**
+     * Set the community to be associated with this config through
+     *
+     * @param authToken The JWT
+     */
+    Config.setCommunity = function (community) {
+        Config._community = community;
+        Requests.setCommunityID(community.id);
+    };
     Object.defineProperty(Config, "baseUrl", {
         /**
          * Gets base url
@@ -15767,6 +15886,16 @@ var Config = /** @class */ (function () {
          */
         get: function () {
             return Config._authToken;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Config, "getCommunity", {
+        /**
+         * Gets the community currently associated
+         */
+        get: function () {
+            return Config._community;
         },
         enumerable: false,
         configurable: true
@@ -15927,8 +16056,8 @@ var Competitions = /** @class */ (function () {
      *
      * @returns promise
      */
-    Competitions.list = function () {
-        return Requests.processRoute(CompetitionRoutes.routes.list);
+    Competitions.list = function (params) {
+        return Requests.processRoute(CompetitionRoutes.routes.list, undefined, undefined, params);
     };
     /**
      * Create a new competition
@@ -15939,8 +16068,8 @@ var Competitions = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Competitions.create = function (data) {
-        return Requests.processRoute(CompetitionRoutes.routes.create, data);
+    Competitions.create = function (data, params) {
+        return Requests.processRoute(CompetitionRoutes.routes.create, data, undefined, params);
     };
     /**
      * Update a competition
@@ -15952,8 +16081,8 @@ var Competitions = /** @class */ (function () {
      *
      * @returns promise
      */
-    Competitions.update = function (competition_id, data) {
-        return Requests.processRoute(CompetitionRoutes.routes.update, data, { competition_id: competition_id });
+    Competitions.update = function (competition_id, data, params) {
+        return Requests.processRoute(CompetitionRoutes.routes.update, data, { competition_id: competition_id }, params);
     };
     /**
      * Retrieve the information for a single competition.
@@ -15964,8 +16093,8 @@ var Competitions = /** @class */ (function () {
      *
      * @returns promise
      */
-    Competitions.view = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.view, {}, { competition_id: competition_id });
+    Competitions.view = function (competition_id, params) {
+        return Requests.processRoute(CompetitionRoutes.routes.view, {}, { competition_id: competition_id }, params);
     };
     /**
      * Deletes a competition.
@@ -15975,8 +16104,8 @@ var Competitions = /** @class */ (function () {
      * @param competition_id The id of the competition to delete.
      * @returns promise
      */
-    Competitions.delete = function (competition_id) {
-        return Requests.processRoute(CompetitionRoutes.routes.delete, {}, { competition_id: competition_id });
+    Competitions.delete = function (competition_id, params) {
+        return Requests.processRoute(CompetitionRoutes.routes.delete, {}, { competition_id: competition_id }, params);
     };
     /**
      * Add a team
@@ -15987,7 +16116,7 @@ var Competitions = /** @class */ (function () {
      * @param team_id
      * @returns promise
      */
-    Competitions.addTeam = function (competition_id, team_id) {
+    Competitions.addTeam = function (competition_id, team_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.addTeam, { team_id: team_id }, { competition_id: competition_id });
     };
     /**
@@ -15999,7 +16128,7 @@ var Competitions = /** @class */ (function () {
      * @param user_id
      * @returns promise
      */
-    Competitions.addParticipant = function (competition_id, user_id) {
+    Competitions.addParticipant = function (competition_id, user_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.addParticipant, { user_id: user_id }, { competition_id: competition_id });
     };
     /**
@@ -16011,7 +16140,7 @@ var Competitions = /** @class */ (function () {
      * @param team_id
      * @returns promise
      */
-    Competitions.registerTeam = function (competition_id, team_id) {
+    Competitions.registerTeam = function (competition_id, team_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.registerTeam, { team_id: team_id }, { competition_id: competition_id });
     };
     /**
@@ -16022,7 +16151,7 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.registerUser = function (competition_id) {
+    Competitions.registerUser = function (competition_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.registerUser, {}, { competition_id: competition_id });
     };
     /**
@@ -16035,7 +16164,7 @@ var Competitions = /** @class */ (function () {
      * @param competitors_per_bracket
      * @returns promise
      */
-    Competitions.syncRounds = function (competition_id) {
+    Competitions.syncRounds = function (competition_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.syncRounds, { competition_id: competition_id });
     };
     /**
@@ -16047,7 +16176,7 @@ var Competitions = /** @class */ (function () {
      * @param round_id
      * @returns promise
      */
-    Competitions.autoGenerate = function (competition_id, round_id) {
+    Competitions.autoGenerate = function (competition_id, round_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.autoGenerate, {}, { competition_id: competition_id, round_id: round_id });
     };
     /**
@@ -16058,7 +16187,7 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.autoGenerateUserBrackets = function (competition_id) {
+    Competitions.autoGenerateUserBrackets = function (competition_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.autoGenerateUserBrackets, {}, { competition_id: competition_id });
     };
     /**
@@ -16071,7 +16200,7 @@ var Competitions = /** @class */ (function () {
          *
          * @returns promise
          */
-    Competitions.uploadCompetitionMainImageFile = function (competition_id, file, data) {
+    Competitions.uploadCompetitionMainImageFile = function (competition_id, file, data, params) {
         var url = CompetitionRoutes.routes.uploadMainImage.url.replace('{competition_id}', competition_id);
         return Requests.uploadFile(url, 'image', file, data);
     };
@@ -16085,7 +16214,7 @@ var Competitions = /** @class */ (function () {
      *
      * @returns promise
      */
-    Competitions.uploadCompetitionMainImageBlob = function (competition_id, blob, data) {
+    Competitions.uploadCompetitionMainImageBlob = function (competition_id, blob, data, params) {
         var url = CompetitionRoutes.routes.uploadMainImage.url.replace('{competition_id}', competition_id);
         return Requests.uploadBlob(url, 'image', blob, data);
     };
@@ -16099,7 +16228,7 @@ var Competitions = /** @class */ (function () {
      *
      * @returns promise
      */
-    Competitions.uploadCompetitionBannerImageFile = function (competition_id, file, data) {
+    Competitions.uploadCompetitionBannerImageFile = function (competition_id, file, data, params) {
         var url = CompetitionRoutes.routes.uploadBannerImage.url.replace('{competition_id}', competition_id);
         return Requests.uploadFile(url, 'image', file, data);
     };
@@ -16113,7 +16242,7 @@ var Competitions = /** @class */ (function () {
      *
      * @returns promise
      */
-    Competitions.uploadCompetitionsBannerImageBlob = function (competition_id, blob, data) {
+    Competitions.uploadCompetitionsBannerImageBlob = function (competition_id, blob, data, params) {
         var url = CompetitionRoutes.routes.uploadBannerImage.url.replace('{competition_id}', competition_id);
         return Requests.uploadBlob(url, 'image', blob, data);
     };
@@ -16125,7 +16254,7 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.invites = function (competition_id) {
+    Competitions.invites = function (competition_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.invites, {}, { competition_id: competition_id });
     };
     /**
@@ -16160,7 +16289,7 @@ var Competitions = /** @class */ (function () {
      * @param round_id
      * @returns promise
      */
-    Competitions.brackets = function (competition_id, round_id) {
+    Competitions.brackets = function (competition_id, round_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.brackets, {}, { round_id: round_id, competition_id: competition_id });
     };
     /**
@@ -16172,7 +16301,7 @@ var Competitions = /** @class */ (function () {
      * @param round_id
      * @returns promise
      */
-    Competitions.createBracket = function (competition_id, round_id, data) {
+    Competitions.createBracket = function (competition_id, round_id, data, params) {
         return Requests.processRoute(CompetitionRoutes.routes.bracketStore, data, { round_id: round_id, competition_id: competition_id });
     };
     /**
@@ -16185,7 +16314,7 @@ var Competitions = /** @class */ (function () {
      * @param bracket_id
      * @returns promise
      */
-    Competitions.showBracket = function (competition_id, round_id, bracket_id) {
+    Competitions.showBracket = function (competition_id, round_id, bracket_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.showBracket, {}, { round_id: round_id, bracket_id: bracket_id, competition_id: competition_id });
     };
     /**
@@ -16198,7 +16327,7 @@ var Competitions = /** @class */ (function () {
      * @param bracket_id
      * @returns promise
      */
-    Competitions.updateBracket = function (competition_id, round_id, bracket_id, data) {
+    Competitions.updateBracket = function (competition_id, round_id, bracket_id, data, params) {
         return Requests.processRoute(CompetitionRoutes.routes.updateBracket, data, { round_id: round_id, bracket_id: bracket_id, competition_id: competition_id });
     };
     /**
@@ -16222,7 +16351,7 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.rounds = function (competition_id) {
+    Competitions.rounds = function (competition_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.rounds, {}, { competition_id: competition_id });
     };
     /**
@@ -16233,7 +16362,7 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.createRound = function (competition_id, data) {
+    Competitions.createRound = function (competition_id, data, params) {
         return Requests.processRoute(CompetitionRoutes.routes.roundStore, data, { competition_id: competition_id });
     };
     /**
@@ -16245,7 +16374,7 @@ var Competitions = /** @class */ (function () {
      * @param round_id
      * @returns promise
      */
-    Competitions.showRound = function (competition_id, round_id) {
+    Competitions.showRound = function (competition_id, round_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.showRound, {}, { round_id: round_id, competition_id: competition_id });
     };
     /**
@@ -16257,7 +16386,7 @@ var Competitions = /** @class */ (function () {
      * @param round_id
      * @returns promise
      */
-    Competitions.updateRound = function (competition_id, round_id, data) {
+    Competitions.updateRound = function (competition_id, round_id, data, params) {
         return Requests.processRoute(CompetitionRoutes.routes.updateBracket, data, { round_id: round_id, competition_id: competition_id });
     };
     /**
@@ -16280,7 +16409,7 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.team = function (competition_id) {
+    Competitions.team = function (competition_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.team, {}, { competition_id: competition_id });
     };
     /**
@@ -16291,7 +16420,7 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.createCompetitionTeam = function (competition_id, data) {
+    Competitions.createCompetitionTeam = function (competition_id, data, params) {
         return Requests.processRoute(CompetitionRoutes.routes.teamStore, data, { competition_id: competition_id });
     };
     /**
@@ -16303,7 +16432,7 @@ var Competitions = /** @class */ (function () {
      * @param team_id The id of the team
      * @returns promise
      */
-    Competitions.showTeam = function (competition_id, team_id) {
+    Competitions.showTeam = function (competition_id, team_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.showTeam, {}, { team_id: team_id, competition_id: competition_id });
     };
     /**
@@ -16327,7 +16456,7 @@ var Competitions = /** @class */ (function () {
      * @param team_id
      * @returns promise
      */
-    Competitions.destroyTeam = function (competition_id, team_id) {
+    Competitions.destroyTeam = function (competition_id, team_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.destroyTeam, {}, { team_id: team_id, competition_id: competition_id });
     };
     /**
@@ -16338,7 +16467,7 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.users = function (competition_id) {
+    Competitions.users = function (competition_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.users, {}, { competition_id: competition_id });
     };
     /**
@@ -16361,7 +16490,7 @@ var Competitions = /** @class */ (function () {
      * @param user_id
      * @returns promise
      */
-    Competitions.showCompetitionUser = function (competition_id, user_id) {
+    Competitions.showCompetitionUser = function (competition_id, user_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.showCompetitionUser, {}, { user_id: user_id, competition_id: competition_id });
     };
     /**
@@ -16373,7 +16502,7 @@ var Competitions = /** @class */ (function () {
      * @param user_id
      * @returns promise
      */
-    Competitions.updateCompetitionUser = function (competition_id, user_id, data) {
+    Competitions.updateCompetitionUser = function (competition_id, user_id, data, params) {
         return Requests.processRoute(CompetitionRoutes.routes.updateCompetitionUser, data, { user_id: user_id, competition_id: competition_id });
     };
     /**
@@ -16385,7 +16514,7 @@ var Competitions = /** @class */ (function () {
      * @param user_id
      * @returns promise
      */
-    Competitions.destroyCompetitionUser = function (competition_id, user_id) {
+    Competitions.destroyCompetitionUser = function (competition_id, user_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.destroyCompetitionUser, {}, { user_id: user_id, competition_id: competition_id });
     };
     /**
@@ -16396,7 +16525,7 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.venues = function (competition_id) {
+    Competitions.venues = function (competition_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.venues, {}, { competition_id: competition_id });
     };
     /**
@@ -16407,7 +16536,7 @@ var Competitions = /** @class */ (function () {
      * @param competition_id
      * @returns promise
      */
-    Competitions.createVenue = function (competition_id, data) {
+    Competitions.createVenue = function (competition_id, data, params) {
         return Requests.processRoute(CompetitionRoutes.routes.newVenue, data, { competition_id: competition_id });
     };
     /**
@@ -16419,7 +16548,7 @@ var Competitions = /** @class */ (function () {
      * @param venue_id
      * @returns promise
      */
-    Competitions.showVenue = function (competition_id, venue_id) {
+    Competitions.showVenue = function (competition_id, venue_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.showVenue, {}, { venue_id: venue_id, competition_id: competition_id });
     };
     /**
@@ -16431,7 +16560,7 @@ var Competitions = /** @class */ (function () {
      * @param venue_id
      * @returns promise
      */
-    Competitions.updateVenue = function (competition_id, venue_id, data) {
+    Competitions.updateVenue = function (competition_id, venue_id, data, params) {
         return Requests.processRoute(CompetitionRoutes.routes.updateVenue, data, { competition_id: competition_id, venue_id: venue_id });
     };
     /**
@@ -16443,7 +16572,7 @@ var Competitions = /** @class */ (function () {
      * @param venue_id
      * @returns promise
      */
-    Competitions.destroyVenue = function (competition_id, venue_id) {
+    Competitions.destroyVenue = function (competition_id, venue_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.destroyVenue, {}, { competition_id: competition_id, venue_id: venue_id });
     };
     /**
@@ -16456,7 +16585,7 @@ var Competitions = /** @class */ (function () {
          *
          * @returns promise
          */
-    Competitions.uploadVenueMainImageFile = function (competition_id, file, data) {
+    Competitions.uploadVenueMainImageFile = function (competition_id, file, data, params) {
         var url = CompetitionRoutes.routes.uploadVenueMainImage.url.replace('{competition_id}', competition_id);
         return Requests.uploadFile(url, 'image', file, data);
     };
@@ -16470,7 +16599,7 @@ var Competitions = /** @class */ (function () {
      *
      * @returns promise
      */
-    Competitions.uploadVenueMainImageBlob = function (competition_id, blob, data) {
+    Competitions.uploadVenueMainImageBlob = function (competition_id, blob, data, params) {
         var url = CompetitionRoutes.routes.uploadVenueMainImage.url.replace('{competition_id}', competition_id);
         return Requests.uploadBlob(url, 'image', blob, data);
     };
@@ -16512,8 +16641,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.list = function () {
-        return Requests.processRoute(CommunitiesRoute.routes.list);
+    Communities.list = function (params) {
+        return Requests.processRoute(CommunitiesRoute.routes.list, undefined, undefined, params);
     };
     /**
      * Create a new community.
@@ -16524,8 +16653,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Communities.create = function (data) {
-        return Requests.processRoute(CommunitiesRoute.routes.create, data);
+    Communities.create = function (data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.create, data, undefined, params);
     };
     /**
      * Update a community.
@@ -16537,8 +16666,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.update = function (community_id, data) {
-        return Requests.processRoute(CommunitiesRoute.routes.update, data, { community_id: community_id });
+    Communities.update = function (community_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.update, data, { community_id: community_id }, params);
     };
     /**
      * Retrieve the information for a single community.
@@ -16549,8 +16678,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.view = function (community_id) {
-        return Requests.processRoute(CommunitiesRoute.routes.view, {}, { community_id: community_id });
+    Communities.view = function (community_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.view, {}, { community_id: community_id }, params);
     };
     /**
      * Deletes a community.
@@ -16560,7 +16689,7 @@ var Communities = /** @class */ (function () {
      * @param community_id The id of the community to delete.
      * @returns promise
      */
-    Communities.delete = function (community_id) {
+    Communities.delete = function (community_id, params) {
         return Requests.processRoute(CommunitiesRoute.routes.delete, {}, { community_id: community_id });
     };
     /**
@@ -16573,9 +16702,9 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.uploadLogoFile = function (community_id, file, data) {
+    Communities.uploadLogoFile = function (community_id, file, data, params) {
         var url = CommunitiesRoute.routes.uploadLogo.url.replace('{community_id}', community_id);
-        return Requests.uploadFile(url, 'image', file, data);
+        return Requests.uploadFile(url, 'image', file, data, params);
     };
     /**
      * Updates the main image for the community using a Blob.
@@ -16587,9 +16716,9 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.uploadLogoBlob = function (community_id, blob, data) {
+    Communities.uploadLogoBlob = function (community_id, blob, data, params) {
         var url = CommunitiesRoute.routes.uploadLogo.url.replace('{community_id}', community_id);
-        return Requests.uploadBlob(url, 'image', blob, data);
+        return Requests.uploadBlob(url, 'image', blob, data, params);
     };
     /**
      * Updates the banner image for the community using a File object.
@@ -16601,9 +16730,9 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.uploadBannerImageFile = function (community_id, file, data) {
+    Communities.uploadBannerImageFile = function (community_id, file, data, params) {
         var url = CommunitiesRoute.routes.uploadBannerImage.url.replace('{community_id}', community_id);
-        return Requests.uploadFile(url, 'image', file, data);
+        return Requests.uploadFile(url, 'image', file, data, params);
     };
     /**
      * Updates the banner image for the community using a Blob.
@@ -16615,9 +16744,9 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.uploadBannerImageBlob = function (community_id, blob, data) {
+    Communities.uploadBannerImageBlob = function (community_id, blob, data, params) {
         var url = CommunitiesRoute.routes.uploadBannerImage.url.replace('{community_id}', community_id);
-        return Requests.uploadBlob(url, 'image', blob, data);
+        return Requests.uploadBlob(url, 'image', blob, data, params);
     };
     /**
     * Updates the banner image for the community using a File object.
@@ -16629,9 +16758,9 @@ var Communities = /** @class */ (function () {
     *
     * @returns promise
     */
-    Communities.uploadVideoLogoFile = function (community_id, file, data) {
+    Communities.uploadVideoLogoFile = function (community_id, file, data, params) {
         var url = CommunitiesRoute.routes.uploadVideoLogo.url.replace('{community_id}', community_id);
-        return Requests.uploadFile(url, 'image', file, data);
+        return Requests.uploadFile(url, 'image', file, data, params);
     };
     /**
      * Updates the banner image for the community using a Blob.
@@ -16643,9 +16772,9 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.uploadVideoLogoBlob = function (community_id, blob, data) {
+    Communities.uploadVideoLogoBlob = function (community_id, blob, data, params) {
         var url = CommunitiesRoute.routes.uploadVideoLogo.url.replace('{community_id}', community_id);
-        return Requests.uploadBlob(url, 'image', blob, data);
+        return Requests.uploadBlob(url, 'image', blob, data, params);
     };
     /**
      * List the invites that have been sent for the community to users.
@@ -16656,8 +16785,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.listInvites = function (community_id) {
-        return Requests.processRoute(CommunitiesRoute.routes.listInvites, {}, { community_id: community_id });
+    Communities.listInvites = function (community_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.listInvites, {}, { community_id: community_id }, params);
     };
     /**
      * Send an invitation to a user to join the community.
@@ -16669,8 +16798,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.sendInvite = function (community_id, data) {
-        return Requests.processRoute(CommunitiesRoute.routes.sendInvite, data, { community_id: community_id });
+    Communities.sendInvite = function (community_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.sendInvite, data, { community_id: community_id }, params);
     };
     /**
      * Accept an invite to a community. The JSON Web Token (JWT) must be related to the token.
@@ -16682,8 +16811,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.acceptInvite = function (community_id, token) {
-        return Requests.processRoute(CommunitiesRoute.routes.acceptInvite, {}, { community_id: community_id });
+    Communities.acceptInvite = function (community_id, token, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.acceptInvite, {}, { community_id: community_id }, params);
     };
     /**
      * List the users who are currently associated with the community.
@@ -16694,8 +16823,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.listUsers = function (community_id) {
-        return Requests.processRoute(CommunitiesRoute.routes.listUsers, {}, { community_id: community_id });
+    Communities.listUsers = function (community_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.listUsers, {}, { community_id: community_id }, params);
     };
     /**
      * Add a user to a community.
@@ -16707,8 +16836,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.addUser = function (community_id, data) {
-        return Requests.processRoute(CommunitiesRoute.routes.addUser, data, { community_id: community_id });
+    Communities.addUser = function (community_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.addUser, data, { community_id: community_id }, params);
     };
     /**
      * Retrieves a single user and their information that is associated with a community.
@@ -16720,8 +16849,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.getUser = function (community_id, user_id) {
-        return Requests.processRoute(CommunitiesRoute.routes.showUser, {}, { community_id: community_id, user_id: user_id });
+    Communities.getUser = function (community_id, user_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.showUser, {}, { community_id: community_id, user_id: user_id }, params);
     };
     /**
      * Updates the users information associated with the community.
@@ -16731,8 +16860,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.updatetUser = function (community_id, user_id, data) {
-        return Requests.processRoute(CommunitiesRoute.routes.updateUser, data, { community_id: community_id, user_id: user_id });
+    Communities.updatetUser = function (community_id, user_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.updateUser, data, { community_id: community_id, user_id: user_id }, params);
     };
     /**
      * Removes a user from a community.
@@ -16742,8 +16871,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.removetUser = function (community_id, user_id) {
-        return Requests.processRoute(CommunitiesRoute.routes.removeUser, {}, { community_id: community_id, user_id: user_id });
+    Communities.removetUser = function (community_id, user_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.removeUser, {}, { community_id: community_id, user_id: user_id }, params);
     };
     /**
      * Finds a community either by its subdomain or cname. The cname must be active.
@@ -16752,8 +16881,8 @@ var Communities = /** @class */ (function () {
      *
      * @returns promise
      */
-    Communities.findByDomain = function (domain) {
-        return Requests.processRoute(CommunitiesRoute.routes.findByDomain, {}, { domain: domain });
+    Communities.findByDomain = function (domain, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.findByDomain, {}, { domain: domain }, params);
     };
     return Communities;
 }());
@@ -16785,8 +16914,8 @@ var Users = /** @class */ (function () {
      *
      * @returns promise
      */
-    Users.list = function () {
-        return Requests.processRoute(UserRoutes.routes.list);
+    Users.list = function (params) {
+        return Requests.processRoute(UserRoutes.routes.list, undefined, undefined, params);
     };
     /**
      * Updates a users information. Requires the users JSON Web Token (JWT) for them to update their profile.
@@ -16797,8 +16926,8 @@ var Users = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Users.update = function (data) {
-        return Requests.processRoute(UserRoutes.routes.update, data);
+    Users.update = function (data, params) {
+        return Requests.processRoute(UserRoutes.routes.update, data, undefined, params);
     };
     /**
      * Gets the current users information based on the current Json Web Token (JWT).
@@ -16810,8 +16939,8 @@ var Users = /** @class */ (function () {
      *
      * @returns promise
      */
-    Users.me = function () {
-        return Requests.processRoute(UserRoutes.routes.me, {});
+    Users.me = function (params) {
+        return Requests.processRoute(UserRoutes.routes.me, {}, undefined, params);
     };
     /**
      * Will follow and unfollow a user. If the user is not being following, it will follow the user. If they are following, it will unfollow the user. The current JWT is used for the follower.
@@ -16954,8 +17083,8 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.list = function () {
-        return Requests.processRoute(EventsRoutes.routes.list);
+    Events.list = function (params) {
+        return Requests.processRoute(EventsRoutes.routes.list, undefined, undefined, params);
     };
     /**
      * Create a new event.
@@ -16966,8 +17095,8 @@ var Events = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Events.create = function (data) {
-        return Requests.processRoute(EventsRoutes.routes.create, data);
+    Events.create = function (data, params) {
+        return Requests.processRoute(EventsRoutes.routes.create, data, undefined, params);
     };
     /**
      * Update a event
@@ -16979,8 +17108,8 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.update = function (event_id, data) {
-        return Requests.processRoute(EventsRoutes.routes.update, data, { event_id: event_id });
+    Events.update = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.update, data, { event_id: event_id }, params);
     };
     /**
      * Retrieve the information for a single event.
@@ -16991,8 +17120,8 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.view = function (event_id) {
-        return Requests.processRoute(EventsRoutes.routes.view, {}, { event_id: event_id });
+    Events.view = function (event_id, params) {
+        return Requests.processRoute(EventsRoutes.routes.view, {}, { event_id: event_id }, params);
     };
     /**
      * Deletes a event.
@@ -17002,7 +17131,7 @@ var Events = /** @class */ (function () {
      * @param event_id The id of the event to delete.
      * @returns promise
      */
-    Events.delete = function (event_id) {
+    Events.delete = function (event_id, params) {
         return Requests.processRoute(EventsRoutes.routes.delete, {}, { event_id: event_id });
     };
     /**
@@ -17016,7 +17145,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.updateInvirtuEvent = function (event_id, data) {
+    Events.updateInvirtuEvent = function (event_id, data, params) {
         return Requests.processRoute(EventsRoutes.routes.updateInvirtu, data, { event_id: event_id });
     };
     /**
@@ -17029,7 +17158,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.addRTMPSource = function (event_id, data) {
+    Events.addRTMPSource = function (event_id, data, params) {
         return Requests.processRoute(EventsRoutes.routes.addRTMPSource, data, { event_id: event_id });
     };
     /**
@@ -17042,7 +17171,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.updateRTMPSource = function (event_id, stream_id, data) {
+    Events.updateRTMPSource = function (event_id, stream_id, data, params) {
         return Requests.processRoute(EventsRoutes.routes.updateRTMPSource, data, { event_id: event_id, subid: stream_id });
     };
     /**
@@ -17055,7 +17184,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.removeRTMPSource = function (event_id, stream_id) {
+    Events.removeRTMPSource = function (event_id, stream_id, params) {
         return Requests.processRoute(EventsRoutes.routes.removeRTMPSource, {}, { event_id: event_id, subid: stream_id });
     };
     /**
@@ -17067,7 +17196,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.syncAsLive = function (event_id) {
+    Events.syncAsLive = function (event_id, params) {
         return Requests.processRoute(EventsRoutes.routes.syncAsLive, {}, { event_id: event_id });
     };
     /**
@@ -17080,7 +17209,7 @@ var Events = /** @class */ (function () {
          *
          * @returns promise
          */
-    Events.uploadMainImageFile = function (event_id, file, data) {
+    Events.uploadMainImageFile = function (event_id, file, data, params) {
         var url = EventsRoutes.routes.uploadMainImage.url.replace('{event_id}', event_id);
         return Requests.uploadFile(url, 'image', file, data);
     };
@@ -17094,7 +17223,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.uploadMainImageBlob = function (event_id, blob, data) {
+    Events.uploadMainImageBlob = function (event_id, blob, data, params) {
         var url = EventsRoutes.routes.uploadMainImage.url.replace('{event_id}', event_id);
         return Requests.uploadBlob(url, 'image', blob, data);
     };
@@ -17108,7 +17237,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.uploadBannerImageFile = function (event_id, file, data) {
+    Events.uploadBannerImageFile = function (event_id, file, data, params) {
         var url = EventsRoutes.routes.uploadBannerImage.url.replace('{event_id}', event_id);
         return Requests.uploadFile(url, 'image', file, data);
     };
@@ -17122,7 +17251,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.uploadBannerImageBlob = function (event_id, blob, data) {
+    Events.uploadBannerImageBlob = function (event_id, blob, data, params) {
         var url = EventsRoutes.routes.uploadBannerImage.url.replace('{event_id}', event_id);
         return Requests.uploadBlob(url, 'image', blob, data);
     };
@@ -17136,7 +17265,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.enableBroadcastMode = function (event_id) {
+    Events.enableBroadcastMode = function (event_id, params) {
         return Requests.processRoute(EventsRoutes.routes.enableBroadcastMode, {}, { event_id: event_id });
     };
     /**
@@ -17147,7 +17276,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.enableLivestreamMode = function (event_id) {
+    Events.enableLivestreamMode = function (event_id, params) {
         return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, {}, { event_id: event_id });
     };
     /**
@@ -17160,7 +17289,7 @@ var Events = /** @class */ (function () {
      *
      * @returns promise
      */
-    Events.sendOnScreenContent = function (event_id, data) {
+    Events.sendOnScreenContent = function (event_id, data, params) {
         return Requests.processRoute(EventsRoutes.routes.enableLivestreamMode, data, { event_id: event_id });
     };
     /**
@@ -17294,8 +17423,8 @@ var Teams = /** @class */ (function () {
      *
      * @returns promise
      */
-    Teams.list = function () {
-        return Requests.processRoute(TeamsRoute.routes.list);
+    Teams.list = function (params) {
+        return Requests.processRoute(TeamsRoute.routes.list, undefined, undefined, params);
     };
     /**
      * Create a new team.
@@ -17306,8 +17435,8 @@ var Teams = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Teams.create = function (data) {
-        return Requests.processRoute(TeamsRoute.routes.create, data);
+    Teams.create = function (data, params) {
+        return Requests.processRoute(TeamsRoute.routes.create, data, undefined, params);
     };
     /**
      * Update a team.
@@ -17319,8 +17448,8 @@ var Teams = /** @class */ (function () {
      *
      * @returns promise
      */
-    Teams.update = function (team_id, data) {
-        return Requests.processRoute(TeamsRoute.routes.create, data, { team_id: team_id });
+    Teams.update = function (team_id, data, params) {
+        return Requests.processRoute(TeamsRoute.routes.create, data, { team_id: team_id }, undefined);
     };
     /**
      * Retrieve the information for a single team.
@@ -17331,8 +17460,8 @@ var Teams = /** @class */ (function () {
      *
      * @returns promise
      */
-    Teams.view = function (team_id) {
-        return Requests.processRoute(TeamsRoute.routes.view, {}, { team_id: team_id });
+    Teams.view = function (team_id, params) {
+        return Requests.processRoute(TeamsRoute.routes.view, {}, { team_id: team_id }, params);
     };
     /**
      * Deletes a team.
@@ -17342,8 +17471,8 @@ var Teams = /** @class */ (function () {
      * @param team_id The id of the team to delete.
      * @returns promise
      */
-    Teams.delete = function (team_id) {
-        return Requests.processRoute(TeamsRoute.routes.delete, {}, { team_id: team_id });
+    Teams.delete = function (team_id, params) {
+        return Requests.processRoute(TeamsRoute.routes.delete, {}, { team_id: team_id }, params);
     };
     /**
      * Updates the main image for the team using a File object.
@@ -17410,8 +17539,8 @@ var Teams = /** @class */ (function () {
      *
      * @returns promise
      */
-    Teams.listInvites = function (team_id) {
-        return Requests.processRoute(TeamsRoute.routes.listInvites, {}, { team_id: team_id });
+    Teams.listInvites = function (team_id, params) {
+        return Requests.processRoute(TeamsRoute.routes.listInvites, {}, { team_id: team_id }, params);
     };
     /**
      * Send an invitation to a user to join the team.
@@ -17448,8 +17577,8 @@ var Teams = /** @class */ (function () {
      *
      * @returns promise
      */
-    Teams.listUsers = function (team_id) {
-        return Requests.processRoute(TeamsRoute.routes.listTeamUsers, {}, { team_id: team_id });
+    Teams.listUsers = function (team_id, params) {
+        return Requests.processRoute(TeamsRoute.routes.listTeamUsers, {}, { team_id: team_id }, params);
     };
     /**
      * Add a user to a team.
@@ -17525,8 +17654,8 @@ var Waitlists = /** @class */ (function () {
      *
      * @returns promise
      */
-    Waitlists.list = function () {
-        return Requests.processRoute(WaitlistRoutes.routes.list);
+    Waitlists.list = function (params) {
+        return Requests.processRoute(WaitlistRoutes.routes.list, undefined, undefined, params);
     };
     /**
      * Sign-up to the waitlist.
@@ -17537,8 +17666,8 @@ var Waitlists = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Waitlists.create = function (data) {
-        return Requests.processRoute(WaitlistRoutes.routes.create, data);
+    Waitlists.create = function (data, params) {
+        return Requests.processRoute(WaitlistRoutes.routes.create, data, undefined, params);
     };
     /**
      * Update a waitlist.
@@ -17550,8 +17679,8 @@ var Waitlists = /** @class */ (function () {
      *
      * @returns promise
      */
-    Waitlists.update = function (waitlist_id, data) {
-        return Requests.processRoute(WaitlistRoutes.routes.update, data, { waitlist_id: waitlist_id });
+    Waitlists.update = function (waitlist_id, data, params) {
+        return Requests.processRoute(WaitlistRoutes.routes.update, data, { waitlist_id: waitlist_id }, params);
     };
     /**
      * Retrieve the information for a single user who signed-up to the waitlist.
@@ -17562,8 +17691,8 @@ var Waitlists = /** @class */ (function () {
      *
      * @returns promise
      */
-    Waitlists.view = function (waitlist_id) {
-        return Requests.processRoute(WaitlistRoutes.routes.view, {}, { waitlist_id: waitlist_id });
+    Waitlists.view = function (waitlist_id, params) {
+        return Requests.processRoute(WaitlistRoutes.routes.view, {}, { waitlist_id: waitlist_id }, params);
     };
     /**
      * Deletes an entry from the waitlist.
@@ -17573,8 +17702,8 @@ var Waitlists = /** @class */ (function () {
      * @param waitlist_id The id of the team to delete.
      * @returns promise
      */
-    Waitlists.delete = function (waitlist_id) {
-        return Requests.processRoute(WaitlistRoutes.routes.delete, {}, { waitlist_id: waitlist_id });
+    Waitlists.delete = function (waitlist_id, params) {
+        return Requests.processRoute(WaitlistRoutes.routes.delete, {}, { waitlist_id: waitlist_id }, params);
     };
     return Waitlists;
 }());
@@ -17604,8 +17733,8 @@ var Templates = /** @class */ (function () {
      *
      * @returns promise
      */
-    Templates.list = function () {
-        return Requests.processRoute(TemplatesRoute.routes.list);
+    Templates.list = function (params) {
+        return Requests.processRoute(TemplatesRoute.routes.list, undefined, undefined, params);
     };
     /**
      * Create a new template.
@@ -17616,8 +17745,8 @@ var Templates = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Templates.create = function (data) {
-        return Requests.processRoute(TemplatesRoute.routes.create, data);
+    Templates.create = function (data, params) {
+        return Requests.processRoute(TemplatesRoute.routes.create, data, undefined, params);
     };
     /**
      * Update a template.
@@ -17629,8 +17758,8 @@ var Templates = /** @class */ (function () {
      *
      * @returns promise
      */
-    Templates.update = function (template_id, data) {
-        return Requests.processRoute(TemplatesRoute.routes.update, data, { template_id: template_id });
+    Templates.update = function (template_id, data, params) {
+        return Requests.processRoute(TemplatesRoute.routes.update, data, { template_id: template_id }, params);
     };
     /**
      * Retrieve the information for a single template.
@@ -17641,8 +17770,8 @@ var Templates = /** @class */ (function () {
      *
      * @returns promise
      */
-    Templates.view = function (template_id) {
-        return Requests.processRoute(TemplatesRoute.routes.view, {}, { template_id: template_id });
+    Templates.view = function (template_id, params) {
+        return Requests.processRoute(TemplatesRoute.routes.view, {}, { template_id: template_id }, params);
     };
     /**
      * Deletes a template.
@@ -17652,8 +17781,8 @@ var Templates = /** @class */ (function () {
      * @param template_id The id of the template to delete.
      * @returns promise
      */
-    Templates.delete = function (template_id) {
-        return Requests.processRoute(TemplatesRoute.routes.delete, {}, { template_id: template_id });
+    Templates.delete = function (template_id, params) {
+        return Requests.processRoute(TemplatesRoute.routes.delete, {}, { template_id: template_id }, params);
     };
     /**
      * Updates the logo for the template using a File object.
@@ -17665,7 +17794,7 @@ var Templates = /** @class */ (function () {
      *
      * @returns promise
      */
-    Templates.uploadLogoFile = function (template_id, file, data) {
+    Templates.uploadLogoFile = function (template_id, file, data, params) {
         var url = TemplatesRoute.routes.uploadLogo.url.replace('{template_id}', template_id);
         return Requests.uploadFile(url, 'image', file, data);
     };
@@ -17679,7 +17808,7 @@ var Templates = /** @class */ (function () {
      *
      * @returns promise
      */
-    Templates.uploadLogoBlob = function (template_id, blob, data) {
+    Templates.uploadLogoBlob = function (template_id, blob, data, params) {
         var url = TemplatesRoute.routes.uploadLogo.url.replace('{template_id}', template_id);
         return Requests.uploadBlob(url, 'image', blob, data);
     };
@@ -17693,7 +17822,7 @@ var Templates = /** @class */ (function () {
      *
      * @returns promise
      */
-    Templates.uploadMainImageFile = function (template_id, file, data) {
+    Templates.uploadMainImageFile = function (template_id, file, data, params) {
         var url = TemplatesRoute.routes.uploadMainImage.url.replace('{template_id}', template_id);
         return Requests.uploadFile(url, 'image', file, data);
     };
@@ -17707,7 +17836,7 @@ var Templates = /** @class */ (function () {
      *
      * @returns promise
      */
-    Templates.uploadMainImageBlob = function (template_id, blob, data) {
+    Templates.uploadMainImageBlob = function (template_id, blob, data, params) {
         var url = TemplatesRoute.routes.uploadMainImage.url.replace('{template_id}', template_id);
         return Requests.uploadBlob(url, 'image', blob, data);
     };

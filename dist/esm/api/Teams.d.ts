@@ -8,7 +8,7 @@ declare class Teams {
      *
      * @returns promise
      */
-    static list<T>(): AxiosPromise<Response<T>>;
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a new team.
      *
@@ -18,7 +18,7 @@ declare class Teams {
      *
      * @returns Promise
      */
-    static create<T>(data: object): AxiosPromise<Response<T>>;
+    static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update a team.
      *
@@ -29,7 +29,7 @@ declare class Teams {
      *
      * @returns promise
      */
-    static update<T>(team_id: string, data: object): AxiosPromise<Response<T>>;
+    static update<T>(team_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single team.
      *
@@ -39,7 +39,7 @@ declare class Teams {
      *
      * @returns promise
      */
-    static view<T>(team_id: string): AxiosPromise<Response<T>>;
+    static view<T>(team_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deletes a team.
      *
@@ -48,7 +48,7 @@ declare class Teams {
      * @param team_id The id of the team to delete.
      * @returns promise
      */
-    static delete<T>(team_id: string): AxiosPromise<Response<T>>;
+    static delete<T>(team_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the main image for the team using a File object.
      *
@@ -102,7 +102,7 @@ declare class Teams {
      *
      * @returns promise
      */
-    static listInvites<T>(team_id: string): AxiosPromise<Response<T>>;
+    static listInvites<T>(team_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Send an invitation to a user to join the team.
      *
@@ -134,7 +134,7 @@ declare class Teams {
      *
      * @returns promise
      */
-    static listUsers<T>(team_id: string): AxiosPromise<Response<T>>;
+    static listUsers<T>(team_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Add a user to a team.
      *

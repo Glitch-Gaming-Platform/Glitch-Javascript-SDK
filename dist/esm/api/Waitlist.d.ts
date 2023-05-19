@@ -8,7 +8,7 @@ declare class Waitlists {
      *
      * @returns promise
      */
-    static list<T>(): AxiosPromise<Response<T>>;
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Sign-up to the waitlist.
      *
@@ -18,7 +18,7 @@ declare class Waitlists {
      *
      * @returns Promise
      */
-    static create<T>(data: object): AxiosPromise<Response<T>>;
+    static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update a waitlist.
      *
@@ -29,7 +29,7 @@ declare class Waitlists {
      *
      * @returns promise
      */
-    static update<T>(waitlist_id: string, data: object): AxiosPromise<Response<T>>;
+    static update<T>(waitlist_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single user who signed-up to the waitlist.
      *
@@ -39,7 +39,7 @@ declare class Waitlists {
      *
      * @returns promise
      */
-    static view<T>(waitlist_id: string): AxiosPromise<Response<T>>;
+    static view<T>(waitlist_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deletes an entry from the waitlist.
      *
@@ -48,6 +48,6 @@ declare class Waitlists {
      * @param waitlist_id The id of the team to delete.
      * @returns promise
      */
-    static delete<T>(waitlist_id: string): AxiosPromise<Response<T>>;
+    static delete<T>(waitlist_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Waitlists;

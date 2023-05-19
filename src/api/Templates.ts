@@ -12,8 +12,8 @@ class Templates {
      * 
      * @returns promise
      */
-    public static list<T>() :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(TemplatesRoute.routes.list);
+    public static list<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(TemplatesRoute.routes.list, undefined, undefined, params);
     }
 
     /**
@@ -25,9 +25,9 @@ class Templates {
      * 
      * @returns Promise
      */
-    public static create<T>(data : object) :  AxiosPromise<Response<T>> {
+    public static create<T>(data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(TemplatesRoute.routes.create, data);
+        return Requests.processRoute(TemplatesRoute.routes.create, data, undefined, params);
     }
 
     /**
@@ -40,9 +40,9 @@ class Templates {
      * 
      * @returns promise
      */
-    public static update<T>(template_id : string, data : object)  :  AxiosPromise<Response<T>>{
+    public static update<T>(template_id : string, data : object, params?: Record<string, any>)  :  AxiosPromise<Response<T>>{
 
-        return Requests.processRoute(TemplatesRoute.routes.update, data, {template_id : template_id});
+        return Requests.processRoute(TemplatesRoute.routes.update, data, {template_id : template_id}, params);
     }
 
     /**
@@ -54,9 +54,9 @@ class Templates {
      * 
      * @returns promise
      */
-    public static view<T>(template_id : string) :  AxiosPromise<Response<T>> {
+    public static view<T>(template_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(TemplatesRoute.routes.view, {}, {template_id : template_id});
+        return Requests.processRoute(TemplatesRoute.routes.view, {}, {template_id : template_id}, params);
     }
 
     /**
@@ -67,9 +67,9 @@ class Templates {
      * @param template_id The id of the template to delete.
      * @returns promise
      */
-    public static delete<T>(template_id : string) :  AxiosPromise<Response<T>> {
+    public static delete<T>(template_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(TemplatesRoute.routes.delete, {}, {template_id : template_id});
+        return Requests.processRoute(TemplatesRoute.routes.delete, {}, {template_id : template_id}, params);
     }
 
     /**
@@ -82,7 +82,7 @@ class Templates {
      * 
      * @returns promise
      */
-    public static uploadLogoFile<T>(template_id: string, file : File, data? : object): AxiosPromise<Response<T>> {
+    public static uploadLogoFile<T>(template_id: string, file : File, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = TemplatesRoute.routes.uploadLogo.url.replace('{template_id}', template_id);
 
@@ -99,7 +99,7 @@ class Templates {
      * 
      * @returns promise
      */
-    public static uploadLogoBlob<T>(template_id: string, blob : Blob, data? : object): AxiosPromise<Response<T>> {
+    public static uploadLogoBlob<T>(template_id: string, blob : Blob, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = TemplatesRoute.routes.uploadLogo.url.replace('{template_id}', template_id);
 
@@ -116,7 +116,7 @@ class Templates {
      * 
      * @returns promise
      */
-    public static uploadMainImageFile<T>(template_id: string, file : File, data? : object): AxiosPromise<Response<T>> {
+    public static uploadMainImageFile<T>(template_id: string, file : File, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = TemplatesRoute.routes.uploadMainImage.url.replace('{template_id}', template_id);
 
@@ -133,7 +133,7 @@ class Templates {
      * 
      * @returns promise
      */
-    public static uploadMainImageBlob<T>(template_id: string, blob : Blob, data? : object): AxiosPromise<Response<T>> {
+    public static uploadMainImageBlob<T>(template_id: string, blob : Blob, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = TemplatesRoute.routes.uploadMainImage.url.replace('{template_id}', template_id);
 

@@ -12,8 +12,8 @@ class Competitions {
      * 
      * @returns promise
      */
-    public static list<T>() :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(CompetitionRoutes.routes.list);
+    public static list<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(CompetitionRoutes.routes.list, undefined, undefined, params);
     }
 
     /**
@@ -25,9 +25,9 @@ class Competitions {
      * 
      * @returns Promise
      */
-    public static create<T>(data : object) :  AxiosPromise<Response<T>> {
+    public static create<T>(data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CompetitionRoutes.routes.create, data);
+        return Requests.processRoute(CompetitionRoutes.routes.create, data, undefined, params);
     }
 
     /**
@@ -40,9 +40,9 @@ class Competitions {
      * 
      * @returns promise
      */
-    public static update<T>(competition_id : string, data : object)  :  AxiosPromise<Response<T>>{
+    public static update<T>(competition_id : string, data : object, params?: Record<string, any>)  :  AxiosPromise<Response<T>>{
 
-        return Requests.processRoute(CompetitionRoutes.routes.update, data, {competition_id : competition_id});
+        return Requests.processRoute(CompetitionRoutes.routes.update, data, {competition_id : competition_id}, params);
     }
 
     /**
@@ -54,9 +54,9 @@ class Competitions {
      * 
      * @returns promise
      */
-    public static view<T>(competition_id : string) :  AxiosPromise<Response<T>> {
+    public static view<T>(competition_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CompetitionRoutes.routes.view, {}, {competition_id : competition_id});
+        return Requests.processRoute(CompetitionRoutes.routes.view, {}, {competition_id : competition_id}, params);
     }
 
     /**
@@ -67,9 +67,9 @@ class Competitions {
      * @param competition_id The id of the competition to delete.
      * @returns promise
      */
-    public static delete<T>(competition_id : string) :  AxiosPromise<Response<T>> {
+    public static delete<T>(competition_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CompetitionRoutes.routes.delete, {}, {competition_id : competition_id});
+        return Requests.processRoute(CompetitionRoutes.routes.delete, {}, {competition_id : competition_id}, params);
     }
 
     /**
@@ -81,7 +81,7 @@ class Competitions {
      * @param team_id 
      * @returns promise
      */
-    public static addTeam<T>(competition_id : string, team_id : string) : AxiosPromise<Response<T>>{
+    public static addTeam<T>(competition_id : string, team_id : string, params?: Record<string, any>) : AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.addTeam, {team_id : team_id}, {competition_id : competition_id});
     }
 
@@ -94,7 +94,7 @@ class Competitions {
      * @param user_id 
      * @returns promise
      */
-    public static addParticipant<T>(competition_id : string, user_id : string) : AxiosPromise<Response<T>>{
+    public static addParticipant<T>(competition_id : string, user_id : string, params?: Record<string, any>) : AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.addParticipant, {user_id : user_id}, {competition_id : competition_id});
     }
 
@@ -107,7 +107,7 @@ class Competitions {
      * @param team_id 
      * @returns promise
      */
-    public static registerTeam<T>(competition_id : string, team_id : string) : AxiosPromise<Response<T>>{
+    public static registerTeam<T>(competition_id : string, team_id : string, params?: Record<string, any>) : AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.registerTeam, {team_id : team_id}, {competition_id : competition_id});
     }
 
@@ -119,7 +119,7 @@ class Competitions {
      * @param competition_id
      * @returns promise
      */
-    public static registerUser<T>(competition_id : string) : AxiosPromise<Response<T>>{
+    public static registerUser<T>(competition_id : string, params?: Record<string, any>) : AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.registerUser, {}, {competition_id : competition_id});
     }
 
@@ -133,7 +133,7 @@ class Competitions {
      * @param competitors_per_bracket 
      * @returns promise
      */
-    public static syncRounds<T>(competition_id : string) : AxiosPromise<Response<T>>{
+    public static syncRounds<T>(competition_id : string, params?: Record<string, any>) : AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.syncRounds, {competition_id : competition_id});
     }
 
@@ -146,7 +146,7 @@ class Competitions {
      * @param round_id 
      * @returns promise
      */
-    public static autoGenerate<T>(competition_id : string, round_id : number) : AxiosPromise<Response<T>>{
+    public static autoGenerate<T>(competition_id : string, round_id : number, params?: Record<string, any>) : AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.autoGenerate, {}, {competition_id : competition_id, round_id : round_id});
     }
 
@@ -158,7 +158,7 @@ class Competitions {
      * @param competition_id 
      * @returns promise
      */
-    public static autoGenerateUserBrackets<T>(competition_id : string) : AxiosPromise<Response<T>>{
+    public static autoGenerateUserBrackets<T>(competition_id : string, params?: Record<string, any>) : AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.autoGenerateUserBrackets, {}, {competition_id : competition_id});
     }
 
@@ -172,7 +172,7 @@ class Competitions {
          * 
          * @returns promise
          */
-    public static uploadCompetitionMainImageFile<T>(competition_id: string, file: File, data?: object): AxiosPromise<Response<T>> {
+    public static uploadCompetitionMainImageFile<T>(competition_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CompetitionRoutes.routes.uploadMainImage.url.replace('{competition_id}', competition_id);
 
@@ -189,7 +189,7 @@ class Competitions {
      * 
      * @returns promise
      */
-    public static uploadCompetitionMainImageBlob<T>(competition_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>> {
+    public static uploadCompetitionMainImageBlob<T>(competition_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CompetitionRoutes.routes.uploadMainImage.url.replace('{competition_id}', competition_id);
 
@@ -206,7 +206,7 @@ class Competitions {
      * 
      * @returns promise
      */
-    public static uploadCompetitionBannerImageFile<T>(competition_id: string, file: File, data?: object): AxiosPromise<Response<T>> {
+    public static uploadCompetitionBannerImageFile<T>(competition_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CompetitionRoutes.routes.uploadBannerImage.url.replace('{competition_id}', competition_id);
     
@@ -223,7 +223,7 @@ class Competitions {
      * 
      * @returns promise
      */
-    public static uploadCompetitionsBannerImageBlob<T>(competition_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>> {
+    public static uploadCompetitionsBannerImageBlob<T>(competition_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CompetitionRoutes.routes.uploadBannerImage.url.replace('{competition_id}', competition_id);
 
@@ -238,7 +238,7 @@ class Competitions {
      * @param competition_id 
      * @returns promise
      */
-    public static invites<T>(competition_id : string) : AxiosPromise<Response<T>>{
+    public static invites<T>(competition_id : string, params?: Record<string, any>) : AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.invites, {}, {competition_id : competition_id});
     }
 
@@ -276,7 +276,7 @@ class Competitions {
      * @param round_id 
      * @returns promise
      */
-    public static brackets<T>(competition_id : string, round_id : number): AxiosPromise<Response<T>>{
+    public static brackets<T>(competition_id : string, round_id : number, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.brackets, {}, {round_id : round_id, competition_id : competition_id});
     }
 
@@ -289,7 +289,7 @@ class Competitions {
      * @param round_id 
      * @returns promise
      */
-    public static createBracket<T>(competition_id : string, round_id : number,  data?: object): AxiosPromise<Response<T>>{
+    public static createBracket<T>(competition_id : string, round_id : number,  data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.bracketStore, data, {round_id : round_id, competition_id : competition_id});
     }
 
@@ -303,7 +303,7 @@ class Competitions {
      * @param bracket_id 
      * @returns promise
      */
-    public static showBracket<T>(competition_id : string, round_id : number, bracket_id : number): AxiosPromise<Response<T>>{
+    public static showBracket<T>(competition_id : string, round_id : number, bracket_id : number, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.showBracket, {}, {round_id : round_id, bracket_id : bracket_id, competition_id : competition_id});
     }
 
@@ -317,7 +317,7 @@ class Competitions {
      * @param bracket_id 
      * @returns promise
      */
-    public static updateBracket<T>(competition_id : string, round_id : number, bracket_id : number, data?: object): AxiosPromise<Response<T>>{
+    public static updateBracket<T>(competition_id : string, round_id : number, bracket_id : number, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.updateBracket, data, {round_id : round_id, bracket_id : bracket_id, competition_id : competition_id});
     }
 
@@ -343,7 +343,7 @@ class Competitions {
      * @param competition_id 
      * @returns promise
      */
-    public static rounds<T>(competition_id : string): AxiosPromise<Response<T>>{
+    public static rounds<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.rounds, {}, {competition_id : competition_id});
     }
 
@@ -355,7 +355,7 @@ class Competitions {
      * @param competition_id 
      * @returns promise
      */
-    public static createRound<T>(competition_id : string, data?: object): AxiosPromise<Response<T>>{
+    public static createRound<T>(competition_id : string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.roundStore, data, {competition_id : competition_id});
     }
 
@@ -368,7 +368,7 @@ class Competitions {
      * @param round_id 
      * @returns promise
      */
-    public static showRound<T>(competition_id : string, round_id : number): AxiosPromise<Response<T>>{
+    public static showRound<T>(competition_id : string, round_id : number, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.showRound, {}, {round_id : round_id, competition_id : competition_id});
     }
 
@@ -381,7 +381,7 @@ class Competitions {
      * @param round_id 
      * @returns promise
      */
-    public static updateRound<T>(competition_id : string, round_id : number,  data?: object): AxiosPromise<Response<T>>{
+    public static updateRound<T>(competition_id : string, round_id : number,  data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.updateBracket, data, {round_id : round_id, competition_id : competition_id});
     }
 
@@ -406,7 +406,7 @@ class Competitions {
      * @param competition_id 
      * @returns promise
      */
-    public static team<T>(competition_id : string): AxiosPromise<Response<T>>{
+    public static team<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.team, {}, {competition_id : competition_id});
     }
 
@@ -418,7 +418,7 @@ class Competitions {
      * @param competition_id 
      * @returns promise
      */
-    public static createCompetitionTeam<T>(competition_id : string,  data?: object): AxiosPromise<Response<T>>{
+    public static createCompetitionTeam<T>(competition_id : string,  data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.teamStore, data, {competition_id : competition_id});
     }
 
@@ -431,7 +431,7 @@ class Competitions {
      * @param team_id The id of the team
      * @returns promise
      */
-    public static showTeam<T>(competition_id : string, team_id : string): AxiosPromise<Response<T>>{
+    public static showTeam<T>(competition_id : string, team_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.showTeam, {}, {team_id : team_id, competition_id : competition_id});
     }
     
@@ -457,7 +457,7 @@ class Competitions {
      * @param team_id 
      * @returns promise
      */
-    public static destroyTeam<T>(competition_id : string, team_id : string): AxiosPromise<Response<T>>{
+    public static destroyTeam<T>(competition_id : string, team_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.destroyTeam, {}, {team_id : team_id, competition_id : competition_id});
     }
 
@@ -469,7 +469,7 @@ class Competitions {
      * @param competition_id 
      * @returns promise
      */
-    public static users<T>(competition_id : string): AxiosPromise<Response<T>>{
+    public static users<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.users, {}, {competition_id : competition_id});
     }
 
@@ -494,7 +494,7 @@ class Competitions {
      * @param user_id 
      * @returns promise
      */
-    public static showCompetitionUser<T>(competition_id : string, user_id : string): AxiosPromise<Response<T>>{
+    public static showCompetitionUser<T>(competition_id : string, user_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.showCompetitionUser, {}, {user_id : user_id, competition_id : competition_id});
     }
 
@@ -507,7 +507,7 @@ class Competitions {
      * @param user_id 
      * @returns promise
      */
-    public static updateCompetitionUser<T>(competition_id : string, user_id : string,  data?: object): AxiosPromise<Response<T>>{
+    public static updateCompetitionUser<T>(competition_id : string, user_id : string,  data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.updateCompetitionUser, data, {user_id : user_id, competition_id : competition_id});
     }
 
@@ -520,7 +520,7 @@ class Competitions {
      * @param user_id 
      * @returns promise
      */
-    public static destroyCompetitionUser<T>(competition_id : string, user_id : string): AxiosPromise<Response<T>>{
+    public static destroyCompetitionUser<T>(competition_id : string, user_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.destroyCompetitionUser, {}, {user_id : user_id, competition_id : competition_id});
     }  
     
@@ -532,7 +532,7 @@ class Competitions {
      * @param competition_id 
      * @returns promise
      */
-    public static venues<T>(competition_id : string): AxiosPromise<Response<T>>{
+    public static venues<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.venues, {}, {competition_id : competition_id});
     }  
 
@@ -544,7 +544,7 @@ class Competitions {
      * @param competition_id 
      * @returns promise
      */
-    public static createVenue<T>(competition_id : string, data : object ): AxiosPromise<Response<T>>{
+    public static createVenue<T>(competition_id : string, data : object, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.newVenue, data, {competition_id : competition_id});
     } 
 
@@ -557,7 +557,7 @@ class Competitions {
      * @param venue_id 
      * @returns promise
      */
-    public static showVenue<T>(competition_id : string, venue_id : string): AxiosPromise<Response<T>>{
+    public static showVenue<T>(competition_id : string, venue_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.showVenue, {}, {venue_id : venue_id, competition_id : competition_id});
     } 
 
@@ -570,7 +570,7 @@ class Competitions {
      * @param venue_id 
      * @returns promise
      */
-    public static updateVenue<T>(competition_id : string, venue_id : string, data : object): AxiosPromise<Response<T>>{
+    public static updateVenue<T>(competition_id : string, venue_id : string, data : object, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.updateVenue, data, {competition_id : competition_id, venue_id : venue_id});
     }
 
@@ -583,7 +583,7 @@ class Competitions {
      * @param venue_id 
      * @returns promise
      */
-    public static destroyVenue<T>(competition_id : string, venue_id : string): AxiosPromise<Response<T>>{
+    public static destroyVenue<T>(competition_id : string, venue_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.destroyVenue, {}, {competition_id : competition_id, venue_id : venue_id});
     }
 
@@ -597,7 +597,7 @@ class Competitions {
          * 
          * @returns promise
          */
-    public static uploadVenueMainImageFile<T>(competition_id: string, file: File, data?: object): AxiosPromise<Response<T>> {
+    public static uploadVenueMainImageFile<T>(competition_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CompetitionRoutes.routes.uploadVenueMainImage.url.replace('{competition_id}', competition_id);
 
@@ -614,7 +614,7 @@ class Competitions {
      * 
      * @returns promise
      */
-    public static uploadVenueMainImageBlob<T>(competition_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>> {
+    public static uploadVenueMainImageBlob<T>(competition_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         let url = CompetitionRoutes.routes.uploadVenueMainImage.url.replace('{competition_id}', competition_id);
 

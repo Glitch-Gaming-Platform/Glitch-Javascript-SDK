@@ -12,8 +12,8 @@ class Teams {
      * 
      * @returns promise
      */
-    public static list<T>() :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(TeamsRoutes.routes.list);
+    public static list<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(TeamsRoutes.routes.list, undefined, undefined, params);
     }
 
     /**
@@ -25,9 +25,9 @@ class Teams {
      * 
      * @returns Promise
      */
-    public static create<T>(data : object) :  AxiosPromise<Response<T>> {
+    public static create<T>(data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(TeamsRoutes.routes.create, data);
+        return Requests.processRoute(TeamsRoutes.routes.create, data, undefined, params);
     }
 
     /**
@@ -40,9 +40,9 @@ class Teams {
      * 
      * @returns promise
      */
-    public static update<T>(team_id : string, data : object)  :  AxiosPromise<Response<T>>{
+    public static update<T>(team_id : string, data : object, params?: Record<string, any>)  :  AxiosPromise<Response<T>>{
 
-        return Requests.processRoute(TeamsRoutes.routes.create, data, {team_id : team_id});
+        return Requests.processRoute(TeamsRoutes.routes.create, data, {team_id : team_id}, undefined);
     }
 
     /**
@@ -54,9 +54,9 @@ class Teams {
      * 
      * @returns promise
      */
-    public static view<T>(team_id : string) :  AxiosPromise<Response<T>> {
+    public static view<T>(team_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(TeamsRoutes.routes.view, {}, {team_id : team_id});
+        return Requests.processRoute(TeamsRoutes.routes.view, {}, {team_id : team_id}, params);
     }
 
     /**
@@ -67,9 +67,9 @@ class Teams {
      * @param team_id The id of the team to delete.
      * @returns promise
      */
-    public static delete<T>(team_id : string) :  AxiosPromise<Response<T>> {
+    public static delete<T>(team_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(TeamsRoutes.routes.delete, {}, {team_id : team_id});
+        return Requests.processRoute(TeamsRoutes.routes.delete, {}, {team_id : team_id}, params);
     }
 
     /**
@@ -149,8 +149,8 @@ class Teams {
      * 
      * @returns promise
      */
-    public static listInvites<T>(team_id : string): AxiosPromise<Response<T>> {
-        return Requests.processRoute(TeamsRoutes.routes.listInvites, {}, {team_id : team_id});  
+    public static listInvites<T>(team_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TeamsRoutes.routes.listInvites, {}, {team_id : team_id}, params);  
     }
 
     /**
@@ -190,8 +190,8 @@ class Teams {
      * 
      * @returns promise
      */
-    public static listUsers<T>(team_id : string): AxiosPromise<Response<T>> {
-        return Requests.processRoute(TeamsRoutes.routes.listTeamUsers, {}, {team_id : team_id});  
+    public static listUsers<T>(team_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TeamsRoutes.routes.listTeamUsers, {}, {team_id : team_id}, params);  
     }
 
     /**

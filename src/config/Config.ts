@@ -1,3 +1,4 @@
+import Community from "../models/community";
 import Requests from "../util/Requests";
 
 /**
@@ -10,6 +11,7 @@ class Config {
 
   private static _baseUrl: string;
   private static _authToken: string;
+  private static _community: object;
 
   private static _baseUrlLocked: boolean = false;
 
@@ -60,6 +62,17 @@ class Config {
   }
 
   /**
+   * Set the community to be associated with this config through
+   * 
+   * @param authToken The JWT
+   */
+  public static setCommunity(community: Community) {
+    Config._community = community;
+
+    Requests.setCommunityID(community.id);
+  }
+
+  /**
    * Gets base url
    */
   public static get baseUrl(): string {
@@ -71,6 +84,13 @@ class Config {
    */
   public static get authToken(): string {
     return Config._authToken;
+  }
+
+  /**
+   * Gets the community currently associated
+   */
+  public static get getCommunity(): Community {
+    return Config._community;
   }
 }
 

@@ -15,6 +15,9 @@ class Requests {
   //The Json Web Token to send in the header
   private static authToken = "";
 
+  //The ID of the community that will be added to request
+  private static community_id? = "";
+
   constructor(config: Config) {
     this.config = config;
   }
@@ -36,6 +39,16 @@ class Requests {
   public static setAuthToken(token : string) {
     this.authToken = token;
   }
+
+  /**
+   * Sets the community id that will be associated with all requests
+   * 
+   * @param token 
+   */
+  public static setCommunityID(community_id : string | undefined) {
+    this.community_id = community_id;
+  }
+
 
   
   private static request<T>(
@@ -81,19 +94,81 @@ class Requests {
    * @param url 
    * @returns 
    */
-  public static get<T>(url: string): AxiosPromise<Response<T>> {
+  public static get<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+    if (params && Object.keys(params).length > 0) {
+      const queryString = Object.entries(params)
+        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+        .join('&');
+      url = `${url}?${queryString}`;
+    }
+
+    if (this.community_id) {
+      // Check if the URL already contains query parameters
+      const separator = url.includes('?') ? '&' : '?';
+      // Append the community_id query parameter
+      url = `${url}${separator}community_id=${this.community_id}`;
+    }
+
     return this.request<T>('GET', url);
   }
 
-  public static post<T>(url: string, data: any): AxiosPromise<Response<T>> {
+  public static post<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+    if (params && Object.keys(params).length > 0) {
+      const queryString = Object.entries(params)
+        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+        .join('&');
+      url = `${url}?${queryString}`;
+    }
+
+    if (this.community_id) {
+      // Add the community_id to the request body
+      data = {
+        ...data,
+        communities: [ this.community_id ]
+      };
+    }
+
     return this.request<T>('POST', url, data);
   }
 
-  public static put<T>(url: string, data: any): AxiosPromise<Response<T>> {
+  public static put<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+    if (params && Object.keys(params).length > 0) {
+      const queryString = Object.entries(params)
+        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+        .join('&');
+      url = `${url}?${queryString}`;
+    }
+
+    if (this.community_id) {
+      // Add the community_id to the request body
+      data = {
+        ...data,
+        community_id: this.community_id
+      };
+    }
+
     return this.request<T>('PUT', url, data);
   }
 
-  public static delete<T>(url: string): AxiosPromise<Response<T>> {
+  public static delete<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+    if (params && Object.keys(params).length > 0) {
+      const queryString = Object.entries(params)
+        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+        .join('&');
+      url = `${url}?${queryString}`;
+    }
+
+    if (this.community_id) {
+      // Check if the URL already contains query parameters
+      const separator = url.includes('?') ? '&' : '?';
+      // Append the community_id query parameter
+      url = `${url}${separator}community_id=${this.community_id}`;
+    }
+
     return this.request<T>('DELETE', url);
   }
 
@@ -101,8 +176,16 @@ class Requests {
     url: string,
     filename : string,
     file: File,
-    data?: any
+    data?: any,
+    params?: Record<string, any>
   ): AxiosPromise<Response<T>> {
+
+    if (params && Object.keys(params).length > 0) {
+      const queryString = Object.entries(params)
+        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+        .join('&');
+      url = `${url}?${queryString}`;
+    }
     
     const formData = new FormData();
 
@@ -119,8 +202,16 @@ class Requests {
     url: string,
     filename : string,
     blob: Blob,
-    data?: any
+    data?: any,
+    params?: Record<string, any>
   ): AxiosPromise<Response<T>> {
+
+    if (params && Object.keys(params).length > 0) {
+      const queryString = Object.entries(params)
+        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+        .join('&');
+      url = `${url}?${queryString}`;
+    }
 
     const formData = new FormData();
 
@@ -141,7 +232,7 @@ class Requests {
    * @param data 
    * @returns 
    */
-  public static processRoute<T>(route : Route, data? : object, routeReplace? : {[key: string]: any}) : AxiosPromise<Response<T>> {
+  public static processRoute<T>(route : Route, data? : object, routeReplace? : {[key: string]: any}, params?: Record<string, any>) : AxiosPromise<Response<T>> {
 
     let url = route.url;
 
@@ -154,13 +245,13 @@ class Requests {
     }
 
     if(route.method == HTTP_METHODS.GET) {
-      return this.get(url);
+      return this.get(url, params);
     } else if(route.method == HTTP_METHODS.POST) {
-      return this.post(url, data);
+      return this.post(url, data, params);
     } else if(route.method == HTTP_METHODS.PUT) {
-      return this.put(url, data);
+      return this.put(url, data, params);
     } else if(route.method == HTTP_METHODS.DELETE) {
-      return this.delete(url);
+      return this.delete(url, params);
     }
 
     return this.get(url);

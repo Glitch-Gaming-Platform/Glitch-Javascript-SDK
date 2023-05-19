@@ -8,7 +8,7 @@ declare class Competitions {
      *
      * @returns promise
      */
-    static list<T>(): AxiosPromise<Response<T>>;
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a new competition
      *
@@ -18,7 +18,7 @@ declare class Competitions {
      *
      * @returns Promise
      */
-    static create<T>(data: object): AxiosPromise<Response<T>>;
+    static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update a competition
      *
@@ -29,7 +29,7 @@ declare class Competitions {
      *
      * @returns promise
      */
-    static update<T>(competition_id: string, data: object): AxiosPromise<Response<T>>;
+    static update<T>(competition_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single competition.
      *
@@ -39,7 +39,7 @@ declare class Competitions {
      *
      * @returns promise
      */
-    static view<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static view<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deletes a competition.
      *
@@ -48,7 +48,7 @@ declare class Competitions {
      * @param competition_id The id of the competition to delete.
      * @returns promise
      */
-    static delete<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static delete<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Add a team
      *
@@ -58,7 +58,7 @@ declare class Competitions {
      * @param team_id
      * @returns promise
      */
-    static addTeam<T>(competition_id: string, team_id: string): AxiosPromise<Response<T>>;
+    static addTeam<T>(competition_id: string, team_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Adds participant
      *
@@ -68,7 +68,7 @@ declare class Competitions {
      * @param user_id
      * @returns promise
      */
-    static addParticipant<T>(competition_id: string, user_id: string): AxiosPromise<Response<T>>;
+    static addParticipant<T>(competition_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Register a team
      *
@@ -78,7 +78,7 @@ declare class Competitions {
      * @param team_id
      * @returns promise
      */
-    static registerTeam<T>(competition_id: string, team_id: string): AxiosPromise<Response<T>>;
+    static registerTeam<T>(competition_id: string, team_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Register a user
      *
@@ -87,7 +87,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static registerUser<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static registerUser<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Sync rounds
      *
@@ -98,7 +98,7 @@ declare class Competitions {
      * @param competitors_per_bracket
      * @returns promise
      */
-    static syncRounds<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static syncRounds<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * auto generate team brackets
      *
@@ -108,7 +108,7 @@ declare class Competitions {
      * @param round_id
      * @returns promise
      */
-    static autoGenerate<T>(competition_id: string, round_id: number): AxiosPromise<Response<T>>;
+    static autoGenerate<T>(competition_id: string, round_id: number, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * auto generate user brackets
      *
@@ -117,7 +117,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static autoGenerateUserBrackets<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static autoGenerateUserBrackets<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
          * Updates the main image for the event using a File object.
          *
@@ -128,7 +128,7 @@ declare class Competitions {
          *
          * @returns promise
          */
-    static uploadCompetitionMainImageFile<T>(competition_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    static uploadCompetitionMainImageFile<T>(competition_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the main image for the competition using a Blob.
      *
@@ -139,7 +139,7 @@ declare class Competitions {
      *
      * @returns promise
      */
-    static uploadCompetitionMainImageBlob<T>(competition_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    static uploadCompetitionMainImageBlob<T>(competition_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the banner image for the competition using a File object.
      *
@@ -150,7 +150,7 @@ declare class Competitions {
      *
      * @returns promise
      */
-    static uploadCompetitionBannerImageFile<T>(competition_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    static uploadCompetitionBannerImageFile<T>(competition_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the banner image for the competition using a Blob.
      *
@@ -161,7 +161,7 @@ declare class Competitions {
      *
      * @returns promise
      */
-    static uploadCompetitionsBannerImageBlob<T>(competition_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    static uploadCompetitionsBannerImageBlob<T>(competition_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Invites
      *
@@ -170,7 +170,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static invites<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static invites<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Sends invite
      *
@@ -199,7 +199,7 @@ declare class Competitions {
      * @param round_id
      * @returns promise
      */
-    static brackets<T>(competition_id: string, round_id: number): AxiosPromise<Response<T>>;
+    static brackets<T>(competition_id: string, round_id: number, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Store round brackets
      *
@@ -209,7 +209,7 @@ declare class Competitions {
      * @param round_id
      * @returns promise
      */
-    static createBracket<T>(competition_id: string, round_id: number, data?: object): AxiosPromise<Response<T>>;
+    static createBracket<T>(competition_id: string, round_id: number, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Show round bracket
      *
@@ -220,7 +220,7 @@ declare class Competitions {
      * @param bracket_id
      * @returns promise
      */
-    static showBracket<T>(competition_id: string, round_id: number, bracket_id: number): AxiosPromise<Response<T>>;
+    static showBracket<T>(competition_id: string, round_id: number, bracket_id: number, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update bracket
      *
@@ -231,7 +231,7 @@ declare class Competitions {
      * @param bracket_id
      * @returns promise
      */
-    static updateBracket<T>(competition_id: string, round_id: number, bracket_id: number, data?: object): AxiosPromise<Response<T>>;
+    static updateBracket<T>(competition_id: string, round_id: number, bracket_id: number, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Delete bracket
      *
@@ -251,7 +251,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static rounds<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static rounds<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a new round for competition
      *
@@ -260,7 +260,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static createRound<T>(competition_id: string, data?: object): AxiosPromise<Response<T>>;
+    static createRound<T>(competition_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single round.
      *
@@ -270,7 +270,7 @@ declare class Competitions {
      * @param round_id
      * @returns promise
      */
-    static showRound<T>(competition_id: string, round_id: number): AxiosPromise<Response<T>>;
+    static showRound<T>(competition_id: string, round_id: number, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updating resource in storage with new information.
      *
@@ -280,7 +280,7 @@ declare class Competitions {
      * @param round_id
      * @returns promise
      */
-    static updateRound<T>(competition_id: string, round_id: number, data?: object): AxiosPromise<Response<T>>;
+    static updateRound<T>(competition_id: string, round_id: number, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deletes the round for the competition.
      *
@@ -299,7 +299,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static team<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static team<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Associate a new team with the competition.
      *
@@ -308,7 +308,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static createCompetitionTeam<T>(competition_id: string, data?: object): AxiosPromise<Response<T>>;
+    static createCompetitionTeam<T>(competition_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Display the contents of a single team associated with the competition.
      *
@@ -318,7 +318,7 @@ declare class Competitions {
      * @param team_id The id of the team
      * @returns promise
      */
-    static showTeam<T>(competition_id: string, team_id: string): AxiosPromise<Response<T>>;
+    static showTeam<T>(competition_id: string, team_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update the team information associated with the competition.
      *
@@ -338,7 +338,7 @@ declare class Competitions {
      * @param team_id
      * @returns promise
      */
-    static destroyTeam<T>(competition_id: string, team_id: string): AxiosPromise<Response<T>>;
+    static destroyTeam<T>(competition_id: string, team_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List all the users associated with a competition.
      *
@@ -347,7 +347,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static users<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static users<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Associate a new users with the competition.
      *
@@ -366,7 +366,7 @@ declare class Competitions {
      * @param user_id
      * @returns promise
      */
-    static showCompetitionUser<T>(competition_id: string, user_id: string): AxiosPromise<Response<T>>;
+    static showCompetitionUser<T>(competition_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update the user associated with competition.
      *
@@ -376,7 +376,7 @@ declare class Competitions {
      * @param user_id
      * @returns promise
      */
-    static updateCompetitionUser<T>(competition_id: string, user_id: string, data?: object): AxiosPromise<Response<T>>;
+    static updateCompetitionUser<T>(competition_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Remove the associated user from the competition.
      *
@@ -386,7 +386,7 @@ declare class Competitions {
      * @param user_id
      * @returns promise
      */
-    static destroyCompetitionUser<T>(competition_id: string, user_id: string): AxiosPromise<Response<T>>;
+    static destroyCompetitionUser<T>(competition_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List all the venues associated with a competition.
      *
@@ -395,7 +395,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static venues<T>(competition_id: string): AxiosPromise<Response<T>>;
+    static venues<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Creating a new venue.
      *
@@ -404,7 +404,7 @@ declare class Competitions {
      * @param competition_id
      * @returns promise
      */
-    static createVenue<T>(competition_id: string, data: object): AxiosPromise<Response<T>>;
+    static createVenue<T>(competition_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Show a single venue by its ID.
      *
@@ -414,7 +414,7 @@ declare class Competitions {
      * @param venue_id
      * @returns promise
      */
-    static showVenue<T>(competition_id: string, venue_id: string): AxiosPromise<Response<T>>;
+    static showVenue<T>(competition_id: string, venue_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update the venue.
      *
@@ -424,7 +424,7 @@ declare class Competitions {
      * @param venue_id
      * @returns promise
      */
-    static updateVenue<T>(competition_id: string, venue_id: string, data: object): AxiosPromise<Response<T>>;
+    static updateVenue<T>(competition_id: string, venue_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deletes the venue from the competition.
      *
@@ -434,7 +434,7 @@ declare class Competitions {
      * @param venue_id
      * @returns promise
      */
-    static destroyVenue<T>(competition_id: string, venue_id: string): AxiosPromise<Response<T>>;
+    static destroyVenue<T>(competition_id: string, venue_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
          * Updates the main image for the venue using a File object.
          *
@@ -445,7 +445,7 @@ declare class Competitions {
          *
          * @returns promise
          */
-    static uploadVenueMainImageFile<T>(competition_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    static uploadVenueMainImageFile<T>(competition_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the main image for the venue using a Blob.
      *
@@ -456,6 +456,6 @@ declare class Competitions {
      *
      * @returns promise
      */
-    static uploadVenueMainImageBlob<T>(competition_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    static uploadVenueMainImageBlob<T>(competition_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Competitions;

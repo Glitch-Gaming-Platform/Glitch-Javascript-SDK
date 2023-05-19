@@ -12,8 +12,8 @@ class Waitlists {
      * 
      * @returns promise
      */
-    public static list<T>() :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(WaitlistRoutes.routes.list);
+    public static list<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(WaitlistRoutes.routes.list, undefined, undefined, params);
     }
 
     /**
@@ -25,9 +25,9 @@ class Waitlists {
      * 
      * @returns Promise
      */
-    public static create<T>(data : object) :  AxiosPromise<Response<T>> {
+    public static create<T>(data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(WaitlistRoutes.routes.create, data);
+        return Requests.processRoute(WaitlistRoutes.routes.create, data, undefined, params);
     }
 
     /**
@@ -40,9 +40,9 @@ class Waitlists {
      * 
      * @returns promise
      */
-    public static update<T>(waitlist_id : string, data : object)  :  AxiosPromise<Response<T>>{
+    public static update<T>(waitlist_id : string, data : object, params?: Record<string, any>)  :  AxiosPromise<Response<T>>{
 
-        return Requests.processRoute(WaitlistRoutes.routes.update, data, {waitlist_id : waitlist_id});
+        return Requests.processRoute(WaitlistRoutes.routes.update, data, {waitlist_id : waitlist_id}, params);
     }
 
     /**
@@ -54,9 +54,9 @@ class Waitlists {
      * 
      * @returns promise
      */
-    public static view<T>(waitlist_id : string) :  AxiosPromise<Response<T>> {
+    public static view<T>(waitlist_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(WaitlistRoutes.routes.view, {}, {waitlist_id : waitlist_id});
+        return Requests.processRoute(WaitlistRoutes.routes.view, {}, {waitlist_id : waitlist_id}, params);
     }
 
     /**
@@ -67,9 +67,9 @@ class Waitlists {
      * @param waitlist_id The id of the team to delete.
      * @returns promise
      */
-    public static delete<T>(waitlist_id : string) :  AxiosPromise<Response<T>> {
+    public static delete<T>(waitlist_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(WaitlistRoutes.routes.delete, {}, {waitlist_id : waitlist_id});
+        return Requests.processRoute(WaitlistRoutes.routes.delete, {}, {waitlist_id : waitlist_id}, params);
     }
 
 

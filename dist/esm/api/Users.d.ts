@@ -8,7 +8,7 @@ declare class Users {
      *
      * @returns promise
      */
-    static list<T>(): AxiosPromise<Response<T>>;
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates a users information. Requires the users JSON Web Token (JWT) for them to update their profile.
      *
@@ -18,7 +18,7 @@ declare class Users {
      *
      * @returns Promise
      */
-    static update<T>(data: object): AxiosPromise<Response<T>>;
+    static update<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Gets the current users information based on the current Json Web Token (JWT).
      *
@@ -29,7 +29,7 @@ declare class Users {
      *
      * @returns promise
      */
-    static me<T>(): AxiosPromise<Response<T>>;
+    static me<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Will follow and unfollow a user. If the user is not being following, it will follow the user. If they are following, it will unfollow the user. The current JWT is used for the follower.
      *

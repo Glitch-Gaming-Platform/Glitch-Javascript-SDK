@@ -8,7 +8,7 @@ declare class Templates {
      *
      * @returns promise
      */
-    static list<T>(): AxiosPromise<Response<T>>;
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a new template.
      *
@@ -18,7 +18,7 @@ declare class Templates {
      *
      * @returns Promise
      */
-    static create<T>(data: object): AxiosPromise<Response<T>>;
+    static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update a template.
      *
@@ -29,7 +29,7 @@ declare class Templates {
      *
      * @returns promise
      */
-    static update<T>(template_id: string, data: object): AxiosPromise<Response<T>>;
+    static update<T>(template_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single template.
      *
@@ -39,7 +39,7 @@ declare class Templates {
      *
      * @returns promise
      */
-    static view<T>(template_id: string): AxiosPromise<Response<T>>;
+    static view<T>(template_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deletes a template.
      *
@@ -48,7 +48,7 @@ declare class Templates {
      * @param template_id The id of the template to delete.
      * @returns promise
      */
-    static delete<T>(template_id: string): AxiosPromise<Response<T>>;
+    static delete<T>(template_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the logo for the template using a File object.
      *
@@ -59,7 +59,7 @@ declare class Templates {
      *
      * @returns promise
      */
-    static uploadLogoFile<T>(template_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    static uploadLogoFile<T>(template_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the logo for the template using a Blob.
      *
@@ -70,7 +70,7 @@ declare class Templates {
      *
      * @returns promise
      */
-    static uploadLogoBlob<T>(template_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    static uploadLogoBlob<T>(template_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the main image for the template using a File object.
      *
@@ -81,7 +81,7 @@ declare class Templates {
      *
      * @returns promise
      */
-    static uploadMainImageFile<T>(template_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    static uploadMainImageFile<T>(template_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the main image for the template using a Blob.
      *
@@ -92,6 +92,6 @@ declare class Templates {
      *
      * @returns promise
      */
-    static uploadMainImageBlob<T>(template_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    static uploadMainImageBlob<T>(template_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Templates;

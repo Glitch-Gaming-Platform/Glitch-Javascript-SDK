@@ -8,7 +8,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static list<T>(): AxiosPromise<Response<T>>;
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a new event.
      *
@@ -18,7 +18,7 @@ declare class Events {
      *
      * @returns Promise
      */
-    static create<T>(data: object): AxiosPromise<Response<T>>;
+    static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update a event
      *
@@ -29,7 +29,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static update<T>(event_id: string, data: object): AxiosPromise<Response<T>>;
+    static update<T>(event_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single event.
      *
@@ -39,7 +39,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static view<T>(event_id: string): AxiosPromise<Response<T>>;
+    static view<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deletes a event.
      *
@@ -48,7 +48,7 @@ declare class Events {
      * @param event_id The id of the event to delete.
      * @returns promise
      */
-    static delete<T>(event_id: string): AxiosPromise<Response<T>>;
+    static delete<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * The event is synced with Invirtu for the lie streams. This will allow you to update
      *
@@ -60,7 +60,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static updateInvirtuEvent<T>(event_id: string, data: object): AxiosPromise<Response<T>>;
+    static updateInvirtuEvent<T>(event_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Add an RTMP source to multicast a stream too.
      *
@@ -71,7 +71,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static addRTMPSource<T>(event_id: string, data?: object): AxiosPromise<Response<T>>;
+    static addRTMPSource<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update an RTMP Source for multicasing.
      *
@@ -82,7 +82,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static updateRTMPSource<T>(event_id: string, stream_id: string, data?: object): AxiosPromise<Response<T>>;
+    static updateRTMPSource<T>(event_id: string, stream_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Remove a RTMP source for multicasing.
      *
@@ -93,7 +93,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static removeRTMPSource<T>(event_id: string, stream_id: string): AxiosPromise<Response<T>>;
+    static removeRTMPSource<T>(event_id: string, stream_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * A function that should be run on an interval to set the event as live when the live stream is active.
      *
@@ -103,7 +103,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static syncAsLive<T>(event_id: string): AxiosPromise<Response<T>>;
+    static syncAsLive<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
          * Updates the main image for the event using a File object.
          *
@@ -114,7 +114,7 @@ declare class Events {
          *
          * @returns promise
          */
-    static uploadMainImageFile<T>(event_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    static uploadMainImageFile<T>(event_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the main image for the event using a Blob.
      *
@@ -125,7 +125,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static uploadMainImageBlob<T>(event_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    static uploadMainImageBlob<T>(event_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the banner image for the team using a File object.
      *
@@ -136,7 +136,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static uploadBannerImageFile<T>(event_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    static uploadBannerImageFile<T>(event_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the banner image for the team using a Blob.
      *
@@ -147,7 +147,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static uploadBannerImageBlob<T>(event_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    static uploadBannerImageBlob<T>(event_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Enable Broadcast Mode. Broadcast mode is when the live stream is broadcasted from the game play through a protocol
      * such as screen sharing.
@@ -158,7 +158,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static enableBroadcastMode<T>(event_id: string): AxiosPromise<Response<T>>;
+    static enableBroadcastMode<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Enable livestream mode, in which the stream will be delivered to the invirtu RTMP endpoint for
      * streaming.
@@ -167,7 +167,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static enableLivestreamMode<T>(event_id: string): AxiosPromise<Response<T>>;
+    static enableLivestreamMode<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Sends content that will appear on-screen to the user.
      *
@@ -178,7 +178,7 @@ declare class Events {
      *
      * @returns promise
      */
-    static sendOnScreenContent<T>(event_id: string, data: object): AxiosPromise<Response<T>>;
+    static sendOnScreenContent<T>(event_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Uploads an image that can be used and overlay later. A File object is used.
      *

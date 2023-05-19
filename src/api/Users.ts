@@ -1,3 +1,4 @@
+import { unescape } from "querystring";
 import UserRoutes from "../routes/UserRoutes";
 import Requests from "../util/Requests";
 import Response from "../util/Response";
@@ -12,8 +13,8 @@ class Users {
      * 
      * @returns promise
      */
-    public static list<T>(): AxiosPromise<Response<T>> {
-        return Requests.processRoute(UserRoutes.routes.list);
+    public static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.list, undefined, undefined, params);
     }
 
     /**
@@ -25,9 +26,9 @@ class Users {
      * 
      * @returns Promise
      */
-    public static update<T>(data: object): AxiosPromise<Response<T>> {
+    public static update<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(UserRoutes.routes.update, data);
+        return Requests.processRoute(UserRoutes.routes.update, data, undefined, params);
     }
 
     /**
@@ -40,9 +41,9 @@ class Users {
      * 
      * @returns promise
      */
-    public static me<T>(): AxiosPromise<Response<T>> {
+    public static me<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(UserRoutes.routes.me, {});
+        return Requests.processRoute(UserRoutes.routes.me, {}, undefined, params);
     }
 
     /**

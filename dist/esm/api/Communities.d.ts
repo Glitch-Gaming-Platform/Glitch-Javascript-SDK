@@ -8,7 +8,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static list<T>(): AxiosPromise<Response<T>>;
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a new community.
      *
@@ -18,7 +18,7 @@ declare class Communities {
      *
      * @returns Promise
      */
-    static create<T>(data: object): AxiosPromise<Response<T>>;
+    static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update a community.
      *
@@ -29,7 +29,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static update<T>(community_id: string, data: object): AxiosPromise<Response<T>>;
+    static update<T>(community_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single community.
      *
@@ -39,7 +39,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static view<T>(community_id: string): AxiosPromise<Response<T>>;
+    static view<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deletes a community.
      *
@@ -48,7 +48,7 @@ declare class Communities {
      * @param community_id The id of the community to delete.
      * @returns promise
      */
-    static delete<T>(community_id: string): AxiosPromise<Response<T>>;
+    static delete<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the main image for the community using a File object.
      *
@@ -59,7 +59,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static uploadLogoFile<T>(community_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    static uploadLogoFile<T>(community_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the main image for the community using a Blob.
      *
@@ -70,7 +70,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static uploadLogoBlob<T>(community_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    static uploadLogoBlob<T>(community_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the banner image for the community using a File object.
      *
@@ -81,7 +81,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static uploadBannerImageFile<T>(community_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    static uploadBannerImageFile<T>(community_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the banner image for the community using a Blob.
      *
@@ -92,7 +92,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static uploadBannerImageBlob<T>(community_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    static uploadBannerImageBlob<T>(community_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
     * Updates the banner image for the community using a File object.
     *
@@ -103,7 +103,7 @@ declare class Communities {
     *
     * @returns promise
     */
-    static uploadVideoLogoFile<T>(community_id: string, file: File, data?: object): AxiosPromise<Response<T>>;
+    static uploadVideoLogoFile<T>(community_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the banner image for the community using a Blob.
      *
@@ -114,7 +114,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static uploadVideoLogoBlob<T>(community_id: string, blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    static uploadVideoLogoBlob<T>(community_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List the invites that have been sent for the community to users.
      *
@@ -124,7 +124,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static listInvites<T>(community_id: string): AxiosPromise<Response<T>>;
+    static listInvites<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Send an invitation to a user to join the community.
      *
@@ -135,7 +135,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static sendInvite<T>(community_id: string, data?: object): AxiosPromise<Response<T>>;
+    static sendInvite<T>(community_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Accept an invite to a community. The JSON Web Token (JWT) must be related to the token.
      *
@@ -146,7 +146,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static acceptInvite<T>(community_id: string, token: string): AxiosPromise<Response<T>>;
+    static acceptInvite<T>(community_id: string, token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List the users who are currently associated with the community.
      *
@@ -156,7 +156,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static listUsers<T>(community_id: string): AxiosPromise<Response<T>>;
+    static listUsers<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Add a user to a community.
      *
@@ -167,7 +167,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static addUser<T>(community_id: string, data?: object): AxiosPromise<Response<T>>;
+    static addUser<T>(community_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieves a single user and their information that is associated with a community.
      *
@@ -178,7 +178,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static getUser<T>(community_id: string, user_id: string): AxiosPromise<Response<T>>;
+    static getUser<T>(community_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Updates the users information associated with the community.
      *
@@ -187,7 +187,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static updatetUser<T>(community_id: string, user_id: string, data?: object): AxiosPromise<Response<T>>;
+    static updatetUser<T>(community_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Removes a user from a community.
      *
@@ -196,7 +196,7 @@ declare class Communities {
      *
      * @returns promise
      */
-    static removetUser<T>(community_id: string, user_id: string): AxiosPromise<Response<T>>;
+    static removetUser<T>(community_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Finds a community either by its subdomain or cname. The cname must be active.
      *
@@ -204,6 +204,6 @@ declare class Communities {
      *
      * @returns promise
      */
-    static findByDomain<T>(domain: string): AxiosPromise<Response<T>>;
+    static findByDomain<T>(domain: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Communities;
