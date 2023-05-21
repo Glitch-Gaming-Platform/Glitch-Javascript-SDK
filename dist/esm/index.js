@@ -32106,26 +32106,34 @@ var Storage = /** @class */ (function () {
     }
     Storage.set = function (key, value) {
         try {
-            window.localStorage.setItem(key, value);
+            var serializedValue = JSON.stringify(value);
+            window.localStorage.setItem(key, serializedValue);
         }
         catch (e) {
             try {
-                window.sessionStorage.setItem(key, value);
+                var serializedValue = JSON.stringify(value);
+                window.sessionStorage.setItem(key, serializedValue);
             }
             catch (e) {
+                //fallback
                 this.setCookie(key, value, 31);
-                //fallback if set cookie fails
                 Storage.data[key] = value;
             }
         }
     };
     Storage.get = function (key) {
         try {
-            return window.localStorage.getItem(key);
+            var serializedValue = window.localStorage.getItem(key);
+            if (serializedValue !== null) {
+                return JSON.parse(serializedValue);
+            }
         }
         catch (e) {
             try {
-                return window.sessionStorage.getItem(key);
+                var serializedValue = window.sessionStorage.getItem(key);
+                if (serializedValue !== null) {
+                    return JSON.parse(serializedValue);
+                }
             }
             catch (e) {
                 var value = Storage.getCookie(key);

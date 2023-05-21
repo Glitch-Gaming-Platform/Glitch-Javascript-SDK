@@ -6,14 +6,20 @@ class Storage {
 
   
     public static set(key: string, value: any) {
+
       try {
-        window.localStorage.setItem(key, value);
+        const serializedValue = JSON.stringify(value);
+        window.localStorage.setItem(key, serializedValue);
       } catch (e) {
+
         try {
-          window.sessionStorage.setItem(key, value);
+
+          const serializedValue = JSON.stringify(value);
+          window.sessionStorage.setItem(key, serializedValue);
+
         } catch (e) {
+          //fallback
           this.setCookie(key, value, 31);
-          //fallback if set cookie fails
           Storage.data[key] = value;
         }
       }
@@ -21,11 +27,25 @@ class Storage {
   
     public static get(key: string): any {
       try {
-        return window.localStorage.getItem(key);
+
+        const serializedValue = window.localStorage.getItem(key);
+        
+        if (serializedValue !== null) {
+          return JSON.parse(serializedValue);
+        }
+
       } catch (e) {
+
         try {
-          return window.sessionStorage.getItem(key);
+
+          const serializedValue = window.sessionStorage.getItem(key);
+          
+          if (serializedValue !== null) {
+            return JSON.parse(serializedValue);
+          }
+
         } catch (e) {
+
           let value = Storage.getCookie(key);
   
           if (!value) {
@@ -36,6 +56,7 @@ class Storage {
         }
       }
     }
+  
   
     public static setAuthToken(token: string | null) {
       Storage.set('glitch_auth_token', token);
