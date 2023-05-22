@@ -29903,6 +29903,9 @@ var Requests = /** @class */ (function () {
             var queryString = Object.entries(params)
                 .map(function (_a) {
                 var key = _a[0], value = _a[1];
+                if (Array.isArray(value)) {
+                    return value.map(function (item) { return "".concat(key, "[]=").concat(encodeURIComponent(item)); }).join('&');
+                }
                 return "".concat(key, "=").concat(encodeURIComponent(value));
             })
                 .join('&');

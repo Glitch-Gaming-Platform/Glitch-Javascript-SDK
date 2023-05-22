@@ -97,8 +97,14 @@ class Requests {
   public static get<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
     if (params && Object.keys(params).length > 0) {
+      
       const queryString = Object.entries(params)
-        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+        .map(([key, value]) => {
+          if (Array.isArray(value)) {
+            return value.map((item) => `${key}[]=${encodeURIComponent(item)}`).join('&');
+          }
+          return `${key}=${encodeURIComponent(value)}`;
+        })
         .join('&');
       url = `${url}?${queryString}`;
     }
