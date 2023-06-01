@@ -5,6 +5,7 @@ import { Communities } from "./api";
 import { Users } from "./api";
 import { Events } from "./api";
 import { Teams } from "./api";
+import { Posts } from "./api";
 import { Templates } from "./api";
 import { Waitlists } from "./api";
 import Requests from "./util/Requests";
@@ -30,6 +31,7 @@ declare class Glitch {
         Users: typeof Users;
         Events: typeof Events;
         Teams: typeof Teams;
+        Posts: typeof Posts;
         Templates: typeof Templates;
         Waitlists: typeof Waitlists;
     };

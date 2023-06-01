@@ -9,6 +9,7 @@ import {Communities} from "./api";
 import { Users } from "./api";
 import { Events } from "./api";
 import { Teams } from "./api";
+import { Posts } from "./api";
 import {Templates} from "./api";
 import { Waitlists } from "./api";
 
@@ -42,6 +43,7 @@ class Glitch {
         Users: Users,
         Events: Events,
         Teams: Teams,
+        Posts: Posts,
         Templates : Templates,
         Waitlists: Waitlists
     }

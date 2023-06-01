@@ -5,6 +5,7 @@ import Users from "./Users";
 import Events from "./Events";
 import Teams from "./Teams";
 import Waitlists from "./Waitlist";
+import Posts from "./Posts";
 import Templates from "./Templates";
 
 
@@ -15,4 +16,5 @@ export {Users};
 export {Events};
 export {Teams};
 export {Waitlists};
+export {Posts};
 export {Templates};

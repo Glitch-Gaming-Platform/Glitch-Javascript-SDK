@@ -31946,6 +31946,83 @@ var Waitlists = /** @class */ (function () {
     return Waitlists;
 }());
 
+var PostsRoute = /** @class */ (function () {
+    function PostsRoute() {
+    }
+    PostsRoute.routes = {
+        list: { url: '/posts', method: HTTP_METHODS.GET },
+        create: { url: '/posts', method: HTTP_METHODS.POST },
+        view: { url: '/posts/{post_id}', method: HTTP_METHODS.GET },
+        update: { url: '/posts/{post_id}', method: HTTP_METHODS.PUT },
+        delete: { url: '/posts/{post_id}', method: HTTP_METHODS.DELETE },
+    };
+    return PostsRoute;
+}());
+
+var Posts = /** @class */ (function () {
+    function Posts() {
+    }
+    /**
+     * List all the Posts.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+     *
+     * @returns promise
+     */
+    Posts.list = function (params) {
+        return Requests.processRoute(PostsRoute.routes.list, undefined, undefined, params);
+    };
+    /**
+     * Create a new post.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/newPostResourceStorage
+     *
+     * @param data The data to be passed when creating a post.
+     *
+     * @returns Promise
+     */
+    Posts.create = function (data, params) {
+        return Requests.processRoute(PostsRoute.routes.create, data, undefined, params);
+    };
+    /**
+     * Update a post.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/updatePostStorage
+     *
+     * @param post_id The id of the post to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Posts.update = function (post_id, data, params) {
+        return Requests.processRoute(PostsRoute.routes.update, data, { post_id: post_id }, params);
+    };
+    /**
+     * Retrieve the information for a single post.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/showPostStorage
+     *
+     * @param post_id The id fo the post to retrieve.
+     *
+     * @returns promise
+     */
+    Posts.view = function (post_id, params) {
+        return Requests.processRoute(PostsRoute.routes.view, {}, { post_id: post_id }, params);
+    };
+    /**
+     * Deletes a post.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/destoryPostStorage
+     *
+     * @param post_id The id of the post to delete.
+     * @returns promise
+     */
+    Posts.delete = function (post_id, params) {
+        return Requests.processRoute(PostsRoute.routes.delete, {}, { post_id: post_id }, params);
+    };
+    return Posts;
+}());
+
 var TemplatesRoute = /** @class */ (function () {
     function TemplatesRoute() {
     }
@@ -32383,6 +32460,7 @@ var Glitch = /** @class */ (function () {
         Users: Users,
         Events: Events,
         Teams: Teams,
+        Posts: Posts,
         Templates: Templates,
         Waitlists: Waitlists
     };
