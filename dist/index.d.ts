@@ -1413,6 +1413,28 @@ declare class Posts {
      */
     static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+    * Create a new post with a file. The file should either be an image or video.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Post%20Route/newPostResourceStorage
+    *
+    * @param file The file object to upload.
+    * @param data Any additional data to pass along to the upload.
+    *
+    * @returns promise
+    */
+    static createWithFile<T>(file: File, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Create a new post with a blob. The blob should either be an image or video.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/newPostResourceStorage
+     *
+     * @param file The blob to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    static createWithBlob<T>(blob: Blob, data?: object): AxiosPromise<Response<T>>;
+    /**
      * Update a post.
      *
      * @see https://api.glitch.fun/api/documentation#/Post%20Route/updatePostStorage

@@ -32014,6 +32014,32 @@ var Posts = /** @class */ (function () {
         return Requests.processRoute(PostsRoute.routes.create, data, undefined, params);
     };
     /**
+    * Create a new post with a file. The file should either be an image or video.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Post%20Route/newPostResourceStorage
+    *
+    * @param file The file object to upload.
+    * @param data Any additional data to pass along to the upload.
+    *
+    * @returns promise
+    */
+    Posts.createWithFile = function (file, data) {
+        return Requests.uploadFile(PostsRoute.routes.create.url, 'file', file, data);
+    };
+    /**
+     * Create a new post with a blob. The blob should either be an image or video.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/newPostResourceStorage
+     *
+     * @param file The blob to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    Posts.createWithBlob = function (blob, data) {
+        return Requests.uploadBlob(PostsRoute.routes.create.url, 'file', blob, data);
+    };
+    /**
      * Update a post.
      *
      * @see https://api.glitch.fun/api/documentation#/Post%20Route/updatePostStorage
