@@ -1645,6 +1645,19 @@ declare class Data {
     static convertToHHMMSS(time: string | undefined): string | undefined;
 }
 
+interface CommunityLabels {
+    [key: string]: string;
+}
+declare class LabelManager {
+    private static community;
+    static initialize(community: CommunityLabels): void;
+    private static getLabel;
+    static getUserLabel(plural: boolean, capitalize: boolean): string;
+    static getCompetitionLabel(plural: boolean, capitalize: boolean): string;
+    static getStreamLabel(plural: boolean, capitalize: boolean): string;
+    static getPostLabel(plural: boolean, capitalize: boolean): string;
+}
+
 declare enum Modes {
     BROADCAST = 0,
     OBS = 1,
@@ -1727,6 +1740,7 @@ declare class Glitch {
         Session: typeof Session;
         Storage: typeof Storage;
         Data: typeof Data;
+        LabelManager: typeof LabelManager;
     };
     static constants: {
         AcceptanceStatus: Readonly<{
@@ -1755,7 +1769,23 @@ declare class Glitch {
             SEMI_ROUND_ROBINS: 8;
             EXTENDED: 9;
         }>;
+        ContentStatus: Readonly<{
+            UNAPPROVED: 0;
+            APPROVED: 1;
+            IN_REVIEW: 2;
+            PENDING: 3;
+            FLAGGED: 4;
+            REMOVED: 5;
+            DELETED: 6;
+        }>;
         Modes: typeof Modes;
+        PostTypes: Readonly<{
+            TEXT: "text";
+            LINK: "link";
+            POLL: "poll";
+            IMAGE: "image";
+            VIDEO: "video";
+        }>;
         Roles: typeof Roles;
         TeamJoinProcess: typeof TeamJoinProcess;
         TicketTypes: typeof TicketTypes;

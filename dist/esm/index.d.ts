@@ -13,6 +13,7 @@ import Parser from "./util/Parser";
 import Session from "./util/Session";
 import Storage from "./util/Storage";
 import Data from './util/Data';
+import LabelManager from "./util/LabelManager";
 import { Modes } from "./constants/Modes";
 import { Roles } from "./constants/Roles";
 import { TeamJoinProcess } from "./constants/TeamJoinProcess";
@@ -41,6 +42,7 @@ declare class Glitch {
         Session: typeof Session;
         Storage: typeof Storage;
         Data: typeof Data;
+        LabelManager: typeof LabelManager;
     };
     static constants: {
         AcceptanceStatus: Readonly<{
@@ -69,7 +71,23 @@ declare class Glitch {
             SEMI_ROUND_ROBINS: 8;
             EXTENDED: 9;
         }>;
+        ContentStatus: Readonly<{
+            UNAPPROVED: 0;
+            APPROVED: 1;
+            IN_REVIEW: 2;
+            PENDING: 3;
+            FLAGGED: 4;
+            REMOVED: 5;
+            DELETED: 6;
+        }>;
         Modes: typeof Modes;
+        PostTypes: Readonly<{
+            TEXT: "text";
+            LINK: "link";
+            POLL: "poll";
+            IMAGE: "image";
+            VIDEO: "video";
+        }>;
         Roles: typeof Roles;
         TeamJoinProcess: typeof TeamJoinProcess;
         TicketTypes: typeof TicketTypes;

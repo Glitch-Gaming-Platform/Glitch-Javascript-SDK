@@ -18,11 +18,14 @@ import Parser from "./util/Parser";
 import Session from "./util/Session";
 import Storage from "./util/Storage";
 import Data from './util/Data';
+import LabelManager from "./util/LabelManager";
 
 import { AcceptanceStatus } from "./constants/AcceptanceStatus";
 import AddressLocationType  from "./constants/AddressLocationType";
+import { ContentStatus } from "./constants/ContentStatus";
 import { CompetitionTypes } from "./constants/CompetitionTypes";
 import { Modes } from "./constants/Modes";
+import { PostTypes } from "./constants/PostTypes";
 import { Roles } from "./constants/Roles";
 import { TeamJoinProcess } from "./constants/TeamJoinProcess";
 import TicketTypes from "./constants/TicketTypes";
@@ -54,13 +57,16 @@ class Glitch {
         Session: Session,
         Storage : Storage,
         Data : Data,
+        LabelManager : LabelManager,
     }
 
     public static constants = {
        AcceptanceStatus : AcceptanceStatus,
        AddressLocationType : AddressLocationType,
        CompetitionTypes : CompetitionTypes,
+       ContentStatus : ContentStatus,
        Modes : Modes,
+       PostTypes : PostTypes,
        Roles: Roles,
        TeamJoinProcess : TeamJoinProcess,
        TicketTypes : TicketTypes,

@@ -1,4 +1,5 @@
 import Community from "../models/community";
+import LabelManager from "../util/LabelManager";
 import Requests from "../util/Requests";
 
 /**
@@ -70,6 +71,8 @@ class Config {
     Config._community = community;
 
     Requests.setCommunityID(community.id);
+    
+    LabelManager.initialize(community);
   }
 
   /**

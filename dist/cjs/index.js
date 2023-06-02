@@ -10,6 +10,34 @@ var require$$1$1 = require('util');
 var require$$1$2 = require('path');
 var require$$6 = require('fs');
 
+var LabelManager = /** @class */ (function () {
+    function LabelManager() {
+    }
+    LabelManager.initialize = function (community) {
+        LabelManager.community = community;
+    };
+    LabelManager.getLabel = function (labelName, plural, capitalize) {
+        var label = LabelManager.community[labelName + (plural ? "_plural" : "_singular")];
+        if (capitalize) {
+            label = label.charAt(0).toUpperCase() + label.slice(1);
+        }
+        return label;
+    };
+    LabelManager.getUserLabel = function (plural, capitalize) {
+        return LabelManager.getLabel("label_users", plural, capitalize);
+    };
+    LabelManager.getCompetitionLabel = function (plural, capitalize) {
+        return LabelManager.getLabel("label_competitions", plural, capitalize);
+    };
+    LabelManager.getStreamLabel = function (plural, capitalize) {
+        return LabelManager.getLabel("label_streams", plural, capitalize);
+    };
+    LabelManager.getPostLabel = function (plural, capitalize) {
+        return LabelManager.getLabel("label_posts", plural, capitalize);
+    };
+    return LabelManager;
+}());
+
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -15872,6 +15900,7 @@ var Config = /** @class */ (function () {
     Config.setCommunity = function (community) {
         Config._community = community;
         Requests.setCommunityID(community.id);
+        LabelManager.initialize(community);
     };
     Object.defineProperty(Config, "baseUrl", {
         /**
@@ -18143,6 +18172,16 @@ var AddressLocationType = Object.freeze({
     HYBRID: 3,
 });
 
+var ContentStatus = Object.freeze({
+    UNAPPROVED: 0,
+    APPROVED: 1,
+    IN_REVIEW: 2,
+    PENDING: 3,
+    FLAGGED: 4,
+    REMOVED: 5,
+    DELETED: 6,
+});
+
 var CompetitionTypes = Object.freeze({
     SINGLE_ELIMINATION: 1,
     DOUBLE_ELIMINATION: 2,
@@ -18161,6 +18200,14 @@ var Modes;
     Modes[Modes["OBS"] = 1] = "OBS";
     Modes[Modes["RTMP"] = 2] = "RTMP";
 })(Modes || (Modes = {}));
+
+var PostTypes = Object.freeze({
+    TEXT: 'text',
+    LINK: 'link',
+    POLL: 'poll',
+    IMAGE: 'image',
+    VIDEO: 'video',
+});
 
 var Roles;
 (function (Roles) {
@@ -18248,12 +18295,15 @@ var Glitch = /** @class */ (function () {
         Session: Session,
         Storage: Storage,
         Data: Data,
+        LabelManager: LabelManager,
     };
     Glitch.constants = {
         AcceptanceStatus: AcceptanceStatus,
         AddressLocationType: AddressLocationType,
         CompetitionTypes: CompetitionTypes,
+        ContentStatus: ContentStatus,
         Modes: Modes,
+        PostTypes: PostTypes,
         Roles: Roles,
         TeamJoinProcess: TeamJoinProcess,
         TicketTypes: TicketTypes$1,
