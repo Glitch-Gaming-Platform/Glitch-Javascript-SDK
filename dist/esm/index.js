@@ -31340,6 +31340,15 @@ var EventsRoutes = /** @class */ (function () {
     return EventsRoutes;
 }());
 
+var RecordingsRoute = /** @class */ (function () {
+    function RecordingsRoute() {
+    }
+    RecordingsRoute.routes = {
+        update: { url: '/events/{event_id}/recording/{recording_id}', method: HTTP_METHODS.PUT },
+    };
+    return RecordingsRoute;
+}());
+
 var Events = /** @class */ (function () {
     function Events() {
     }
@@ -31653,6 +31662,20 @@ var Events = /** @class */ (function () {
     };
     Events.acceptInvite = function (event_id, token, params) {
         return Requests.processRoute(EventsRoutes.routes.acceptInvite, { token: token }, { event_id: event_id }, params);
+    };
+    /**
+     * Update a recording related to an event.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/updateEventRecording
+     *
+     * @param event_id The id of the event to update.
+     * @param recording_id The id of the recording to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Events.updateRecording = function (event_id, recording_id, data, params) {
+        return Requests.processRoute(RecordingsRoute.routes.update, data, { event_id: event_id, recording_id: recording_id }, params);
     };
     return Events;
 }());

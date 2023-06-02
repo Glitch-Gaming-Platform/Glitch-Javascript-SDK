@@ -1,4 +1,5 @@
 import EventsRoutes from "../routes/EventsRoute";
+import RecordingsRoute from "../routes/RecordingRoute";
 import Requests from "../util/Requests";
 import Response from "../util/Response";
 import { AxiosPromise } from "axios";
@@ -371,6 +372,22 @@ class Events {
     public static acceptInvite<T>(event_id: string, token: string , params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(EventsRoutes.routes.acceptInvite, { token: token }, { event_id: event_id }, params);
+    }
+
+    /**
+     * Update a recording related to an event.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/updateEventRecording
+     * 
+     * @param event_id The id of the event to update.
+     * @param recording_id The id of the recording to update.
+     * @param data The data to update.
+     * 
+     * @returns promise
+     */
+    public static updateRecording<T>(event_id: string, recording_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(RecordingsRoute.routes.update, data, { event_id: event_id, recording_id : recording_id }, params);
     }
 
 
