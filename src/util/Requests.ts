@@ -197,6 +197,14 @@ class Requests {
 
     formData.append(filename, file);
 
+    if (this.community_id) {
+      // Add the community_id to the request body
+      data = {
+        ...data,
+        communities: [ this.community_id ]
+      };
+    }
+
     for (let key in data) {
       formData.append(key, data[key]);
     }
@@ -222,6 +230,15 @@ class Requests {
     const formData = new FormData();
 
     formData.append(filename, blob);
+
+    if (this.community_id) {
+      // Add the community_id to the request body
+      data = {
+        ...data,
+        communities: [ this.community_id ]
+      };
+    }
+
 
     for (let key in data) {
       formData.append(key, data[key]);
