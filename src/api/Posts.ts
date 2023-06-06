@@ -103,6 +103,20 @@ class Posts {
         return Requests.processRoute(PostsRoute.routes.delete, {}, {post_id : post_id}, params);
     }
 
+    /**
+     * Toggle a social interaction and off for a post.
+     * 
+     * @see hhttps://api.glitch.fun/api/documentation#/Post%20Route/postToggleInteraction
+     * 
+     * @param data The data to be passed when toggling the interaction.
+     * 
+     * @returns Promise
+     */
+    public static toggleInteraction<T>(post_id : string, data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(PostsRoute.routes.toggleInteraction, data, {post_id : post_id}, params);
+    }
+
 }
 
 export default Posts;

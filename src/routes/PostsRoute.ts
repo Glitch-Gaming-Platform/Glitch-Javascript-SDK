@@ -9,6 +9,7 @@ class PostsRoute {
       view : { url: '/posts/{post_id}', method: HTTP_METHODS.GET  },
       update  :{ url: '/posts/{post_id}', method: HTTP_METHODS.PUT  },
       delete : { url: '/posts/{post_id}', method: HTTP_METHODS.DELETE },
+      toggleInteraction :  { url: '/posts/{post_id}/toggleInteraction', method: HTTP_METHODS.POST },
     };
 
   }

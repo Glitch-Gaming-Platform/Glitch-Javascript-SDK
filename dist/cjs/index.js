@@ -16661,6 +16661,7 @@ var CommunitiesRoute = /** @class */ (function () {
         listInvites: { url: '/communities/{community_id}/invites', method: HTTP_METHODS.GET },
         sendInvite: { url: '/communities/{community_id}/sendInvite', method: HTTP_METHODS.POST },
         acceptInvite: { url: '/communities/{community_id}/acceptInvite', method: HTTP_METHODS.POST },
+        retrieveInvite: { url: '/communities/{community_id}/invites/{token}', method: HTTP_METHODS.GET },
         listUsers: { url: '/communities/{community_id}/users', method: HTTP_METHODS.GET },
         addUser: { url: '/communities/{community_id}/users', method: HTTP_METHODS.POST },
         showUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.GET },
@@ -16853,7 +16854,20 @@ var Communities = /** @class */ (function () {
      * @returns promise
      */
     Communities.acceptInvite = function (community_id, token, params) {
-        return Requests.processRoute(CommunitiesRoute.routes.acceptInvite, {}, { community_id: community_id }, params);
+        return Requests.processRoute(CommunitiesRoute.routes.acceptInvite, { token: token }, { community_id: community_id }, params);
+    };
+    /**
+     * Retrieves a user's invite that have been sent.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communityAcceptInvite
+     *
+     * @param community_id The id of the community
+     * @param token The token required to get the invite.
+     *
+     * @returns promise
+     */
+    Communities.retrieveInvite = function (community_id, token, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.retrieveInvite, {}, { community_id: community_id, token: token }, params);
     };
     /**
      * List the users who are currently associated with the community.
@@ -17793,6 +17807,7 @@ var PostsRoute = /** @class */ (function () {
         view: { url: '/posts/{post_id}', method: HTTP_METHODS.GET },
         update: { url: '/posts/{post_id}', method: HTTP_METHODS.PUT },
         delete: { url: '/posts/{post_id}', method: HTTP_METHODS.DELETE },
+        toggleInteraction: { url: '/posts/{post_id}/toggleInteraction', method: HTTP_METHODS.POST },
     };
     return PostsRoute;
 }());
@@ -17883,6 +17898,18 @@ var Posts = /** @class */ (function () {
      */
     Posts.delete = function (post_id, params) {
         return Requests.processRoute(PostsRoute.routes.delete, {}, { post_id: post_id }, params);
+    };
+    /**
+     * Toggle a social interaction and off for a post.
+     *
+     * @see hhttps://api.glitch.fun/api/documentation#/Post%20Route/postToggleInteraction
+     *
+     * @param data The data to be passed when toggling the interaction.
+     *
+     * @returns Promise
+     */
+    Posts.toggleInteraction = function (post_id, data, params) {
+        return Requests.processRoute(PostsRoute.routes.toggleInteraction, data, { post_id: post_id }, params);
     };
     return Posts;
 }());
@@ -18020,6 +18047,31 @@ var Templates = /** @class */ (function () {
         return Requests.uploadBlob(url, 'image', blob, data);
     };
     return Templates;
+}());
+
+var UtilityRoutes = /** @class */ (function () {
+    function UtilityRoutes() {
+    }
+    UtilityRoutes.routes = {
+        social_interactions: { url: '/util/socialinteractions', method: HTTP_METHODS.GET },
+    };
+    return UtilityRoutes;
+}());
+
+var Utility = /** @class */ (function () {
+    function Utility() {
+    }
+    /**
+     * Get all the social interactions and emojis that are available.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilSocialInteraction
+     *
+     * @returns promise
+     */
+    Utility.listSocialInteractions = function (params) {
+        return Requests.processRoute(UtilityRoutes.routes.social_interactions, undefined, undefined, params);
+    };
+    return Utility;
 }());
 
 var Parser = /** @class */ (function () {
@@ -18286,6 +18338,138 @@ var TeamJoinProcess;
     TeamJoinProcess[TeamJoinProcess["APPROVAL"] = 3] = "APPROVAL";
 })(TeamJoinProcess || (TeamJoinProcess = {}));
 
+var SocialInteractions;
+(function (SocialInteractions) {
+    SocialInteractions["LIKE"] = "\uD83D\uDC4D";
+    SocialInteractions["LOVE"] = "\u2764\uFE0F";
+    SocialInteractions["CARE"] = "\uD83E\uDD70";
+    SocialInteractions["HAHA"] = "\uD83D\uDE02";
+    SocialInteractions["WOW"] = "\uD83D\uDE2E";
+    SocialInteractions["SAD"] = "\uD83D\uDE1E";
+    SocialInteractions["CRY"] = "\uD83D\uDE22";
+    SocialInteractions["ANGRY"] = "\uD83D\uDE21";
+    SocialInteractions["THUMBS_UP"] = "\uD83D\uDC4D";
+    SocialInteractions["THUMBS_DOWN"] = "\uD83D\uDC4E";
+    SocialInteractions["SMILE"] = "\uD83D\uDE0A";
+    SocialInteractions["GRIN"] = "\uD83D\uDE01";
+    SocialInteractions["LAUGH"] = "\uD83D\uDE04";
+    SocialInteractions["JOY"] = "\uD83D\uDE03";
+    SocialInteractions["BLUSH"] = "\uD83D\uDE0A";
+    SocialInteractions["SURPRISE"] = "\uD83D\uDE2E";
+    SocialInteractions["SHOCK"] = "\uD83D\uDE32";
+    SocialInteractions["WOW_FACE"] = "\uD83D\uDE2F";
+    SocialInteractions["MIND_BLOWN"] = "\uD83E\uDD2F";
+    SocialInteractions["ASTONISHED"] = "\uD83D\uDE33";
+    SocialInteractions["CLAP"] = "\uD83D\uDC4F";
+    SocialInteractions["PARTY"] = "\uD83C\uDF89";
+    SocialInteractions["FIRE"] = "\uD83D\uDD25";
+    SocialInteractions["COOL"] = "\uD83D\uDE0E";
+    SocialInteractions["OK"] = "\uD83D\uDC4C";
+    SocialInteractions["EYES"] = "\uD83D\uDC40";
+    SocialInteractions["WINK"] = "\uD83D\uDE09";
+    SocialInteractions["TONGUE_OUT"] = "\uD83D\uDE1C";
+    SocialInteractions["SILLY"] = "\uD83E\uDD2A";
+    SocialInteractions["COFFEE"] = "\u2615";
+    SocialInteractions["TEA"] = "\uD83C\uDF75";
+    SocialInteractions["BEER"] = "\uD83C\uDF7A";
+    SocialInteractions["WINE"] = "\uD83C\uDF77";
+    SocialInteractions["COCKTAIL"] = "\uD83C\uDF78";
+    SocialInteractions["BALLOON"] = "\uD83C\uDF88";
+    SocialInteractions["GIFT"] = "\uD83C\uDF81";
+    SocialInteractions["CAMERA"] = "\uD83D\uDCF7";
+    SocialInteractions["VIDEO_CAMERA"] = "\uD83D\uDCF9";
+    SocialInteractions["MUSIC"] = "\uD83C\uDFB5";
+    SocialInteractions["HEADPHONES"] = "\uD83C\uDFA7";
+    SocialInteractions["TV"] = "\uD83D\uDCFA";
+    SocialInteractions["BOOK"] = "\uD83D\uDCDA";
+    SocialInteractions["PEN"] = "\uD83D\uDD8A\uFE0F";
+    SocialInteractions["PAPERCLIP"] = "\uD83D\uDCCE";
+    SocialInteractions["LOCK"] = "\uD83D\uDD12";
+    SocialInteractions["KEY"] = "\uD83D\uDD11";
+    SocialInteractions["MAGNIFYING_GLASS"] = "\uD83D\uDD0D";
+    SocialInteractions["EARTH_GLOBE"] = "\uD83C\uDF0D";
+    SocialInteractions["MAP"] = "\uD83D\uDDFA\uFE0F";
+    SocialInteractions["SUN"] = "\u2600\uFE0F";
+    SocialInteractions["MOON"] = "\uD83C\uDF19";
+    SocialInteractions["STARS"] = "\uD83C\uDF1F";
+    SocialInteractions["UMBRELLA"] = "\u2602\uFE0F";
+    SocialInteractions["RAINBOW"] = "\uD83C\uDF08";
+    SocialInteractions["CLOCK"] = "\u23F0";
+    SocialInteractions["HOURGLASS"] = "\u231B";
+    SocialInteractions["MONEY_BAG"] = "\uD83D\uDCB0";
+    SocialInteractions["SHOPPING_CART"] = "\uD83D\uDED2";
+    SocialInteractions["THUMBS_UP_SIGN"] = "\uD83D\uDC4D\uD83C\uDFFB";
+    SocialInteractions["THUMBS_DOWN_SIGN"] = "\uD83D\uDC4E\uD83C\uDFFB";
+    SocialInteractions["SMILING_FACE_WITH_HALO"] = "\uD83D\uDE07";
+    SocialInteractions["NERD_FACE"] = "\uD83E\uDD13";
+    SocialInteractions["ROLLING_ON_THE_FLOOR_LAUGHING"] = "\uD83E\uDD23";
+    SocialInteractions["UPSIDE_DOWN_FACE"] = "\uD83D\uDE43";
+    SocialInteractions["WAVING_HAND"] = "\uD83D\uDC4B";
+    SocialInteractions["RAISED_HAND"] = "\u270B";
+    SocialInteractions["VICTORY_HAND"] = "\u270C\uFE0F";
+    SocialInteractions["FOLDED_HANDS"] = "\uD83D\uDE4F";
+    SocialInteractions["PERSON_RAISING_HAND"] = "\uD83D\uDE4B";
+    SocialInteractions["PERSON_BOWING"] = "\uD83D\uDE47";
+    SocialInteractions["PERSON_SHRUGGING"] = "\uD83E\uDD37";
+    SocialInteractions["PERSON_WALKING"] = "\uD83D\uDEB6";
+    SocialInteractions["PERSON_RUNNING"] = "\uD83C\uDFC3";
+    SocialInteractions["PERSON_SWIMMING"] = "\uD83C\uDFCA";
+    SocialInteractions["PERSON_BIKING"] = "\uD83D\uDEB4";
+    SocialInteractions["PERSON_DANCING"] = "\uD83D\uDC83";
+    SocialInteractions["PEOPLE_HUGGING"] = "\uD83E\uDD17";
+    SocialInteractions["SPEECH_BUBBLE"] = "\uD83D\uDCAC";
+    SocialInteractions["THOUGHT_BUBBLE"] = "\uD83D\uDCAD";
+    SocialInteractions["BUST_IN_SILHOUETTE"] = "\uD83D\uDC64";
+    SocialInteractions["BUSTS_IN_SILHOUETTE"] = "\uD83D\uDC65";
+    SocialInteractions["MONKEY_FACE"] = "\uD83D\uDC35";
+    SocialInteractions["DOG_FACE"] = "\uD83D\uDC36";
+    SocialInteractions["CAT_FACE"] = "\uD83D\uDC31";
+    SocialInteractions["PIG_FACE"] = "\uD83D\uDC37";
+    SocialInteractions["COW_FACE"] = "\uD83D\uDC2E";
+    SocialInteractions["RABBIT_FACE"] = "\uD83D\uDC30";
+    SocialInteractions["BEAR_FACE"] = "\uD83D\uDC3B";
+    SocialInteractions["PANDA_FACE"] = "\uD83D\uDC3C";
+    SocialInteractions["PENGUIN"] = "\uD83D\uDC27";
+    SocialInteractions["BIRD"] = "\uD83D\uDC26";
+    SocialInteractions["BABY_CHICK"] = "\uD83D\uDC24";
+    SocialInteractions["HATCHING_CHICK"] = "\uD83D\uDC23";
+    SocialInteractions["BUG"] = "\uD83D\uDC1B";
+    SocialInteractions["BUTTERFLY"] = "\uD83E\uDD8B";
+    SocialInteractions["SNAIL"] = "\uD83D\uDC0C";
+    SocialInteractions["LADY_BEETLE"] = "\uD83D\uDC1E";
+    SocialInteractions["SPIDER"] = "\uD83D\uDD77\uFE0F";
+    SocialInteractions["WEB"] = "\uD83D\uDD78\uFE0F";
+    SocialInteractions["TURTLE"] = "\uD83D\uDC22";
+    SocialInteractions["FISH"] = "\uD83D\uDC1F";
+    SocialInteractions["WHALE"] = "\uD83D\uDC33";
+    SocialInteractions["DOLPHIN"] = "\uD83D\uDC2C";
+    SocialInteractions["OCTOPUS"] = "\uD83D\uDC19";
+    SocialInteractions["CACTUS"] = "\uD83C\uDF35";
+    SocialInteractions["TULIP"] = "\uD83C\uDF37";
+    SocialInteractions["ROSE"] = "\uD83C\uDF39";
+    SocialInteractions["SUNFLOWER"] = "\uD83C\uDF3B";
+    SocialInteractions["PALM_TREE"] = "\uD83C\uDF34";
+    SocialInteractions["EVERGREEN_TREE"] = "\uD83C\uDF32";
+    SocialInteractions["DECIDUOUS_TREE"] = "\uD83C\uDF33";
+    SocialInteractions["EGGPLANT"] = "\uD83C\uDF46";
+    SocialInteractions["TOMATO"] = "\uD83C\uDF45";
+    SocialInteractions["CARROT"] = "\uD83E\uDD55";
+    SocialInteractions["BROCCOLI"] = "\uD83E\uDD66";
+    SocialInteractions["CORN"] = "\uD83C\uDF3D";
+    SocialInteractions["HOT_PEPPER"] = "\uD83C\uDF36\uFE0F";
+    SocialInteractions["BREAD"] = "\uD83C\uDF5E";
+    SocialInteractions["CHEESE"] = "\uD83E\uDDC0";
+    SocialInteractions["HAMBURGER"] = "\uD83C\uDF54";
+    SocialInteractions["PIZZA"] = "\uD83C\uDF55";
+    SocialInteractions["TACO"] = "\uD83C\uDF2E";
+    SocialInteractions["SUSHI"] = "\uD83C\uDF63";
+    SocialInteractions["CUPCAKE"] = "\uD83E\uDDC1";
+    SocialInteractions["ICE_CREAM"] = "\uD83C\uDF68";
+    SocialInteractions["DONUT"] = "\uD83C\uDF69";
+    SocialInteractions["CAKE"] = "\uD83C\uDF82";
+    SocialInteractions["COOKIES"] = "\uD83C\uDF6A";
+})(SocialInteractions || (SocialInteractions = {}));
+
 var TicketTypes;
 (function (TicketTypes) {
     TicketTypes[TicketTypes["PAID"] = 1] = "PAID";
@@ -18344,7 +18528,8 @@ var Glitch = /** @class */ (function () {
         Teams: Teams,
         Posts: Posts,
         Templates: Templates,
-        Waitlists: Waitlists
+        Waitlists: Waitlists,
+        Utility: Utility,
     };
     Glitch.util = {
         Requests: Requests,
@@ -18362,6 +18547,7 @@ var Glitch = /** @class */ (function () {
         Modes: Modes,
         PostTypes: PostTypes,
         Roles: Roles,
+        SocialInteractions: SocialInteractions,
         TeamJoinProcess: TeamJoinProcess,
         TicketTypes: TicketTypes$1,
         TicketUsageTypes: TicketUsageTypes,

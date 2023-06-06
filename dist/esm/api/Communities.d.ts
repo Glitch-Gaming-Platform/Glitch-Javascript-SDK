@@ -148,6 +148,17 @@ declare class Communities {
      */
     static acceptInvite<T>(community_id: string, token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Retrieves a user's invite that have been sent.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communityAcceptInvite
+     *
+     * @param community_id The id of the community
+     * @param token The token required to get the invite.
+     *
+     * @returns promise
+     */
+    static retrieveInvite<T>(community_id: string, token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List the users who are currently associated with the community.
      *
      * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communityUserList

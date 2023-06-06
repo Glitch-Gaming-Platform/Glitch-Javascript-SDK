@@ -8,6 +8,7 @@ import { Teams } from "./api";
 import { Posts } from "./api";
 import { Templates } from "./api";
 import { Waitlists } from "./api";
+import { Utility } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -17,6 +18,7 @@ import LabelManager from "./util/LabelManager";
 import { Modes } from "./constants/Modes";
 import { Roles } from "./constants/Roles";
 import { TeamJoinProcess } from "./constants/TeamJoinProcess";
+import { SocialInteractions } from "./constants/SocialInteractions";
 import TicketTypes from "./constants/TicketTypes";
 import { TicketUsageTypes } from "./constants/TicketUsageTypes";
 import { TicketVisibility } from "./constants/TicketVisbility";
@@ -35,6 +37,7 @@ declare class Glitch {
         Posts: typeof Posts;
         Templates: typeof Templates;
         Waitlists: typeof Waitlists;
+        Utility: typeof Utility;
     };
     static util: {
         Requests: typeof Requests;
@@ -89,6 +92,7 @@ declare class Glitch {
             VIDEO: "video";
         }>;
         Roles: typeof Roles;
+        SocialInteractions: typeof SocialInteractions;
         TeamJoinProcess: typeof TeamJoinProcess;
         TicketTypes: typeof TicketTypes;
         TicketUsageTypes: typeof TicketUsageTypes;

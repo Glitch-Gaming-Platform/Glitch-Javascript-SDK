@@ -71,5 +71,15 @@ declare class Posts {
      * @returns promise
      */
     static delete<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Toggle a social interaction and off for a post.
+     *
+     * @see hhttps://api.glitch.fun/api/documentation#/Post%20Route/postToggleInteraction
+     *
+     * @param data The data to be passed when toggling the interaction.
+     *
+     * @returns Promise
+     */
+    static toggleInteraction<T>(post_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Posts;

@@ -7,6 +7,7 @@ import Teams from "./Teams";
 import Waitlists from "./Waitlist";
 import Posts from "./Posts";
 import Templates from "./Templates";
+import Utility from "./Utility";
 
 
 export {Auth};
@@ -18,3 +19,4 @@ export {Teams};
 export {Waitlists};
 export {Posts};
 export {Templates};
+export {Utility};

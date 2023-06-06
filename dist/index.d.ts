@@ -727,6 +727,17 @@ declare class Communities {
      */
     static acceptInvite<T>(community_id: string, token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Retrieves a user's invite that have been sent.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communityAcceptInvite
+     *
+     * @param community_id The id of the community
+     * @param token The token required to get the invite.
+     *
+     * @returns promise
+     */
+    static retrieveInvite<T>(community_id: string, token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List the users who are currently associated with the community.
      *
      * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communityUserList
@@ -1476,6 +1487,16 @@ declare class Posts {
      * @returns promise
      */
     static delete<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Toggle a social interaction and off for a post.
+     *
+     * @see hhttps://api.glitch.fun/api/documentation#/Post%20Route/postToggleInteraction
+     *
+     * @param data The data to be passed when toggling the interaction.
+     *
+     * @returns Promise
+     */
+    static toggleInteraction<T>(post_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Templates {
@@ -1571,6 +1592,17 @@ declare class Templates {
      * @returns promise
      */
     static uploadMainImageBlob<T>(template_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
+declare class Utility {
+    /**
+     * Get all the social interactions and emojis that are available.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilSocialInteraction
+     *
+     * @returns promise
+     */
+    static listSocialInteractions<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 interface Route {
@@ -1716,6 +1748,137 @@ declare enum TeamJoinProcess {
     APPROVAL = 3
 }
 
+declare enum SocialInteractions {
+    LIKE = "\uD83D\uDC4D",
+    LOVE = "\u2764\uFE0F",
+    CARE = "\uD83E\uDD70",
+    HAHA = "\uD83D\uDE02",
+    WOW = "\uD83D\uDE2E",
+    SAD = "\uD83D\uDE1E",
+    CRY = "\uD83D\uDE22",
+    ANGRY = "\uD83D\uDE21",
+    THUMBS_UP = "\uD83D\uDC4D",
+    THUMBS_DOWN = "\uD83D\uDC4E",
+    SMILE = "\uD83D\uDE0A",
+    GRIN = "\uD83D\uDE01",
+    LAUGH = "\uD83D\uDE04",
+    JOY = "\uD83D\uDE03",
+    BLUSH = "\uD83D\uDE0A",
+    SURPRISE = "\uD83D\uDE2E",
+    SHOCK = "\uD83D\uDE32",
+    WOW_FACE = "\uD83D\uDE2F",
+    MIND_BLOWN = "\uD83E\uDD2F",
+    ASTONISHED = "\uD83D\uDE33",
+    CLAP = "\uD83D\uDC4F",
+    PARTY = "\uD83C\uDF89",
+    FIRE = "\uD83D\uDD25",
+    COOL = "\uD83D\uDE0E",
+    OK = "\uD83D\uDC4C",
+    EYES = "\uD83D\uDC40",
+    WINK = "\uD83D\uDE09",
+    TONGUE_OUT = "\uD83D\uDE1C",
+    SILLY = "\uD83E\uDD2A",
+    COFFEE = "\u2615",
+    TEA = "\uD83C\uDF75",
+    BEER = "\uD83C\uDF7A",
+    WINE = "\uD83C\uDF77",
+    COCKTAIL = "\uD83C\uDF78",
+    BALLOON = "\uD83C\uDF88",
+    GIFT = "\uD83C\uDF81",
+    CAMERA = "\uD83D\uDCF7",
+    VIDEO_CAMERA = "\uD83D\uDCF9",
+    MUSIC = "\uD83C\uDFB5",
+    HEADPHONES = "\uD83C\uDFA7",
+    TV = "\uD83D\uDCFA",
+    BOOK = "\uD83D\uDCDA",
+    PEN = "\uD83D\uDD8A\uFE0F",
+    PAPERCLIP = "\uD83D\uDCCE",
+    LOCK = "\uD83D\uDD12",
+    KEY = "\uD83D\uDD11",
+    MAGNIFYING_GLASS = "\uD83D\uDD0D",
+    EARTH_GLOBE = "\uD83C\uDF0D",
+    MAP = "\uD83D\uDDFA\uFE0F",
+    SUN = "\u2600\uFE0F",
+    MOON = "\uD83C\uDF19",
+    STARS = "\uD83C\uDF1F",
+    UMBRELLA = "\u2602\uFE0F",
+    RAINBOW = "\uD83C\uDF08",
+    CLOCK = "\u23F0",
+    HOURGLASS = "\u231B",
+    MONEY_BAG = "\uD83D\uDCB0",
+    SHOPPING_CART = "\uD83D\uDED2",
+    THUMBS_UP_SIGN = "\uD83D\uDC4D\uD83C\uDFFB",
+    THUMBS_DOWN_SIGN = "\uD83D\uDC4E\uD83C\uDFFB",
+    SMILING_FACE_WITH_HALO = "\uD83D\uDE07",
+    NERD_FACE = "\uD83E\uDD13",
+    ROLLING_ON_THE_FLOOR_LAUGHING = "\uD83E\uDD23",
+    UPSIDE_DOWN_FACE = "\uD83D\uDE43",
+    WAVING_HAND = "\uD83D\uDC4B",
+    RAISED_HAND = "\u270B",
+    VICTORY_HAND = "\u270C\uFE0F",
+    FOLDED_HANDS = "\uD83D\uDE4F",
+    PERSON_RAISING_HAND = "\uD83D\uDE4B",
+    PERSON_BOWING = "\uD83D\uDE47",
+    PERSON_SHRUGGING = "\uD83E\uDD37",
+    PERSON_WALKING = "\uD83D\uDEB6",
+    PERSON_RUNNING = "\uD83C\uDFC3",
+    PERSON_SWIMMING = "\uD83C\uDFCA",
+    PERSON_BIKING = "\uD83D\uDEB4",
+    PERSON_DANCING = "\uD83D\uDC83",
+    PEOPLE_HUGGING = "\uD83E\uDD17",
+    SPEECH_BUBBLE = "\uD83D\uDCAC",
+    THOUGHT_BUBBLE = "\uD83D\uDCAD",
+    BUST_IN_SILHOUETTE = "\uD83D\uDC64",
+    BUSTS_IN_SILHOUETTE = "\uD83D\uDC65",
+    MONKEY_FACE = "\uD83D\uDC35",
+    DOG_FACE = "\uD83D\uDC36",
+    CAT_FACE = "\uD83D\uDC31",
+    PIG_FACE = "\uD83D\uDC37",
+    COW_FACE = "\uD83D\uDC2E",
+    RABBIT_FACE = "\uD83D\uDC30",
+    BEAR_FACE = "\uD83D\uDC3B",
+    PANDA_FACE = "\uD83D\uDC3C",
+    PENGUIN = "\uD83D\uDC27",
+    BIRD = "\uD83D\uDC26",
+    BABY_CHICK = "\uD83D\uDC24",
+    HATCHING_CHICK = "\uD83D\uDC23",
+    BUG = "\uD83D\uDC1B",
+    BUTTERFLY = "\uD83E\uDD8B",
+    SNAIL = "\uD83D\uDC0C",
+    LADY_BEETLE = "\uD83D\uDC1E",
+    SPIDER = "\uD83D\uDD77\uFE0F",
+    WEB = "\uD83D\uDD78\uFE0F",
+    TURTLE = "\uD83D\uDC22",
+    FISH = "\uD83D\uDC1F",
+    WHALE = "\uD83D\uDC33",
+    DOLPHIN = "\uD83D\uDC2C",
+    OCTOPUS = "\uD83D\uDC19",
+    CACTUS = "\uD83C\uDF35",
+    TULIP = "\uD83C\uDF37",
+    ROSE = "\uD83C\uDF39",
+    SUNFLOWER = "\uD83C\uDF3B",
+    PALM_TREE = "\uD83C\uDF34",
+    EVERGREEN_TREE = "\uD83C\uDF32",
+    DECIDUOUS_TREE = "\uD83C\uDF33",
+    EGGPLANT = "\uD83C\uDF46",
+    TOMATO = "\uD83C\uDF45",
+    CARROT = "\uD83E\uDD55",
+    BROCCOLI = "\uD83E\uDD66",
+    CORN = "\uD83C\uDF3D",
+    HOT_PEPPER = "\uD83C\uDF36\uFE0F",
+    BREAD = "\uD83C\uDF5E",
+    CHEESE = "\uD83E\uDDC0",
+    HAMBURGER = "\uD83C\uDF54",
+    PIZZA = "\uD83C\uDF55",
+    TACO = "\uD83C\uDF2E",
+    SUSHI = "\uD83C\uDF63",
+    CUPCAKE = "\uD83E\uDDC1",
+    ICE_CREAM = "\uD83C\uDF68",
+    DONUT = "\uD83C\uDF69",
+    CAKE = "\uD83C\uDF82",
+    COOKIES = "\uD83C\uDF6A"
+}
+
 declare enum TicketTypes {
     PAID = 1,
     FREE = 2,
@@ -1767,6 +1930,7 @@ declare class Glitch {
         Posts: typeof Posts;
         Templates: typeof Templates;
         Waitlists: typeof Waitlists;
+        Utility: typeof Utility;
     };
     static util: {
         Requests: typeof Requests;
@@ -1821,6 +1985,7 @@ declare class Glitch {
             VIDEO: "video";
         }>;
         Roles: typeof Roles;
+        SocialInteractions: typeof SocialInteractions;
         TeamJoinProcess: typeof TeamJoinProcess;
         TicketTypes: typeof TicketTypes;
         TicketUsageTypes: typeof TicketUsageTypes;

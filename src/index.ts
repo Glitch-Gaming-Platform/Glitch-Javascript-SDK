@@ -12,6 +12,7 @@ import { Teams } from "./api";
 import { Posts } from "./api";
 import {Templates} from "./api";
 import { Waitlists } from "./api";
+import { Utility } from "./api";
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -28,6 +29,7 @@ import { Modes } from "./constants/Modes";
 import { PostTypes } from "./constants/PostTypes";
 import { Roles } from "./constants/Roles";
 import { TeamJoinProcess } from "./constants/TeamJoinProcess";
+import {SocialInteractions} from "./constants/SocialInteractions"
 import TicketTypes from "./constants/TicketTypes";
 import { TicketUsageTypes } from "./constants/TicketUsageTypes";
 import { TicketVisibility } from "./constants/TicketVisbility";
@@ -48,7 +50,8 @@ class Glitch {
         Teams: Teams,
         Posts: Posts,
         Templates : Templates,
-        Waitlists: Waitlists
+        Waitlists: Waitlists,
+        Utility : Utility,
     }
 
     public static util = {
@@ -68,6 +71,7 @@ class Glitch {
        Modes : Modes,
        PostTypes : PostTypes,
        Roles: Roles,
+       SocialInteractions : SocialInteractions,
        TeamJoinProcess : TeamJoinProcess,
        TicketTypes : TicketTypes,
        TicketUsageTypes : TicketUsageTypes,

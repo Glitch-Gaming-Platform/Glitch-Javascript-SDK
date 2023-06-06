@@ -212,7 +212,21 @@ class Communities {
      * @returns promise
      */
     public static acceptInvite<T>(community_id : string, token : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.acceptInvite, {}, {community_id : community_id}, params);  
+        return Requests.processRoute(CommunitiesRoute.routes.acceptInvite, {token : token}, {community_id : community_id}, params);  
+    }
+
+    /**
+     * Retrieves a user's invite that have been sent.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communityAcceptInvite
+     * 
+     * @param community_id The id of the community
+     * @param token The token required to get the invite.
+     * 
+     * @returns promise
+     */
+    public static retrieveInvite<T>(community_id : string, token : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.retrieveInvite, {}, {community_id : community_id, token : token}, params);  
     }
 
     /**

@@ -15,6 +15,7 @@ class CommunitiesRoute {
       listInvites : {url : '/communities/{community_id}/invites', method : HTTP_METHODS.GET },
       sendInvite : {url: '/communities/{community_id}/sendInvite', method : HTTP_METHODS.POST},
       acceptInvite : {url : '/communities/{community_id}/acceptInvite', method: HTTP_METHODS.POST},
+      retrieveInvite : {url : '/communities/{community_id}/invites/{token}', method: HTTP_METHODS.GET},
       listUsers : {url : '/communities/{community_id}/users', method : HTTP_METHODS.GET},
       addUser : {url : '/communities/{community_id}/users',  method : HTTP_METHODS.POST},
       showUser : {url : '/communities/{community_id}/users/{user_id}', method : HTTP_METHODS.GET},
