@@ -16005,8 +16005,8 @@ var Auth = /** @class */ (function () {
      *
      * @returns promise
      */
-    Auth.oneTimeLogin = function () {
-        return Requests.processRoute(AuthRoutes.routes.one_time_login, {});
+    Auth.oneTimeLogin = function (token) {
+        return Requests.processRoute(AuthRoutes.routes.one_time_login, { token: token });
     };
     /**
      * Execute the password reset process using a user's email address.
@@ -18211,12 +18211,14 @@ var Session = /** @class */ (function () {
         Storage.set(Session._first_name_key, null);
         Storage.set(Session._last_name_key, null);
         Storage.set(Session._email_key, null);
+        Storage.set(Session._username_key, null);
     };
     Session.processAuthentication = function (data) {
         Storage.setAuthToken(data.token.access_token);
         Storage.set(Session._id_key, data.id);
         Storage.set(Session._first_name_key, data.first_name);
         Storage.set(Session._last_name_key, data.last_name);
+        Storage.set(Session._username_key, data.username);
         Storage.set(Session._email_key, data.email);
         Config.setAuthToken(data.token.access_token);
     };

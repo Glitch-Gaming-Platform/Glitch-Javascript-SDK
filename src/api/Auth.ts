@@ -53,8 +53,8 @@ class Auth {
      * 
      * @returns promise
      */
-    public static oneTimeLogin<T>() : AxiosPromise<Response<T>> {
-        return Requests.processRoute(AuthRoutes.routes.one_time_login, {});
+    public static oneTimeLogin<T>(token : string) : AxiosPromise<Response<T>> {
+        return Requests.processRoute(AuthRoutes.routes.one_time_login, {token : token});
     }
     
     /**

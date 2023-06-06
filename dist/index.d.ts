@@ -97,7 +97,7 @@ declare class Auth {
      *
      * @returns promise
      */
-    static oneTimeLogin<T>(): AxiosPromise<Response<T>>;
+    static oneTimeLogin<T>(token: string): AxiosPromise<Response<T>>;
     /**
      * Execute the password reset process using a user's email address.
      *
@@ -1692,6 +1692,7 @@ declare class Session {
         first_name: string;
         last_name: string;
         email: string;
+        username: string;
     }): void;
 }
 
