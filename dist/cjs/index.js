@@ -16082,6 +16082,11 @@ var CompetitionRoutes = /** @class */ (function () {
         updateVenue: { url: '/competitions/{competition_id}/venues/{venue_id}', method: HTTP_METHODS.PUT },
         destroyVenue: { url: '/competitions/{competition_id}/venues/{venue_id}', method: HTTP_METHODS.DELETE },
         uploadVenueMainImage: { url: '/competitions/{competition_id}/venues/{venue_id}/uploadMainImage', method: HTTP_METHODS.POST },
+        userPointsLeaderboard: { url: '/competitions/{competition_id}/userPointsLeaderboard', method: HTTP_METHODS.GET },
+        teamPointsLeaderboard: { url: '/competitions/{competition_id}/teamPointsLeaderboard', method: HTTP_METHODS.GET },
+        userWinsLeaderboard: { url: '/competitions/{competition_id}/userWinsLeaderboard', method: HTTP_METHODS.GET },
+        teamWinsLeaderboard: { url: '/competitions/{competition_id}/teamWinsLeaderboard', method: HTTP_METHODS.GET },
+        allLeaderboards: { url: '/competitions/{competition_id}/allLeaderboards', method: HTTP_METHODS.GET },
     };
     return CompetitionRoutes;
 }());
@@ -16642,6 +16647,61 @@ var Competitions = /** @class */ (function () {
     Competitions.uploadVenueMainImageBlob = function (competition_id, blob, data, params) {
         var url = CompetitionRoutes.routes.uploadVenueMainImage.url.replace('{competition_id}', competition_id);
         return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    /**
+     * Get a leaderboard by a users points.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    Competitions.userPointsLeaderboard = function (competition_id, params) {
+        return Requests.processRoute(CompetitionRoutes.routes.userPointsLeaderboard, {}, { competition_id: competition_id }, params);
+    };
+    /**
+     * Get a leaderboard by a users wins.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    Competitions.userWinsLeaderboard = function (competition_id, params) {
+        return Requests.processRoute(CompetitionRoutes.routes.userWinsLeaderboard, {}, { competition_id: competition_id }, params);
+    };
+    /**
+     * Get a leaderboard by a teams points.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    Competitions.teamPointsLeaderboard = function (competition_id, params) {
+        return Requests.processRoute(CompetitionRoutes.routes.teamPointsLeaderboard, {}, { competition_id: competition_id }, params);
+    };
+    /**
+     * Get a leaderboard by a teams wins.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    Competitions.teamWinsLeaderboard = function (competition_id, params) {
+        return Requests.processRoute(CompetitionRoutes.routes.teamWinsLeaderboard, {}, { competition_id: competition_id }, params);
+    };
+    /**
+     * Get all leaderboards.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    Competitions.allLeaderboards = function (competition_id, params) {
+        return Requests.processRoute(CompetitionRoutes.routes.allLeaderboards, {}, { competition_id: competition_id }, params);
     };
     return Competitions;
 }());

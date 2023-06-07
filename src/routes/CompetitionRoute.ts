@@ -47,6 +47,11 @@ class CompetitionRoutes {
       updateVenue : { url: '/competitions/{competition_id}/venues/{venue_id}', method: HTTP_METHODS.PUT },
       destroyVenue : { url: '/competitions/{competition_id}/venues/{venue_id}', method: HTTP_METHODS.DELETE },
       uploadVenueMainImage : { url: '/competitions/{competition_id}/venues/{venue_id}/uploadMainImage', method: HTTP_METHODS.POST },
+      userPointsLeaderboard : { url: '/competitions/{competition_id}/userPointsLeaderboard', method: HTTP_METHODS.GET },
+      teamPointsLeaderboard : { url: '/competitions/{competition_id}/teamPointsLeaderboard', method: HTTP_METHODS.GET },
+      userWinsLeaderboard : { url: '/competitions/{competition_id}/userWinsLeaderboard', method: HTTP_METHODS.GET },
+      teamWinsLeaderboard : { url: '/competitions/{competition_id}/teamWinsLeaderboard', method: HTTP_METHODS.GET },
+      allLeaderboards : { url: '/competitions/{competition_id}/allLeaderboards', method: HTTP_METHODS.GET },
     };
 
 

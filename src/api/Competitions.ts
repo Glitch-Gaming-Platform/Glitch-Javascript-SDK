@@ -620,6 +620,66 @@ class Competitions {
 
         return Requests.uploadBlob(url, 'image', blob, data);
     }
+
+    /**
+     * Get a leaderboard by a users points.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * 
+     * @param competition_id 
+     * @returns promise
+     */
+    public static userPointsLeaderboard<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
+        return Requests.processRoute(CompetitionRoutes.routes.userPointsLeaderboard, {}, {competition_id : competition_id}, params);
+    }
+
+    /**
+     * Get a leaderboard by a users wins.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * 
+     * @param competition_id 
+     * @returns promise
+     */
+    public static userWinsLeaderboard<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
+        return Requests.processRoute(CompetitionRoutes.routes.userWinsLeaderboard, {}, {competition_id : competition_id}, params);
+    }
+
+    /**
+     * Get a leaderboard by a teams points.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * 
+     * @param competition_id 
+     * @returns promise
+     */
+    public static teamPointsLeaderboard<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
+        return Requests.processRoute(CompetitionRoutes.routes.teamPointsLeaderboard, {}, {competition_id : competition_id}, params);
+    }
+
+    /**
+     * Get a leaderboard by a teams wins.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * 
+     * @param competition_id 
+     * @returns promise
+     */
+    public static teamWinsLeaderboard<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
+        return Requests.processRoute(CompetitionRoutes.routes.teamWinsLeaderboard, {}, {competition_id : competition_id}, params);
+    }
+
+    /**
+     * Get all leaderboards.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * 
+     * @param competition_id 
+     * @returns promise
+     */
+    public static allLeaderboards<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
+        return Requests.processRoute(CompetitionRoutes.routes.allLeaderboards, {}, {competition_id : competition_id}, params);
+    }
 }
 
 export default Competitions;

@@ -577,6 +577,51 @@ declare class Competitions {
      * @returns promise
      */
     static uploadVenueMainImageBlob<T>(competition_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a leaderboard by a users points.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static userPointsLeaderboard<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a leaderboard by a users wins.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static userWinsLeaderboard<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a leaderboard by a teams points.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static teamPointsLeaderboard<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a leaderboard by a teams wins.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static teamWinsLeaderboard<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all leaderboards.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static allLeaderboards<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Communities {
