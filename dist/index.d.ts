@@ -1746,6 +1746,7 @@ declare class Session {
     static getFirstName(): string | null;
     static getLastName(): string | null;
     static getEmail(): string | null;
+    static hasJoinedCommunity(): boolean;
     static end(): void;
     static processAuthentication(data: {
         token: {

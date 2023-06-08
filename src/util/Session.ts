@@ -34,6 +34,16 @@ class Session {
     return Storage.get(Session._email_key);
   }
 
+  public static hasJoinedCommunity() {
+    const community = Storage.get('community');
+
+    if(!community) {
+      return false;
+    }
+
+    return (community?.me) ? true : false;
+  }
+
   public static end(): void {
     Storage.setAuthToken(null);
     Storage.set(Session._id_key, null);

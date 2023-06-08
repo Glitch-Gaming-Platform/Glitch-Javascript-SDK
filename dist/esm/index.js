@@ -32530,6 +32530,13 @@ var Session = /** @class */ (function () {
     Session.getEmail = function () {
         return Storage.get(Session._email_key);
     };
+    Session.hasJoinedCommunity = function () {
+        var community = Storage.get('community');
+        if (!community) {
+            return false;
+        }
+        return (community === null || community === void 0 ? void 0 : community.me) ? true : false;
+    };
     Session.end = function () {
         Storage.setAuthToken(null);
         Storage.set(Session._id_key, null);
