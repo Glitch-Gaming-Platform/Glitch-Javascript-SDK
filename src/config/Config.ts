@@ -1,6 +1,7 @@
 import Community from "../models/community";
 import LabelManager from "../util/LabelManager";
 import Requests from "../util/Requests";
+import Storage from "../util/Storage";
 
 /**
  * Config
@@ -13,6 +14,7 @@ class Config {
   private static _baseUrl: string;
   private static _authToken: string;
   private static _community: object;
+  private static _rootDomain: string;
 
   private static _baseUrlLocked: boolean = false;
 
@@ -22,7 +24,7 @@ class Config {
    * @param baseUrl The url base endpoint of the api
    * @param authToken The JSON Web Token
    */
-  public static setConfig(baseUrl: string, authToken: string, lock? : boolean) {
+  public static setConfig(baseUrl: string, authToken: string, lock?: boolean) {
 
     this.setBaseUrl(baseUrl, lock);
 
@@ -38,15 +40,15 @@ class Config {
    * @param baseUrl The url that connects to the APIs base
    * @param lock If set to true, will lock the baseUrl so it cannot be changed
    */
-  public static setBaseUrl(baseUrl: string, lock? : boolean) {
+  public static setBaseUrl(baseUrl: string, lock?: boolean) {
 
-    if(!this._baseUrlLocked) {
+    if (!this._baseUrlLocked) {
       Config._baseUrl = baseUrl;
 
       Requests.setBaseUrl(baseUrl);
     }
 
-    if(lock) {
+    if (lock) {
       this._baseUrlLocked = true;
     }
   }
@@ -71,8 +73,35 @@ class Config {
     Config._community = community;
 
     Requests.setCommunityID(community.id);
-    
+
     LabelManager.initialize(community);
+  }
+
+  /**
+   * Sets the root level domain so data can accessed across
+   * multiple subdomains
+   * 
+   * @param domain The domain ie: example.com
+   */
+  public static setRootDomain(domain: string) {
+
+    const parts = domain.split('.');
+
+    if (parts.length > 2) {
+      parts.shift();
+    }
+
+    let formattedDomain = parts.join('.');
+
+    formattedDomain = formattedDomain.replace(/^\./, '');
+
+    this._rootDomain = formattedDomain;
+
+    Storage.setRootDomain(formattedDomain);
+  }
+
+  public static getRootDomain() {
+    return this._rootDomain;
   }
 
   /**

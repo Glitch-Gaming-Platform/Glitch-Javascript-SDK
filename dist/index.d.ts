@@ -10,6 +10,7 @@ declare class Config {
     private static _baseUrl;
     private static _authToken;
     private static _community;
+    private static _rootDomain;
     private static _baseUrlLocked;
     /**
      * Set the configuration
@@ -37,6 +38,14 @@ declare class Config {
      * @param community The object of the community
      */
     static setCommunity(community: Record<string, any>): void;
+    /**
+     * Sets the root level domain so data can accessed across
+     * multiple subdomains
+     *
+     * @param domain The domain ie: example.com
+     */
+    static setRootDomain(domain: string): void;
+    static getRootDomain(): string;
     /**
      * Gets base url
      */
@@ -1742,14 +1751,23 @@ declare class Session {
 }
 
 declare class Storage {
+    private static rootDomain;
     private static data;
+    /**
+     * Sets a root level domain so the data can persist across
+     * subdomains
+     *
+     * @param rootDomain
+     */
+    static setRootDomain(rootDomain: string): void;
+    private static getStorageKey;
     static set(key: string, value: any): void;
     static get(key: string): any;
     static setAuthToken(token: string | null): void;
     static getAuthToken(): string | null;
+    static eraseCookie(name: string): void;
     private static setCookie;
     private static getCookie;
-    static eraseCookie(name: string): void;
 }
 
 declare class Data {

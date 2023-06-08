@@ -15855,6 +15855,104 @@ var Requests = /** @class */ (function () {
     return Requests;
 }());
 
+var Storage = /** @class */ (function () {
+    function Storage() {
+    }
+    /**
+     * Sets a root level domain so the data can persist across
+     * subdomains
+     *
+     * @param rootDomain
+     */
+    Storage.setRootDomain = function (rootDomain) {
+        Storage.rootDomain = rootDomain;
+    };
+    Storage.getStorageKey = function (key) {
+        return Storage.rootDomain ? "".concat(Storage.rootDomain, ":").concat(key) : key;
+    };
+    Storage.set = function (key, value) {
+        try {
+            var serializedValue = JSON.stringify(value);
+            window.localStorage.setItem(Storage.getStorageKey(key), serializedValue);
+        }
+        catch (e) {
+            try {
+                var serializedValue = JSON.stringify(value);
+                window.sessionStorage.setItem(Storage.getStorageKey(key), serializedValue);
+            }
+            catch (e) {
+                this.setCookie(key, value, 31);
+                Storage.data[key] = value;
+            }
+        }
+    };
+    Storage.get = function (key) {
+        try {
+            var serializedValue = window.localStorage.getItem(Storage.getStorageKey(key));
+            if (serializedValue !== null) {
+                return JSON.parse(serializedValue);
+            }
+        }
+        catch (e) {
+            try {
+                var serializedValue = window.sessionStorage.getItem(Storage.getStorageKey(key));
+                if (serializedValue !== null) {
+                    return JSON.parse(serializedValue);
+                }
+            }
+            catch (e) {
+                var value = Storage.getCookie(key);
+                if (!value) {
+                    value = Storage.data[key];
+                }
+                return value;
+            }
+        }
+    };
+    Storage.setAuthToken = function (token) {
+        Storage.set('glitch_auth_token', token);
+    };
+    Storage.getAuthToken = function () {
+        return Storage.get('glitch_auth_token');
+    };
+    Storage.eraseCookie = function (name) {
+        document.cookie =
+            name +
+                '=; Secure; HttpOnly=false; SameSite=none; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    };
+    Storage.setCookie = function (name, value, days) {
+        var expires = '';
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+            expires = '; expires=' + date.toUTCString();
+        }
+        document.cookie =
+            name +
+                '=' +
+                (value || '') +
+                expires +
+                '; path=/; domain=' +
+                Storage.rootDomain +
+                '; HttpOnly=false; SameSite=none; Secure';
+    };
+    Storage.getCookie = function (name) {
+        var nameEQ = name + '=';
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ')
+                c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0)
+                return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    };
+    Storage.rootDomain = '';
+    Storage.data = {};
+    return Storage;
+}());
+
 /**
  * Config
  *
@@ -15909,6 +16007,25 @@ var Config = /** @class */ (function () {
         Config._community = community;
         Requests.setCommunityID(community.id);
         LabelManager.initialize(community);
+    };
+    /**
+     * Sets the root level domain so data can accessed across
+     * multiple subdomains
+     *
+     * @param domain The domain ie: example.com
+     */
+    Config.setRootDomain = function (domain) {
+        var parts = domain.split('.');
+        if (parts.length > 2) {
+            parts.shift();
+        }
+        var formattedDomain = parts.join('.');
+        formattedDomain = formattedDomain.replace(/^\./, '');
+        this._rootDomain = formattedDomain;
+        Storage.setRootDomain(formattedDomain);
+    };
+    Config.getRootDomain = function () {
+        return this._rootDomain;
     };
     Object.defineProperty(Config, "baseUrl", {
         /**
@@ -18155,92 +18272,6 @@ var Parser = /** @class */ (function () {
         }
     };
     return Parser;
-}());
-
-var Storage = /** @class */ (function () {
-    function Storage() {
-    }
-    Storage.set = function (key, value) {
-        try {
-            var serializedValue = JSON.stringify(value);
-            window.localStorage.setItem(key, serializedValue);
-        }
-        catch (e) {
-            try {
-                var serializedValue = JSON.stringify(value);
-                window.sessionStorage.setItem(key, serializedValue);
-            }
-            catch (e) {
-                //fallback
-                this.setCookie(key, value, 31);
-                Storage.data[key] = value;
-            }
-        }
-    };
-    Storage.get = function (key) {
-        try {
-            var serializedValue = window.localStorage.getItem(key);
-            if (serializedValue !== null) {
-                return JSON.parse(serializedValue);
-            }
-        }
-        catch (e) {
-            try {
-                var serializedValue = window.sessionStorage.getItem(key);
-                if (serializedValue !== null) {
-                    return JSON.parse(serializedValue);
-                }
-            }
-            catch (e) {
-                var value = Storage.getCookie(key);
-                if (!value) {
-                    value = Storage.data[key];
-                }
-                return value;
-            }
-        }
-    };
-    Storage.setAuthToken = function (token) {
-        Storage.set('glitch_auth_token', token);
-    };
-    Storage.getAuthToken = function () {
-        return Storage.get('glitch_auth_token');
-    };
-    Storage.setCookie = function (name, value, days) {
-        var expires = '';
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-            expires = '; expires=' + date.toUTCString();
-        }
-        //IFrames require HttpyOnly to be false, Chrome require SameSite to be none, and must be secure
-        document.cookie =
-            name +
-                '=' +
-                (value || '') +
-                expires +
-                '; path=/; HttpOnly=false; SameSite=none; Secure';
-    };
-    Storage.getCookie = function (name) {
-        var nameEQ = name + '=';
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ')
-                c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) == 0)
-                return c.substring(nameEQ.length, c.length);
-        }
-        return null;
-    };
-    Storage.eraseCookie = function (name) {
-        document.cookie =
-            name +
-                '=; Secure; HttpOnly=false; SameSite=none; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    };
-    //Back up data type if no storage is working.
-    Storage.data = {};
-    return Storage;
 }());
 
 var Session = /** @class */ (function () {

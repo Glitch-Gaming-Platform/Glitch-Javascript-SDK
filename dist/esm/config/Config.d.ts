@@ -8,6 +8,7 @@ declare class Config {
     private static _baseUrl;
     private static _authToken;
     private static _community;
+    private static _rootDomain;
     private static _baseUrlLocked;
     /**
      * Set the configuration
@@ -35,6 +36,14 @@ declare class Config {
      * @param community The object of the community
      */
     static setCommunity(community: Record<string, any>): void;
+    /**
+     * Sets the root level domain so data can accessed across
+     * multiple subdomains
+     *
+     * @param domain The domain ie: example.com
+     */
+    static setRootDomain(domain: string): void;
+    static getRootDomain(): string;
     /**
      * Gets base url
      */
