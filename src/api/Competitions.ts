@@ -636,7 +636,7 @@ class Competitions {
     /**
      * Get a leaderboard by a users wins.
      * 
-     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderBoardUserWins
      * 
      * @param competition_id 
      * @returns promise
@@ -660,7 +660,7 @@ class Competitions {
     /**
      * Get a leaderboard by a teams wins.
      * 
-     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderBoardTeamWins
      * 
      * @param competition_id 
      * @returns promise
@@ -672,12 +672,24 @@ class Competitions {
     /**
      * Get all leaderboards.
      * 
-     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderBoardTeamPoints
      * 
      * @param competition_id 
      * @returns promise
      */
     public static allLeaderboards<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
+        return Requests.processRoute(CompetitionRoutes.routes.allLeaderboards, {}, {competition_id : competition_id}, params);
+    }
+
+    /**
+     * Gets all the information about a competition for the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderboardsAll
+     * 
+     * @param competition_id 
+     * @returns promise
+     */
+    public static me<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
         return Requests.processRoute(CompetitionRoutes.routes.allLeaderboards, {}, {competition_id : competition_id}, params);
     }
 }

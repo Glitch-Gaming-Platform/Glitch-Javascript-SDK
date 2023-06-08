@@ -16204,6 +16204,7 @@ var CompetitionRoutes = /** @class */ (function () {
         userWinsLeaderboard: { url: '/competitions/{competition_id}/userWinsLeaderboard', method: HTTP_METHODS.GET },
         teamWinsLeaderboard: { url: '/competitions/{competition_id}/teamWinsLeaderboard', method: HTTP_METHODS.GET },
         allLeaderboards: { url: '/competitions/{competition_id}/allLeaderboards', method: HTTP_METHODS.GET },
+        me: { url: '/competitions/{competition_id}/me', method: HTTP_METHODS.GET },
     };
     return CompetitionRoutes;
 }());
@@ -16779,7 +16780,7 @@ var Competitions = /** @class */ (function () {
     /**
      * Get a leaderboard by a users wins.
      *
-     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderBoardUserWins
      *
      * @param competition_id
      * @returns promise
@@ -16801,7 +16802,7 @@ var Competitions = /** @class */ (function () {
     /**
      * Get a leaderboard by a teams wins.
      *
-     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderBoardTeamWins
      *
      * @param competition_id
      * @returns promise
@@ -16812,12 +16813,23 @@ var Competitions = /** @class */ (function () {
     /**
      * Get all leaderboards.
      *
-     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderBoardTeamPoints
      *
      * @param competition_id
      * @returns promise
      */
     Competitions.allLeaderboards = function (competition_id, params) {
+        return Requests.processRoute(CompetitionRoutes.routes.allLeaderboards, {}, { competition_id: competition_id }, params);
+    };
+    /**
+     * Gets all the information about a competition for the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderboardsAll
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    Competitions.me = function (competition_id, params) {
         return Requests.processRoute(CompetitionRoutes.routes.allLeaderboards, {}, { competition_id: competition_id }, params);
     };
     return Competitions;

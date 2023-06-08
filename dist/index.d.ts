@@ -598,7 +598,7 @@ declare class Competitions {
     /**
      * Get a leaderboard by a users wins.
      *
-     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderBoardUserWins
      *
      * @param competition_id
      * @returns promise
@@ -616,7 +616,7 @@ declare class Competitions {
     /**
      * Get a leaderboard by a teams wins.
      *
-     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderBoardTeamWins
      *
      * @param competition_id
      * @returns promise
@@ -625,12 +625,21 @@ declare class Competitions {
     /**
      * Get all leaderboards.
      *
-     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionUserList
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderBoardTeamPoints
      *
      * @param competition_id
      * @returns promise
      */
     static allLeaderboards<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Gets all the information about a competition for the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Competitions%20Route/competitionLeaderboardsAll
+     *
+     * @param competition_id
+     * @returns promise
+     */
+    static me<T>(competition_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Communities {

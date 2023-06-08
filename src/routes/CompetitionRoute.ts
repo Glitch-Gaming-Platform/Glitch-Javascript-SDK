@@ -52,6 +52,7 @@ class CompetitionRoutes {
       userWinsLeaderboard : { url: '/competitions/{competition_id}/userWinsLeaderboard', method: HTTP_METHODS.GET },
       teamWinsLeaderboard : { url: '/competitions/{competition_id}/teamWinsLeaderboard', method: HTTP_METHODS.GET },
       allLeaderboards : { url: '/competitions/{competition_id}/allLeaderboards', method: HTTP_METHODS.GET },
+      me : { url: '/competitions/{competition_id}/me', method: HTTP_METHODS.GET },
     };
 
 
