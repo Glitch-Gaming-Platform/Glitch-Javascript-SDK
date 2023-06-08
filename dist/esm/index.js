@@ -31052,7 +31052,7 @@ var Competitions = /** @class */ (function () {
      * @returns promise
      */
     Competitions.me = function (competition_id, params) {
-        return Requests.processRoute(CompetitionRoutes.routes.allLeaderboards, {}, { competition_id: competition_id }, params);
+        return Requests.processRoute(CompetitionRoutes.routes.me, {}, { competition_id: competition_id }, params);
     };
     return Competitions;
 }());

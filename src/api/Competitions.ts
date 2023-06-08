@@ -690,7 +690,7 @@ class Competitions {
      * @returns promise
      */
     public static me<T>(competition_id : string, params?: Record<string, any>): AxiosPromise<Response<T>>{
-        return Requests.processRoute(CompetitionRoutes.routes.allLeaderboards, {}, {competition_id : competition_id}, params);
+        return Requests.processRoute(CompetitionRoutes.routes.me, {}, {competition_id : competition_id}, params);
     }
 }
 
