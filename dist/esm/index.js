@@ -31534,9 +31534,9 @@ var EventsRoutes = /** @class */ (function () {
         addRTMPSource: { url: '/events/{event_id}/addRTMPSource', method: HTTP_METHODS.POST },
         updateRTMPSource: { url: '/events/{event_id}/updateRTMPSource/{subid}', method: HTTP_METHODS.PUT },
         removeRTMPSource: { url: '/events/{event_id}/removeRTMPSource/{subid}', method: HTTP_METHODS.DELETE },
-        uploadMainImage: { url: '/events/{event_id}/removeRTMPSource/{subid}', method: HTTP_METHODS.POST },
+        uploadMainImage: { url: '/events/{event_id}/uploadMainImage', method: HTTP_METHODS.POST },
         uploadBannerImage: { url: '/events/{event_id}/uploadBannerImage', method: HTTP_METHODS.POST },
-        enableBroadcastMode: { url: '/events/{event_id}/uploadBannerImage', method: HTTP_METHODS.POST },
+        enableBroadcastMode: { url: '/events/{event_id}/enableBroadcastMode', method: HTTP_METHODS.POST },
         enableLivestreamMode: { url: '/events/{event_id}/enableLivestreamMode', method: HTTP_METHODS.POST },
         sendOnScreenContent: { url: '/events/{event_id}/sendOnScreenContent', method: HTTP_METHODS.POST },
         addOverlay: { url: '/events/{event_id}/addOverlay', method: HTTP_METHODS.POST },
@@ -31546,7 +31546,7 @@ var EventsRoutes = /** @class */ (function () {
         enableDonations: { url: '/events/{event_id}/enableDonations', method: HTTP_METHODS.POST },
         disableDonations: { url: '/events/{event_id}/disableDonations', method: HTTP_METHODS.POST },
         sendInvite: { url: '/events/{event_id}/sendInvite', method: HTTP_METHODS.POST },
-        acceptInvite: { url: '/events/{event_id}/sendInvite', method: HTTP_METHODS.POST }
+        acceptInvite: { url: '/events/{event_id}/acceptInvite', method: HTTP_METHODS.POST }
     };
     return EventsRoutes;
 }());
