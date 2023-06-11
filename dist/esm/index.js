@@ -30369,7 +30369,7 @@ var Auth = /** @class */ (function () {
      * @returns promise
      */
     Auth.resetPassword = function (data) {
-        return Requests.processRoute(AuthRoutes.routes.forgot_password, data);
+        return Requests.processRoute(AuthRoutes.routes.reset_password, data);
     };
     return Auth;
 }());

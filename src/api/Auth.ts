@@ -80,7 +80,7 @@ class Auth {
      * @returns promise
      */
     public static resetPassword<T>(data : object) : AxiosPromise<Response<T>> {
-        return Requests.processRoute(AuthRoutes.routes.forgot_password, data);
+        return Requests.processRoute(AuthRoutes.routes.reset_password, data);
     }
 
 }
