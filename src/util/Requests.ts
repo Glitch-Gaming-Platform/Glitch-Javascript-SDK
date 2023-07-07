@@ -21,7 +21,10 @@ class Requests {
 
   public static setBaseUrl(url: string) {
     Requests.baseUrl = url;
-    Requests.axiosInstance.defaults.baseURL = url;
+    
+    if(Requests.axiosInstance && Requests.axiosInstance.defaults) {
+      Requests.axiosInstance.defaults.baseURL = url;
+    }
   }
 
   public static setAuthToken(token: string) {

@@ -15658,7 +15658,9 @@ var Requests = /** @class */ (function () {
     }
     Requests.setBaseUrl = function (url) {
         Requests.baseUrl = url;
-        Requests.axiosInstance.defaults.baseURL = url;
+        if (Requests.axiosInstance && Requests.axiosInstance.defaults) {
+            Requests.axiosInstance.defaults.baseURL = url;
+        }
     };
     Requests.setAuthToken = function (token) {
         Requests.authToken = token;
