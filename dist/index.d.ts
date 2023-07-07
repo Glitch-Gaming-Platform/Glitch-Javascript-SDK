@@ -1674,7 +1674,6 @@ interface Route {
 }
 
 declare class Requests {
-    private static axiosInstance;
     private static config;
     private static baseUrl;
     private static authToken;

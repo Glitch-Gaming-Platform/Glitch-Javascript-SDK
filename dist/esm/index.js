@@ -29873,16 +29873,9 @@ var HTTP_METHODS = {
 var Requests = /** @class */ (function () {
     function Requests(config) {
         Requests.config = config;
-        Requests.axiosInstance = axios.create({
-            baseURL: Requests.baseUrl,
-            headers: { 'Content-Type': 'application/json' },
-        });
     }
     Requests.setBaseUrl = function (url) {
         Requests.baseUrl = url;
-        if (Requests.axiosInstance && Requests.axiosInstance.defaults) {
-            Requests.axiosInstance.defaults.baseURL = url;
-        }
     };
     Requests.setAuthToken = function (token) {
         Requests.authToken = token;
@@ -29902,7 +29895,7 @@ var Requests = /** @class */ (function () {
         }
         url = url.replace(/\/\//g, '/');
         var uri = "".concat(Requests.baseUrl).concat(url);
-        var axiosPromise = Requests.axiosInstance({
+        var axiosPromise = axios({
             method: method,
             url: uri,
             data: fileData || data,

@@ -1,11 +1,10 @@
-import axios, { AxiosInstance, AxiosPromise } from 'axios';
+import axios, { AxiosPromise } from 'axios';
 import Config from '../config/Config';
 import HTTP_METHODS from '../constants/HttpMethods';
 import Route from '../routes/interface';
 import Response from './Response';
 
 class Requests {
-  private static axiosInstance: AxiosInstance;
   private static config: Config;
   private static baseUrl = "";
   private static authToken = "";
@@ -13,18 +12,10 @@ class Requests {
 
   constructor(config: Config) {
     Requests.config = config;
-    Requests.axiosInstance = axios.create({
-      baseURL: Requests.baseUrl,
-      headers: { 'Content-Type': 'application/json' },
-    });
   }
 
   public static setBaseUrl(url: string) {
     Requests.baseUrl = url;
-    
-    if(Requests.axiosInstance && Requests.axiosInstance.defaults) {
-      Requests.axiosInstance.defaults.baseURL = url;
-    }
   }
 
   public static setAuthToken(token: string) {
@@ -59,7 +50,7 @@ class Requests {
 
     const validUri = uri.replace(/\/\//g, '/');
 
-    const axiosPromise = Requests.axiosInstance({
+    const axiosPromise = axios({
       method,
       url: uri,
       data: fileData || data,
