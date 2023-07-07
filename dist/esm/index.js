@@ -29872,60 +29872,42 @@ var HTTP_METHODS = {
 
 var Requests = /** @class */ (function () {
     function Requests(config) {
-        this.config = config;
+        Requests.config = config;
+        Requests.axiosInstance = axios.create({
+            baseURL: Requests.baseUrl,
+            headers: { 'Content-Type': 'application/json' },
+        });
     }
-    /**
-     * Sets the base url of the API.
-     *
-     * @param url The url to of the API.
-     */
     Requests.setBaseUrl = function (url) {
-        this.baseUrl = url;
+        Requests.baseUrl = url;
+        Requests.axiosInstance.defaults.baseURL = url;
     };
-    /**
-     * Sets the JSON Web token
-     *
-     * @param token
-     */
     Requests.setAuthToken = function (token) {
-        this.authToken = token;
+        Requests.authToken = token;
     };
-    /**
-     * Sets the community id that will be associated with all requests
-     *
-     * @param token
-     */
     Requests.setCommunityID = function (community_id) {
-        this.community_id = community_id;
+        Requests.community_id = community_id;
     };
     Requests.request = function (method, url, data, fileData) {
         var headers = {
             'Content-Type': 'application/json',
         };
-        if (this.authToken) {
-            headers['Authorization'] = "Bearer ".concat(this.authToken);
+        if (Requests.authToken) {
+            headers['Authorization'] = "Bearer ".concat(Requests.authToken);
         }
         if (fileData) {
             headers['Content-Type'] = 'multipart/form-data';
         }
-        //Remove double slashes
         url = url.replace(/\/\//g, '/');
-        var uri = "".concat(this.baseUrl).concat(url);
-        var axiosPromise = axios({
+        var uri = "".concat(Requests.baseUrl).concat(url);
+        var axiosPromise = Requests.axiosInstance({
             method: method,
             url: uri,
-            baseURL: this.baseUrl,
             data: fileData || data,
             headers: headers,
         });
         return axiosPromise;
     };
-    /**
-     * Calls a GET request to the url endpoint.
-     *
-     * @param url
-     * @returns
-     */
     Requests.get = function (url, params) {
         if (params && Object.keys(params).length > 0) {
             var queryString = Object.entries(params)
@@ -29939,13 +29921,11 @@ var Requests = /** @class */ (function () {
                 .join('&');
             url = "".concat(url, "?").concat(queryString);
         }
-        if (this.community_id) {
-            // Check if the URL already contains query parameters
+        if (Requests.community_id) {
             var separator = url.includes('?') ? '&' : '?';
-            // Append the community_id query parameter
-            url = "".concat(url).concat(separator, "community_id=").concat(this.community_id);
+            url = "".concat(url).concat(separator, "community_id=").concat(Requests.community_id);
         }
-        return this.request('GET', url);
+        return Requests.request('GET', url);
     };
     Requests.post = function (url, data, params) {
         if (params && Object.keys(params).length > 0) {
@@ -29957,11 +29937,10 @@ var Requests = /** @class */ (function () {
                 .join('&');
             url = "".concat(url, "?").concat(queryString);
         }
-        if (this.community_id) {
-            // Add the community_id to the request body
-            data = __assign(__assign({}, data), { communities: [this.community_id] });
+        if (Requests.community_id) {
+            data = __assign(__assign({}, data), { communities: [Requests.community_id] });
         }
-        return this.request('POST', url, data);
+        return Requests.request('POST', url, data);
     };
     Requests.put = function (url, data, params) {
         if (params && Object.keys(params).length > 0) {
@@ -29973,11 +29952,10 @@ var Requests = /** @class */ (function () {
                 .join('&');
             url = "".concat(url, "?").concat(queryString);
         }
-        if (this.community_id) {
-            // Add the community_id to the request body
-            data = __assign(__assign({}, data), { community_id: this.community_id });
+        if (Requests.community_id) {
+            data = __assign(__assign({}, data), { community_id: Requests.community_id });
         }
-        return this.request('PUT', url, data);
+        return Requests.request('PUT', url, data);
     };
     Requests.delete = function (url, params) {
         if (params && Object.keys(params).length > 0) {
@@ -29989,13 +29967,11 @@ var Requests = /** @class */ (function () {
                 .join('&');
             url = "".concat(url, "?").concat(queryString);
         }
-        if (this.community_id) {
-            // Check if the URL already contains query parameters
+        if (Requests.community_id) {
             var separator = url.includes('?') ? '&' : '?';
-            // Append the community_id query parameter
-            url = "".concat(url).concat(separator, "community_id=").concat(this.community_id);
+            url = "".concat(url).concat(separator, "community_id=").concat(Requests.community_id);
         }
-        return this.request('DELETE', url);
+        return Requests.request('DELETE', url);
     };
     Requests.uploadFile = function (url, filename, file, data, params) {
         if (params && Object.keys(params).length > 0) {
@@ -30009,14 +29985,13 @@ var Requests = /** @class */ (function () {
         }
         var formData = new FormData();
         formData.append(filename, file);
-        if (this.community_id) {
-            // Add the community_id to the request body
-            data = __assign(__assign({}, data), { communities: [this.community_id] });
+        if (Requests.community_id) {
+            data = __assign(__assign({}, data), { communities: [Requests.community_id] });
         }
         for (var key in data) {
             formData.append(key, data[key]);
         }
-        return this.request('POST', url, data, formData);
+        return Requests.request('POST', url, data, formData);
     };
     Requests.uploadBlob = function (url, filename, blob, data, params) {
         if (params && Object.keys(params).length > 0) {
@@ -30030,23 +30005,14 @@ var Requests = /** @class */ (function () {
         }
         var formData = new FormData();
         formData.append(filename, blob);
-        if (this.community_id) {
-            // Add the community_id to the request body
-            data = __assign(__assign({}, data), { communities: [this.community_id] });
+        if (Requests.community_id) {
+            data = __assign(__assign({}, data), { communities: [Requests.community_id] });
         }
         for (var key in data) {
             formData.append(key, data[key]);
         }
-        return this.request('POST', url, data, formData);
+        return Requests.request('POST', url, data, formData);
     };
-    /**
-     *  The Route class contains the method and url, thereforce items can be
-     *  automatically routed depending on the configuration.
-     *
-     * @param route
-     * @param data
-     * @returns
-     */
     Requests.processRoute = function (route, data, routeReplace, params) {
         var url = route.url;
         if (routeReplace) {
@@ -30055,24 +30021,21 @@ var Requests = /** @class */ (function () {
             }
         }
         if (route.method == HTTP_METHODS.GET) {
-            return this.get(url, params);
+            return Requests.get(url, params);
         }
         else if (route.method == HTTP_METHODS.POST) {
-            return this.post(url, data, params);
+            return Requests.post(url, data, params);
         }
         else if (route.method == HTTP_METHODS.PUT) {
-            return this.put(url, data, params);
+            return Requests.put(url, data, params);
         }
         else if (route.method == HTTP_METHODS.DELETE) {
-            return this.delete(url, params);
+            return Requests.delete(url, params);
         }
-        return this.get(url);
+        return Requests.get(url);
     };
-    //The base url of the API.
     Requests.baseUrl = "";
-    //The Json Web Token to send in the header
     Requests.authToken = "";
-    //The ID of the community that will be added to request
     Requests.community_id = "";
     return Requests;
 }());
