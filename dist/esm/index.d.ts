@@ -9,6 +9,10 @@ import { Posts } from "./api";
 import { Templates } from "./api";
 import { Waitlists } from "./api";
 import { Utility } from "./api";
+import { Tips } from "./api";
+import { TipPackages } from "./api";
+import { TipEmojis } from "./api";
+import { TipPackagePurchases } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -38,6 +42,10 @@ declare class Glitch {
         Templates: typeof Templates;
         Waitlists: typeof Waitlists;
         Utility: typeof Utility;
+        Tips: typeof Tips;
+        TipPackages: typeof TipPackages;
+        TipEmojis: typeof TipEmojis;
+        TipPackagePurchases: typeof TipPackagePurchases;
     };
     static util: {
         Requests: typeof Requests;

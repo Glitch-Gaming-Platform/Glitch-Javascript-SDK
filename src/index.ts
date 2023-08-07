@@ -13,6 +13,11 @@ import { Posts } from "./api";
 import {Templates} from "./api";
 import { Waitlists } from "./api";
 import { Utility } from "./api";
+import { Tips } from "./api";
+import { TipPackages } from "./api";
+import { TipEmojis } from "./api";
+import { TipPackagePurchases } from "./api";
+
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -52,6 +57,10 @@ class Glitch {
         Templates : Templates,
         Waitlists: Waitlists,
         Utility : Utility,
+        Tips: Tips,
+        TipPackages : TipPackages,
+        TipEmojis : TipEmojis ,
+        TipPackagePurchases: TipPackagePurchases
     }
 
     public static util = {

@@ -32443,6 +32443,210 @@ var Utility = /** @class */ (function () {
     return Utility;
 }());
 
+var TipRoute = /** @class */ (function () {
+    function TipRoute() {
+    }
+    TipRoute.routes = {
+        give: { url: '/tips/give', method: HTTP_METHODS.POST },
+    };
+    return TipRoute;
+}());
+
+var Tips = /** @class */ (function () {
+    function Tips() {
+    }
+    /**
+     * Give a tip to another user
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     *
+     * @returns A promise
+     */
+    Tips.give = function (data, params) {
+        return Requests.processRoute(TipRoute.routes.give, data, {}, params);
+    };
+    return Tips;
+}());
+
+var TipEmojiRoute = /** @class */ (function () {
+    function TipEmojiRoute() {
+    }
+    TipEmojiRoute.routes = {
+        list: { url: '/tipstypes', method: HTTP_METHODS.GET },
+        create: { url: '/tipstypes', method: HTTP_METHODS.POST },
+        view: { url: '/tipstypes/{type_id}', method: HTTP_METHODS.GET },
+        update: { url: '/tipstypes/{type_id}', method: HTTP_METHODS.PUT },
+        DELETE: { url: '/tipstypes/{type_id}', method: HTTP_METHODS.DELETE },
+    };
+    return TipEmojiRoute;
+}());
+
+var TipEmojis = /** @class */ (function () {
+    function TipEmojis() {
+    }
+    /**
+     * Retrieve a list of emojis for tupping.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+     *
+     * @returns promise
+     */
+    TipEmojis.list = function (params) {
+        return Requests.processRoute(TipEmojiRoute.routes.list, undefined, undefined, params);
+    };
+    /**
+     * Create a new emoji to use when tipping.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/newPostResourceStorage
+     *
+     * @param data The data to be passed when creating a post.
+     *
+     * @returns Promise
+     */
+    TipEmojis.create = function (data, params) {
+        return Requests.processRoute(TipEmojiRoute.routes.create, data, undefined, params);
+    };
+    /**
+     * Update an emoji for tipping.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/updatePostStorage
+     *
+     * @param type_id The id of the post to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    TipEmojis.update = function (type_id, data, params) {
+        return Requests.processRoute(TipEmojiRoute.routes.update, data, { type_id: type_id }, params);
+    };
+    /**
+     * Retrieve a single emoji resource to be used when tipping.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/showPostStorage
+     *
+     * @param type_id The id fo the post to retrieve.
+     *
+     * @returns promise
+     */
+    TipEmojis.view = function (type_id, params) {
+        return Requests.processRoute(TipEmojiRoute.routes.view, {}, { type_id: type_id }, params);
+    };
+    /**
+     * Delete an emoji resource.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/destoryPostStorage
+     *
+     * @param type_id The id of the post to delete.
+     * @returns promise
+     */
+    TipEmojis.delete = function (type_id, params) {
+        return Requests.processRoute(TipEmojiRoute.routes.delete, {}, { type_id: type_id }, params);
+    };
+    return TipEmojis;
+}());
+
+var TipPackagesRoute = /** @class */ (function () {
+    function TipPackagesRoute() {
+    }
+    TipPackagesRoute.routes = {
+        list: { url: '/tipspackages', method: HTTP_METHODS.GET },
+        create: { url: '/tipspackages', method: HTTP_METHODS.POST },
+        view: { url: '/tipspackages/{package_id}', method: HTTP_METHODS.GET },
+        update: { url: '/tipspackages/{package_id}', method: HTTP_METHODS.PUT },
+        DELETE: { url: '/tipspackages/{package_id}', method: HTTP_METHODS.DELETE },
+    };
+    return TipPackagesRoute;
+}());
+
+var TipPackages = /** @class */ (function () {
+    function TipPackages() {
+    }
+    /**
+     * Retrieve a list of tip packages.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+     *
+     * @returns promise
+     */
+    TipPackages.list = function (params) {
+        return Requests.processRoute(TipPackagesRoute.routes.list, undefined, undefined, params);
+    };
+    /**
+     * Create a new tip package.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/newPostResourceStorage
+     *
+     * @param data The data to be passed when creating a post.
+     *
+     * @returns Promise
+     */
+    TipPackages.create = function (data, params) {
+        return Requests.processRoute(TipPackagesRoute.routes.create, data, undefined, params);
+    };
+    /**
+     * Update a tip package.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/updatePostStorage
+     *
+     * @param package_id The id of the post to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    TipPackages.update = function (package_id, data, params) {
+        return Requests.processRoute(TipPackagesRoute.routes.update, data, { package_id: package_id }, params);
+    };
+    /**
+     * Retrieve a single tip package resource.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/showPostStorage
+     *
+     * @param package_id The id fo the post to retrieve.
+     *
+     * @returns promise
+     */
+    TipPackages.view = function (package_id, params) {
+        return Requests.processRoute(TipPackagesRoute.routes.view, {}, { package_id: package_id }, params);
+    };
+    /**
+     * Delete a tip package.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/destoryPostStorage
+     *
+     * @param package_id The id of the post to delete.
+     * @returns promise
+     */
+    TipPackages.delete = function (package_id, params) {
+        return Requests.processRoute(TipPackagesRoute.routes.delete, {}, { package_id: package_id }, params);
+    };
+    return TipPackages;
+}());
+
+var TipPackagePurchaseRoute = /** @class */ (function () {
+    function TipPackagePurchaseRoute() {
+    }
+    TipPackagePurchaseRoute.routes = {
+        stripe: { url: '/tipspackagepurchases/stripe', method: HTTP_METHODS.POST },
+    };
+    return TipPackagePurchaseRoute;
+}());
+
+var TipPackagePurchases = /** @class */ (function () {
+    function TipPackagePurchases() {
+    }
+    /**
+     * Purchase a package with Stripe as the processor.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     *
+     * @returns A promise
+     */
+    TipPackagePurchases.stripe = function (data, params) {
+        return Requests.processRoute(TipPackagePurchaseRoute.routes.stripe, data, {}, params);
+    };
+    return TipPackagePurchases;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -32822,6 +33026,10 @@ var Glitch = /** @class */ (function () {
         Templates: Templates,
         Waitlists: Waitlists,
         Utility: Utility,
+        Tips: Tips,
+        TipPackages: TipPackages,
+        TipEmojis: TipEmojis,
+        TipPackagePurchases: TipPackagePurchases
     };
     Glitch.util = {
         Requests: Requests,

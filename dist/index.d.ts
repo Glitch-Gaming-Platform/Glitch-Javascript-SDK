@@ -1668,6 +1668,130 @@ declare class Utility {
     static listSocialInteractions<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class Tips {
+    /**
+     * Give a tip to another user
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     *
+     * @returns A promise
+     */
+    static give<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
+declare class TipEmojis {
+    /**
+     * Retrieve a list of emojis for tupping.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+     *
+     * @returns promise
+     */
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new emoji to use when tipping.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/newPostResourceStorage
+     *
+     * @param data The data to be passed when creating a post.
+     *
+     * @returns Promise
+     */
+    static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update an emoji for tipping.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/updatePostStorage
+     *
+     * @param type_id The id of the post to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static update<T>(type_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve a single emoji resource to be used when tipping.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/showPostStorage
+     *
+     * @param type_id The id fo the post to retrieve.
+     *
+     * @returns promise
+     */
+    static view<T>(type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete an emoji resource.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/destoryPostStorage
+     *
+     * @param type_id The id of the post to delete.
+     * @returns promise
+     */
+    static delete<T>(type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
+declare class TipPackages {
+    /**
+     * Retrieve a list of tip packages.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+     *
+     * @returns promise
+     */
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new tip package.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/newPostResourceStorage
+     *
+     * @param data The data to be passed when creating a post.
+     *
+     * @returns Promise
+     */
+    static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a tip package.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/updatePostStorage
+     *
+     * @param package_id The id of the post to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static update<T>(package_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve a single tip package resource.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/showPostStorage
+     *
+     * @param package_id The id fo the post to retrieve.
+     *
+     * @returns promise
+     */
+    static view<T>(package_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a tip package.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/destoryPostStorage
+     *
+     * @param package_id The id of the post to delete.
+     * @returns promise
+     */
+    static delete<T>(package_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
+declare class TipPackagePurchases {
+    /**
+     * Purchase a package with Stripe as the processor.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     *
+     * @returns A promise
+     */
+    static stripe<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -1976,6 +2100,10 @@ declare class Glitch {
         Templates: typeof Templates;
         Waitlists: typeof Waitlists;
         Utility: typeof Utility;
+        Tips: typeof Tips;
+        TipPackages: typeof TipPackages;
+        TipEmojis: typeof TipEmojis;
+        TipPackagePurchases: typeof TipPackagePurchases;
     };
     static util: {
         Requests: typeof Requests;
