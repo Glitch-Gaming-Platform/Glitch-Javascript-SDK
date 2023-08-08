@@ -1797,7 +1797,15 @@ declare class TipPackagePurchases {
      *
      * @returns A promise
      */
-    static stripePaymentIntent<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static getStripePaymentIntent<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Process the stripe payment intent after payment is complete.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+    *
+    * @returns A promise
+    */
+    static processStripePaymentIntent<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 interface Route {

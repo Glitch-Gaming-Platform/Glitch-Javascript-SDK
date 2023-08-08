@@ -24,8 +24,19 @@ class TipPackagePurchases {
      * 
      * @returns A promise
      */
-    public static stripePaymentIntent<T>(data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(TipPackagePurchaseRoute.routes.stripePaymentIntent, data, {}, params);
+    public static getStripePaymentIntent<T>(data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(TipPackagePurchaseRoute.routes.getStripePaymentIntent, data, {}, params);
+    }
+
+     /**
+     * Process the stripe payment intent after payment is complete.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     * 
+     * @returns A promise
+     */
+     public static processStripePaymentIntent<T>(data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(TipPackagePurchaseRoute.routes.processStripePaymentIntent, data, {}, params);
     }
 
 }

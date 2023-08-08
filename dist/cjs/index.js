@@ -18405,7 +18405,8 @@ var TipPackagePurchaseRoute = /** @class */ (function () {
     }
     TipPackagePurchaseRoute.routes = {
         stripe: { url: '/tipspackagepurchases/stripe', method: HTTP_METHODS.POST },
-        stripePaymentIntent: { url: '/tipspackagepurchases/stripepaymentintent', method: HTTP_METHODS.POST },
+        getStripePaymentIntent: { url: '/tipspackagepurchases/getstripepaymentintent', method: HTTP_METHODS.POST },
+        processStripePaymentIntent: { url: '/tipspackagepurchases/processstripepaymentintent', method: HTTP_METHODS.POST },
     };
     return TipPackagePurchaseRoute;
 }());
@@ -18430,8 +18431,18 @@ var TipPackagePurchases = /** @class */ (function () {
      *
      * @returns A promise
      */
-    TipPackagePurchases.stripePaymentIntent = function (data, params) {
-        return Requests.processRoute(TipPackagePurchaseRoute.routes.stripePaymentIntent, data, {}, params);
+    TipPackagePurchases.getStripePaymentIntent = function (data, params) {
+        return Requests.processRoute(TipPackagePurchaseRoute.routes.getStripePaymentIntent, data, {}, params);
+    };
+    /**
+    * Process the stripe payment intent after payment is complete.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+    *
+    * @returns A promise
+    */
+    TipPackagePurchases.processStripePaymentIntent = function (data, params) {
+        return Requests.processRoute(TipPackagePurchaseRoute.routes.processStripePaymentIntent, data, {}, params);
     };
     return TipPackagePurchases;
 }());
