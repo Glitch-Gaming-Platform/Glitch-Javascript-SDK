@@ -32627,6 +32627,7 @@ var TipPackagePurchaseRoute = /** @class */ (function () {
     }
     TipPackagePurchaseRoute.routes = {
         stripe: { url: '/tipspackagepurchases/stripe', method: HTTP_METHODS.POST },
+        stripePaymentIntent: { url: '/tipspackagepurchases/stripepaymentintent', method: HTTP_METHODS.POST },
     };
     return TipPackagePurchaseRoute;
 }());
@@ -32643,6 +32644,16 @@ var TipPackagePurchases = /** @class */ (function () {
      */
     TipPackagePurchases.stripe = function (data, params) {
         return Requests.processRoute(TipPackagePurchaseRoute.routes.stripe, data, {}, params);
+    };
+    /**
+     * Get a stripe payment intent token.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     *
+     * @returns A promise
+     */
+    TipPackagePurchases.stripePaymentIntent = function (data, params) {
+        return Requests.processRoute(TipPackagePurchaseRoute.routes.stripePaymentIntent, data, {}, params);
     };
     return TipPackagePurchases;
 }());

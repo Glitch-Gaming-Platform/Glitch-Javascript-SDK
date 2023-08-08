@@ -17,6 +17,17 @@ class TipPackagePurchases {
         return Requests.processRoute(TipPackagePurchaseRoute.routes.stripe, data, {}, params);
     }
 
+    /**
+     * Get a stripe payment intent token.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     * 
+     * @returns A promise
+     */
+    public static stripePaymentIntent<T>(data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(TipPackagePurchaseRoute.routes.stripePaymentIntent, data, {}, params);
+    }
+
 }
 
 export default TipPackagePurchases;

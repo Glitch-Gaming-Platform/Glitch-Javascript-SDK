@@ -9,5 +9,13 @@ declare class TipPackagePurchases {
      * @returns A promise
      */
     static stripe<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a stripe payment intent token.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     *
+     * @returns A promise
+     */
+    static stripePaymentIntent<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default TipPackagePurchases;
