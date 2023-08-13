@@ -95,6 +95,39 @@ declare class Events {
      */
     static removeRTMPSource<T>(event_id: string, stream_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Add a Twitch Stream to the current event. The user must have authenticatd with Twitch.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/addRTMPSource
+     *
+     * @param event_id The id of the event.
+     * @param data The data to be passed when adding an RTMP source.
+     *
+     * @returns promise
+     */
+    static addTwitchMulticast<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Add a Facebook Stream to the current event. The user must have authenticatd with Facebook.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/addRTMPSource
+     *
+     * @param event_id The id of the event.
+     * @param data The data to be passed when adding an RTMP source.
+     *
+     * @returns promise
+     */
+    static addFacebookMulticast<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Add a Youtube Stream to the current event. The user must have authenticatd with Google.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/addRTMPSource
+     *
+     * @param event_id The id of the event.
+     * @param data The data to be passed when adding an RTMP source.
+     *
+     * @returns promise
+     */
+    static addYoutubeMulticast<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * A function that should be run on an interval to set the event as live when the live stream is active.
      *
      * @see https://api.glitch.fun/api/documentation#/Event%20Route/syncLive

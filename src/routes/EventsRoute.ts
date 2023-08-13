@@ -26,7 +26,12 @@ class EventsRoutes {
       enableDonations : {url : '/events/{event_id}/enableDonations', method: HTTP_METHODS.POST},
       disableDonations : {url : '/events/{event_id}/disableDonations', method : HTTP_METHODS.POST},
       sendInvite : {url : '/events/{event_id}/sendInvite', method : HTTP_METHODS.POST},
-      acceptInvite : {url : '/events/{event_id}/acceptInvite', method : HTTP_METHODS.POST}
+      acceptInvite : {url : '/events/{event_id}/acceptInvite', method : HTTP_METHODS.POST},
+      addTwitchMulticast : {url : '/events/{event_id}/addTwitchMulticast', method : HTTP_METHODS.POST},
+      addFacebookMulticast : {url : '/events/{event_id}/addFacebookMulticast', method : HTTP_METHODS.POST},
+      addYoutubeMulticast : {url : '/events/{event_id}/addYoutubeMulticast', method : HTTP_METHODS.POST},
+
+
 
     };
 

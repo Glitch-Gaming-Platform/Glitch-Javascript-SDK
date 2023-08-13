@@ -135,6 +135,51 @@ class Events {
     }
 
     /**
+     * Add a Twitch Stream to the current event. The user must have authenticatd with Twitch.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/addRTMPSource
+     * 
+     * @param event_id The id of the event.
+     * @param data The data to be passed when adding an RTMP source.
+     *  
+     * @returns promise
+     */
+    public static addTwitchMulticast<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(EventsRoutes.routes.addTwitchMulticast, data, { event_id: event_id }, params);
+    }
+
+    /**
+     * Add a Facebook Stream to the current event. The user must have authenticatd with Facebook.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/addRTMPSource
+     * 
+     * @param event_id The id of the event.
+     * @param data The data to be passed when adding an RTMP source.
+     *  
+     * @returns promise
+     */
+    public static addFacebookMulticast<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(EventsRoutes.routes.addFacebookMulticast, data, { event_id: event_id }, params);
+    }
+
+    /**
+     * Add a Youtube Stream to the current event. The user must have authenticatd with Google.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/addRTMPSource
+     * 
+     * @param event_id The id of the event.
+     * @param data The data to be passed when adding an RTMP source.
+     *  
+     * @returns promise
+     */
+    public static addYoutubeMulticast<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(EventsRoutes.routes.addYoutubeMulticast, data, { event_id: event_id }, params);
+    }
+
+    /**
      * A function that should be run on an interval to set the event as live when the live stream is active.
      * 
      * @see https://api.glitch.fun/api/documentation#/Event%20Route/syncLive

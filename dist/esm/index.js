@@ -31504,7 +31504,10 @@ var EventsRoutes = /** @class */ (function () {
         enableDonations: { url: '/events/{event_id}/enableDonations', method: HTTP_METHODS.POST },
         disableDonations: { url: '/events/{event_id}/disableDonations', method: HTTP_METHODS.POST },
         sendInvite: { url: '/events/{event_id}/sendInvite', method: HTTP_METHODS.POST },
-        acceptInvite: { url: '/events/{event_id}/acceptInvite', method: HTTP_METHODS.POST }
+        acceptInvite: { url: '/events/{event_id}/acceptInvite', method: HTTP_METHODS.POST },
+        addTwitchMulticast: { url: '/events/{event_id}/addTwitchMulticast', method: HTTP_METHODS.POST },
+        addFacebookMulticast: { url: '/events/{event_id}/addFacebookMulticast', method: HTTP_METHODS.POST },
+        addYoutubeMulticast: { url: '/events/{event_id}/addYoutubeMulticast', method: HTTP_METHODS.POST },
     };
     return EventsRoutes;
 }());
@@ -31631,6 +31634,45 @@ var Events = /** @class */ (function () {
      */
     Events.removeRTMPSource = function (event_id, stream_id, data, params) {
         return Requests.processRoute(EventsRoutes.routes.removeRTMPSource, data, { event_id: event_id, subid: stream_id }, params);
+    };
+    /**
+     * Add a Twitch Stream to the current event. The user must have authenticatd with Twitch.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/addRTMPSource
+     *
+     * @param event_id The id of the event.
+     * @param data The data to be passed when adding an RTMP source.
+     *
+     * @returns promise
+     */
+    Events.addTwitchMulticast = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.addTwitchMulticast, data, { event_id: event_id }, params);
+    };
+    /**
+     * Add a Facebook Stream to the current event. The user must have authenticatd with Facebook.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/addRTMPSource
+     *
+     * @param event_id The id of the event.
+     * @param data The data to be passed when adding an RTMP source.
+     *
+     * @returns promise
+     */
+    Events.addFacebookMulticast = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.addFacebookMulticast, data, { event_id: event_id }, params);
+    };
+    /**
+     * Add a Youtube Stream to the current event. The user must have authenticatd with Google.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/addRTMPSource
+     *
+     * @param event_id The id of the event.
+     * @param data The data to be passed when adding an RTMP source.
+     *
+     * @returns promise
+     */
+    Events.addYoutubeMulticast = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.addYoutubeMulticast, data, { event_id: event_id }, params);
     };
     /**
      * A function that should be run on an interval to set the event as live when the live stream is active.
