@@ -13,6 +13,12 @@ class UserRoutes {
       uploadAvatar : { url: '/users/uploadAvatarImage', method: HTTP_METHODS.POST },
       uploadBanner : { url: '/users/uploadBannerImage', method: HTTP_METHODS.POST },
       createDonationPage : { url: '/users/createDonationPage', method: HTTP_METHODS.POST },
+      clearTwitchAuth : { url: '/users/clearTwitchAuth', method: HTTP_METHODS.DELETE },
+      clearFacebookAuth : { url: '/users/clearFacebookAuth', method: HTTP_METHODS.DELETE },
+      clearGoogleAuth : { url: '/users/clearGoogleAuth', method: HTTP_METHODS.DELETE },
+      clearStripeAuth : { url: '/users/clearStripeAuth', method: HTTP_METHODS.DELETE },
+      clearTikTokAuth : { url: '/users/clearTikTokAuth', method: HTTP_METHODS.DELETE },
+      clearYoutubeAuth : { url: '/users/clearYoutubeAuth', method: HTTP_METHODS.DELETE },
     };
 
   }

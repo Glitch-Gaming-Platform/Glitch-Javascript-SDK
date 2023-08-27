@@ -159,6 +159,78 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.createDonationPage, {});
     }
 
+     /**
+     * Clear Twitches authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+     public static clearTwitchAuth<T>(): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.clearTwitchAuth, {});
+    }
+
+    /**
+     * Clear Facebook authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static clearFacebookAuth<T>(): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.clearFacebookAuth, {});
+    }
+
+    /**
+     * Clear Google authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static clearGoogleAuth<T>(): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.clearGoogleAuth, {});
+    }
+
+    /**
+     * Clear Stripe authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static clearStripeAuth<T>(): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.clearStripeAuth, {});
+    }
+
+    /**
+     * Clear TikTok authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static clearTikTokAuth<T>(): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.clearTikTokAuth, {});
+    }
+
+    /**
+     * Clear YouTube authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static clearYoutubeAuth<T>(): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.clearYoutubeAuth, {});
+    }
+
 
 
 

@@ -981,6 +981,54 @@ declare class Users {
      * @returns promise
      */
     static createDonationPage<T>(): AxiosPromise<Response<T>>;
+    /**
+    * Clear Twitches authentication information from the current user.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+    *
+    * @returns promise
+    */
+    static clearTwitchAuth<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Clear Facebook authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearFacebookAuth<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Clear Google authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearGoogleAuth<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Clear Stripe authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearStripeAuth<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Clear TikTok authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearTikTokAuth<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Clear YouTube authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearYoutubeAuth<T>(): AxiosPromise<Response<T>>;
 }
 
 declare class Events {

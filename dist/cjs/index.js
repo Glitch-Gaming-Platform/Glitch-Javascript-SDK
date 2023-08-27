@@ -17114,6 +17114,12 @@ var UserRoutes = /** @class */ (function () {
         uploadAvatar: { url: '/users/uploadAvatarImage', method: HTTP_METHODS.POST },
         uploadBanner: { url: '/users/uploadBannerImage', method: HTTP_METHODS.POST },
         createDonationPage: { url: '/users/createDonationPage', method: HTTP_METHODS.POST },
+        clearTwitchAuth: { url: '/users/clearTwitchAuth', method: HTTP_METHODS.DELETE },
+        clearFacebookAuth: { url: '/users/clearFacebookAuth', method: HTTP_METHODS.DELETE },
+        clearGoogleAuth: { url: '/users/clearGoogleAuth', method: HTTP_METHODS.DELETE },
+        clearStripeAuth: { url: '/users/clearStripeAuth', method: HTTP_METHODS.DELETE },
+        clearTikTokAuth: { url: '/users/clearTikTokAuth', method: HTTP_METHODS.DELETE },
+        clearYoutubeAuth: { url: '/users/clearYoutubeAuth', method: HTTP_METHODS.DELETE },
     };
     return UserRoutes;
 }());
@@ -17252,6 +17258,66 @@ var Users = /** @class */ (function () {
      */
     Users.createDonationPage = function () {
         return Requests.processRoute(UserRoutes.routes.createDonationPage, {});
+    };
+    /**
+    * Clear Twitches authentication information from the current user.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+    *
+    * @returns promise
+    */
+    Users.clearTwitchAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearTwitchAuth, {});
+    };
+    /**
+     * Clear Facebook authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.clearFacebookAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearFacebookAuth, {});
+    };
+    /**
+     * Clear Google authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.clearGoogleAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearGoogleAuth, {});
+    };
+    /**
+     * Clear Stripe authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.clearStripeAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearStripeAuth, {});
+    };
+    /**
+     * Clear TikTok authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.clearTikTokAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearTikTokAuth, {});
+    };
+    /**
+     * Clear YouTube authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.clearYoutubeAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearYoutubeAuth, {});
     };
     return Users;
 }());
