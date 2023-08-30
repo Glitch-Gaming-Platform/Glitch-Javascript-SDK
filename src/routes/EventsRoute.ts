@@ -30,8 +30,8 @@ class EventsRoutes {
       addTwitchMulticast : {url : '/events/{event_id}/addTwitchMulticast', method : HTTP_METHODS.POST},
       addFacebookMulticast : {url : '/events/{event_id}/addFacebookMulticast', method : HTTP_METHODS.POST},
       addYoutubeMulticast : {url : '/events/{event_id}/addYoutubeMulticast', method : HTTP_METHODS.POST},
-
-
+      enableWidget : {url : '/events/{event_id}/enableWidget/{widget_id}', method : HTTP_METHODS.POST},
+      disableWidget : {url : '/events/{event_id}/disableWidget/{widget_id}', method : HTTP_METHODS.DELETE},
 
     };
 

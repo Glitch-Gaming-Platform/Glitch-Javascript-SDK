@@ -1330,6 +1330,29 @@ declare class Events {
      * @returns promise
      */
     static updateRecording<T>(event_id: string, recording_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Enable a widget for the current event.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/updateEventRecording
+     *
+     * @param event_id The id of the event to update.
+     * @param widget_id The id of the widget to enable.
+     * @param data The data, which should contain the roles.
+     *
+     * @returns promise
+     */
+    static enableWidget<T>(event_id: string, widget_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Disable a widget for the current event.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/updateEventRecording
+     *
+     * @param event_id The id of the event to update.
+     * @param widget_id The id of the widget to disable.
+     *
+     * @returns promise
+     */
+    static disableWidget<T>(event_id: string, widget_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Teams {

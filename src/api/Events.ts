@@ -436,6 +436,38 @@ class Events {
     }
 
 
+    /**
+     * Enable a widget for the current event.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/updateEventRecording
+     * 
+     * @param event_id The id of the event to update.
+     * @param widget_id The id of the widget to enable.
+     * @param data The data, which should contain the roles.
+     * 
+     * @returns promise
+     */
+    public static enableWidget<T>(event_id: string, widget_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(EventsRoutes.routes.enableWidget, data, { event_id: event_id, widget_id : widget_id }, params);
+    }
+
+    /**
+     * Disable a widget for the current event.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/updateEventRecording
+     * 
+     * @param event_id The id of the event to update.
+     * @param widget_id The id of the widget to disable.
+     * 
+     * @returns promise
+     */
+    public static disableWidget<T>(event_id: string, widget_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(EventsRoutes.routes.disableWidget, data, { event_id: event_id, widget_id : widget_id }, params);
+    }
+
+
 }
 
 export default Events;

@@ -17352,6 +17352,8 @@ var EventsRoutes = /** @class */ (function () {
         addTwitchMulticast: { url: '/events/{event_id}/addTwitchMulticast', method: HTTP_METHODS.POST },
         addFacebookMulticast: { url: '/events/{event_id}/addFacebookMulticast', method: HTTP_METHODS.POST },
         addYoutubeMulticast: { url: '/events/{event_id}/addYoutubeMulticast', method: HTTP_METHODS.POST },
+        enableWidget: { url: '/events/{event_id}/enableWidget/{widget_id}', method: HTTP_METHODS.POST },
+        disableWidget: { url: '/events/{event_id}/disableWidget/{widget_id}', method: HTTP_METHODS.DELETE },
     };
     return EventsRoutes;
 }());
@@ -17731,6 +17733,33 @@ var Events = /** @class */ (function () {
      */
     Events.updateRecording = function (event_id, recording_id, data, params) {
         return Requests.processRoute(RecordingsRoute.routes.update, data, { event_id: event_id, recording_id: recording_id }, params);
+    };
+    /**
+     * Enable a widget for the current event.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/updateEventRecording
+     *
+     * @param event_id The id of the event to update.
+     * @param widget_id The id of the widget to enable.
+     * @param data The data, which should contain the roles.
+     *
+     * @returns promise
+     */
+    Events.enableWidget = function (event_id, widget_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.enableWidget, data, { event_id: event_id, widget_id: widget_id }, params);
+    };
+    /**
+     * Disable a widget for the current event.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/updateEventRecording
+     *
+     * @param event_id The id of the event to update.
+     * @param widget_id The id of the widget to disable.
+     *
+     * @returns promise
+     */
+    Events.disableWidget = function (event_id, widget_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.disableWidget, data, { event_id: event_id, widget_id: widget_id }, params);
     };
     return Events;
 }());
