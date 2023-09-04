@@ -19,6 +19,10 @@ class UserRoutes {
       clearStripeAuth : { url: '/users/clearStripeAuth', method: HTTP_METHODS.DELETE },
       clearTikTokAuth : { url: '/users/clearTikTokAuth', method: HTTP_METHODS.DELETE },
       clearYoutubeAuth : { url: '/users/clearYoutubeAuth', method: HTTP_METHODS.DELETE },
+      getTipsReceivedForMonth : { url: '/users/getTipsReceivedForMonth', method: HTTP_METHODS.GET },
+      getTipsGivenForMonth : { url: '/users/getTipsGivenForMonth', method: HTTP_METHODS.GET },
+      aggregateMonthlyReceivedTips : { url: '/users/aggregateMonthlyReceivedTips', method: HTTP_METHODS.GET },
+      aggregateMonthlyGivenTips : { url: '/users/aggregateMonthlyGivenTips', method: HTTP_METHODS.GET },
     };
 
   }

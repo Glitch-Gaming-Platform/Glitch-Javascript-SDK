@@ -322,5 +322,15 @@ declare class Events {
      * @returns promise
      */
     static disableWidget<T>(event_id: string, widget_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all the tips associated with the current event.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/updateEventRecording
+     *
+     * @param event_id The id of the event to update.
+     *
+     * @returns promise
+     */
+    static getTips<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Events;

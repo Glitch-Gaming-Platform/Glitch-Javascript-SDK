@@ -231,6 +231,54 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.clearYoutubeAuth, {});
     }
 
+    /**
+     * Returns a list of tips received by the authenticated user for a given month and year
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static getTipsReceivedForMonth<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.getTipsReceivedForMonth, undefined, undefined, params);
+    }
+
+    /**
+     * Returns a list of tips given by the authenticated user for a given month and year.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static getTipsGivenForMonth<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.getTipsGivenForMonth, undefined, undefined, params);
+    }
+
+    /**
+     * Returns the aggregated monthly tips received by the authenticated user over a certain number of months. Defaults to 12 months if not provided.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static aggregateMonthlyReceivedTips<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.aggregateMonthlyReceivedTips, undefined, undefined, params);
+    }
+
+    /**
+     * Returns the aggregated monthly tips given by the authenticated user over a certain number of months. Defaults to 12 months if not provided.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static aggregateMonthlyGivenTips<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.aggregateMonthlyGivenTips, undefined, undefined, params);
+    }
+
 
 
 

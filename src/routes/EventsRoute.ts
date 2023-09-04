@@ -32,7 +32,7 @@ class EventsRoutes {
       addYoutubeMulticast : {url : '/events/{event_id}/addYoutubeMulticast', method : HTTP_METHODS.POST},
       enableWidget : {url : '/events/{event_id}/enableWidget/{widget_id}', method : HTTP_METHODS.POST},
       disableWidget : {url : '/events/{event_id}/disableWidget/{widget_id}', method : HTTP_METHODS.DELETE},
-
+      getTips : {url : '/events/{event_id}/tips', method : HTTP_METHODS.GET},
     };
 
   }

@@ -31342,6 +31342,10 @@ var UserRoutes = /** @class */ (function () {
         clearStripeAuth: { url: '/users/clearStripeAuth', method: HTTP_METHODS.DELETE },
         clearTikTokAuth: { url: '/users/clearTikTokAuth', method: HTTP_METHODS.DELETE },
         clearYoutubeAuth: { url: '/users/clearYoutubeAuth', method: HTTP_METHODS.DELETE },
+        getTipsReceivedForMonth: { url: '/users/getTipsReceivedForMonth', method: HTTP_METHODS.GET },
+        getTipsGivenForMonth: { url: '/users/getTipsGivenForMonth', method: HTTP_METHODS.GET },
+        aggregateMonthlyReceivedTips: { url: '/users/aggregateMonthlyReceivedTips', method: HTTP_METHODS.GET },
+        aggregateMonthlyGivenTips: { url: '/users/aggregateMonthlyGivenTips', method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -31541,6 +31545,46 @@ var Users = /** @class */ (function () {
     Users.clearYoutubeAuth = function () {
         return Requests.processRoute(UserRoutes.routes.clearYoutubeAuth, {});
     };
+    /**
+     * Returns a list of tips received by the authenticated user for a given month and year
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.getTipsReceivedForMonth = function (params) {
+        return Requests.processRoute(UserRoutes.routes.getTipsReceivedForMonth, undefined, undefined, params);
+    };
+    /**
+     * Returns a list of tips given by the authenticated user for a given month and year.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.getTipsGivenForMonth = function (params) {
+        return Requests.processRoute(UserRoutes.routes.getTipsGivenForMonth, undefined, undefined, params);
+    };
+    /**
+     * Returns the aggregated monthly tips received by the authenticated user over a certain number of months. Defaults to 12 months if not provided.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.aggregateMonthlyReceivedTips = function (params) {
+        return Requests.processRoute(UserRoutes.routes.aggregateMonthlyReceivedTips, undefined, undefined, params);
+    };
+    /**
+     * Returns the aggregated monthly tips given by the authenticated user over a certain number of months. Defaults to 12 months if not provided.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.aggregateMonthlyGivenTips = function (params) {
+        return Requests.processRoute(UserRoutes.routes.aggregateMonthlyGivenTips, undefined, undefined, params);
+    };
     return Users;
 }());
 
@@ -31576,6 +31620,7 @@ var EventsRoutes = /** @class */ (function () {
         addYoutubeMulticast: { url: '/events/{event_id}/addYoutubeMulticast', method: HTTP_METHODS.POST },
         enableWidget: { url: '/events/{event_id}/enableWidget/{widget_id}', method: HTTP_METHODS.POST },
         disableWidget: { url: '/events/{event_id}/disableWidget/{widget_id}', method: HTTP_METHODS.DELETE },
+        getTips: { url: '/events/{event_id}/tips', method: HTTP_METHODS.GET },
     };
     return EventsRoutes;
 }());
@@ -31982,6 +32027,18 @@ var Events = /** @class */ (function () {
      */
     Events.disableWidget = function (event_id, widget_id, data, params) {
         return Requests.processRoute(EventsRoutes.routes.disableWidget, data, { event_id: event_id, widget_id: widget_id }, params);
+    };
+    /**
+     * Get all the tips associated with the current event.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/updateEventRecording
+     *
+     * @param event_id The id of the event to update.
+     *
+     * @returns promise
+     */
+    Events.getTips = function (event_id, params) {
+        return Requests.processRoute(EventsRoutes.routes.getTips, {}, { event_id: event_id }, params);
     };
     return Events;
 }());
