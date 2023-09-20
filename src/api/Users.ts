@@ -279,6 +279,18 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.aggregateMonthlyGivenTips, undefined, undefined, params);
     }
 
+    /**
+     * Returns the user associated Youtube a channels a user has.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static getYoutubeChannels<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.getYoutubeChannels, undefined, undefined, params);
+    }
+
 
 
 

@@ -1061,6 +1061,14 @@ declare class Users {
      * @returns promise
      */
     static aggregateMonthlyGivenTips<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Returns the user associated Youtube a channels a user has.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static getYoutubeChannels<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Events {
@@ -1395,6 +1403,46 @@ declare class Events {
      * @returns promise
      */
     static getTips<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Sets the personality attribute of the AI to adjust how it will respond.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/disableOverlay
+     *
+     * @param event_id The id of the event.
+     *
+     * @returns promise
+     */
+    static setAIAvatarPersonalityAttribute<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Sets the AI Avatars name, which it can respond too.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/disableOverlay
+     *
+     * @param event_id The id of the event.
+     *
+     * @returns promise
+     */
+    static setAIAvatarName<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Sets the AI Avatar to that it willr respond to users in the chat.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/disableOverlay
+     *
+     * @param event_id The id of the event.
+     *
+     * @returns promise
+     */
+    static setAIAvatarRespondToChat<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Sets the AI Avatar so that it will respond to you.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/disableOverlay
+     *
+     * @param event_id The id of the event.
+     *
+     * @returns promise
+     */
+    static setAIAvatarRespondToMe<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Teams {

@@ -191,5 +191,13 @@ declare class Users {
      * @returns promise
      */
     static aggregateMonthlyGivenTips<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Returns the user associated Youtube a channels a user has.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static getYoutubeChannels<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Users;

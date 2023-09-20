@@ -23,6 +23,7 @@ class UserRoutes {
       getTipsGivenForMonth : { url: '/users/getTipsGivenForMonth', method: HTTP_METHODS.GET },
       aggregateMonthlyReceivedTips : { url: '/users/aggregateMonthlyReceivedTips', method: HTTP_METHODS.GET },
       aggregateMonthlyGivenTips : { url: '/users/aggregateMonthlyGivenTips', method: HTTP_METHODS.GET },
+      getYoutubeChannels : { url: '/users/getYoutubeChannels', method: HTTP_METHODS.GET },
     };
 
   }

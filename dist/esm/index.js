@@ -31346,6 +31346,7 @@ var UserRoutes = /** @class */ (function () {
         getTipsGivenForMonth: { url: '/users/getTipsGivenForMonth', method: HTTP_METHODS.GET },
         aggregateMonthlyReceivedTips: { url: '/users/aggregateMonthlyReceivedTips', method: HTTP_METHODS.GET },
         aggregateMonthlyGivenTips: { url: '/users/aggregateMonthlyGivenTips', method: HTTP_METHODS.GET },
+        getYoutubeChannels: { url: '/users/getYoutubeChannels', method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -31585,6 +31586,16 @@ var Users = /** @class */ (function () {
     Users.aggregateMonthlyGivenTips = function (params) {
         return Requests.processRoute(UserRoutes.routes.aggregateMonthlyGivenTips, undefined, undefined, params);
     };
+    /**
+     * Returns the user associated Youtube a channels a user has.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.getYoutubeChannels = function (params) {
+        return Requests.processRoute(UserRoutes.routes.getYoutubeChannels, undefined, undefined, params);
+    };
     return Users;
 }());
 
@@ -31621,6 +31632,10 @@ var EventsRoutes = /** @class */ (function () {
         enableWidget: { url: '/events/{event_id}/enableWidget/{widget_id}', method: HTTP_METHODS.POST },
         disableWidget: { url: '/events/{event_id}/disableWidget/{widget_id}', method: HTTP_METHODS.DELETE },
         getTips: { url: '/events/{event_id}/tips', method: HTTP_METHODS.GET },
+        setAIAvatarPersonalityAttribute: { url: '/events/{event_id}/setAIAvatarPersonalityAttribute', method: HTTP_METHODS.POST },
+        setAIAvatarName: { url: '/events/{event_id}/setAIAvatarName', method: HTTP_METHODS.POST },
+        setAIAvatarRespondToChat: { url: '/events/{event_id}/setAIAvatarRespondToChat', method: HTTP_METHODS.POST },
+        setAIAvatarRespondToMe: { url: '/events/{event_id}/setAIAvatarRespondToMe', method: HTTP_METHODS.POST },
     };
     return EventsRoutes;
 }());
@@ -32039,6 +32054,54 @@ var Events = /** @class */ (function () {
      */
     Events.getTips = function (event_id, params) {
         return Requests.processRoute(EventsRoutes.routes.getTips, {}, { event_id: event_id }, params);
+    };
+    /**
+     * Sets the personality attribute of the AI to adjust how it will respond.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/disableOverlay
+     *
+     * @param event_id The id of the event.
+     *
+     * @returns promise
+     */
+    Events.setAIAvatarPersonalityAttribute = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.setAIAvatarPersonalityAttribute, data, { event_id: event_id }, params);
+    };
+    /**
+     * Sets the AI Avatars name, which it can respond too.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/disableOverlay
+     *
+     * @param event_id The id of the event.
+     *
+     * @returns promise
+     */
+    Events.setAIAvatarName = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.setAIAvatarName, data, { event_id: event_id }, params);
+    };
+    /**
+     * Sets the AI Avatar to that it willr respond to users in the chat.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/disableOverlay
+     *
+     * @param event_id The id of the event.
+     *
+     * @returns promise
+     */
+    Events.setAIAvatarRespondToChat = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.setAIAvatarRespondToChat, data, { event_id: event_id }, params);
+    };
+    /**
+     * Sets the AI Avatar so that it will respond to you.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/disableOverlay
+     *
+     * @param event_id The id of the event.
+     *
+     * @returns promise
+     */
+    Events.setAIAvatarRespondToMe = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.setAIAvatarRespondToMe, data, { event_id: event_id }, params);
     };
     return Events;
 }());
