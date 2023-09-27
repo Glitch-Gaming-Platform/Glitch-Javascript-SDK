@@ -510,6 +510,21 @@ class Events {
     }
 
     /**
+     * Sets the AI Avatars accent, that will dictate the void in which it responds.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/disableOverlay
+     * 
+     * @param event_id The id of the event.
+     * 
+     * @returns promise
+     */
+    public static setAIAccent<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(EventsRoutes.routes.setAIAccent, data, { event_id: event_id }, params);
+    }
+
+
+    /**
      * Sets the AI Avatar to that it willr respond to users in the chat.
      * 
      * @see https://api.glitch.fun/api/documentation#/Event%20Route/disableOverlay

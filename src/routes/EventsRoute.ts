@@ -35,6 +35,7 @@ class EventsRoutes {
       getTips : {url : '/events/{event_id}/tips', method : HTTP_METHODS.GET},
       setAIAvatarPersonalityAttribute : {url : '/events/{event_id}/setAIAvatarPersonalityAttribute', method : HTTP_METHODS.POST},
       setAIAvatarName : {url : '/events/{event_id}/setAIAvatarName', method : HTTP_METHODS.POST},
+      setAIAccent : {url : '/events/{event_id}/setAIAccent', method : HTTP_METHODS.POST},
       setAIAvatarRespondToChat : {url : '/events/{event_id}/setAIAvatarRespondToChat', method : HTTP_METHODS.POST},
       setAIAvatarRespondToMe : {url : '/events/{event_id}/setAIAvatarRespondToMe', method : HTTP_METHODS.POST},
     };

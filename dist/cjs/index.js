@@ -17120,6 +17120,7 @@ var UserRoutes = /** @class */ (function () {
         clearStripeAuth: { url: '/users/clearStripeAuth', method: HTTP_METHODS.DELETE },
         clearTikTokAuth: { url: '/users/clearTikTokAuth', method: HTTP_METHODS.DELETE },
         clearYoutubeAuth: { url: '/users/clearYoutubeAuth', method: HTTP_METHODS.DELETE },
+        clearStreamElementsAuth: { url: '/users/clearStreamElementsAuth', method: HTTP_METHODS.DELETE },
         getTipsReceivedForMonth: { url: '/users/getTipsReceivedForMonth', method: HTTP_METHODS.GET },
         getTipsGivenForMonth: { url: '/users/getTipsGivenForMonth', method: HTTP_METHODS.GET },
         aggregateMonthlyReceivedTips: { url: '/users/aggregateMonthlyReceivedTips', method: HTTP_METHODS.GET },
@@ -17412,6 +17413,7 @@ var EventsRoutes = /** @class */ (function () {
         getTips: { url: '/events/{event_id}/tips', method: HTTP_METHODS.GET },
         setAIAvatarPersonalityAttribute: { url: '/events/{event_id}/setAIAvatarPersonalityAttribute', method: HTTP_METHODS.POST },
         setAIAvatarName: { url: '/events/{event_id}/setAIAvatarName', method: HTTP_METHODS.POST },
+        setAIAccent: { url: '/events/{event_id}/setAIAccent', method: HTTP_METHODS.POST },
         setAIAvatarRespondToChat: { url: '/events/{event_id}/setAIAvatarRespondToChat', method: HTTP_METHODS.POST },
         setAIAvatarRespondToMe: { url: '/events/{event_id}/setAIAvatarRespondToMe', method: HTTP_METHODS.POST },
     };
@@ -17856,6 +17858,18 @@ var Events = /** @class */ (function () {
      */
     Events.setAIAvatarName = function (event_id, data, params) {
         return Requests.processRoute(EventsRoutes.routes.setAIAvatarName, data, { event_id: event_id }, params);
+    };
+    /**
+     * Sets the AI Avatars accent, that will dictate the void in which it responds.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/disableOverlay
+     *
+     * @param event_id The id of the event.
+     *
+     * @returns promise
+     */
+    Events.setAIAccent = function (event_id, data, params) {
+        return Requests.processRoute(EventsRoutes.routes.setAIAccent, data, { event_id: event_id }, params);
     };
     /**
      * Sets the AI Avatar to that it willr respond to users in the chat.
