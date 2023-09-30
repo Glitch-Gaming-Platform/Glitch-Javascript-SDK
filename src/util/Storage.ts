@@ -25,7 +25,11 @@ class Storage {
         const serializedValue = JSON.stringify(value);
         window.sessionStorage.setItem(Storage.getStorageKey(key), serializedValue);
       } catch (e) {
-        this.setCookie(key, value, 31);
+        try {
+          this.setCookie(key, value, 31);
+        } catch(e){
+
+        }
         Storage.data[key] = value;
       }
     }
@@ -44,7 +48,14 @@ class Storage {
           return JSON.parse(serializedValue);
         }
       } catch (e) {
-        let value = Storage.getCookie(key);
+        let value = null;
+
+        try {
+          value = Storage.getCookie(key);
+        } catch(e) {
+
+        }
+        
         if (!value) {
           value = Storage.data[key];
         }
@@ -62,9 +73,12 @@ class Storage {
   }
 
   public static eraseCookie(name: string) {
-    document.cookie =
-      name +
-      '=; Secure; HttpOnly=false; SameSite=none; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+    if(document){
+      document.cookie =
+        name +
+        '=; Secure; HttpOnly=false; SameSite=none; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      }
   }
 
   private static setCookie(name: string, value: string, days: number) {
@@ -75,23 +89,27 @@ class Storage {
       expires = '; expires=' + date.toUTCString();
     }
 
-    document.cookie =
-      name +
-      '=' +
-      (value || '') +
-      expires +
-      '; path=/; domain=' +
-      Storage.rootDomain +
-      '; HttpOnly=false; SameSite=none; Secure';
+    if(document){
+      document.cookie =
+        name +
+        '=' +
+        (value || '') +
+        expires +
+        '; path=/; domain=' +
+        Storage.rootDomain +
+        '; HttpOnly=false; SameSite=none; Secure';
+    }
   }
 
   private static getCookie(name: string): string | null {
-    const nameEQ = name + '=';
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    if(document){
+      const nameEQ = name + '=';
+      const ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
     }
     return null;
   }

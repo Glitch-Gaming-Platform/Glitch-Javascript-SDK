@@ -15839,7 +15839,11 @@ var Storage = /** @class */ (function () {
                 window.sessionStorage.setItem(Storage.getStorageKey(key), serializedValue);
             }
             catch (e) {
-                this.setCookie(key, value, 31);
+                try {
+                    this.setCookie(key, value, 31);
+                }
+                catch (e) {
+                }
                 Storage.data[key] = value;
             }
         }
@@ -15859,7 +15863,12 @@ var Storage = /** @class */ (function () {
                 }
             }
             catch (e) {
-                var value = Storage.getCookie(key);
+                var value = null;
+                try {
+                    value = Storage.getCookie(key);
+                }
+                catch (e) {
+                }
                 if (!value) {
                     value = Storage.data[key];
                 }
@@ -15874,9 +15883,11 @@ var Storage = /** @class */ (function () {
         return Storage.get('glitch_auth_token');
     };
     Storage.eraseCookie = function (name) {
-        document.cookie =
-            name +
-                '=; Secure; HttpOnly=false; SameSite=none; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        if (document) {
+            document.cookie =
+                name +
+                    '=; Secure; HttpOnly=false; SameSite=none; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
     };
     Storage.setCookie = function (name, value, days) {
         var expires = '';
@@ -15885,24 +15896,28 @@ var Storage = /** @class */ (function () {
             date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
             expires = '; expires=' + date.toUTCString();
         }
-        document.cookie =
-            name +
-                '=' +
-                (value || '') +
-                expires +
-                '; path=/; domain=' +
-                Storage.rootDomain +
-                '; HttpOnly=false; SameSite=none; Secure';
+        if (document) {
+            document.cookie =
+                name +
+                    '=' +
+                    (value || '') +
+                    expires +
+                    '; path=/; domain=' +
+                    Storage.rootDomain +
+                    '; HttpOnly=false; SameSite=none; Secure';
+        }
     };
     Storage.getCookie = function (name) {
-        var nameEQ = name + '=';
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ')
-                c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) == 0)
-                return c.substring(nameEQ.length, c.length);
+        if (document) {
+            var nameEQ = name + '=';
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ')
+                    c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0)
+                    return c.substring(nameEQ.length, c.length);
+            }
         }
         return null;
     };
