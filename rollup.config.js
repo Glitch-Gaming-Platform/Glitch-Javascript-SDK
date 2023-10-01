@@ -4,6 +4,7 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import json from "@rollup/plugin-json";
 import polyfillNode from 'rollup-plugin-polyfill-node'
+import { resolve as pathResolve } from 'path';
 
 const packageJson = require("./package.json");
 
@@ -13,6 +14,7 @@ const EMPTY_MODULE = `export default {}`
 const BROWSERIFY_ALIASES = {
   'fetch-blob/from': EMPTY_MODULE_ID,
   module: EMPTY_MODULE_ID,
+  'util': require.resolve('fast-text-encoding')  // Point directly to the module's entry
 };
 
 const nodeResolve = resolve({
@@ -26,11 +28,14 @@ const browserify = {
       if (BROWSERIFY_ALIASES[source] === EMPTY_MODULE_ID) {
         return EMPTY_MODULE_ID;
       }
-      return nodeResolve.resolveId(BROWSERIFY_ALIASES[source], undefined);
+      // Use pathResolve instead
+      return pathResolve(BROWSERIFY_ALIASES[source]);
     }
     if (source === EMPTY_MODULE_ID) {
       return EMPTY_MODULE_ID;
     }
+    // Handle other imports as usual
+    return null;  // return null to indicate that the current "resolveId" function doesn't determine the resolution
   },
   load(id) {
     if (id === EMPTY_MODULE_ID) return EMPTY_MODULE;
