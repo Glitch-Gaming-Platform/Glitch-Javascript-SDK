@@ -32336,6 +32336,7 @@ var UserRoutes = /** @class */ (function () {
         aggregateMonthlyReceivedTips: { url: '/users/aggregateMonthlyReceivedTips', method: HTTP_METHODS.GET },
         aggregateMonthlyGivenTips: { url: '/users/aggregateMonthlyGivenTips', method: HTTP_METHODS.GET },
         getYoutubeChannels: { url: '/users/getYoutubeChannels', method: HTTP_METHODS.GET },
+        getFacebookGroups: { url: '/users/getFacebookGroups', method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -32536,6 +32537,16 @@ var Users = /** @class */ (function () {
         return Requests.processRoute(UserRoutes.routes.clearYoutubeAuth, {});
     };
     /**
+    * Clear StreamElements authentication information from the current user.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+    *
+    * @returns promise
+    */
+    Users.clearStreamElementsAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearStreamElementsAuth, {});
+    };
+    /**
      * Returns a list of tips received by the authenticated user for a given month and year
      *
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
@@ -32582,8 +32593,8 @@ var Users = /** @class */ (function () {
      *
      * @returns promise
      */
-    Users.getYoutubeChannels = function (params) {
-        return Requests.processRoute(UserRoutes.routes.getYoutubeChannels, undefined, undefined, params);
+    Users.getFacebookGroups = function (params) {
+        return Requests.processRoute(UserRoutes.routes.getFacebookGroups, undefined, undefined, params);
     };
     return Users;
 }());
@@ -33542,6 +33553,45 @@ var Posts = /** @class */ (function () {
     return Posts;
 }());
 
+var SocialRoute = /** @class */ (function () {
+    function SocialRoute() {
+    }
+    SocialRoute.routes = {
+        postVideoToTikTok: { url: '/social/postVideoToTikTok', method: HTTP_METHODS.POST },
+        postVideoToFacebookGroup: { url: '/social/postVideoToFacebookGroup', method: HTTP_METHODS.POST },
+    };
+    return SocialRoute;
+}());
+
+var Social = /** @class */ (function () {
+    function Social() {
+    }
+    /**
+     * Give a tip to another user
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     *
+     * @returns A promise
+     */
+    Social.postVideoToTikTokFile = function (file, data, params) {
+        var url = SocialRoute.routes.postVideoToTikTok.url;
+        return Requests.uploadFile(url, 'video', file, data);
+    };
+    Social.postVideoToTikTokBlob = function (blob, data, params) {
+        var url = SocialRoute.routes.postVideoToTikTok.url;
+        return Requests.uploadBlob(url, 'video', blob, data);
+    };
+    Social.postVideoToFacebookGroupFile = function (file, data, params) {
+        var url = SocialRoute.routes.postVideoToFacebookGroup.url;
+        return Requests.uploadFile(url, 'video', file, data);
+    };
+    Social.postVideoToFacebookGroupBlob = function (blob, data, params) {
+        var url = SocialRoute.routes.postVideoToFacebookGroup.url;
+        return Requests.uploadBlob(url, 'video', blob, data);
+    };
+    return Social;
+}());
+
 var TemplatesRoute = /** @class */ (function () {
     function TemplatesRoute() {
     }
@@ -34308,6 +34358,7 @@ var Glitch = /** @class */ (function () {
         Waitlists: Waitlists,
         Utility: Utility,
         Tips: Tips,
+        Social: Social,
         TipPackages: TipPackages,
         TipEmojis: TipEmojis,
         TipPackagePurchases: TipPackagePurchases

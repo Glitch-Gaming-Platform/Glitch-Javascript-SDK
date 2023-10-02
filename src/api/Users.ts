@@ -231,6 +231,18 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.clearYoutubeAuth, {});
     }
 
+     /**
+     * Clear StreamElements authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+     public static clearStreamElementsAuth<T>(): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.clearStreamElementsAuth, {});
+    }
+
     /**
      * Returns a list of tips received by the authenticated user for a given month and year
      * 
@@ -286,9 +298,9 @@ class Users {
      * 
      * @returns promise
      */
-    public static getYoutubeChannels<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static getFacebookGroups<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(UserRoutes.routes.getYoutubeChannels, undefined, undefined, params);
+        return Requests.processRoute(UserRoutes.routes.getFacebookGroups, undefined, undefined, params);
     }
 
 

@@ -1,7 +1,7 @@
 import { Config } from "./config";
 import Auth from "./api/Auth";
 import Competitions from "./api/Competitions";
-import { Communities } from "./api";
+import { Communities, Social } from "./api";
 import { Users } from "./api";
 import { Events } from "./api";
 import { Teams } from "./api";
@@ -43,6 +43,7 @@ declare class Glitch {
         Waitlists: typeof Waitlists;
         Utility: typeof Utility;
         Tips: typeof Tips;
+        Social: typeof Social;
         TipPackages: typeof TipPackages;
         TipEmojis: typeof TipEmojis;
         TipPackagePurchases: typeof TipPackagePurchases;

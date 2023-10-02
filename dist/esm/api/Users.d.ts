@@ -160,6 +160,14 @@ declare class Users {
      */
     static clearYoutubeAuth<T>(): AxiosPromise<Response<T>>;
     /**
+    * Clear StreamElements authentication information from the current user.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+    *
+    * @returns promise
+    */
+    static clearStreamElementsAuth<T>(): AxiosPromise<Response<T>>;
+    /**
      * Returns a list of tips received by the authenticated user for a given month and year
      *
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
@@ -198,6 +206,6 @@ declare class Users {
      *
      * @returns promise
      */
-    static getYoutubeChannels<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static getFacebookGroups<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Users;

@@ -1030,6 +1030,14 @@ declare class Users {
      */
     static clearYoutubeAuth<T>(): AxiosPromise<Response<T>>;
     /**
+    * Clear StreamElements authentication information from the current user.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+    *
+    * @returns promise
+    */
+    static clearStreamElementsAuth<T>(): AxiosPromise<Response<T>>;
+    /**
      * Returns a list of tips received by the authenticated user for a given month and year
      *
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
@@ -1068,7 +1076,7 @@ declare class Users {
      *
      * @returns promise
      */
-    static getYoutubeChannels<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static getFacebookGroups<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Events {
@@ -1766,6 +1774,20 @@ declare class Posts {
     static toggleInteraction<T>(post_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class Social {
+    /**
+     * Give a tip to another user
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     *
+     * @returns A promise
+     */
+    static postVideoToTikTokFile<T>(file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static postVideoToTikTokBlob<T>(blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static postVideoToFacebookGroupFile<T>(file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static postVideoToFacebookGroupBlob<T>(blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 declare class Templates {
     /**
      * List all the templates.
@@ -2321,6 +2343,7 @@ declare class Glitch {
         Waitlists: typeof Waitlists;
         Utility: typeof Utility;
         Tips: typeof Tips;
+        Social: typeof Social;
         TipPackages: typeof TipPackages;
         TipEmojis: typeof TipEmojis;
         TipPackagePurchases: typeof TipPackagePurchases;

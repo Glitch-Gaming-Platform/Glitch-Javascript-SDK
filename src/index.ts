@@ -5,7 +5,7 @@ import { Config } from "./config";
 //API
 import Auth  from "./api/Auth";
 import Competitions  from "./api/Competitions";
-import {Communities} from "./api";
+import {Communities, Social} from "./api";
 import { Users } from "./api";
 import { Events } from "./api";
 import { Teams } from "./api";
@@ -58,6 +58,7 @@ class Glitch {
         Waitlists: Waitlists,
         Utility : Utility,
         Tips: Tips,
+        Social : Social,
         TipPackages : TipPackages,
         TipEmojis : TipEmojis ,
         TipPackagePurchases: TipPackagePurchases
