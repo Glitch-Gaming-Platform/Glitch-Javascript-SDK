@@ -160,6 +160,22 @@ declare class Users {
      */
     static clearYoutubeAuth<T>(): AxiosPromise<Response<T>>;
     /**
+     * Clear Reddit authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearRedditAuth<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Clear Twitter authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearTwitterAuth<T>(): AxiosPromise<Response<T>>;
+    /**
     * Clear StreamElements authentication information from the current user.
     *
     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage

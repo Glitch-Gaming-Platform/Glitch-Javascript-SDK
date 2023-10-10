@@ -32330,6 +32330,8 @@ var UserRoutes = /** @class */ (function () {
         clearStripeAuth: { url: '/users/clearStripeAuth', method: HTTP_METHODS.DELETE },
         clearTikTokAuth: { url: '/users/clearTikTokAuth', method: HTTP_METHODS.DELETE },
         clearYoutubeAuth: { url: '/users/clearYoutubeAuth', method: HTTP_METHODS.DELETE },
+        clearRedditAuth: { url: '/users/clearRedditAuth', method: HTTP_METHODS.DELETE },
+        clearTwitterAuth: { url: '/users/clearTwitterAuth', method: HTTP_METHODS.DELETE },
         clearStreamElementsAuth: { url: '/users/clearStreamElementsAuth', method: HTTP_METHODS.DELETE },
         getTipsReceivedForMonth: { url: '/users/getTipsReceivedForMonth', method: HTTP_METHODS.GET },
         getTipsGivenForMonth: { url: '/users/getTipsGivenForMonth', method: HTTP_METHODS.GET },
@@ -32535,6 +32537,26 @@ var Users = /** @class */ (function () {
      */
     Users.clearYoutubeAuth = function () {
         return Requests.processRoute(UserRoutes.routes.clearYoutubeAuth, {});
+    };
+    /**
+     * Clear Reddit authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.clearRedditAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearRedditAuth, {});
+    };
+    /**
+     * Clear Twitter authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Users.clearTwitterAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearTwitterAuth, {});
     };
     /**
     * Clear StreamElements authentication information from the current user.

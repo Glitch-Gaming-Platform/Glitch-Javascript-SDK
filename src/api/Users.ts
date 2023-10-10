@@ -231,6 +231,30 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.clearYoutubeAuth, {});
     }
 
+    /**
+     * Clear Reddit authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static clearRedditAuth<T>(): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.clearRedditAuth, {});
+    }
+
+    /**
+     * Clear Twitter authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static clearTwitterAuth<T>(): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.clearTwitterAuth, {});
+    }
+
      /**
      * Clear StreamElements authentication information from the current user.
      * 
