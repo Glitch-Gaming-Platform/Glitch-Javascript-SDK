@@ -42,6 +42,27 @@ declare class Posts {
      */
     static createWithBlob<T>(blob: Blob, data?: object): AxiosPromise<Response<T>>;
     /**
+   * Create a new post with a file divided into chunks.
+   *
+   * @param file The file object to upload.
+   * @param chunkSize Size of each chunk in bytes. Default is 1MB.
+   * @param data Any additional data to pass along to the upload.
+   *
+   * @returns Promise
+   */
+    /**
+     * Create a new post with a file divided into chunks.
+     *
+     * @param file The file object to upload.
+     * @param chunkSize Size of each chunk in bytes. Default is 1MB.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns Promise
+     */
+    static createWithFileInChunks<T>(file: File, chunkSize?: number, data?: {
+        [key: string]: any;
+    }): Promise<AxiosPromise<Response<T>>>;
+    /**
      * Update a post.
      *
      * @see https://api.glitch.fun/api/documentation#/Post%20Route/updatePostStorage

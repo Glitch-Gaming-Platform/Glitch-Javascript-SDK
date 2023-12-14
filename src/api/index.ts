@@ -13,6 +13,7 @@ import Tips from "./Tips";
 import TipEmojis from "./TipEmojis";
 import TipPackages from "./TipPackages";
 import TipPackagePurchases from "./TipPackagePurchases";
+import SocialPosts from "./SocialPosts";
 
 export {Auth};
 export {Competitions};
@@ -28,4 +29,5 @@ export {Utility};
 export {Tips};
 export {TipEmojis};
 export {TipPackages};
-export {TipPackagePurchases}
+export {TipPackagePurchases};
+export {SocialPosts};

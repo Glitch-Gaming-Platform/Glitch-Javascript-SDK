@@ -136,7 +136,7 @@ class Requests {
   public static uploadFile<T>(
     url: string,
     filename: string,
-    file: File,
+    file: File | Blob,
     data?: any,
     params?: Record<string, any>
   ): AxiosPromise<Response<T>> {

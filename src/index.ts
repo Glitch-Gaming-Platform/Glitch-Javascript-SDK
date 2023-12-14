@@ -17,6 +17,8 @@ import { Tips } from "./api";
 import { TipPackages } from "./api";
 import { TipEmojis } from "./api";
 import { TipPackagePurchases } from "./api";
+import { SocialPosts } from "./api";
+
 
 
 import Requests from "./util/Requests";
