@@ -61,6 +61,7 @@ class Glitch {
         Utility : Utility,
         Tips: Tips,
         Social : Social,
+        SocialPosts : SocialPosts,
         TipPackages : TipPackages,
         TipEmojis : TipEmojis ,
         TipPackagePurchases: TipPackagePurchases

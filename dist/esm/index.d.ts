@@ -13,6 +13,7 @@ import { Tips } from "./api";
 import { TipPackages } from "./api";
 import { TipEmojis } from "./api";
 import { TipPackagePurchases } from "./api";
+import { SocialPosts } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -44,6 +45,7 @@ declare class Glitch {
         Utility: typeof Utility;
         Tips: typeof Tips;
         Social: typeof Social;
+        SocialPosts: typeof SocialPosts;
         TipPackages: typeof TipPackages;
         TipEmojis: typeof TipEmojis;
         TipPackagePurchases: typeof TipPackagePurchases;

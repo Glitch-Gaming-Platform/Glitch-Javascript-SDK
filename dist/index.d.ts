@@ -2071,6 +2071,35 @@ declare class TipPackagePurchases {
     static processStripePaymentIntent<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class SocialPosts {
+    /**
+     * List all the Posts.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+     *
+     * @returns promise
+     */
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Give a tip to another user
+     *
+     * @see https://api.glitch.fun/api/documentation#/Authentication%20Route/authLogin
+     *
+     * @returns A promise
+     */
+    static create<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve the information for a single post.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/showPostStorage
+     *
+     * @param post_id The id fo the post to retrieve.
+     *
+     * @returns promise
+     */
+    static view<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -2381,6 +2410,7 @@ declare class Glitch {
         Utility: typeof Utility;
         Tips: typeof Tips;
         Social: typeof Social;
+        SocialPosts: typeof SocialPosts;
         TipPackages: typeof TipPackages;
         TipEmojis: typeof TipEmojis;
         TipPackagePurchases: typeof TipPackagePurchases;
