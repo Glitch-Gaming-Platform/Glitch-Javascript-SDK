@@ -35498,7 +35498,7 @@ var SocialPosts = /** @class */ (function () {
      * @returns A promise
      */
     SocialPosts.create = function (data, params) {
-        return Requests.processRoute(SocialPostsRoute.routes.create, data, {}, params);
+        return Requests.processRoute(SocialPostsRoute.routes.createPost, data, {}, params);
     };
     /**
      * Retrieve the information for a single post.

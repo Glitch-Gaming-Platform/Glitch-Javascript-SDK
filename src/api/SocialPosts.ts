@@ -24,7 +24,7 @@ class SocialPosts {
      * @returns A promise
      */
     public static create<T>(data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(SocialPostsRoute.routes.create, data, {}, params);
+        return Requests.processRoute(SocialPostsRoute.routes.createPost, data, {}, params);
     }
 
     /**
