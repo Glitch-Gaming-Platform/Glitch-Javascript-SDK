@@ -4,6 +4,9 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import json from "@rollup/plugin-json";
 import polyfillNode from 'rollup-plugin-polyfill-node'
+import builtins from 'rollup-plugin-node-builtins';
+import globals from 'rollup-plugin-node-globals';
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { resolve as pathResolve } from 'path';
 
 const packageJson = require("./package.json");
@@ -14,7 +17,9 @@ const EMPTY_MODULE = `export default {}`
 const BROWSERIFY_ALIASES = {
   'fetch-blob/from': EMPTY_MODULE_ID,
   module: EMPTY_MODULE_ID,
-  'util': require.resolve('fast-text-encoding')  // Point directly to the module's entry
+  //'util': require.resolve('fast-text-encoding')  // Point directly to the module's entry
+  'util': require.resolve('text-encoding'),  // Replace 'fast-text-encoding' with 'text-encoding'
+
 };
 
 const nodeResolve = resolve({
@@ -80,15 +85,13 @@ export default [
     ],
     plugins: [
       json(),
-      commonjs({
-        requireReturnsDefault: "auto"
-      }),
-      nodeResolve,
+      commonjs(),
       browserify,
+      nodeResolve,
+      globals(),
+      builtins(),
       // https://github.com/FredKSchott/rollup-plugin-polyfill-node/issues/21
-      polyfillNode(({
-        include: [],
-      })),
+      polyfillNode(),
       typescript({
         tsconfig: "./tsconfig.esm.json",
         compilerOptions: {
