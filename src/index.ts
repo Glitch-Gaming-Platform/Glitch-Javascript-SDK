@@ -18,6 +18,8 @@ import { TipPackages } from "./api";
 import { TipEmojis } from "./api";
 import { TipPackagePurchases } from "./api";
 import { SocialPosts } from "./api";
+import {Titles} from "./api";
+import {Campaigns} from "./api";
 
 
 
@@ -50,6 +52,7 @@ class Glitch {
 
     public static api = {
         Auth: Auth,
+        Campaigns : Campaigns,
         Competitions: Competitions,
         Communities : Communities,
         Users: Users,
@@ -60,6 +63,7 @@ class Glitch {
         Waitlists: Waitlists,
         Utility : Utility,
         Tips: Tips,
+        Titles : Titles,
         Social : Social,
         SocialPosts : SocialPosts,
         TipPackages : TipPackages,

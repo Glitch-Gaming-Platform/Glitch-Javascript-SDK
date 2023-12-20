@@ -35515,6 +35515,325 @@ var SocialPosts = /** @class */ (function () {
     return SocialPosts;
 }());
 
+var TitlesRoute = /** @class */ (function () {
+    function TitlesRoute() {
+    }
+    TitlesRoute.routes = {
+        list: { url: '/titles', method: HTTP_METHODS.GET },
+        create: { url: '/titles', method: HTTP_METHODS.POST },
+        view: { url: '/titles/{title_id}', method: HTTP_METHODS.GET },
+        update: { url: '/titles/{title_id}', method: HTTP_METHODS.PUT },
+        delete: { url: '/titles/{title_id}', method: HTTP_METHODS.DELETE },
+        approve: { url: '/titles/{title_id}/approve', method: HTTP_METHODS.POST },
+        reject: { url: '//titles/{title_id}/reject', method: HTTP_METHODS.POST },
+    };
+    return TitlesRoute;
+}());
+
+var Titles = /** @class */ (function () {
+    function Titles() {
+    }
+    /**
+     * List all the Titles.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/edab2e3b061347b06c82258622d239e2
+     *
+     * @returns promise
+     */
+    Titles.list = function (params) {
+        return Requests.processRoute(TitlesRoute.routes.list, undefined, undefined, params);
+    };
+    /**
+     * Create a new title.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/storeTitle
+     *
+     * @param data The data to be passed when creating a title.
+     *
+     * @returns Promise
+     */
+    Titles.create = function (data, params) {
+        return Requests.processRoute(TitlesRoute.routes.create, data, undefined, params);
+    };
+    /**
+     * Update a title.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/updateTitle
+     *
+     * @param title_id The id of the title to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Titles.update = function (title_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.update, data, { title_id: title_id }, params);
+    };
+    /**
+     * Retrieve the information for a single title.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/getTitleByUUID
+     *
+     * @param title_id The id fo the title to retrieve.
+     *
+     * @returns promise
+     */
+    Titles.view = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.view, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Deletes a title.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/deleteTitle
+     *
+     * @param title_id The id of the title to delete.
+     * @returns promise
+     */
+    Titles.delete = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.delete, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Approve a title
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/approveTitle
+     *
+     * @param data The data to be passed when creating a title.
+     *
+     * @returns Promise
+     */
+    Titles.approve = function (title_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.approve, data, { title_id: title_id }, params);
+    };
+    /**
+     * Reject a title
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/rejectTitle
+     *
+     * @param data The data to be passed when creating a title.
+     *
+     * @returns Promise
+     */
+    Titles.reject = function (title_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.reject, data, { title_id: title_id }, params);
+    };
+    return Titles;
+}());
+
+var CampaignsRoute = /** @class */ (function () {
+    function CampaignsRoute() {
+    }
+    CampaignsRoute.routes = {
+        listCampaigns: { url: '/campaigns', method: HTTP_METHODS.GET },
+        createCampaign: { url: '/campaigns', method: HTTP_METHODS.POST },
+        viewCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.GET },
+        updateCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.PUT },
+        deleteCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE },
+        listCampaignLinks: { url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.DELETE },
+        createCampaignLink: { url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.POST },
+        getCampaignLink: { url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.GET },
+        updateCampaignLink: { url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.PUT },
+        createInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers', method: HTTP_METHODS.POST },
+        listInfluencerCampaigns: { url: '/campaigns/influencers', method: HTTP_METHODS.GET },
+        viewInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.GET },
+        updateInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.PUT },
+        markInfluencerCampaignComplete: { url: '/campaigns/{campaign_id}/influencers/{user_id}/setComplete', method: HTTP_METHODS.POST },
+        markInfluencerCampaignIncomplete: { url: '/campaigns/{campaign_id}/influencers/{user_id}/setIncomplete', method: HTTP_METHODS.POST },
+        listInfluencerCampaignLinks: { url: '/campaigns/{campaign_id}/influencers/{user_id}/links', method: HTTP_METHODS.GET },
+    };
+    return CampaignsRoute;
+}());
+
+var Campaigns = /** @class */ (function () {
+    function Campaigns() {
+    }
+    /**
+     * List all the Campaigns.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/edab2e3b061347b06c82258622d239e2
+     *
+     * @returns promise
+     */
+    Campaigns.list = function (params) {
+        return Requests.processRoute(CampaignsRoute.routes.listCampaigns, undefined, undefined, params);
+    };
+    /**
+     * Create a new campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/createCampaign
+     *
+     * @param data The data to be passed when creating a campaign.
+     *
+     * @returns Promise
+     */
+    Campaigns.create = function (data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.createCampaign, data, undefined, params);
+    };
+    /**
+     * Update a campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/updateCampaign
+     *
+     * @param campaign_id The id of the campaign to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Campaigns.update = function (campaign_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.updateCampaign, data, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Retrieve the information for a single campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignByUuid
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.view = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.viewCampaign, {}, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Deletes a campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/deleteCampaign
+     *
+     * @param campaign_id The id of the campaign to delete.
+     * @returns promise
+     */
+    Campaigns.delete = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.deleteCampaign, {}, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * List all the campaign links.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
+     *
+     * @returns promise
+     */
+    Campaigns.listCampaignLinks = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.listCampaignLinks, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Create a new campaign link.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/storeCampaignLink
+     *
+     * @param data The data to be passed when creating a campaign.
+     *
+     * @returns Promise
+     */
+    Campaigns.createCampaignLink = function (campaign_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.createCampaign, data, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Update a campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/1bb1492981b4529693604b03aade8bf6
+     *
+     * @param campaign_id The id of the campaign to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Campaigns.updateCampaignLink = function (campaign_id, link_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.updateCampaign, data, { campaign_id: campaign_id, link_id: link_id }, params);
+    };
+    /**
+     * Retrieve the information for a single campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLink
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.getCampaignLink = function (campaign_id, link_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.getCampaignLink, {}, { campaign_id: campaign_id, link_id: link_id }, params);
+    };
+    /**
+    * List all the influencers associated with a campaign.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerCampaigns
+    *
+    * @returns promise
+    */
+    Campaigns.listInfluencerCampaigns = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaigns, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Create an influencer campaign
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/6d834c837c5f330d6a4cef5786c45c90
+     *
+     * @param data The data to be passed when creating a campaign.
+     *
+     * @returns Promise
+     */
+    Campaigns.createInfluencerCampaign = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.createInfluencerCampaign, data, { campaign_id: campaign_id }, params);
+    };
+    /**
+    * Update an influencer campaign.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/updateInfluencerCampaign
+    *
+    * @param campaign_id The id of the campaign to update.
+    * @param data The data to update.
+    *
+    * @returns promise
+    */
+    Campaigns.updateInfluencerCampaign = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.updateInfluencerCampaign, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Retrieve the information for a single campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/showInfluencerCampaign
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.viewInfluencerCampaign = function (campaign_id, user_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.viewInfluencerCampaign, {}, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Mark an influencer campaign as completed.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/markCompleted
+     *
+     * @param data The data to be passed when creating a campaign.
+     *
+     * @returns Promise
+     */
+    Campaigns.markInfluencerCampaignComplete = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.markInfluencerCampaignComplete, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Mark an influencer campaign as incomplete.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/afffdc7a0c7fc4d9740f10517c53933e
+     *
+     * @param data The data to be passed when creating a campaign.
+     *
+     * @returns Promise
+     */
+    Campaigns.markInfluencerCampaignIncomplete = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.markInfluencerCampaignIncomplete, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Get all the links associated with an influencer's campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/edab2e3b061347b06c82258622d239e2
+     *
+     * @returns promise
+     */
+    Campaigns.listInfluencerCampaignLinks = function (campaign_id, user_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinks, undefined, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    return Campaigns;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -35885,6 +36204,7 @@ var Glitch = /** @class */ (function () {
     };
     Glitch.api = {
         Auth: Auth,
+        Campaigns: Campaigns,
         Competitions: Competitions,
         Communities: Communities,
         Users: Users,
@@ -35895,6 +36215,7 @@ var Glitch = /** @class */ (function () {
         Waitlists: Waitlists,
         Utility: Utility,
         Tips: Tips,
+        Titles: Titles,
         Social: Social,
         SocialPosts: SocialPosts,
         TipPackages: TipPackages,

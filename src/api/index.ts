@@ -14,6 +14,8 @@ import TipEmojis from "./TipEmojis";
 import TipPackages from "./TipPackages";
 import TipPackagePurchases from "./TipPackagePurchases";
 import SocialPosts from "./SocialPosts";
+import Titles from "./Titles";
+import Campaigns from "./Campaigns";
 
 export {Auth};
 export {Competitions};
@@ -31,3 +33,5 @@ export {TipEmojis};
 export {TipPackages};
 export {TipPackagePurchases};
 export {SocialPosts};
+export {Titles};
+export {Campaigns};

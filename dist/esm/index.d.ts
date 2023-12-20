@@ -14,6 +14,8 @@ import { TipPackages } from "./api";
 import { TipEmojis } from "./api";
 import { TipPackagePurchases } from "./api";
 import { SocialPosts } from "./api";
+import { Titles } from "./api";
+import { Campaigns } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -34,6 +36,7 @@ declare class Glitch {
     };
     static api: {
         Auth: typeof Auth;
+        Campaigns: typeof Campaigns;
         Competitions: typeof Competitions;
         Communities: typeof Communities;
         Users: typeof Users;
@@ -44,6 +47,7 @@ declare class Glitch {
         Waitlists: typeof Waitlists;
         Utility: typeof Utility;
         Tips: typeof Tips;
+        Titles: typeof Titles;
         Social: typeof Social;
         SocialPosts: typeof SocialPosts;
         TipPackages: typeof TipPackages;
