@@ -3127,32 +3127,16 @@ function getDefaultExportFromCjs (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
-function getAugmentedNamespace(n) {
-  if (n.__esModule) return n;
-  var f = n.default;
-	if (typeof f == "function") {
-		var a = function a () {
-			if (this instanceof a) {
-        return Reflect.construct(f, arguments, this.constructor);
-			}
-			return f.apply(this, arguments);
-		};
-		a.prototype = f.prototype;
-  } else a = {};
-  Object.defineProperty(a, '__esModule', {value: true});
-	Object.keys(n).forEach(function (k) {
-		var d = Object.getOwnPropertyDescriptor(n, k);
-		Object.defineProperty(a, k, d.get ? d : {
-			enumerable: true,
-			get: function () {
-				return n[k];
-			}
-		});
-	});
-	return a;
+function getDefaultExportFromNamespaceIfNotNamed (n) {
+	return n && Object.prototype.hasOwnProperty.call(n, 'default') && Object.keys(n).length === 1 ? n['default'] : n;
 }
 
 var text_min = {};
+
+text_min.inherits = inherits;
+text_min.debuglog = function(empty) {
+  
+}
 
 (function(scope) {function B(r,e){var f;return r instanceof Buffer?f=r:f=Buffer.from(r.buffer,r.byteOffset,r.byteLength),f.toString(e)}var w=function(r){return Buffer.from(r)};function h(r){for(var e=0,f=Math.min(256*256,r.length+1),n=new Uint16Array(f),i=[],o=0;;){var t=e<r.length;if(!t||o>=f-1){var s=n.subarray(0,o),m=s;if(i.push(String.fromCharCode.apply(null,m)),!t)return i.join("");r=r.subarray(e),e=0,o=0;}var a=r[e++];if((a&128)===0)n[o++]=a;else if((a&224)===192){var d=r[e++]&63;n[o++]=(a&31)<<6|d;}else if((a&240)===224){var d=r[e++]&63,l=r[e++]&63;n[o++]=(a&31)<<12|d<<6|l;}else if((a&248)===240){var d=r[e++]&63,l=r[e++]&63,R=r[e++]&63,c=(a&7)<<18|d<<12|l<<6|R;c>65535&&(c-=65536,n[o++]=c>>>10&1023|55296,c=56320|c&1023),n[o++]=c;}}}function F(r){for(var e=0,f=r.length,n=0,i=Math.max(32,f+(f>>>1)+7),o=new Uint8Array(i>>>3<<3);e<f;){var t=r.charCodeAt(e++);if(t>=55296&&t<=56319){if(e<f){var s=r.charCodeAt(e);(s&64512)===56320&&(++e,t=((t&1023)<<10)+(s&1023)+65536);}if(t>=55296&&t<=56319)continue}if(n+4>o.length){i+=8,i*=1+e/r.length*2,i=i>>>3<<3;var m=new Uint8Array(i);m.set(o),o=m;}if((t&4294967168)===0){o[n++]=t;continue}else if((t&4294965248)===0)o[n++]=t>>>6&31|192;else if((t&4294901760)===0)o[n++]=t>>>12&15|224,o[n++]=t>>>6&63|128;else if((t&4292870144)===0)o[n++]=t>>>18&7|240,o[n++]=t>>>12&63|128,o[n++]=t>>>6&63|128;else continue;o[n++]=t&63|128;}return o.slice?o.slice(0,n):o.subarray(0,n)}var u="Failed to ",p=function(r,e,f){if(r)throw new Error("".concat(u).concat(e,": the '").concat(f,"' option is unsupported."))};var x=typeof Buffer=="function"&&Buffer.from;var A=x?w:F;function v(){this.encoding="utf-8";}v.prototype.encode=function(r,e){return p(e&&e.stream,"encode","stream"),A(r)};function U(r){var e;try{var f=new Blob([r],{type:"text/plain;charset=UTF-8"});e=URL.createObjectURL(f);var n=new XMLHttpRequest;return n.open("GET",e,!1),n.send(),n.responseText}finally{e&&URL.revokeObjectURL(e);}}var O=!x&&typeof Blob=="function"&&typeof URL=="function"&&typeof URL.createObjectURL=="function",S=["utf-8","utf8","unicode-1-1-utf-8"],T=h;x?T=B:O&&(T=function(r){try{return U(r)}catch(e){return h(r)}});var y="construct 'TextDecoder'",E="".concat(u," ").concat(y,": the ");function g(r,e){p(e&&e.fatal,y,"fatal"),r=r||"utf-8";var f;if(x?f=Buffer.isEncoding(r):f=S.indexOf(r.toLowerCase())!==-1,!f)throw new RangeError("".concat(E," encoding label provided ('").concat(r,"') is invalid."));this.encoding=r,this.fatal=!1,this.ignoreBOM=!1;}g.prototype.decode=function(r,e){p(e&&e.stream,"decode","stream");var f;return r instanceof Uint8Array?f=r:r.buffer instanceof ArrayBuffer?f=new Uint8Array(r.buffer):f=new Uint8Array(r),T(f,this.encoding)};scope.TextEncoder=scope.TextEncoder||v;scope.TextDecoder=scope.TextDecoder||g;
 }(typeof window !== 'undefined' ? window : (typeof commonjsGlobal !== 'undefined' ? commonjsGlobal : commonjsGlobal)));
@@ -3905,10 +3889,6 @@ function base64DetectIncompleteChar(buffer) {
 }
 
 Readable.ReadableState = ReadableState;
-
-text_min.debuglog = function(empty) {
-
-}
 
 var debug$2 = text_min.debuglog('stream');
 text_min.inherits(Readable, EventEmitter);
@@ -5600,7 +5580,7 @@ var _polyfillNode_stream = /*#__PURE__*/Object.freeze({
     default: Stream$3
 });
 
-var require$$3 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_stream);
+var require$$3 = /*@__PURE__*/getDefaultExportFromNamespaceIfNotNamed(_polyfillNode_stream);
 
 var Stream$2 = require$$3.Stream;
 var util$2 = text_min;
@@ -6167,7 +6147,7 @@ var _polyfillNode_path$1 = /*#__PURE__*/Object.freeze({
     sep: sep
 });
 
-var require$$2$1 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_path$1);
+var require$$2$1 = /*@__PURE__*/getDefaultExportFromNamespaceIfNotNamed(_polyfillNode_path$1);
 
 var hasFetch = isFunction$1(global$1.fetch) && isFunction$1(global$1.ReadableStream);
 
@@ -8037,7 +8017,7 @@ var _polyfillNode_http = /*#__PURE__*/Object.freeze({
     request: request$1
 });
 
-var require$$1 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_http);
+var require$$1 = /*@__PURE__*/getDefaultExportFromNamespaceIfNotNamed(_polyfillNode_http);
 
 function request(opts, cb) {
   if (typeof opts === 'string')
@@ -8185,9 +8165,9 @@ var _polyfillNode_https = /*#__PURE__*/Object.freeze({
     request: request
 });
 
-var require$$2 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_https);
+var require$$2 = /*@__PURE__*/getDefaultExportFromNamespaceIfNotNamed(_polyfillNode_https);
 
-var require$$0$3 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_url);
+var require$$0$3 = /*@__PURE__*/getDefaultExportFromNamespaceIfNotNamed(_polyfillNode_url);
 
 var _polyfillNode_fs = {};
 
@@ -8196,7 +8176,7 @@ var _polyfillNode_fs$1 = /*#__PURE__*/Object.freeze({
     default: _polyfillNode_fs
 });
 
-var require$$6 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_fs$1);
+var require$$6 = /*@__PURE__*/getDefaultExportFromNamespaceIfNotNamed(_polyfillNode_fs$1);
 
 var mimeTypes = {};
 
@@ -21768,7 +21748,7 @@ var _polyfillNode_assert = /*#__PURE__*/Object.freeze({
     throws: throws
 });
 
-var require$$4 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_assert);
+var require$$4 = /*@__PURE__*/getDefaultExportFromNamespaceIfNotNamed(_polyfillNode_assert);
 
 var src = {exports: {}};
 
@@ -21803,7 +21783,7 @@ var _polyfillNode_tty$1 = /*#__PURE__*/Object.freeze({
     isatty: isatty
 });
 
-var require$$0$1 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_tty$1);
+var require$$0$1 = /*@__PURE__*/getDefaultExportFromNamespaceIfNotNamed(_polyfillNode_tty$1);
 
 /*
 The MIT License (MIT)
@@ -21954,7 +21934,7 @@ var _polyfillNode_os$1 = /*#__PURE__*/Object.freeze({
     uptime: uptime
 });
 
-var require$$0 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_os$1);
+var require$$0 = /*@__PURE__*/getDefaultExportFromNamespaceIfNotNamed(_polyfillNode_os$1);
 
 var hasFlag;
 var hasRequiredHasFlag;
@@ -21963,7 +21943,7 @@ function requireHasFlag () {
 	if (hasRequiredHasFlag) return hasFlag;
 	hasRequiredHasFlag = 1;
 	hasFlag = (flag, argv) => {
-		argv = argv || process.argv;
+		argv = argv || browser$1$1.argv;
 		const prefix = flag.startsWith('-') ? '' : (flag.length === 1 ? '-' : '--');
 		const pos = argv.indexOf(prefix + flag);
 		const terminatorPos = argv.indexOf('--');
@@ -21981,7 +21961,7 @@ function requireSupportsColor () {
 	const os = require$$0;
 	const hasFlag = requireHasFlag();
 
-	const env = process.env;
+	const env = browser$1$1.env;
 
 	let forceColor;
 	if (hasFlag('no-color') ||
@@ -22032,7 +22012,7 @@ function requireSupportsColor () {
 
 		const min = forceColor ? 1 : 0;
 
-		if (process.platform === 'win32') {
+		if (browser$1$1.platform === 'win32') {
 			// Node.js 7.5.0 is the first version of Node.js to include a patch to
 			// libuv that enables 256 color output on Windows. Anything earlier and it
 			// won't work. However, here we target Node.js 8 at minimum as it is an LTS
@@ -22041,7 +22021,7 @@ function requireSupportsColor () {
 			// that supports 16m/TrueColor.
 			const osRelease = os.release().split('.');
 			if (
-				Number(process.versions.node.split('.')[0]) >= 8 &&
+				Number(browser$1$1.versions.node.split('.')[0]) >= 8 &&
 				Number(osRelease[0]) >= 10 &&
 				Number(osRelease[2]) >= 10586
 			) {
@@ -22105,8 +22085,8 @@ function requireSupportsColor () {
 
 	supportsColor_1 = {
 		supportsColor: getSupportLevel,
-		stdout: getSupportLevel(process.stdout),
-		stderr: getSupportLevel(process.stderr)
+		stdout: getSupportLevel(browser$1$1.stdout),
+		stderr: getSupportLevel(browser$1$1.stderr)
 	};
 	return supportsColor_1;
 }
@@ -22564,10 +22544,6 @@ function requireCommon () {
 	return common;
 }
 
-/**
- * Module dependencies.
- */
-
 var hasRequiredNode;
 
 function requireNode () {
@@ -22693,7 +22669,7 @@ function requireNode () {
 		 *   $ DEBUG_COLORS=no DEBUG_DEPTH=10 DEBUG_SHOW_HIDDEN=enabled node script.js
 		 */
 
-		exports.inspectOpts = Object.keys(process.env).filter(key => {
+		exports.inspectOpts = Object.keys(browser$1$1.env).filter(key => {
 			return /^debug_/i.test(key);
 		}).reduce((obj, key) => {
 			// Camel-case
@@ -22705,7 +22681,7 @@ function requireNode () {
 				});
 
 			// Coerce string value into JS value
-			let val = process.env[key];
+			let val = browser$1$1.env[key];
 			if (/^(yes|on|true|enabled)$/i.test(val)) {
 				val = true;
 			} else if (/^(no|off|false|disabled)$/i.test(val)) {
@@ -22727,7 +22703,7 @@ function requireNode () {
 		function useColors() {
 			return 'colors' in exports.inspectOpts ?
 				Boolean(exports.inspectOpts.colors) :
-				tty.isatty(process.stderr.fd);
+				tty.isatty(browser$1$1.stderr.fd);
 		}
 
 		/**
@@ -22763,7 +22739,7 @@ function requireNode () {
 		 */
 
 		function log(...args) {
-			return process.stderr.write(util.format(...args) + '\n');
+			return browser$1$1.stderr.write(util.format(...args) + '\n');
 		}
 
 		/**
@@ -22774,11 +22750,11 @@ function requireNode () {
 		 */
 		function save(namespaces) {
 			if (namespaces) {
-				process.env.DEBUG = namespaces;
+				browser$1$1.env.DEBUG = namespaces;
 			} else {
 				// If you set a process.env field to null or undefined, it gets cast to the
 				// string 'null' or 'undefined'. Just delete instead.
-				delete process.env.DEBUG;
+				delete browser$1$1.env.DEBUG;
 			}
 		}
 
@@ -22790,7 +22766,7 @@ function requireNode () {
 		 */
 
 		function load() {
-			return process.env.DEBUG;
+			return browser$1$1.env.DEBUG;
 		}
 
 		/**
@@ -22838,8 +22814,6 @@ function requireNode () {
 }
 
 var browser = {exports: {}};
-
-/* eslint-env browser */
 
 var hasRequiredBrowser;
 
@@ -23070,8 +23044,8 @@ function requireBrowser () {
 			}
 
 			// If debug isn't set in LS, and we're in Electron, try to load $DEBUG
-			if (!r && typeof process !== 'undefined' && 'env' in process) {
-				r = process.env.DEBUG;
+			if (!r && typeof browser$1$1 !== 'undefined' && 'env' in browser$1$1) {
+				r = browser$1$1.env.DEBUG;
 			}
 
 			return r;
@@ -23118,17 +23092,12 @@ function requireBrowser () {
 	return browser.exports;
 }
 
-/**
- * Detect Electron renderer / nwjs process, which is node, but we should
- * treat as a browser.
- */
-
 var hasRequiredSrc;
 
 function requireSrc () {
 	if (hasRequiredSrc) return src.exports;
 	hasRequiredSrc = 1;
-	if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
+	if (typeof browser$1$1 === 'undefined' || browser$1$1.type === 'renderer' || browser$1$1.browser === true || browser$1$1.__nwjs) {
 		src.exports = requireBrowser();
 	} else {
 		src.exports = requireNode();

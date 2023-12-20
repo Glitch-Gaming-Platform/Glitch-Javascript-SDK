@@ -45,7 +45,6 @@ const browserify = {
 export default [
   {
     input: "src/index.ts",
-    inlineDynamicImports: false,
     output: [
       {
         dir: packageJson.main.replace('/index.js', ''),
@@ -65,7 +64,6 @@ export default [
   },
   {
     input: "src/index.ts",
-    inlineDynamicImports: false,
     output: [
       {
         dir: packageJson.module.replace('/index.js', ''),
@@ -82,11 +80,15 @@ export default [
     ],
     plugins: [
       json(),
-      commonjs(),
+      commonjs({
+        requireReturnsDefault: "auto"
+      }),
       nodeResolve,
       browserify,
       // https://github.com/FredKSchott/rollup-plugin-polyfill-node/issues/21
-      polyfillNode(),
+      polyfillNode(({
+        include: [],
+      })),
       typescript({
         tsconfig: "./tsconfig.esm.json",
         compilerOptions: {
