@@ -3906,6 +3906,10 @@ function base64DetectIncompleteChar(buffer) {
 
 Readable.ReadableState = ReadableState;
 
+text_min.debuglog = function(empty) {
+
+}
+
 var debug$2 = text_min.debuglog('stream');
 text_min.inherits(Readable, EventEmitter);
 
