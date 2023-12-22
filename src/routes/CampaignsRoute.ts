@@ -9,7 +9,7 @@ class CampaignsRoute {
       viewCampaign : { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.GET  },
       updateCampaign  :{ url: '/campaigns/{campaign_id}', method: HTTP_METHODS.PUT  },
       deleteCampaign  :{ url: '/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE  },
-      listCampaignLinks  :{ url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.DELETE },
+      listCampaignLinks  :{ url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.GET },
       createCampaignLink  :{ url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.POST },
       getCampaignLink  :{ url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.GET },
       updateCampaignLink  :{ url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.PUT },
