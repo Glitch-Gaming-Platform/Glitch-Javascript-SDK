@@ -3,49 +3,11 @@ import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import json from "@rollup/plugin-json";
-import polyfillNode from 'rollup-plugin-polyfill-node'
+import polyfillNode from 'rollup-plugin-polyfill-node';
 import builtins from 'rollup-plugin-node-builtins';
 import globals from 'rollup-plugin-node-globals';
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
-import { resolve as pathResolve } from 'path';
 
 const packageJson = require("./package.json");
-
-const EMPTY_MODULE_ID = '$empty$'
-const EMPTY_MODULE = `export default {}`
-
-const BROWSERIFY_ALIASES = {
-  'fetch-blob/from': EMPTY_MODULE_ID,
-  module: EMPTY_MODULE_ID,
-  //'util': require.resolve('fast-text-encoding')  // Point directly to the module's entry
-  'util': require.resolve('text-encoding'),  // Replace 'fast-text-encoding' with 'text-encoding'
-
-};
-
-const nodeResolve = resolve({
-  preferBuiltins: false
-});
-
-const browserify = {
-  name: 'browserify',
-  resolveId(source) {
-    if (source in BROWSERIFY_ALIASES) {
-      if (BROWSERIFY_ALIASES[source] === EMPTY_MODULE_ID) {
-        return EMPTY_MODULE_ID;
-      }
-      // Use pathResolve instead
-      return pathResolve(BROWSERIFY_ALIASES[source]);
-    }
-    if (source === EMPTY_MODULE_ID) {
-      return EMPTY_MODULE_ID;
-    }
-    // Handle other imports as usual
-    return null;  // return null to indicate that the current "resolveId" function doesn't determine the resolution
-  },
-  load(id) {
-    if (id === EMPTY_MODULE_ID) return EMPTY_MODULE;
-  },
-};
 
 export default [
   {
@@ -55,15 +17,12 @@ export default [
         dir: packageJson.main.replace('/index.js', ''),
         format: "cjs",
         sourcemap: true,
-        entryFileNames: 'index.js',
       }
     ],
     plugins: [
       json(),
       commonjs(),
-      resolve({
-        preferBuiltins: true
-      }),
+      resolve({ preferBuiltins: true }),
       typescript({ tsconfig: "./tsconfig.cjs.json" })
     ],
   },
@@ -74,29 +33,18 @@ export default [
         dir: packageJson.module.replace('/index.js', ''),
         format: "esm",
         sourcemap: true,
-        entryFileNames: 'index.js',
-        sourcemapPathTransform: (relativeSourcePath) => {
-          if (relativeSourcePath.includes('../../index.ts')) {
-            return relativeSourcePath.replace('../../index.ts', '../../src/index.ts')
-          }
-          return relativeSourcePath
-        },
       },
     ],
     plugins: [
       json(),
       commonjs(),
-      browserify,
-      nodeResolve,
+      resolve({ browser: true, preferBuiltins: false }),
       globals(),
       builtins(),
-      // https://github.com/FredKSchott/rollup-plugin-polyfill-node/issues/21
       polyfillNode(),
       typescript({
         tsconfig: "./tsconfig.esm.json",
-        compilerOptions: {
-          sourceRoot: '../'
-        }
+        compilerOptions: { sourceRoot: '../' }
       })
     ],
   },

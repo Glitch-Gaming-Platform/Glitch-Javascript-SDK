@@ -21972,7 +21972,7 @@ var Campaigns = /** @class */ (function () {
      * @returns Promise
      */
     Campaigns.createCampaignLink = function (campaign_id, data, params) {
-        return Requests.processRoute(CampaignsRoute.routes.createCampaign, data, { campaign_id: campaign_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.createCampaignLink, data, { campaign_id: campaign_id }, params);
     };
     /**
      * Update a campaign.
@@ -21985,7 +21985,7 @@ var Campaigns = /** @class */ (function () {
      * @returns promise
      */
     Campaigns.updateCampaignLink = function (campaign_id, link_id, data, params) {
-        return Requests.processRoute(CampaignsRoute.routes.updateCampaign, data, { campaign_id: campaign_id, link_id: link_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.updateCampaignLink, data, { campaign_id: campaign_id, link_id: link_id }, params);
     };
     /**
      * Retrieve the information for a single campaign.
@@ -22213,6 +22213,21 @@ var AddressLocationType = Object.freeze({
     HYBRID: 3,
 });
 
+var CampaignObjective = {
+    BrandAwareness: 1, // Increasing visibility and recognition of the brand.
+    AudienceEngagement: 2, // Boosting interactions like likes, comments, and shares.
+    LeadGeneration: 3, // Collecting potential customer information for nurturing leads.
+    SalesConversion: 4, // Directly driving sales of products or services.
+    BrandIdentityReputation: 5, // Shaping brand perception and reputation.
+    CustomerLoyaltyRetention: 6, // Encouraging repeat business and customer loyalty.
+    ContentAmplificationDiversity: 7, // Enriching content strategy with influencer content.
+    MarketFeedbackInsight: 8, // Gathering product feedback and market insights.
+    EducatingAudience: 9, // Informing about product features and benefits.
+    CommunityBuilding: 10, // Creating or enhancing a community around the brand.
+    DrivingWebTraffic: 11, // Increasing visitors to the brand’s website or landing pages.
+    SEOBenefits: 12 // Enhancing search engine optimization through online presence.
+};
+
 var ContentStatus = Object.freeze({
     UNAPPROVED: 0,
     APPROVED: 1,
@@ -22234,6 +22249,19 @@ var CompetitionTypes = Object.freeze({
     SEMI_ROUND_ROBINS: 8,
     EXTENDED: 9,
 });
+
+var InfluencerCampaignType = {
+    SponsoredContent: 1, // Sponsored Content Campaigns: Brands pay influencers to create content featuring their products or services.
+    AffiliateMarketing: 2, // Affiliate Marketing: Influencers promote products with a unique link or code, earning a commission per sale.
+    ProductGifting: 3, // Product Gifting: Brands send free products to influencers, hoping for them to be featured in their content.
+    BrandAmbassador: 4, // Brand Ambassador Programs: Influencers have a long-term relationship with a brand, consistently promoting its products.
+    SocialMediaTakeover: 5, // Social Media Takeovers: Influencers take over a brand's social media account for a period, creating and sharing content.
+    ContestsGiveaways: 6, // Contests and Giveaways: Collaborations for hosting contests or giveaways, engaging audiences of both parties.
+    EventCoverage: 7, // Event Coverage: Influencers are invited to events to cover them on their platforms.
+    CoCreationOfProducts: 8, // Co-Creation of Products: Collaboration between brands and influencers to create a product.
+    InfluencerWhitelisting: 9, // Influencer Whitelisting: Brands gain access to an influencer's account to run paid ads.
+    SocialIssuesCauseCampaigns: 10 // Social Issues and Cause Campaigns: Promoting social causes or charitable organizations.
+};
 
 var Modes;
 (function (Modes) {
@@ -22482,8 +22510,10 @@ var Glitch = /** @class */ (function () {
     Glitch.constants = {
         AcceptanceStatus: AcceptanceStatus,
         AddressLocationType: AddressLocationType,
+        CampaignObjective: CampaignObjective,
         CompetitionTypes: CompetitionTypes,
         ContentStatus: ContentStatus,
+        InfluencerCampaignType: InfluencerCampaignType,
         Modes: Modes,
         PostTypes: PostTypes,
         Roles: Roles,

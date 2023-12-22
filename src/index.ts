@@ -32,8 +32,10 @@ import LabelManager from "./util/LabelManager";
 
 import { AcceptanceStatus } from "./constants/AcceptanceStatus";
 import AddressLocationType  from "./constants/AddressLocationType";
+import CampaignObjective from "./constants/CampaignObjective";
 import { ContentStatus } from "./constants/ContentStatus";
 import { CompetitionTypes } from "./constants/CompetitionTypes";
+import InfluencerCampaignType from "./constants/InfluencerCampaignType";
 import { Modes } from "./constants/Modes";
 import { PostTypes } from "./constants/PostTypes";
 import { Roles } from "./constants/Roles";
@@ -83,8 +85,10 @@ class Glitch {
     public static constants = {
        AcceptanceStatus : AcceptanceStatus,
        AddressLocationType : AddressLocationType,
+       CampaignObjective :CampaignObjective,
        CompetitionTypes : CompetitionTypes,
        ContentStatus : ContentStatus,
+       InfluencerCampaignType : InfluencerCampaignType,
        Modes : Modes,
        PostTypes : PostTypes,
        Roles: Roles,

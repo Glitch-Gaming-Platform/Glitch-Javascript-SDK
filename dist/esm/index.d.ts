@@ -78,6 +78,20 @@ declare class Glitch {
             IN_PERSON: 2;
             HYBRID: 3;
         }>;
+        CampaignObjective: {
+            BrandAwareness: number;
+            AudienceEngagement: number;
+            LeadGeneration: number;
+            SalesConversion: number;
+            BrandIdentityReputation: number;
+            CustomerLoyaltyRetention: number;
+            ContentAmplificationDiversity: number;
+            MarketFeedbackInsight: number;
+            EducatingAudience: number;
+            CommunityBuilding: number;
+            DrivingWebTraffic: number;
+            SEOBenefits: number;
+        };
         CompetitionTypes: Readonly<{
             SINGLE_ELIMINATION: 1;
             DOUBLE_ELIMINATION: 2;
@@ -98,6 +112,18 @@ declare class Glitch {
             REMOVED: 5;
             DELETED: 6;
         }>;
+        InfluencerCampaignType: {
+            SponsoredContent: number;
+            AffiliateMarketing: number;
+            ProductGifting: number;
+            BrandAmbassador: number;
+            SocialMediaTakeover: number;
+            ContestsGiveaways: number;
+            EventCoverage: number;
+            CoCreationOfProducts: number;
+            InfluencerWhitelisting: number;
+            SocialIssuesCauseCampaigns: number;
+        };
         Modes: typeof Modes;
         PostTypes: Readonly<{
             TEXT: "text";

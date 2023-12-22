@@ -95,7 +95,7 @@ class Campaigns {
      */
     public static createCampaignLink<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.createCampaign, data, { campaign_id: campaign_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.createCampaignLink, data, { campaign_id: campaign_id }, params);
     }
 
     /**
@@ -110,7 +110,7 @@ class Campaigns {
      */
     public static updateCampaignLink<T>(campaign_id: string, link_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.updateCampaign, data, { campaign_id: campaign_id, link_id: link_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.updateCampaignLink, data, { campaign_id: campaign_id, link_id: link_id }, params);
     }
 
     /**
