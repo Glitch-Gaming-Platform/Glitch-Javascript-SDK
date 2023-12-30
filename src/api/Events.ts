@@ -193,7 +193,7 @@ class Events {
         return Requests.processRoute(EventsRoutes.routes.syncAsLive, data, { event_id: event_id }, params);
     }
 
-    /**
+        /**
          * Updates the main image for the event using a File object.
          * 
          * @see https://api.glitch.fun/api/documentation#/Event%20Route/uploadMainEventImage
@@ -228,7 +228,7 @@ class Events {
     }
 
     /**
-     * Updates the banner image for the team using a File object.
+     * Updates the banner image for the event using a File object.
      * 
      * @see https://api.glitch.fun/api/documentation#/Event%20Route/uploadBannerEventImage
      * 
@@ -245,7 +245,7 @@ class Events {
     }
 
     /**
-     * Updates the banner image for the team using a Blob.
+     * Updates the banner image for the event using a Blob.
      * 
      * @see https://api.glitch.fun/api/documentation#/Event%20Route/uploadBannerEventImage
      * 

@@ -69,5 +69,69 @@ declare class Titles {
      * @returns Promise
      */
     static reject<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Add a user as an administrator to a title
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/addTitleAdministrator
+     *
+     * @param data The data to be passed when creating a title.
+     *
+     * @returns Promise
+     */
+    static addAdministrator<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Remove a user as an administrator toa  tile
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/removeTitleAdministrator
+     *
+     * @param data The data to be passed when creating a title.
+     *
+     * @returns Promise
+     */
+    static removeAdministrator<T>(title_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+       * Updates the main image for the title using a File object.
+       *
+       * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleMainImage
+       *
+       * @param file The file object to upload.
+       * @param data Any additional data to pass along to the upload.
+       *
+       * @returns promise
+       */
+    static uploadMainImageFile<T>(title_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Updates the main image for the title using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleMainImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    static uploadMainImageBlob<T>(title_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Updates the banner image for the title using a File object.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleBannerImage
+     *
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    static uploadBannerImageFile<T>(title_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Updates the banner image for the title using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleBannerImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    static uploadBannerImageBlob<T>(title_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Titles;

@@ -7307,15 +7307,15 @@ var Events = /** @class */ (function () {
         return Requests.processRoute(EventsRoutes.routes.syncAsLive, data, { event_id: event_id }, params);
     };
     /**
-         * Updates the main image for the event using a File object.
-         *
-         * @see https://api.glitch.fun/api/documentation#/Event%20Route/uploadMainEventImage
-         *
-         * @param file The file object to upload.
-         * @param data Any additional data to pass along to the upload.
-         *
-         * @returns promise
-         */
+     * Updates the main image for the event using a File object.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/uploadMainEventImage
+     *
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
     Events.uploadMainImageFile = function (event_id, file, data, params) {
         var url = EventsRoutes.routes.uploadMainImage.url.replace('{event_id}', event_id);
         return Requests.uploadFile(url, 'image', file, data);
@@ -7335,7 +7335,7 @@ var Events = /** @class */ (function () {
         return Requests.uploadBlob(url, 'image', blob, data);
     };
     /**
-     * Updates the banner image for the team using a File object.
+     * Updates the banner image for the event using a File object.
      *
      * @see https://api.glitch.fun/api/documentation#/Event%20Route/uploadBannerEventImage
      *
@@ -7349,7 +7349,7 @@ var Events = /** @class */ (function () {
         return Requests.uploadFile(url, 'image', file, data);
     };
     /**
-     * Updates the banner image for the team using a Blob.
+     * Updates the banner image for the event using a Blob.
      *
      * @see https://api.glitch.fun/api/documentation#/Event%20Route/uploadBannerEventImage
      *
@@ -8590,7 +8590,11 @@ var TitlesRoute = /** @class */ (function () {
         update: { url: '/titles/{title_id}', method: HTTP_METHODS.PUT },
         delete: { url: '/titles/{title_id}', method: HTTP_METHODS.DELETE },
         approve: { url: '/titles/{title_id}/approve', method: HTTP_METHODS.POST },
-        reject: { url: '//titles/{title_id}/reject', method: HTTP_METHODS.POST },
+        reject: { url: '/titles/{title_id}/reject', method: HTTP_METHODS.POST },
+        uploadMainImage: { url: '/titles/{title_id}/uploadMainImage', method: HTTP_METHODS.POST },
+        uploadBannerImage: { url: '/titles/{title_id}/uploadBannerImage', method: HTTP_METHODS.POST },
+        addAdministrator: { url: '/titles/{title_id}/addAdministrator', method: HTTP_METHODS.POST },
+        removeAdministrator: { url: '/titles/{title_id}/removeAdministrator/{user_id}', method: HTTP_METHODS.DELETE },
     };
     return TitlesRoute;
 }());
@@ -8679,6 +8683,86 @@ var Titles = /** @class */ (function () {
      */
     Titles.reject = function (title_id, data, params) {
         return Requests.processRoute(TitlesRoute.routes.reject, data, { title_id: title_id }, params);
+    };
+    /**
+     * Add a user as an administrator to a title
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/addTitleAdministrator
+     *
+     * @param data The data to be passed when creating a title.
+     *
+     * @returns Promise
+     */
+    Titles.addAdministrator = function (title_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.addAdministrator, data, { title_id: title_id }, params);
+    };
+    /**
+     * Remove a user as an administrator toa  tile
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/removeTitleAdministrator
+     *
+     * @param data The data to be passed when creating a title.
+     *
+     * @returns Promise
+     */
+    Titles.removeAdministrator = function (title_id, user_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.removeAdministrator, data, { title_id: title_id, user_id: user_id }, params);
+    };
+    /**
+       * Updates the main image for the title using a File object.
+       *
+       * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleMainImage
+       *
+       * @param file The file object to upload.
+       * @param data Any additional data to pass along to the upload.
+       *
+       * @returns promise
+       */
+    Titles.uploadMainImageFile = function (title_id, file, data, params) {
+        var url = TitlesRoute.routes.uploadMainImage.url.replace('{title_id}', title_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the main image for the title using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleMainImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    Titles.uploadMainImageBlob = function (title_id, blob, data, params) {
+        var url = TitlesRoute.routes.uploadMainImage.url.replace('{title_id}', title_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    /**
+     * Updates the banner image for the title using a File object.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleBannerImage
+     *
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    Titles.uploadBannerImageFile = function (title_id, file, data, params) {
+        var url = TitlesRoute.routes.uploadBannerImage.url.replace('{title_id}', title_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the banner image for the title using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleBannerImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    Titles.uploadBannerImageBlob = function (title_id, blob, data, params) {
+        var url = TitlesRoute.routes.uploadBannerImage.url.replace('{title_id}', title_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
     };
     return Titles;
 }());

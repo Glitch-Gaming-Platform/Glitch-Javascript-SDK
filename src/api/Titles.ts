@@ -100,6 +100,102 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.reject, data, { title_id: title_id }, params);
     }
 
+    /**
+     * Add a user as an administrator to a title
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Titles/addTitleAdministrator
+     * 
+     * @param data The data to be passed when creating a title.
+     * 
+     * @returns Promise
+     */
+    public static addAdministrator<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(TitlesRoute.routes.addAdministrator, data, { title_id: title_id }, params);
+    }
+
+    /**
+     * Remove a user as an administrator toa  tile
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Titles/removeTitleAdministrator
+     * 
+     * @param data The data to be passed when creating a title.
+     * 
+     * @returns Promise
+     */
+    public static removeAdministrator<T>(title_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(TitlesRoute.routes.removeAdministrator, data, { title_id: title_id, user_id: user_id }, params);
+    }
+
+    /**
+       * Updates the main image for the title using a File object.
+       * 
+       * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleMainImage
+       * 
+       * @param file The file object to upload.
+       * @param data Any additional data to pass along to the upload.
+       * 
+       * @returns promise
+       */
+    public static uploadMainImageFile<T>(title_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        let url = TitlesRoute.routes.uploadMainImage.url.replace('{title_id}', title_id);
+
+        return Requests.uploadFile(url, 'image', file, data);
+    }
+
+    /**
+     * Updates the main image for the title using a Blob.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleMainImage
+     * 
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     * 
+     * @returns promise
+     */
+    public static uploadMainImageBlob<T>(title_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        let url = TitlesRoute.routes.uploadMainImage.url.replace('{title_id}', title_id);
+
+        return Requests.uploadBlob(url, 'image', blob, data);
+    }
+
+    /**
+     * Updates the banner image for the title using a File object.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleBannerImage
+     * 
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     * 
+     * @returns promise
+     */
+    public static uploadBannerImageFile<T>(title_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        let url = TitlesRoute.routes.uploadBannerImage.url.replace('{title_id}', title_id);
+
+        return Requests.uploadFile(url, 'image', file, data);
+    }
+
+    /**
+     * Updates the banner image for the title using a Blob.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleBannerImage
+     * 
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     * 
+     * @returns promise
+     */
+    public static uploadBannerImageBlob<T>(title_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        let url = TitlesRoute.routes.uploadBannerImage.url.replace('{title_id}', title_id);
+
+        return Requests.uploadBlob(url, 'image', blob, data);
+    }
+
 }
 
 export default Titles;
