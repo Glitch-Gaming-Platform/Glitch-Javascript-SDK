@@ -95,7 +95,7 @@ declare class Campaigns {
     *
     * @returns promise
     */
-    static listInfluencerCampaigns<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static listInfluencerCampaigns<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create an influencer campaign
      *

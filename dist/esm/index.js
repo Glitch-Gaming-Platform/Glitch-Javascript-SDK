@@ -8822,8 +8822,8 @@ var Campaigns = /** @class */ (function () {
     *
     * @returns promise
     */
-    Campaigns.listInfluencerCampaigns = function (campaign_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaigns, undefined, { campaign_id: campaign_id }, params);
+    Campaigns.listInfluencerCampaigns = function (params) {
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaigns, undefined, undefined, params);
     };
     /**
      * Create an influencer campaign

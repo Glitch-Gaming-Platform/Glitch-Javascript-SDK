@@ -134,8 +134,8 @@ class Campaigns {
      * 
      * @returns promise
      */
-     public static listInfluencerCampaigns<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaigns, undefined, { campaign_id: campaign_id }, params);
+     public static listInfluencerCampaigns<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaigns, undefined, undefined, params);
     }
 
     /**
