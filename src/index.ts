@@ -20,6 +20,8 @@ import { TipPackagePurchases } from "./api";
 import { SocialPosts } from "./api";
 import {Titles} from "./api";
 import {Campaigns} from "./api";
+import {Subscriptions} from "./api";
+import {Messages} from "./api";
 
 
 
@@ -61,6 +63,7 @@ class Glitch {
         Events: Events,
         Teams: Teams,
         Posts: Posts,
+        Messages : Messages,
         Templates : Templates,
         Waitlists: Waitlists,
         Utility : Utility,
@@ -68,6 +71,7 @@ class Glitch {
         Titles : Titles,
         Social : Social,
         SocialPosts : SocialPosts,
+        Subscriptions : Subscriptions,
         TipPackages : TipPackages,
         TipEmojis : TipEmojis ,
         TipPackagePurchases: TipPackagePurchases

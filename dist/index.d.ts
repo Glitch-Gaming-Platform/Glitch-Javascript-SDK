@@ -2392,6 +2392,109 @@ declare class Campaigns {
     static listInfluencerCampaignLinks<T>(campaign_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class Subscriptions {
+    /**
+     * Get a creator subscription for the creator program.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/getCreatorSubscription
+     *
+     * @returns promise
+     */
+    static getCreatorSubscription<T>(stripe_subscription_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a s subscription plan that a community has to talk with influencers
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/getCommunityInfluencerSubscription
+     *
+     * @returns promise
+     */
+    static getCommunityInfluencerSubscription<T>(community_id: string, stripe_subscription_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all the subscription plans that a creator has.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/getCreatorSubscriptions
+     *
+     * @returns promise
+     */
+    static listCreatorSubscriptions<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all the subscription plans that a community has.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/getCommunityInfluencerSubscriptions
+     *
+     * @returns promise
+     */
+    static listCommunityInfluencerSubscriptions<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new subscription of a content creator
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/createCreatorSubscription
+     *
+     * @returns A promise
+     */
+    static createCreatorSubscription<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new subscription of a community engaging in influencer marketing
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/createCommunityInfluencerSubscription
+     *
+     * @returns A promise
+     */
+    static createCommunityInfluencerSubscription<T>(community_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Cancels a creator subscription
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/cancelCreatorSubscription
+     *
+     * @returns A promise
+     */
+    static cancelCreatorSubscription<T>(stripe_subscription_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Cancels a community subscription
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/cancelCommunityInfluencerSubscription
+     *
+     * @returns A promise
+     */
+    static cancelCommunityInfluencerSubscription<T>(community_id: string, stripe_subscription_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
+declare class Messages {
+    /**
+     * Get all the message threads that a user has particpated in.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/getConversations
+     *
+     * @returns promise
+     */
+    static listMessageThreads<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send a new message that will be added to a thread
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/storeMessage
+     *
+     * @returns A promise
+     */
+    static sendMessage<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Deletes a message.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/destroyMessage
+     *
+     * @returns A promise
+     */
+    static deleteMessage<T>(message_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * A message thread is a thread between multiple users. Pass the user ids in the thread and it will either
+     * get the current thread or create a new thread.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/conversations
+     *
+     * @returns A promise
+     */
+    static createOrGetThread<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -2698,6 +2801,7 @@ declare class Glitch {
         Events: typeof Events;
         Teams: typeof Teams;
         Posts: typeof Posts;
+        Messages: typeof Messages;
         Templates: typeof Templates;
         Waitlists: typeof Waitlists;
         Utility: typeof Utility;
@@ -2705,6 +2809,7 @@ declare class Glitch {
         Titles: typeof Titles;
         Social: typeof Social;
         SocialPosts: typeof SocialPosts;
+        Subscriptions: typeof Subscriptions;
         TipPackages: typeof TipPackages;
         TipEmojis: typeof TipEmojis;
         TipPackagePurchases: typeof TipPackagePurchases;

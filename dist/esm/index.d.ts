@@ -16,6 +16,8 @@ import { TipPackagePurchases } from "./api";
 import { SocialPosts } from "./api";
 import { Titles } from "./api";
 import { Campaigns } from "./api";
+import { Subscriptions } from "./api";
+import { Messages } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -43,6 +45,7 @@ declare class Glitch {
         Events: typeof Events;
         Teams: typeof Teams;
         Posts: typeof Posts;
+        Messages: typeof Messages;
         Templates: typeof Templates;
         Waitlists: typeof Waitlists;
         Utility: typeof Utility;
@@ -50,6 +53,7 @@ declare class Glitch {
         Titles: typeof Titles;
         Social: typeof Social;
         SocialPosts: typeof SocialPosts;
+        Subscriptions: typeof Subscriptions;
         TipPackages: typeof TipPackages;
         TipEmojis: typeof TipEmojis;
         TipPackagePurchases: typeof TipPackagePurchases;

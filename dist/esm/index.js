@@ -8983,6 +8983,167 @@ var Campaigns = /** @class */ (function () {
     return Campaigns;
 }());
 
+var SubscriptionsRoute = /** @class */ (function () {
+    function SubscriptionsRoute() {
+    }
+    SubscriptionsRoute.routes = {
+        createCreatorSubscription: { url: '/subscriptions/creators/subscribe', method: HTTP_METHODS.POST },
+        getCreatorSubscription: { url: '/subscriptions/creators/{stripe_subscription_id}', method: HTTP_METHODS.GET },
+        cancelCreatorSubscription: { url: '/subscriptions/creators/{stripe_subscription_id}', method: HTTP_METHODS.DELETE },
+        listCreatorSubscriptions: { url: '/subscriptions/creators', method: HTTP_METHODS.GET },
+        createCommunityInfluencerSubscription: { url: '/subscriptions/communities/influencers/subscribe/{community_id}', method: HTTP_METHODS.POST },
+        getCommunityInfluencerSubscription: { url: '/subscriptions/communities/influencers/{community_id}/{stripe_subscription_id}', method: HTTP_METHODS.GET },
+        cancelCommunityInfluencerSubscription: { url: '/subscriptions/communities/influencers/{community_id}/{stripe_subscription_id}', method: HTTP_METHODS.DELETE },
+        listCommunityInfluencerSubscriptions: { url: '/subscriptions/communities/influencers/{community_id}', method: HTTP_METHODS.GET },
+    };
+    return SubscriptionsRoute;
+}());
+
+var Subscriptions = /** @class */ (function () {
+    function Subscriptions() {
+    }
+    /**
+     * Get a creator subscription for the creator program.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/getCreatorSubscription
+     *
+     * @returns promise
+     */
+    Subscriptions.getCreatorSubscription = function (stripe_subscription_id, params) {
+        return Requests.processRoute(SubscriptionsRoute.routes.getCreatorSubscription, undefined, { stripe_subscription_id: stripe_subscription_id }, params);
+    };
+    /**
+     * Get a s subscription plan that a community has to talk with influencers
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/getCommunityInfluencerSubscription
+     *
+     * @returns promise
+     */
+    Subscriptions.getCommunityInfluencerSubscription = function (community_id, stripe_subscription_id, params) {
+        return Requests.processRoute(SubscriptionsRoute.routes.getCommunityInfluencerSubscription, undefined, { community_id: community_id, stripe_subscription_id: stripe_subscription_id }, params);
+    };
+    /**
+     * List all the subscription plans that a creator has.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/getCreatorSubscriptions
+     *
+     * @returns promise
+     */
+    Subscriptions.listCreatorSubscriptions = function (params) {
+        return Requests.processRoute(SubscriptionsRoute.routes.listCreatorSubscriptions, undefined, undefined, params);
+    };
+    /**
+     * List all the subscription plans that a community has.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/getCommunityInfluencerSubscriptions
+     *
+     * @returns promise
+     */
+    Subscriptions.listCommunityInfluencerSubscriptions = function (community_id, params) {
+        return Requests.processRoute(SubscriptionsRoute.routes.listCommunityInfluencerSubscriptions, undefined, { community_id: community_id }, params);
+    };
+    /**
+     * Create a new subscription of a content creator
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/createCreatorSubscription
+     *
+     * @returns A promise
+     */
+    Subscriptions.createCreatorSubscription = function (data, params) {
+        return Requests.processRoute(SubscriptionsRoute.routes.createCreatorSubscription, data, {}, params);
+    };
+    /**
+     * Create a new subscription of a community engaging in influencer marketing
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/createCommunityInfluencerSubscription
+     *
+     * @returns A promise
+     */
+    Subscriptions.createCommunityInfluencerSubscription = function (community_id, data, params) {
+        return Requests.processRoute(SubscriptionsRoute.routes.createCommunityInfluencerSubscription, data, { community_id: community_id }, params);
+    };
+    /**
+     * Cancels a creator subscription
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/cancelCreatorSubscription
+     *
+     * @returns A promise
+     */
+    Subscriptions.cancelCreatorSubscription = function (stripe_subscription_id, data, params) {
+        return Requests.processRoute(SubscriptionsRoute.routes.cancelCreatorSubscription, data, { stripe_subscription_id: stripe_subscription_id }, params);
+    };
+    /**
+     * Cancels a community subscription
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/cancelCommunityInfluencerSubscription
+     *
+     * @returns A promise
+     */
+    Subscriptions.cancelCommunityInfluencerSubscription = function (community_id, stripe_subscription_id, data, params) {
+        return Requests.processRoute(SubscriptionsRoute.routes.cancelCreatorSubscription, data, { community_id: community_id, stripe_subscription_id: stripe_subscription_id }, params);
+    };
+    return Subscriptions;
+}());
+
+var MessagesRoute = /** @class */ (function () {
+    function MessagesRoute() {
+    }
+    MessagesRoute.routes = {
+        listMessageThreads: { url: '/messages', method: HTTP_METHODS.GET },
+        sendMessage: { url: '/message', method: HTTP_METHODS.POST },
+        deleteMessage: { url: '/message/{message_id}', method: HTTP_METHODS.DELETE },
+        createOrGetThread: { url: '/messages/makeThread', method: HTTP_METHODS.POST },
+    };
+    return MessagesRoute;
+}());
+
+var Messages = /** @class */ (function () {
+    function Messages() {
+    }
+    /**
+     * Get all the message threads that a user has particpated in.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/getConversations
+     *
+     * @returns promise
+     */
+    Messages.listMessageThreads = function (params) {
+        return Requests.processRoute(MessagesRoute.routes.listMessageThreads, undefined, undefined, params);
+    };
+    /**
+     * Send a new message that will be added to a thread
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/storeMessage
+     *
+     * @returns A promise
+     */
+    Messages.sendMessage = function (data, params) {
+        return Requests.processRoute(MessagesRoute.routes.sendMessage, data, {}, params);
+    };
+    /**
+     * Deletes a message.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/destroyMessage
+     *
+     * @returns A promise
+     */
+    Messages.deleteMessage = function (message_id, data, params) {
+        return Requests.processRoute(MessagesRoute.routes.deleteMessage, data, { message_id: message_id }, params);
+    };
+    /**
+     * A message thread is a thread between multiple users. Pass the user ids in the thread and it will either
+     * get the current thread or create a new thread.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/conversations
+     *
+     * @returns A promise
+     */
+    Messages.createOrGetThread = function (data, params) {
+        return Requests.processRoute(MessagesRoute.routes.createOrGetThread, data, {}, params);
+    };
+    return Messages;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -9388,6 +9549,7 @@ var Glitch = /** @class */ (function () {
         Events: Events,
         Teams: Teams,
         Posts: Posts,
+        Messages: Messages,
         Templates: Templates,
         Waitlists: Waitlists,
         Utility: Utility,
@@ -9395,6 +9557,7 @@ var Glitch = /** @class */ (function () {
         Titles: Titles,
         Social: Social,
         SocialPosts: SocialPosts,
+        Subscriptions: Subscriptions,
         TipPackages: TipPackages,
         TipEmojis: TipEmojis,
         TipPackagePurchases: TipPackagePurchases
