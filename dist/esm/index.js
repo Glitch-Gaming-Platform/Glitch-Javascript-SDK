@@ -9090,8 +9090,8 @@ var MessagesRoute = /** @class */ (function () {
     }
     MessagesRoute.routes = {
         listMessageThreads: { url: '/messages', method: HTTP_METHODS.GET },
-        sendMessage: { url: '/message', method: HTTP_METHODS.POST },
-        deleteMessage: { url: '/message/{message_id}', method: HTTP_METHODS.DELETE },
+        sendMessage: { url: '/messages', method: HTTP_METHODS.POST },
+        deleteMessage: { url: '/messages/{message_id}', method: HTTP_METHODS.DELETE },
         createOrGetThread: { url: '/messages/makeThread', method: HTTP_METHODS.POST },
     };
     return MessagesRoute;
@@ -9142,6 +9142,81 @@ var Messages = /** @class */ (function () {
         return Requests.processRoute(MessagesRoute.routes.createOrGetThread, data, {}, params);
     };
     return Messages;
+}());
+
+var FeedbackRoute = /** @class */ (function () {
+    function FeedbackRoute() {
+    }
+    FeedbackRoute.routes = {
+        listFeedback: { url: '/feedback', method: HTTP_METHODS.GET },
+        sendFeedback: { url: '/feedback', method: HTTP_METHODS.POST },
+        viewFeedback: { url: '/feedback/{feedback_id}', method: HTTP_METHODS.GET },
+    };
+    return FeedbackRoute;
+}());
+
+var Feedback = /** @class */ (function () {
+    function Feedback() {
+    }
+    /**
+     * List all the feedback that been left by users.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Feedback/listFeedback
+     *
+     * @returns promise
+     */
+    Feedback.listFeedback = function (params) {
+        return Requests.processRoute(FeedbackRoute.routes.listFeedback, undefined, undefined, params);
+    };
+    /**
+     * View a particular item of feedback.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Feedback/getFeedbackById
+     *
+     * @returns promise
+     */
+    Feedback.viewFeedback = function (feedback_id, params) {
+        return Requests.processRoute(FeedbackRoute.routes.viewFeedback, undefined, { feedback_id: feedback_id }, params);
+    };
+    /**
+     * Submit feedback.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Feedback/a64fe3d6f90ed1af5bbd5311a795c134
+     *
+     * @returns A promise
+     */
+    Feedback.sendFeedback = function (data, params) {
+        return Requests.processRoute(FeedbackRoute.routes.sendFeedback, data, {}, params);
+    };
+    /**
+    * Submit feedback with the log file as a file.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Feedback/a64fe3d6f90ed1af5bbd5311a795c134
+    *
+    * @param file The file object to upload.
+    * @param data Any additional data to pass along to the upload.
+    *
+    * @returns promise
+    */
+    Feedback.sendFeedbackWithFile = function (file, data, params) {
+        var url = FeedbackRoute.routes.sendFeedback.url;
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Submit feedback with the log file as a blob.
+     *
+     * @see hhttps://api.glitch.fun/api/documentation#/Feedback/a64fe3d6f90ed1af5bbd5311a795c134
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    Feedback.sendFeedbackWithBlob = function (blob, data, params) {
+        var url = FeedbackRoute.routes.sendFeedback.url;
+        return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    return Feedback;
 }());
 
 var Parser = /** @class */ (function () {
@@ -9547,6 +9622,7 @@ var Glitch = /** @class */ (function () {
         Communities: Communities,
         Users: Users,
         Events: Events,
+        Feedback: Feedback,
         Teams: Teams,
         Posts: Posts,
         Messages: Messages,

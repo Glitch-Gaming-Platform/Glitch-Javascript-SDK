@@ -18,6 +18,7 @@ import Titles from "./Titles";
 import Campaigns from "./Campaigns";
 import Subscriptions from "./Subscriptions";
 import Messages from "./Messages";
+import Feedback from "./Feedback";
 
 export {Auth};
 export {Competitions};
@@ -39,3 +40,4 @@ export {Titles};
 export {Campaigns};
 export {Subscriptions};
 export {Messages};
+export {Feedback};
