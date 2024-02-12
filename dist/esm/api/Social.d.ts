@@ -12,5 +12,6 @@ declare class Social {
     static postVideoToTikTokBlob<T>(blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static postVideoToFacebookGroupFile<T>(file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static postVideoToFacebookGroupBlob<T>(blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static postVideoToTwitter<T>(file: File, data?: object, onProgress?: (totalSize: number, amountUploaded: number) => void, params?: Record<string, any>): Promise<void>;
 }
 export default Social;

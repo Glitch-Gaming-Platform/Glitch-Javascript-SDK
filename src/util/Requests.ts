@@ -3,6 +3,8 @@ import Config from '../config/Config';
 import HTTP_METHODS from '../constants/HttpMethods';
 import Route from '../routes/interface';
 import Response from './Response';
+import * as crypto from 'crypto';
+
 
 class Requests {
   private static config: Config;
@@ -196,6 +198,76 @@ class Requests {
 
     return Requests.request<T>('POST', url, data, formData);
   }
+
+  // Method adapted for browser environments
+
+  public static async uploadFileInChunks<T>(
+    file: File,
+    uploadUrl: string,
+    onProgress?: (totalSize: number, amountUploaded: number) => void,
+    data?: any,
+    chunkSize ?: number, // Default chunk size of 1MB
+  ): Promise<void> {
+
+    if(!chunkSize) {
+      chunkSize = 1024 * 1024
+    }
+    const fileSize = file.size;
+    const totalChunks = Math.ceil(fileSize / chunkSize);
+    let currentChunkIndex = 0;
+    let totalUploaded = 0; // Keep track of the total uploaded bytes
+  
+    // Generate a unique identifier for this upload session using the Web Cryptography API
+    const array = new Uint32Array(4);
+    window.crypto.getRandomValues(array);
+    const identifier = Array.from(array, dec => ('0' + dec.toString(16)).substr(-2)).join('');
+  
+    while (currentChunkIndex < totalChunks) {
+      const start = currentChunkIndex * chunkSize;
+      const end = Math.min(start + chunkSize, fileSize);
+      const chunk = file.slice(start, end);
+  
+      const formData = new FormData();
+      formData.append('video', chunk, file.name);
+      formData.append('chunkIndex', currentChunkIndex.toString());
+      formData.append('totalChunks', totalChunks.toString());
+      formData.append('identifier', identifier);
+
+      // If there's additional data, append each key-value pair to the formData
+      if (data) {
+        for (const key in data) {
+          formData.append(key, data[key]);
+        }
+      }
+  
+      // Construct the full URL if necessary or use a method to determine the base URL
+      const fullUploadUrl = `${Requests.baseUrl}${uploadUrl}`;
+  
+      // Make sure the authorization token is included if required
+      const headers: { [key: string]: string } = {};
+      if (Requests.authToken) {
+        headers['Authorization'] = `Bearer ${Requests.authToken}`;
+      }
+  
+      // Perform the upload
+      await axios.post(fullUploadUrl, formData, { 
+        headers,
+        onUploadProgress: (progressEvent) => {
+          const currentChunkProgress = progressEvent.loaded; // Bytes uploaded of the current chunk
+          // Calculate the total uploaded size including previous chunks and the current chunk's progress
+          const totalProgress = totalUploaded + currentChunkProgress;
+
+          if(onProgress){
+            onProgress(fileSize, totalProgress);
+          }
+        } 
+      });
+  
+      currentChunkIndex++;
+    }
+  }
+
+
 
   public static processRoute<T>(route: Route, data?: object, routeReplace?: { [key: string]: any }, params?: Record<string, any>): AxiosPromise<Response<T>> {
     let url = route.url;

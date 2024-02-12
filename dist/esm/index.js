@@ -5450,6 +5450,67 @@ var Requests = /** @class */ (function () {
         }
         return Requests.request('POST', url, data, formData);
     };
+    // Method adapted for browser environments
+    Requests.uploadFileInChunks = function (file, uploadUrl, onProgress, data, chunkSize) {
+        return __awaiter(this, void 0, void 0, function () {
+            var fileSize, totalChunks, currentChunkIndex, totalUploaded, array, identifier, start, end, chunk, formData, key, fullUploadUrl, headers;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!chunkSize) {
+                            chunkSize = 1024 * 1024;
+                        }
+                        fileSize = file.size;
+                        totalChunks = Math.ceil(fileSize / chunkSize);
+                        currentChunkIndex = 0;
+                        totalUploaded = 0;
+                        array = new Uint32Array(4);
+                        window.crypto.getRandomValues(array);
+                        identifier = Array.from(array, function (dec) { return ('0' + dec.toString(16)).substr(-2); }).join('');
+                        _a.label = 1;
+                    case 1:
+                        if (!(currentChunkIndex < totalChunks)) return [3 /*break*/, 3];
+                        start = currentChunkIndex * chunkSize;
+                        end = Math.min(start + chunkSize, fileSize);
+                        chunk = file.slice(start, end);
+                        formData = new FormData();
+                        formData.append('video', chunk, file.name);
+                        formData.append('chunkIndex', currentChunkIndex.toString());
+                        formData.append('totalChunks', totalChunks.toString());
+                        formData.append('identifier', identifier);
+                        // If there's additional data, append each key-value pair to the formData
+                        if (data) {
+                            for (key in data) {
+                                formData.append(key, data[key]);
+                            }
+                        }
+                        fullUploadUrl = "".concat(Requests.baseUrl).concat(uploadUrl);
+                        headers = {};
+                        if (Requests.authToken) {
+                            headers['Authorization'] = "Bearer ".concat(Requests.authToken);
+                        }
+                        // Perform the upload
+                        return [4 /*yield*/, axios$1.post(fullUploadUrl, formData, {
+                                headers: headers,
+                                onUploadProgress: function (progressEvent) {
+                                    var currentChunkProgress = progressEvent.loaded; // Bytes uploaded of the current chunk
+                                    // Calculate the total uploaded size including previous chunks and the current chunk's progress
+                                    var totalProgress = totalUploaded + currentChunkProgress;
+                                    if (onProgress) {
+                                        onProgress(fileSize, totalProgress);
+                                    }
+                                }
+                            })];
+                    case 2:
+                        // Perform the upload
+                        _a.sent();
+                        currentChunkIndex++;
+                        return [3 /*break*/, 1];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     Requests.processRoute = function (route, data, routeReplace, params) {
         var url = route.url;
         if (routeReplace) {
@@ -8112,6 +8173,7 @@ var SocialRoute = /** @class */ (function () {
     SocialRoute.routes = {
         postVideoToTikTok: { url: '/social/postVideoToTikTok', method: HTTP_METHODS.POST },
         postVideoToFacebookGroup: { url: '/social/postVideoToFacebookGroup', method: HTTP_METHODS.POST },
+        postVideoToTwitter: { url: '/social/postVideoToTwitter', method: HTTP_METHODS.POST },
     };
     return SocialRoute;
 }());
@@ -8141,6 +8203,10 @@ var Social = /** @class */ (function () {
     Social.postVideoToFacebookGroupBlob = function (blob, data, params) {
         var url = SocialRoute.routes.postVideoToFacebookGroup.url;
         return Requests.uploadBlob(url, 'video', blob, data);
+    };
+    Social.postVideoToTwitter = function (file, data, onProgress, params) {
+        var url = SocialRoute.routes.postVideoToTwitter.url;
+        return Requests.uploadFileInChunks(file, url, onProgress, data);
     };
     return Social;
 }());

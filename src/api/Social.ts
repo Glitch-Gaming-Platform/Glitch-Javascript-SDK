@@ -41,7 +41,16 @@ class Social {
         return Requests.uploadBlob(url, 'video', blob, data);
     }
 
+    public static postVideoToTwitter<T>(file: File, data? : object, onProgress ?: (totalSize: number, amountUploaded: number) => void, params?: Record<string, any>) :  Promise<void> {
 
+        let url = SocialRoute.routes.postVideoToTwitter.url;
+
+        return Requests.uploadFileInChunks(file, url, onProgress, data);
+    }
+
+
+
+    
 
 }
 

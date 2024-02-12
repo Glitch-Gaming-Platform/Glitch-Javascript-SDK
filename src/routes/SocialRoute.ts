@@ -6,6 +6,7 @@ class SocialRoute {
     public static routes: { [key: string]: Route } = {
         postVideoToTikTok: { url: '/social/postVideoToTikTok', method: HTTP_METHODS.POST },
         postVideoToFacebookGroup: { url: '/social/postVideoToFacebookGroup', method: HTTP_METHODS.POST },
+        postVideoToTwitter: { url: '/social/postVideoToTwitter', method: HTTP_METHODS.POST },
     };
 
   }

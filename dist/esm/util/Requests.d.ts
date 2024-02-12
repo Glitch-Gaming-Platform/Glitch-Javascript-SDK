@@ -18,6 +18,7 @@ declare class Requests {
     static delete<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static uploadFile<T>(url: string, filename: string, file: File | Blob, data?: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static uploadBlob<T>(url: string, filename: string, blob: Blob, data?: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static uploadFileInChunks<T>(file: File, uploadUrl: string, onProgress?: (totalSize: number, amountUploaded: number) => void, data?: any, chunkSize?: number): Promise<void>;
     static processRoute<T>(route: Route, data?: object, routeReplace?: {
         [key: string]: any;
     }, params?: Record<string, any>): AxiosPromise<Response<T>>;
