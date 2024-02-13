@@ -222,7 +222,7 @@ class Requests {
     window.crypto.getRandomValues(array);
     const identifier = Array.from(array, dec => ('0' + dec.toString(16)).substr(-2)).join('');
   
-    while (currentChunkIndex < totalChunks) {
+    while (currentChunkIndex <= totalChunks) {
       const start = currentChunkIndex * chunkSize;
       const end = Math.min(start + chunkSize, fileSize);
       const chunk = file.slice(start, end);
@@ -255,10 +255,10 @@ class Requests {
         onUploadProgress: (progressEvent) => {
           const currentChunkProgress = progressEvent.loaded; // Bytes uploaded of the current chunk
           // Calculate the total uploaded size including previous chunks and the current chunk's progress
-          const totalProgress = totalUploaded + currentChunkProgress;
+          totalUploaded += currentChunkProgress;
 
           if(onProgress){
-            onProgress(fileSize, totalProgress);
+            onProgress(fileSize, totalUploaded);
           }
         } 
       });

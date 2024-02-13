@@ -5469,7 +5469,7 @@ var Requests = /** @class */ (function () {
                         identifier = Array.from(array, function (dec) { return ('0' + dec.toString(16)).substr(-2); }).join('');
                         _a.label = 1;
                     case 1:
-                        if (!(currentChunkIndex < totalChunks)) return [3 /*break*/, 3];
+                        if (!(currentChunkIndex <= totalChunks)) return [3 /*break*/, 3];
                         start = currentChunkIndex * chunkSize;
                         end = Math.min(start + chunkSize, fileSize);
                         chunk = file.slice(start, end);
@@ -5495,9 +5495,9 @@ var Requests = /** @class */ (function () {
                                 onUploadProgress: function (progressEvent) {
                                     var currentChunkProgress = progressEvent.loaded; // Bytes uploaded of the current chunk
                                     // Calculate the total uploaded size including previous chunks and the current chunk's progress
-                                    var totalProgress = totalUploaded + currentChunkProgress;
+                                    totalUploaded += currentChunkProgress;
                                     if (onProgress) {
-                                        onProgress(fileSize, totalProgress);
+                                        onProgress(fileSize, totalUploaded);
                                     }
                                 }
                             })];
