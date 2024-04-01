@@ -5453,7 +5453,7 @@ var Requests = /** @class */ (function () {
     // Method adapted for browser environments
     Requests.uploadFileInChunks = function (file, uploadUrl, onProgress, data, chunkSize) {
         return __awaiter(this, void 0, void 0, function () {
-            var fileSize, totalChunks, currentChunkIndex, totalUploaded, array, identifier, start, end, chunk, formData, key, fullUploadUrl, headers;
+            var fileSize, totalChunks, currentChunkIndex, array, identifier, _loop_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5463,48 +5463,57 @@ var Requests = /** @class */ (function () {
                         fileSize = file.size;
                         totalChunks = Math.ceil(fileSize / chunkSize);
                         currentChunkIndex = 0;
-                        totalUploaded = 0;
                         array = new Uint32Array(4);
                         window.crypto.getRandomValues(array);
                         identifier = Array.from(array, function (dec) { return ('0' + dec.toString(16)).substr(-2); }).join('');
+                        _loop_1 = function () {
+                            var start, end, chunk, formData, key, fullUploadUrl, headers;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        start = currentChunkIndex * chunkSize;
+                                        end = Math.min(start + chunkSize, fileSize);
+                                        chunk = file.slice(start, end);
+                                        formData = new FormData();
+                                        formData.append('video', chunk, file.name);
+                                        formData.append('chunkIndex', currentChunkIndex.toString());
+                                        formData.append('totalChunks', totalChunks.toString());
+                                        formData.append('identifier', identifier);
+                                        // If there's additional data, append each key-value pair to the formData
+                                        if (data) {
+                                            for (key in data) {
+                                                formData.append(key, data[key]);
+                                            }
+                                        }
+                                        fullUploadUrl = "".concat(Requests.baseUrl).concat(uploadUrl);
+                                        headers = {};
+                                        if (Requests.authToken) {
+                                            headers['Authorization'] = "Bearer ".concat(Requests.authToken);
+                                        }
+                                        // Perform the upload
+                                        return [4 /*yield*/, axios$1.post(fullUploadUrl, formData, {
+                                                headers: headers,
+                                                onUploadProgress: function (progressEvent) {
+                                                    progressEvent.loaded; // Bytes uploaded of the current chunk
+                                                    if (onProgress) {
+                                                        onProgress(fileSize, end);
+                                                    }
+                                                }
+                                            })];
+                                    case 1:
+                                        // Perform the upload
+                                        _b.sent();
+                                        currentChunkIndex++;
+                                        return [2 /*return*/];
+                                }
+                            });
+                        };
                         _a.label = 1;
                     case 1:
                         if (!(currentChunkIndex <= totalChunks)) return [3 /*break*/, 3];
-                        start = currentChunkIndex * chunkSize;
-                        end = Math.min(start + chunkSize, fileSize);
-                        chunk = file.slice(start, end);
-                        formData = new FormData();
-                        formData.append('video', chunk, file.name);
-                        formData.append('chunkIndex', currentChunkIndex.toString());
-                        formData.append('totalChunks', totalChunks.toString());
-                        formData.append('identifier', identifier);
-                        // If there's additional data, append each key-value pair to the formData
-                        if (data) {
-                            for (key in data) {
-                                formData.append(key, data[key]);
-                            }
-                        }
-                        fullUploadUrl = "".concat(Requests.baseUrl).concat(uploadUrl);
-                        headers = {};
-                        if (Requests.authToken) {
-                            headers['Authorization'] = "Bearer ".concat(Requests.authToken);
-                        }
-                        // Perform the upload
-                        return [4 /*yield*/, axios$1.post(fullUploadUrl, formData, {
-                                headers: headers,
-                                onUploadProgress: function (progressEvent) {
-                                    var currentChunkProgress = progressEvent.loaded; // Bytes uploaded of the current chunk
-                                    // Calculate the total uploaded size including previous chunks and the current chunk's progress
-                                    totalUploaded += currentChunkProgress;
-                                    if (onProgress) {
-                                        onProgress(fileSize, totalUploaded);
-                                    }
-                                }
-                            })];
+                        return [5 /*yield**/, _loop_1()];
                     case 2:
-                        // Perform the upload
                         _a.sent();
-                        currentChunkIndex++;
                         return [3 /*break*/, 1];
                     case 3: return [2 /*return*/];
                 }
@@ -8853,6 +8862,11 @@ var CampaignsRoute = /** @class */ (function () {
         markInfluencerCampaignComplete: { url: '/campaigns/{campaign_id}/influencers/{user_id}/setComplete', method: HTTP_METHODS.POST },
         markInfluencerCampaignIncomplete: { url: '/campaigns/{campaign_id}/influencers/{user_id}/setIncomplete', method: HTTP_METHODS.POST },
         listInfluencerCampaignLinks: { url: '/campaigns/{campaign_id}/influencers/{user_id}/links', method: HTTP_METHODS.GET },
+        listCampaignMentions: { url: '/campaigns/{campaign_id}/mentions', method: HTTP_METHODS.GET },
+        createCampaignMention: { url: '/campaigns/{campaign_id}/mentions', method: HTTP_METHODS.POST },
+        getCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.GET },
+        updateCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.PUT },
+        deleteCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.PUT },
     };
     return CampaignsRoute;
 }());
@@ -9045,6 +9059,65 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.listInfluencerCampaignLinks = function (campaign_id, user_id, params) {
         return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinks, undefined, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+    * List all the campaign mentions.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
+    *
+    * @returns promise
+    */
+    Campaigns.listCampaignMentions = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.listCampaignMentions, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Create a new campaign mention.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/storeCampaignLink
+     *
+     * @param data The data to be passed when creating a campaign.
+     *
+     * @returns Promise
+     */
+    Campaigns.createCampaignMention = function (campaign_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.createCampaignMention, data, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Update a campaign mention.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/1bb1492981b4529693604b03aade8bf6
+     *
+     * @param campaign_id The id of the campaign to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Campaigns.updateCampaignMention = function (campaign_id, mention_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.updateCampaignMention, data, { campaign_id: campaign_id, mention_id: mention_id }, params);
+    };
+    /**
+     * Retrieve the information for a single campaign mention.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLink
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.getCampaignMention = function (campaign_id, mention_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.getCampaignMention, {}, { campaign_id: campaign_id, mention_id: mention_id }, params);
+    };
+    /**
+    * Delete the information for a single campaign mention.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLink
+    *
+    * @param campaign_id The id fo the campaign to retrieve.
+    *
+    * @returns promise
+    */
+    Campaigns.deleteCampaignMention = function (campaign_id, mention_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.deleteCampaignMention, {}, { campaign_id: campaign_id, mention_id: mention_id }, params);
     };
     return Campaigns;
 }());

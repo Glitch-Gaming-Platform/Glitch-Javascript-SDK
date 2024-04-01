@@ -219,6 +219,75 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinks , undefined, { campaign_id: campaign_id, user_id: user_id }, params);
     }
 
+     /**
+     * List all the campaign mentions.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
+     * 
+     * @returns promise
+     */
+     public static listCampaignMentions<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.listCampaignMentions, undefined, { campaign_id: campaign_id }, params);
+    }
+
+    /**
+     * Create a new campaign mention.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/storeCampaignLink
+     * 
+     * @param data The data to be passed when creating a campaign.
+     * 
+     * @returns Promise
+     */
+    public static createCampaignMention<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.createCampaignMention, data, { campaign_id: campaign_id }, params);
+    }
+
+    /**
+     * Update a campaign mention.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/1bb1492981b4529693604b03aade8bf6
+     * 
+     * @param campaign_id The id of the campaign to update.
+     * @param data The data to update.
+     * 
+     * @returns promise
+     */
+    public static updateCampaignMention<T>(campaign_id: string, mention_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.updateCampaignMention, data, { campaign_id: campaign_id, mention_id: mention_id }, params);
+    }
+
+    /**
+     * Retrieve the information for a single campaign mention.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLink
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static getCampaignMention<T>(campaign_id: string, mention_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.getCampaignMention, {}, { campaign_id: campaign_id, mention_id: mention_id  }, params);
+    }
+
+     /**
+     * Delete the information for a single campaign mention.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLink
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+     public static deleteCampaignMention<T>(campaign_id: string, mention_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.deleteCampaignMention, {}, { campaign_id: campaign_id, mention_id: mention_id  }, params);
+    }
+
+
 }
 
 export default Campaigns;

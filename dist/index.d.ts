@@ -2391,6 +2391,55 @@ declare class Campaigns {
      * @returns promise
      */
     static listInfluencerCampaignLinks<T>(campaign_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * List all the campaign mentions.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
+    *
+    * @returns promise
+    */
+    static listCampaignMentions<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new campaign mention.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/storeCampaignLink
+     *
+     * @param data The data to be passed when creating a campaign.
+     *
+     * @returns Promise
+     */
+    static createCampaignMention<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a campaign mention.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/1bb1492981b4529693604b03aade8bf6
+     *
+     * @param campaign_id The id of the campaign to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static updateCampaignMention<T>(campaign_id: string, mention_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve the information for a single campaign mention.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLink
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static getCampaignMention<T>(campaign_id: string, mention_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Delete the information for a single campaign mention.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLink
+    *
+    * @param campaign_id The id fo the campaign to retrieve.
+    *
+    * @returns promise
+    */
+    static deleteCampaignMention<T>(campaign_id: string, mention_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {

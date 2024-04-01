@@ -19,7 +19,12 @@ class CampaignsRoute {
       updateInfluencerCampaign  :{ url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.PUT },
       markInfluencerCampaignComplete  :{ url: '/campaigns/{campaign_id}/influencers/{user_id}/setComplete', method: HTTP_METHODS.POST },
       markInfluencerCampaignIncomplete  :{ url: '/campaigns/{campaign_id}/influencers/{user_id}/setIncomplete', method: HTTP_METHODS.POST },
-      listInfluencerCampaignLinks  :{ url: '/campaigns/{campaign_id}/influencers/{user_id}/links', method: HTTP_METHODS.GET },    
+      listInfluencerCampaignLinks  :{ url: '/campaigns/{campaign_id}/influencers/{user_id}/links', method: HTTP_METHODS.GET },
+      listCampaignMentions  :{ url: '/campaigns/{campaign_id}/mentions', method: HTTP_METHODS.GET },
+      createCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions', method: HTTP_METHODS.POST },
+      getCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.GET },
+      updateCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.PUT },
+      deleteCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.PUT },        
     };
 
   }

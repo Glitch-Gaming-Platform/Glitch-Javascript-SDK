@@ -255,10 +255,10 @@ class Requests {
         onUploadProgress: (progressEvent) => {
           const currentChunkProgress = progressEvent.loaded; // Bytes uploaded of the current chunk
           // Calculate the total uploaded size including previous chunks and the current chunk's progress
-          totalUploaded += currentChunkProgress;
+          const totalProgress = totalUploaded + currentChunkProgress;
 
           if(onProgress){
-            onProgress(fileSize, totalUploaded);
+            onProgress(fileSize, end);
           }
         } 
       });
