@@ -2543,6 +2543,14 @@ declare class Messages {
      * @returns A promise
      */
     static createOrGetThread<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a single thread.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/getThread
+     *
+     * @returns promise
+     */
+    static getThread<T>(thread_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Feedback {

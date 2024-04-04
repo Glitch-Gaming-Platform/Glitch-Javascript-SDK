@@ -8866,7 +8866,7 @@ var CampaignsRoute = /** @class */ (function () {
         createCampaignMention: { url: '/campaigns/{campaign_id}/mentions', method: HTTP_METHODS.POST },
         getCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.GET },
         updateCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.PUT },
-        deleteCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.PUT },
+        deleteCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.DELETE },
     };
     return CampaignsRoute;
 }());
@@ -9232,6 +9232,7 @@ var MessagesRoute = /** @class */ (function () {
         sendMessage: { url: '/messages', method: HTTP_METHODS.POST },
         deleteMessage: { url: '/messages/{message_id}', method: HTTP_METHODS.DELETE },
         createOrGetThread: { url: '/messages/makeThread', method: HTTP_METHODS.POST },
+        getThread: { url: '/messages/thread/{thread_id}', method: HTTP_METHODS.GET },
     };
     return MessagesRoute;
 }());
@@ -9279,6 +9280,16 @@ var Messages = /** @class */ (function () {
      */
     Messages.createOrGetThread = function (data, params) {
         return Requests.processRoute(MessagesRoute.routes.createOrGetThread, data, {}, params);
+    };
+    /**
+     * Get a single thread.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/getThread
+     *
+     * @returns promise
+     */
+    Messages.getThread = function (thread_id, params) {
+        return Requests.processRoute(MessagesRoute.routes.getThread, undefined, { thread_id: thread_id }, params);
     };
     return Messages;
 }());

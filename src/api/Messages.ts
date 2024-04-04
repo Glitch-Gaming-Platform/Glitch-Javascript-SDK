@@ -50,6 +50,17 @@ class Messages {
         return Requests.processRoute(MessagesRoute.routes.createOrGetThread, data, {}, params);
     }
 
+    /**
+     * Get a single thread.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Messages/getThread
+     * 
+     * @returns promise
+     */
+    public static getThread<T>(thread_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MessagesRoute.routes.getThread, undefined, {thread_id : thread_id}, params);
+    }
+
    
 
 }

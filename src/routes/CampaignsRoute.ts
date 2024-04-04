@@ -24,7 +24,7 @@ class CampaignsRoute {
       createCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions', method: HTTP_METHODS.POST },
       getCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.GET },
       updateCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.PUT },
-      deleteCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.PUT },        
+      deleteCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.DELETE },        
     };
 
   }
