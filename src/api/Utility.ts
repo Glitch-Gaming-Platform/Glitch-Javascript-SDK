@@ -16,6 +16,17 @@ class Utility {
         return Requests.processRoute(UtilityRoutes.routes.social_interactions, undefined, undefined, params);
     }
 
+    /**
+     * Get all the genres available on the platform.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenres
+     * 
+     * @returns promise
+     */
+    public static listGenres<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(UtilityRoutes.routes.genres, undefined, undefined, params);
+    }
+
 }
 
 export default Utility;

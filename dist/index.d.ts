@@ -1093,6 +1093,26 @@ declare class Users {
      * @returns promise
      */
     static getFacebookGroups<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Add a genre to a user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     *
+     * @param data The genre information to be passed to update the genre information.
+     *
+     * @returns Promise
+     */
+    static addGenre<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Remove a genre from a user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     *
+     * @param genre_id The id of the genre to remove.
+     *
+     * @returns Promise
+     */
+    static removeGenre<T>(genre_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Events {
@@ -1930,6 +1950,14 @@ declare class Utility {
      * @returns promise
      */
     static listSocialInteractions<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all the genres available on the platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenres
+     *
+     * @returns promise
+     */
+    static listGenres<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Tips {

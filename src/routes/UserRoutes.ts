@@ -28,6 +28,8 @@ class UserRoutes {
       aggregateMonthlyGivenTips : { url: '/users/aggregateMonthlyGivenTips', method: HTTP_METHODS.GET },
       getYoutubeChannels : { url: '/users/getYoutubeChannels', method: HTTP_METHODS.GET },
       getFacebookGroups : { url: '/users/getFacebookGroups', method: HTTP_METHODS.GET },
+      addGenre : { url: '/users/addGenre', method: HTTP_METHODS.POST },
+      removeGenre : { url: '/users/removeGenre/{genre_id}', method: HTTP_METHODS.DELETE },
     };
 
   }

@@ -6878,6 +6878,8 @@ var UserRoutes = /** @class */ (function () {
         aggregateMonthlyGivenTips: { url: '/users/aggregateMonthlyGivenTips', method: HTTP_METHODS.GET },
         getYoutubeChannels: { url: '/users/getYoutubeChannels', method: HTTP_METHODS.GET },
         getFacebookGroups: { url: '/users/getFacebookGroups', method: HTTP_METHODS.GET },
+        addGenre: { url: '/users/addGenre', method: HTTP_METHODS.POST },
+        removeGenre: { url: '/users/removeGenre/{genre_id}', method: HTTP_METHODS.DELETE },
     };
     return UserRoutes;
 }());
@@ -7156,6 +7158,30 @@ var Users = /** @class */ (function () {
      */
     Users.getFacebookGroups = function (params) {
         return Requests.processRoute(UserRoutes.routes.getFacebookGroups, undefined, undefined, params);
+    };
+    /**
+     * Add a genre to a user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     *
+     * @param data The genre information to be passed to update the genre information.
+     *
+     * @returns Promise
+     */
+    Users.addGenre = function (data, params) {
+        return Requests.processRoute(UserRoutes.routes.addGenre, data, undefined, params);
+    };
+    /**
+     * Remove a genre from a user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     *
+     * @param genre_id The id of the genre to remove.
+     *
+     * @returns Promise
+     */
+    Users.removeGenre = function (genre_id, params) {
+        return Requests.processRoute(UserRoutes.routes.removeGenre, undefined, { genre_id: genre_id }, params);
     };
     return Users;
 }());
@@ -8360,6 +8386,7 @@ var UtilityRoutes = /** @class */ (function () {
     }
     UtilityRoutes.routes = {
         social_interactions: { url: '/util/socialinteractions', method: HTTP_METHODS.GET },
+        genres: { url: '/util/genres', method: HTTP_METHODS.GET },
     };
     return UtilityRoutes;
 }());
@@ -8376,6 +8403,16 @@ var Utility = /** @class */ (function () {
      */
     Utility.listSocialInteractions = function (params) {
         return Requests.processRoute(UtilityRoutes.routes.social_interactions, undefined, undefined, params);
+    };
+    /**
+     * Get all the genres available on the platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenres
+     *
+     * @returns promise
+     */
+    Utility.listGenres = function (params) {
+        return Requests.processRoute(UtilityRoutes.routes.genres, undefined, undefined, params);
     };
     return Utility;
 }());

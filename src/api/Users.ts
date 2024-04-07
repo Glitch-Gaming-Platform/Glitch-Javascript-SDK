@@ -327,6 +327,34 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.getFacebookGroups, undefined, undefined, params);
     }
 
+    /**
+     * Add a genre to a user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     * 
+     * @param data The genre information to be passed to update the genre information.
+     * 
+     * @returns Promise
+     */
+    public static addGenre<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.addGenre, data, undefined, params);
+    }
+
+    /**
+     * Remove a genre from a user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     * 
+     * @param genre_id The id of the genre to remove.
+     * 
+     * @returns Promise
+     */
+    public static removeGenre<T>(genre_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.removeGenre, undefined, {genre_id : genre_id}, params);
+    }
+
 
 
 
