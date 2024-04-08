@@ -22121,12 +22121,12 @@ var CampaignsRoute = /** @class */ (function () {
         getCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.GET },
         updateCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.PUT },
         deleteCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.DELETE },
-        addCountry: { url: '/users/addCountry', method: HTTP_METHODS.POST },
-        removeCountry: { url: '/users/removeCountry/{country_id}', method: HTTP_METHODS.DELETE },
-        addGender: { url: '/users/addGender', method: HTTP_METHODS.POST },
-        removeGender: { url: '/users/removeGender/{gender_id}', method: HTTP_METHODS.DELETE },
-        addEthnicity: { url: '/users/addEthnicity', method: HTTP_METHODS.POST },
-        removeEthnicity: { url: '/users/removeEthnicity/{ethnicity_id}', method: HTTP_METHODS.DELETE },
+        addCountry: { url: '/campaigns/{campaign_id}/addCountry', method: HTTP_METHODS.POST },
+        removeCountry: { url: '/campaigns/{campaign_id}/removeCountry/{country_id}', method: HTTP_METHODS.DELETE },
+        addGender: { url: '/campaigns/{campaign_id}/addGender', method: HTTP_METHODS.POST },
+        removeGender: { url: '/campaigns/{campaign_id}/removeGender/{gender_id}', method: HTTP_METHODS.DELETE },
+        addEthnicity: { url: '/campaigns/{campaign_id}/addEthnicity', method: HTTP_METHODS.POST },
+        removeEthnicity: { url: '/campaigns/{campaign_id}/removeEthnicity/{ethnicity_id}', method: HTTP_METHODS.DELETE },
     };
     return CampaignsRoute;
 }());
@@ -22388,8 +22388,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Campaigns.addCountry = function (data, params) {
-        return Requests.processRoute(CampaignsRoute.routes.addCountry, data, undefined, params);
+    Campaigns.addCountry = function (campaign_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.addCountry, data, { campaign_id: campaign_id }, params);
     };
     /**
      * Remove a country
@@ -22400,8 +22400,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Campaigns.removeCountry = function (country_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.removeCountry, undefined, { country_id: country_id }, params);
+    Campaigns.removeCountry = function (campaign_id, country_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.removeCountry, undefined, { campaign_id: campaign_id, country_id: country_id }, params);
     };
     /**
      * Associate a gender with the campaign.
@@ -22412,8 +22412,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Campaigns.addGender = function (data, params) {
-        return Requests.processRoute(CampaignsRoute.routes.addGender, data, undefined, params);
+    Campaigns.addGender = function (campaign_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.addGender, data, { campaign_id: campaign_id }, params);
     };
     /**
      * Remove a gender
@@ -22424,8 +22424,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Campaigns.removeGender = function (gender_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, { gender_id: gender_id }, params);
+    Campaigns.removeGender = function (campaign_id, gender_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, { campaign_id: campaign_id, gender_id: gender_id }, params);
     };
     /**
      * Associate an ethnicity with the campaign.
@@ -22436,8 +22436,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Campaigns.addEthnicity = function (data, params) {
-        return Requests.processRoute(CampaignsRoute.routes.addGender, data, undefined, params);
+    Campaigns.addEthnicity = function (campaign_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.addGender, data, { campaign_id: campaign_id }, params);
     };
     /**
      * Remove an ethnicity
@@ -22448,8 +22448,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Campaigns.removeEthnicity = function (ethnicity_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, { ethnicity_id: ethnicity_id }, params);
+    Campaigns.removeEthnicity = function (campaign_id, ethnicity_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, { campaign_id: campaign_id, ethnicity_id: ethnicity_id }, params);
     };
     return Campaigns;
 }());

@@ -296,9 +296,9 @@ class Campaigns {
      * 
      * @returns Promise
      */
-    public static addCountry<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static addCountry<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.addCountry, data, undefined, params);
+        return Requests.processRoute(CampaignsRoute.routes.addCountry, data, {campaign_id : campaign_id}, params);
     }
 
     /**
@@ -310,9 +310,9 @@ class Campaigns {
      * 
      * @returns Promise
      */
-    public static removeCountry<T>(country_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static removeCountry<T>(campaign_id: string, country_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.removeCountry, undefined, {country_id : country_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.removeCountry, undefined, {campaign_id : campaign_id, country_id : country_id}, params);
     }
 
     /**
@@ -324,9 +324,9 @@ class Campaigns {
      * 
      * @returns Promise
      */
-    public static addGender<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static addGender<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.addGender, data, undefined, params);
+        return Requests.processRoute(CampaignsRoute.routes.addGender, data, {campaign_id : campaign_id}, params);
     }
 
     /**
@@ -338,9 +338,9 @@ class Campaigns {
      * 
      * @returns Promise
      */
-    public static removeGender<T>(gender_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static removeGender<T>(campaign_id : string, gender_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, {gender_id : gender_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, {campaign_id : campaign_id, gender_id : gender_id}, params);
     }
 
     /**
@@ -352,9 +352,9 @@ class Campaigns {
      * 
      * @returns Promise
      */
-    public static addEthnicity<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static addEthnicity<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.addGender, data, undefined, params);
+        return Requests.processRoute(CampaignsRoute.routes.addGender, data, {campaign_id : campaign_id}, params);
     }
 
     /**
@@ -366,9 +366,9 @@ class Campaigns {
      * 
      * @returns Promise
      */
-    public static removeEthnicity<T>(ethnicity_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static removeEthnicity<T>(campaign_id: string, ethnicity_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, {ethnicity_id : ethnicity_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, {campaign_id : campaign_id, ethnicity_id : ethnicity_id}, params);
     }
 
 

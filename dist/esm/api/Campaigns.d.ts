@@ -213,7 +213,7 @@ declare class Campaigns {
      *
      * @returns Promise
      */
-    static addCountry<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static addCountry<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Remove a country
      *
@@ -223,7 +223,7 @@ declare class Campaigns {
      *
      * @returns Promise
      */
-    static removeCountry<T>(country_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static removeCountry<T>(campaign_id: string, country_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Associate a gender with the campaign.
      *
@@ -233,7 +233,7 @@ declare class Campaigns {
      *
      * @returns Promise
      */
-    static addGender<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static addGender<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Remove a gender
      *
@@ -243,7 +243,7 @@ declare class Campaigns {
      *
      * @returns Promise
      */
-    static removeGender<T>(gender_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static removeGender<T>(campaign_id: string, gender_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Associate an ethnicity with the campaign.
      *
@@ -253,7 +253,7 @@ declare class Campaigns {
      *
      * @returns Promise
      */
-    static addEthnicity<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static addEthnicity<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Remove an ethnicity
      *
@@ -263,6 +263,6 @@ declare class Campaigns {
      *
      * @returns Promise
      */
-    static removeEthnicity<T>(ethnicity_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static removeEthnicity<T>(campaign_id: string, ethnicity_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Campaigns;
