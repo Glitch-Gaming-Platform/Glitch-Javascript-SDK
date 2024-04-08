@@ -27,6 +27,39 @@ class Utility {
         return Requests.processRoute(UtilityRoutes.routes.genres, undefined, undefined, params);
     }
 
+    /**
+     * Get all the genders available on the platform.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenders
+     * 
+     * @returns promise
+     */
+    public static listGenders<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(UtilityRoutes.routes.genders, undefined, undefined, params);
+    }
+
+    /**
+     * Get all the countries available on the platform.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenres
+     * 
+     * @returns promise
+     */
+    public static listCountries<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(UtilityRoutes.routes.countries, undefined, undefined, params);
+    }
+
+    /**
+     * Get all the ethnicities available on the platform.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenres
+     * 
+     * @returns promise
+     */
+    public static listEthnicities<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(UtilityRoutes.routes.ethnicities, undefined, undefined, params);
+    }
+
 }
 
 export default Utility;

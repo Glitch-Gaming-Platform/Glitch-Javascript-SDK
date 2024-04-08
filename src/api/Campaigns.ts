@@ -287,6 +287,90 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.deleteCampaignMention, {}, { campaign_id: campaign_id, mention_id: mention_id  }, params);
     }
 
+    /**
+     * Associate a country with the campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/addCountryToCampaign
+     * 
+     * @param data The country information to be passed to update the country campaigns information.
+     * 
+     * @returns Promise
+     */
+    public static addCountry<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.addCountry, data, undefined, params);
+    }
+
+    /**
+     * Remove a country
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeCountry
+     * 
+     * @param country_id The id of the country to remove.
+     * 
+     * @returns Promise
+     */
+    public static removeCountry<T>(country_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.removeCountry, undefined, {country_id : country_id}, params);
+    }
+
+    /**
+     * Associate a gender with the campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
+     * 
+     * @param data The gener information to be passed to update the gender information.
+     * 
+     * @returns Promise
+     */
+    public static addGender<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.addGender, data, undefined, params);
+    }
+
+    /**
+     * Remove a gender
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeGender
+     * 
+     * @param gender_id The id of the gender to remove.
+     * 
+     * @returns Promise
+     */
+    public static removeGender<T>(gender_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, {gender_id : gender_id}, params);
+    }
+
+    /**
+     * Associate an ethnicity with the campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
+     * 
+     * @param data The ethnicity information to be passed to update the campaign information.
+     * 
+     * @returns Promise
+     */
+    public static addEthnicity<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.addGender, data, undefined, params);
+    }
+
+    /**
+     * Remove an ethnicity
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeGender
+     * 
+     * @param gender_id The id of the ethnicity to remove.
+     * 
+     * @returns Promise
+     */
+    public static removeEthnicity<T>(ethnicity_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, {ethnicity_id : ethnicity_id}, params);
+    }
+
 
 }
 

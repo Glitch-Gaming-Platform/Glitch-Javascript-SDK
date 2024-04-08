@@ -21571,6 +21571,9 @@ var UtilityRoutes = /** @class */ (function () {
     UtilityRoutes.routes = {
         social_interactions: { url: '/util/socialinteractions', method: HTTP_METHODS.GET },
         genres: { url: '/util/genres', method: HTTP_METHODS.GET },
+        countries: { url: '/util/countries', method: HTTP_METHODS.GET },
+        genders: { url: '/util/genders', method: HTTP_METHODS.GET },
+        ethnicities: { url: '/util/ethnicities', method: HTTP_METHODS.GET },
     };
     return UtilityRoutes;
 }());
@@ -21597,6 +21600,36 @@ var Utility = /** @class */ (function () {
      */
     Utility.listGenres = function (params) {
         return Requests.processRoute(UtilityRoutes.routes.genres, undefined, undefined, params);
+    };
+    /**
+     * Get all the genders available on the platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenders
+     *
+     * @returns promise
+     */
+    Utility.listGenders = function (params) {
+        return Requests.processRoute(UtilityRoutes.routes.genders, undefined, undefined, params);
+    };
+    /**
+     * Get all the countries available on the platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenres
+     *
+     * @returns promise
+     */
+    Utility.listCountries = function (params) {
+        return Requests.processRoute(UtilityRoutes.routes.countries, undefined, undefined, params);
+    };
+    /**
+     * Get all the ethnicities available on the platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenres
+     *
+     * @returns promise
+     */
+    Utility.listEthnicities = function (params) {
+        return Requests.processRoute(UtilityRoutes.routes.ethnicities, undefined, undefined, params);
     };
     return Utility;
 }());
@@ -22088,6 +22121,12 @@ var CampaignsRoute = /** @class */ (function () {
         getCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.GET },
         updateCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.PUT },
         deleteCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.DELETE },
+        addCountry: { url: '/users/addCountry', method: HTTP_METHODS.POST },
+        removeCountry: { url: '/users/removeCountry/{country_id}', method: HTTP_METHODS.DELETE },
+        addGender: { url: '/users/addGender', method: HTTP_METHODS.POST },
+        removeGender: { url: '/users/removeGender/{gender_id}', method: HTTP_METHODS.DELETE },
+        addEthnicity: { url: '/users/addEthnicity', method: HTTP_METHODS.POST },
+        removeEthnicity: { url: '/users/removeEthnicity/{ethnicity_id}', method: HTTP_METHODS.DELETE },
     };
     return CampaignsRoute;
 }());
@@ -22339,6 +22378,78 @@ var Campaigns = /** @class */ (function () {
     */
     Campaigns.deleteCampaignMention = function (campaign_id, mention_id, params) {
         return Requests.processRoute(CampaignsRoute.routes.deleteCampaignMention, {}, { campaign_id: campaign_id, mention_id: mention_id }, params);
+    };
+    /**
+     * Associate a country with the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/addCountryToCampaign
+     *
+     * @param data The country information to be passed to update the country campaigns information.
+     *
+     * @returns Promise
+     */
+    Campaigns.addCountry = function (data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.addCountry, data, undefined, params);
+    };
+    /**
+     * Remove a country
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeCountry
+     *
+     * @param country_id The id of the country to remove.
+     *
+     * @returns Promise
+     */
+    Campaigns.removeCountry = function (country_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.removeCountry, undefined, { country_id: country_id }, params);
+    };
+    /**
+     * Associate a gender with the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
+     *
+     * @param data The gener information to be passed to update the gender information.
+     *
+     * @returns Promise
+     */
+    Campaigns.addGender = function (data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.addGender, data, undefined, params);
+    };
+    /**
+     * Remove a gender
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeGender
+     *
+     * @param gender_id The id of the gender to remove.
+     *
+     * @returns Promise
+     */
+    Campaigns.removeGender = function (gender_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, { gender_id: gender_id }, params);
+    };
+    /**
+     * Associate an ethnicity with the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
+     *
+     * @param data The ethnicity information to be passed to update the campaign information.
+     *
+     * @returns Promise
+     */
+    Campaigns.addEthnicity = function (data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.addGender, data, undefined, params);
+    };
+    /**
+     * Remove an ethnicity
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeGender
+     *
+     * @param gender_id The id of the ethnicity to remove.
+     *
+     * @returns Promise
+     */
+    Campaigns.removeEthnicity = function (ethnicity_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, { ethnicity_id: ethnicity_id }, params);
     };
     return Campaigns;
 }());

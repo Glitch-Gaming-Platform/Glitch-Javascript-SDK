@@ -204,5 +204,65 @@ declare class Campaigns {
     * @returns promise
     */
     static deleteCampaignMention<T>(campaign_id: string, mention_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Associate a country with the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/addCountryToCampaign
+     *
+     * @param data The country information to be passed to update the country campaigns information.
+     *
+     * @returns Promise
+     */
+    static addCountry<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Remove a country
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeCountry
+     *
+     * @param country_id The id of the country to remove.
+     *
+     * @returns Promise
+     */
+    static removeCountry<T>(country_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Associate a gender with the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
+     *
+     * @param data The gener information to be passed to update the gender information.
+     *
+     * @returns Promise
+     */
+    static addGender<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Remove a gender
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeGender
+     *
+     * @param gender_id The id of the gender to remove.
+     *
+     * @returns Promise
+     */
+    static removeGender<T>(gender_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Associate an ethnicity with the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
+     *
+     * @param data The ethnicity information to be passed to update the campaign information.
+     *
+     * @returns Promise
+     */
+    static addEthnicity<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Remove an ethnicity
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeGender
+     *
+     * @param gender_id The id of the ethnicity to remove.
+     *
+     * @returns Promise
+     */
+    static removeEthnicity<T>(ethnicity_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Campaigns;

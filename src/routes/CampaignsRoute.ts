@@ -24,7 +24,13 @@ class CampaignsRoute {
       createCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions', method: HTTP_METHODS.POST },
       getCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.GET },
       updateCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.PUT },
-      deleteCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.DELETE },        
+      deleteCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.DELETE },
+      addCountry : { url: '/users/addCountry', method: HTTP_METHODS.POST },
+      removeCountry : { url: '/users/removeCountry/{country_id}', method: HTTP_METHODS.DELETE },   
+      addGender : { url: '/users/addGender', method: HTTP_METHODS.POST },
+      removeGender : { url: '/users/removeGender/{gender_id}', method: HTTP_METHODS.DELETE },
+      addEthnicity : { url: '/users/addEthnicity', method: HTTP_METHODS.POST },
+      removeEthnicity : { url: '/users/removeEthnicity/{ethnicity_id}', method: HTTP_METHODS.DELETE },          
     };
 
   }

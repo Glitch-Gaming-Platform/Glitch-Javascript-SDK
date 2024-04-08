@@ -17,5 +17,29 @@ declare class Utility {
      * @returns promise
      */
     static listGenres<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all the genders available on the platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenders
+     *
+     * @returns promise
+     */
+    static listGenders<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all the countries available on the platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenres
+     *
+     * @returns promise
+     */
+    static listCountries<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all the ethnicities available on the platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilGenres
+     *
+     * @returns promise
+     */
+    static listEthnicities<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Utility;
