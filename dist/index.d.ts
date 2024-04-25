@@ -2002,6 +2002,14 @@ declare class Utility {
      * @returns promise
      */
     static listEthnicities<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all the game types available on the platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilTypes
+     *
+     * @returns promise
+     */
+    static listTypes<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Tips {

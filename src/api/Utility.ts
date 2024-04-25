@@ -60,6 +60,17 @@ class Utility {
         return Requests.processRoute(UtilityRoutes.routes.ethnicities, undefined, undefined, params);
     }
 
+    /**
+     * Get all the game types available on the platform.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilTypes
+     * 
+     * @returns promise
+     */
+    public static listTypes<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(UtilityRoutes.routes.types, undefined, undefined, params);
+    }
+
 }
 
 export default Utility;

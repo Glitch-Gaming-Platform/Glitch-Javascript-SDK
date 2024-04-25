@@ -9,6 +9,7 @@ class UtilityRoutes {
     countries: { url: '/util/countries', method: HTTP_METHODS.GET },
     genders: { url: '/util/genders', method: HTTP_METHODS.GET },
     ethnicities : { url: '/util/ethnicities', method: HTTP_METHODS.GET },
+    types : { url: '/util/types', method: HTTP_METHODS.GET },
   };
 
 }

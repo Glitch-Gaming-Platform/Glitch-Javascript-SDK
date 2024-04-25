@@ -21600,6 +21600,7 @@ var UtilityRoutes = /** @class */ (function () {
         countries: { url: '/util/countries', method: HTTP_METHODS.GET },
         genders: { url: '/util/genders', method: HTTP_METHODS.GET },
         ethnicities: { url: '/util/ethnicities', method: HTTP_METHODS.GET },
+        types: { url: '/util/types', method: HTTP_METHODS.GET },
     };
     return UtilityRoutes;
 }());
@@ -21656,6 +21657,16 @@ var Utility = /** @class */ (function () {
      */
     Utility.listEthnicities = function (params) {
         return Requests.processRoute(UtilityRoutes.routes.ethnicities, undefined, undefined, params);
+    };
+    /**
+     * Get all the game types available on the platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Utility%20Route/getUtilTypes
+     *
+     * @returns promise
+     */
+    Utility.listTypes = function (params) {
+        return Requests.processRoute(UtilityRoutes.routes.types, undefined, undefined, params);
     };
     return Utility;
 }());
