@@ -30,7 +30,9 @@ class CampaignsRoute {
       addGender : { url: '/campaigns/{campaign_id}/addGender', method: HTTP_METHODS.POST },
       removeGender : { url: '/campaigns/{campaign_id}/removeGender/{gender_id}', method: HTTP_METHODS.DELETE },
       addEthnicity : { url: '/campaigns/{campaign_id}/addEthnicity', method: HTTP_METHODS.POST },
-      removeEthnicity : { url: '/campaigns/{campaign_id}/removeEthnicity/{ethnicity_id}', method: HTTP_METHODS.DELETE },          
+      removeEthnicity : { url: '/campaigns/{campaign_id}/removeEthnicity/{ethnicity_id}', method: HTTP_METHODS.DELETE },
+      addType : { url: '/campaigns/{campaign_id}/addType', method: HTTP_METHODS.POST },
+      removeType : { url: '/campaigns/{campaign_id}/removeType/{type_id}', method: HTTP_METHODS.DELETE },             
     };
 
   }

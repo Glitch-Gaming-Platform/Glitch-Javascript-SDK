@@ -1113,6 +1113,26 @@ declare class Users {
      * @returns Promise
      */
     static removeGenre<T>(genre_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Add a type to a user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     *
+     * @param data The genre information to be passed to update the type information.
+     *
+     * @returns Promise
+     */
+    static addType<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Remove a genre from a user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     *
+     * @param genre_id The id of the genre to remove.
+     *
+     * @returns Promise
+     */
+    static removeType<T>(type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Events {
@@ -2552,6 +2572,26 @@ declare class Campaigns {
      * @returns Promise
      */
     static removeEthnicity<T>(campaign_id: string, ethnicity_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Associate a type with the campaign.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
+    *
+    * @param data The type information to be passed to update the campaign information.
+    *
+    * @returns Promise
+    */
+    static addType<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Remove an type
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeGender
+     *
+     * @param type_id The id of the ethnicity to remove.
+     *
+     * @returns Promise
+     */
+    static removeType<T>(campaign_id: string, type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {

@@ -264,5 +264,25 @@ declare class Campaigns {
      * @returns Promise
      */
     static removeEthnicity<T>(campaign_id: string, ethnicity_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Associate a type with the campaign.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
+    *
+    * @param data The type information to be passed to update the campaign information.
+    *
+    * @returns Promise
+    */
+    static addType<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Remove an type
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeGender
+     *
+     * @param type_id The id of the ethnicity to remove.
+     *
+     * @returns Promise
+     */
+    static removeType<T>(campaign_id: string, type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Campaigns;

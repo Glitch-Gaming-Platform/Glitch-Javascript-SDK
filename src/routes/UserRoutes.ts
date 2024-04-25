@@ -30,6 +30,8 @@ class UserRoutes {
       getFacebookGroups : { url: '/users/getFacebookGroups', method: HTTP_METHODS.GET },
       addGenre : { url: '/users/addGenre', method: HTTP_METHODS.POST },
       removeGenre : { url: '/users/removeGenre/{genre_id}', method: HTTP_METHODS.DELETE },
+      addType : { url: '/users/addType', method: HTTP_METHODS.POST },
+      removeType : { url: '/users/removeType/{type_id}', method: HTTP_METHODS.DELETE },
     };
 
   }

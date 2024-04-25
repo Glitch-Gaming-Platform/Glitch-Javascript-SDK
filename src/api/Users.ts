@@ -355,6 +355,35 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.removeGenre, undefined, {genre_id : genre_id}, params);
     }
 
+    /**
+     * Add a type to a user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     * 
+     * @param data The genre information to be passed to update the type information.
+     * 
+     * @returns Promise
+     */
+    public static addType<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.addType, data, undefined, params);
+    }
+
+    /**
+     * Remove a genre from a user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     * 
+     * @param genre_id The id of the genre to remove.
+     * 
+     * @returns Promise
+     */
+    public static removeType<T>(type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.removeType, undefined, {type_id : type_id}, params);
+    }
+    
+
 
 
 

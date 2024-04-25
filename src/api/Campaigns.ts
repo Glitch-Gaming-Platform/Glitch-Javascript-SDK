@@ -354,7 +354,7 @@ class Campaigns {
      */
     public static addEthnicity<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.addGender, data, {campaign_id : campaign_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.addEthnicity, data, {campaign_id : campaign_id}, params);
     }
 
     /**
@@ -368,7 +368,35 @@ class Campaigns {
      */
     public static removeEthnicity<T>(campaign_id: string, ethnicity_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, {campaign_id : campaign_id, ethnicity_id : ethnicity_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.removeEthnicity, undefined, {campaign_id : campaign_id, ethnicity_id : ethnicity_id}, params);
+    }
+
+     /**
+     * Associate a type with the campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
+     * 
+     * @param data The type information to be passed to update the campaign information.
+     * 
+     * @returns Promise
+     */
+     public static addType<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.addType, data, {campaign_id : campaign_id}, params);
+    }
+
+    /**
+     * Remove an type
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeGender
+     * 
+     * @param type_id The id of the ethnicity to remove.
+     * 
+     * @returns Promise
+     */
+    public static removeType<T>(campaign_id: string, type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.removeType, undefined, {campaign_id : campaign_id, type_id : type_id}, params);
     }
 
 

@@ -20064,6 +20064,8 @@ var UserRoutes = /** @class */ (function () {
         getFacebookGroups: { url: '/users/getFacebookGroups', method: HTTP_METHODS.GET },
         addGenre: { url: '/users/addGenre', method: HTTP_METHODS.POST },
         removeGenre: { url: '/users/removeGenre/{genre_id}', method: HTTP_METHODS.DELETE },
+        addType: { url: '/users/addType', method: HTTP_METHODS.POST },
+        removeType: { url: '/users/removeType/{type_id}', method: HTTP_METHODS.DELETE },
     };
     return UserRoutes;
 }());
@@ -20366,6 +20368,30 @@ var Users = /** @class */ (function () {
      */
     Users.removeGenre = function (genre_id, params) {
         return Requests.processRoute(UserRoutes.routes.removeGenre, undefined, { genre_id: genre_id }, params);
+    };
+    /**
+     * Add a type to a user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     *
+     * @param data The genre information to be passed to update the type information.
+     *
+     * @returns Promise
+     */
+    Users.addType = function (data, params) {
+        return Requests.processRoute(UserRoutes.routes.addType, data, undefined, params);
+    };
+    /**
+     * Remove a genre from a user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/updateUser
+     *
+     * @param genre_id The id of the genre to remove.
+     *
+     * @returns Promise
+     */
+    Users.removeType = function (type_id, params) {
+        return Requests.processRoute(UserRoutes.routes.removeType, undefined, { type_id: type_id }, params);
     };
     return Users;
 }());
@@ -22127,6 +22153,8 @@ var CampaignsRoute = /** @class */ (function () {
         removeGender: { url: '/campaigns/{campaign_id}/removeGender/{gender_id}', method: HTTP_METHODS.DELETE },
         addEthnicity: { url: '/campaigns/{campaign_id}/addEthnicity', method: HTTP_METHODS.POST },
         removeEthnicity: { url: '/campaigns/{campaign_id}/removeEthnicity/{ethnicity_id}', method: HTTP_METHODS.DELETE },
+        addType: { url: '/campaigns/{campaign_id}/addType', method: HTTP_METHODS.POST },
+        removeType: { url: '/campaigns/{campaign_id}/removeType/{type_id}', method: HTTP_METHODS.DELETE },
     };
     return CampaignsRoute;
 }());
@@ -22437,7 +22465,7 @@ var Campaigns = /** @class */ (function () {
      * @returns Promise
      */
     Campaigns.addEthnicity = function (campaign_id, data, params) {
-        return Requests.processRoute(CampaignsRoute.routes.addGender, data, { campaign_id: campaign_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.addEthnicity, data, { campaign_id: campaign_id }, params);
     };
     /**
      * Remove an ethnicity
@@ -22449,7 +22477,31 @@ var Campaigns = /** @class */ (function () {
      * @returns Promise
      */
     Campaigns.removeEthnicity = function (campaign_id, ethnicity_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, { campaign_id: campaign_id, ethnicity_id: ethnicity_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.removeEthnicity, undefined, { campaign_id: campaign_id, ethnicity_id: ethnicity_id }, params);
+    };
+    /**
+    * Associate a type with the campaign.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
+    *
+    * @param data The type information to be passed to update the campaign information.
+    *
+    * @returns Promise
+    */
+    Campaigns.addType = function (campaign_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.addType, data, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Remove an type
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/removeGender
+     *
+     * @param type_id The id of the ethnicity to remove.
+     *
+     * @returns Promise
+     */
+    Campaigns.removeType = function (campaign_id, type_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.removeType, undefined, { campaign_id: campaign_id, type_id: type_id }, params);
     };
     return Campaigns;
 }());
