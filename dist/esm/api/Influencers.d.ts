@@ -16,6 +16,6 @@ declare class Influencers {
      *
      * @returns promise
      */
-    static viewInfluencer<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static viewInfluencer<T>(influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Influencers;

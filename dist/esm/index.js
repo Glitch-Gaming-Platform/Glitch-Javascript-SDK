@@ -9610,8 +9610,8 @@ var Influencers = /** @class */ (function () {
      *
      * @returns promise
      */
-    Influencers.viewInfluencer = function (params) {
-        return Requests.processRoute(InfluencerRoutes.routes.viewInfluencer, undefined, undefined, params);
+    Influencers.viewInfluencer = function (influencer_id, params) {
+        return Requests.processRoute(InfluencerRoutes.routes.viewInfluencer, undefined, { influencer_id: influencer_id }, params);
     };
     return Influencers;
 }());

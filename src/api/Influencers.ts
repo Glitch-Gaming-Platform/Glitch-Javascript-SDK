@@ -23,8 +23,8 @@ class Influencers {
      * 
      * @returns promise
      */
-    public static viewInfluencer<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(InfluencerRoutes.routes.viewInfluencer, undefined, undefined, params);
+    public static viewInfluencer<T>(influencer_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(InfluencerRoutes.routes.viewInfluencer, undefined, {influencer_id : influencer_id}, params);
     }
 
 }
