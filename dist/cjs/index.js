@@ -22764,6 +22764,42 @@ var Feedback = /** @class */ (function () {
     return Feedback;
 }());
 
+var InfluencerRoutes = /** @class */ (function () {
+    function InfluencerRoutes() {
+    }
+    InfluencerRoutes.routes = {
+        listInfluencers: { url: '/influencers', method: HTTP_METHODS.GET },
+        viewInfluencer: { url: '/influencers/{influencer_id}', method: HTTP_METHODS.GET },
+    };
+    return InfluencerRoutes;
+}());
+
+var Influencers = /** @class */ (function () {
+    function Influencers() {
+    }
+    /**
+     * Get a list of influencers available on he platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/getInfluencers
+     *
+     * @returns promise
+     */
+    Influencers.listInfluencers = function (params) {
+        return Requests.processRoute(InfluencerRoutes.routes.listInfluencers, undefined, undefined, params);
+    };
+    /**
+     * Retrieve information on a single influencer.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/getInfluencerById
+     *
+     * @returns promise
+     */
+    Influencers.viewInfluencer = function (params) {
+        return Requests.processRoute(InfluencerRoutes.routes.viewInfluencer, undefined, undefined, params);
+    };
+    return Influencers;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -23168,6 +23204,7 @@ var Glitch = /** @class */ (function () {
         Users: Users,
         Events: Events,
         Feedback: Feedback,
+        Influencers: Influencers,
         Teams: Teams,
         Posts: Posts,
         Messages: Messages,

@@ -23,6 +23,7 @@ import {Campaigns} from "./api";
 import {Subscriptions} from "./api";
 import {Messages} from "./api";
 import {Feedback} from "./api";
+import {Influencers} from "./api";
 
 
 
@@ -63,6 +64,7 @@ class Glitch {
         Users: Users,
         Events: Events,
         Feedback : Feedback,
+        Influencers : Influencers,
         Teams: Teams,
         Posts: Posts,
         Messages : Messages,

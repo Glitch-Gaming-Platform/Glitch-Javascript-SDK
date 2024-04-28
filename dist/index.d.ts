@@ -2762,6 +2762,25 @@ declare class Feedback {
     static sendFeedbackWithBlob<T>(blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class Influencers {
+    /**
+     * Get a list of influencers available on he platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/getInfluencers
+     *
+     * @returns promise
+     */
+    static listInfluencers<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve information on a single influencer.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/getInfluencerById
+     *
+     * @returns promise
+     */
+    static viewInfluencer<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -3068,6 +3087,7 @@ declare class Glitch {
         Users: typeof Users;
         Events: typeof Events;
         Feedback: typeof Feedback;
+        Influencers: typeof Influencers;
         Teams: typeof Teams;
         Posts: typeof Posts;
         Messages: typeof Messages;

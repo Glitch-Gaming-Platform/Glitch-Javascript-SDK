@@ -19,6 +19,7 @@ import { Campaigns } from "./api";
 import { Subscriptions } from "./api";
 import { Messages } from "./api";
 import { Feedback } from "./api";
+import { Influencers } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -45,6 +46,7 @@ declare class Glitch {
         Users: typeof Users;
         Events: typeof Events;
         Feedback: typeof Feedback;
+        Influencers: typeof Influencers;
         Teams: typeof Teams;
         Posts: typeof Posts;
         Messages: typeof Messages;
