@@ -2641,7 +2641,7 @@ declare class Campaigns {
      *
      * @returns promise
      */
-    static sendInfluencerInvite<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static sendInfluencerInvite<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Invites an influencer to join this campaign.
      *
@@ -2661,7 +2661,7 @@ declare class Campaigns {
     *
     * @returns promise
     */
-    static acceptInfluencerInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static acceptInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * The route for an influencer to decline an invite.
      *
@@ -2671,7 +2671,7 @@ declare class Campaigns {
      *
      * @returns promise
      */
-    static declineInfluencernInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static declineInfluencernInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * The route for an influencer to decline an invite.
      *
@@ -2681,7 +2681,7 @@ declare class Campaigns {
      *
      * @returns promise
      */
-    static widthdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static widthdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {

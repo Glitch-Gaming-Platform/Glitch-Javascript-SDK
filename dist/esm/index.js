@@ -9386,8 +9386,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns promise
      */
-    Campaigns.sendInfluencerInvite = function (campaign_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.sendInfluencerInvite, {}, { campaign_id: campaign_id }, params);
+    Campaigns.sendInfluencerInvite = function (campaign_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.sendInfluencerInvite, data, { campaign_id: campaign_id }, params);
     };
     /**
      * Invites an influencer to join this campaign.
@@ -9412,8 +9412,8 @@ var Campaigns = /** @class */ (function () {
     *
     * @returns promise
     */
-    Campaigns.acceptInfluencerInvite = function (campaign_id, influencer_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.acceptInfluencerInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    Campaigns.acceptInfluencerInvite = function (campaign_id, influencer_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.acceptInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     };
     /**
      * The route for an influencer to decline an invite.
@@ -9424,8 +9424,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns promise
      */
-    Campaigns.declineInfluencernInvite = function (campaign_id, influencer_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    Campaigns.declineInfluencernInvite = function (campaign_id, influencer_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     };
     /**
      * The route for an influencer to decline an invite.
@@ -9436,8 +9436,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns promise
      */
-    Campaigns.widthdrawInfluencerInvite = function (campaign_id, influencer_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.widthdrawInfluencerInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    Campaigns.widthdrawInfluencerInvite = function (campaign_id, influencer_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.widthdrawInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     };
     return Campaigns;
 }());

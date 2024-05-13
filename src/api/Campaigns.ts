@@ -423,9 +423,9 @@ class Campaigns {
      * 
      * @returns promise
      */
-    public static sendInfluencerInvite<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static sendInfluencerInvite<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.sendInfluencerInvite, {}, { campaign_id: campaign_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.sendInfluencerInvite, data, { campaign_id: campaign_id }, params);
     }
 
     /**
@@ -459,9 +459,9 @@ class Campaigns {
     * 
     * @returns promise
     */
-    public static acceptInfluencerInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static acceptInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.acceptInfluencerInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.acceptInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     }
 
     /**
@@ -473,9 +473,9 @@ class Campaigns {
      * 
      * @returns promise
      */
-    public static declineInfluencernInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static declineInfluencernInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     }
 
     /**
@@ -487,9 +487,9 @@ class Campaigns {
      * 
      * @returns promise
      */
-    public static widthdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static widthdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.widthdrawInfluencerInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.widthdrawInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     }
 
 
