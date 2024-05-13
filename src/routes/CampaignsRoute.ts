@@ -32,7 +32,14 @@ class CampaignsRoute {
       addEthnicity : { url: '/campaigns/{campaign_id}/addEthnicity', method: HTTP_METHODS.POST },
       removeEthnicity : { url: '/campaigns/{campaign_id}/removeEthnicity/{ethnicity_id}', method: HTTP_METHODS.DELETE },
       addType : { url: '/campaigns/{campaign_id}/addType', method: HTTP_METHODS.POST },
-      removeType : { url: '/campaigns/{campaign_id}/removeType/{type_id}', method: HTTP_METHODS.DELETE },             
+      removeType : { url: '/campaigns/{campaign_id}/removeType/{type_id}', method: HTTP_METHODS.DELETE },
+      inviteInfluencer : { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
+      viewInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}', method: HTTP_METHODS.GET },
+      listInfluencerInvites : { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.GET }, 
+      sendInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
+      acceptInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/accept', method: HTTP_METHODS.POST },
+      declineInfluencernInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/decline', method: HTTP_METHODS.POST }, 
+      widthdrawInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/withdraw', method: HTTP_METHODS.POST },                
     };
 
   }

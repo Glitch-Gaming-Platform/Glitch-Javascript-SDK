@@ -80,7 +80,7 @@ class Campaigns {
      * 
      * @returns promise
      */
-     public static listCampaignLinks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static listCampaignLinks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(CampaignsRoute.routes.listCampaignLinks, undefined, { campaign_id: campaign_id }, params);
     }
 
@@ -124,17 +124,17 @@ class Campaigns {
      */
     public static getCampaignLink<T>(campaign_id: string, link_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.getCampaignLink, {}, { campaign_id: campaign_id, link_id: link_id  }, params);
+        return Requests.processRoute(CampaignsRoute.routes.getCampaignLink, {}, { campaign_id: campaign_id, link_id: link_id }, params);
     }
 
-     /**
-     * List all the influencers associated with a campaign.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerCampaigns
-     * 
-     * @returns promise
-     */
-     public static listInfluencerCampaigns<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+    * List all the influencers associated with a campaign.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerCampaigns
+    * 
+    * @returns promise
+    */
+    public static listInfluencerCampaigns<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaigns, undefined, undefined, params);
     }
 
@@ -148,20 +148,20 @@ class Campaigns {
      * @returns Promise
      */
     public static createInfluencerCampaign<T>(campaign_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CampaignsRoute.routes.createInfluencerCampaign , data, { campaign_id: campaign_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.createInfluencerCampaign, data, { campaign_id: campaign_id }, params);
     }
 
-     /**
-     * Update an influencer campaign.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Campaigns/updateInfluencerCampaign
-     * 
-     * @param campaign_id The id of the campaign to update.
-     * @param data The data to update.
-     * 
-     * @returns promise
-     */
-     public static updateInfluencerCampaign<T>(campaign_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+    * Update an influencer campaign.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/updateInfluencerCampaign
+    * 
+    * @param campaign_id The id of the campaign to update.
+    * @param data The data to update.
+    * 
+    * @returns promise
+    */
+    public static updateInfluencerCampaign<T>(campaign_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(CampaignsRoute.routes.updateInfluencerCampaign, data, { campaign_id: campaign_id, user_id: user_id }, params);
     }
@@ -216,17 +216,17 @@ class Campaigns {
      * @returns promise
      */
     public static listInfluencerCampaignLinks<T>(campaign_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinks , undefined, { campaign_id: campaign_id, user_id: user_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinks, undefined, { campaign_id: campaign_id, user_id: user_id }, params);
     }
 
-     /**
-     * List all the campaign mentions.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
-     * 
-     * @returns promise
-     */
-     public static listCampaignMentions<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+    * List all the campaign mentions.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
+    * 
+    * @returns promise
+    */
+    public static listCampaignMentions<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(CampaignsRoute.routes.listCampaignMentions, undefined, { campaign_id: campaign_id }, params);
     }
 
@@ -270,21 +270,21 @@ class Campaigns {
      */
     public static getCampaignMention<T>(campaign_id: string, mention_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.getCampaignMention, {}, { campaign_id: campaign_id, mention_id: mention_id  }, params);
+        return Requests.processRoute(CampaignsRoute.routes.getCampaignMention, {}, { campaign_id: campaign_id, mention_id: mention_id }, params);
     }
 
-     /**
-     * Delete the information for a single campaign mention.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLink
-     * 
-     * @param campaign_id The id fo the campaign to retrieve.
-     * 
-     * @returns promise
-     */
-     public static deleteCampaignMention<T>(campaign_id: string, mention_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+    * Delete the information for a single campaign mention.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLink
+    * 
+    * @param campaign_id The id fo the campaign to retrieve.
+    * 
+    * @returns promise
+    */
+    public static deleteCampaignMention<T>(campaign_id: string, mention_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.deleteCampaignMention, {}, { campaign_id: campaign_id, mention_id: mention_id  }, params);
+        return Requests.processRoute(CampaignsRoute.routes.deleteCampaignMention, {}, { campaign_id: campaign_id, mention_id: mention_id }, params);
     }
 
     /**
@@ -298,7 +298,7 @@ class Campaigns {
      */
     public static addCountry<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.addCountry, data, {campaign_id : campaign_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.addCountry, data, { campaign_id: campaign_id }, params);
     }
 
     /**
@@ -312,7 +312,7 @@ class Campaigns {
      */
     public static removeCountry<T>(campaign_id: string, country_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.removeCountry, undefined, {campaign_id : campaign_id, country_id : country_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.removeCountry, undefined, { campaign_id: campaign_id, country_id: country_id }, params);
     }
 
     /**
@@ -326,7 +326,7 @@ class Campaigns {
      */
     public static addGender<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.addGender, data, {campaign_id : campaign_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.addGender, data, { campaign_id: campaign_id }, params);
     }
 
     /**
@@ -338,9 +338,9 @@ class Campaigns {
      * 
      * @returns Promise
      */
-    public static removeGender<T>(campaign_id : string, gender_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static removeGender<T>(campaign_id: string, gender_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, {campaign_id : campaign_id, gender_id : gender_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.removeGender, undefined, { campaign_id: campaign_id, gender_id: gender_id }, params);
     }
 
     /**
@@ -354,7 +354,7 @@ class Campaigns {
      */
     public static addEthnicity<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.addEthnicity, data, {campaign_id : campaign_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.addEthnicity, data, { campaign_id: campaign_id }, params);
     }
 
     /**
@@ -368,21 +368,21 @@ class Campaigns {
      */
     public static removeEthnicity<T>(campaign_id: string, ethnicity_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.removeEthnicity, undefined, {campaign_id : campaign_id, ethnicity_id : ethnicity_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.removeEthnicity, undefined, { campaign_id: campaign_id, ethnicity_id: ethnicity_id }, params);
     }
 
-     /**
-     * Associate a type with the campaign.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
-     * 
-     * @param data The type information to be passed to update the campaign information.
-     * 
-     * @returns Promise
-     */
-     public static addType<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+    * Associate a type with the campaign.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/addGenderToCampaign
+    * 
+    * @param data The type information to be passed to update the campaign information.
+    * 
+    * @returns Promise
+    */
+    public static addType<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.addType, data, {campaign_id : campaign_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.addType, data, { campaign_id: campaign_id }, params);
     }
 
     /**
@@ -396,7 +396,100 @@ class Campaigns {
      */
     public static removeType<T>(campaign_id: string, type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.removeType, undefined, {campaign_id : campaign_id, type_id : type_id}, params);
+        return Requests.processRoute(CampaignsRoute.routes.removeType, undefined, { campaign_id: campaign_id, type_id: type_id }, params);
+    }
+
+
+    /**
+     * Get a list of influencer invites that have been sent for this campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInvites
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static listInfluencerInvites<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerInvites, {}, { campaign_id: campaign_id }, params);
+    }
+
+    /**
+     * Invites an influencer to join this campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/inviteInfluencer
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static sendInfluencerInvite<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.sendInfluencerInvite, {}, { campaign_id: campaign_id }, params);
+    }
+
+    /**
+     * Invites an influencer to join this campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInvite
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static viewInfluencerInvite<T>(campaign_id: string, influencer_id: string, token: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        // Ensure params is defined and includes the token
+        const updatedParams = { ...params, token };
+
+        return Requests.processRoute(
+            CampaignsRoute.routes.viewInfluencerInvite,
+            {},
+            { campaign_id: campaign_id, influencer_id: influencer_id },
+            updatedParams
+        );
+    }
+
+    /**
+    * The route for an influencer to accept an invite.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencerInvite
+    * 
+    * @param campaign_id The id fo the campaign to retrieve.
+    * 
+    * @returns promise
+    */
+    public static acceptInfluencerInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.acceptInfluencerInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    }
+
+    /**
+     * The route for an influencer to decline an invite.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/delinceInfluencerInvite
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static declineInfluencernInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    }
+
+    /**
+     * The route for an influencer to decline an invite.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/withdrawInfluencerInvite
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static widthdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.widthdrawInfluencerInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     }
 
 

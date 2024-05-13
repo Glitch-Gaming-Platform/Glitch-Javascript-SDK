@@ -901,6 +901,28 @@ declare class Users {
      */
     static me<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Gets the campaigns the users has been invited too.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
+     *
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static getCampaignInvites<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Sync the current influencer's information.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
+     *
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static syncInfluencer<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Will follow and unfollow a user. If the user is not being following, it will follow the user. If they are following, it will unfollow the user. The current JWT is used for the follower.
      *
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/userToggleFollow
@@ -2600,6 +2622,66 @@ declare class Campaigns {
      * @returns Promise
      */
     static removeType<T>(campaign_id: string, type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a list of influencer invites that have been sent for this campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInvites
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static listInfluencerInvites<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Invites an influencer to join this campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/inviteInfluencer
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static sendInfluencerInvite<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Invites an influencer to join this campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInvite
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static viewInfluencerInvite<T>(campaign_id: string, influencer_id: string, token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * The route for an influencer to accept an invite.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencerInvite
+    *
+    * @param campaign_id The id fo the campaign to retrieve.
+    *
+    * @returns promise
+    */
+    static acceptInfluencerInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * The route for an influencer to decline an invite.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/delinceInfluencerInvite
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static declineInfluencernInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * The route for an influencer to decline an invite.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/withdrawInfluencerInvite
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static widthdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {

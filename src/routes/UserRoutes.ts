@@ -9,6 +9,7 @@ class UserRoutes {
       follow : { url: '/users/{user_id}/follow', method: HTTP_METHODS.POST  },
       profile  :{ url: '/users/{user_id}/profile', method: HTTP_METHODS.GET  },
       me : { url: '/users/me', method: HTTP_METHODS.GET },
+      syncInfluencer : { url: '/users/syncInfluencer', method: HTTP_METHODS.POST },
       oneTimeToken : { url: '/users/oneTimeToken', method: HTTP_METHODS.GET },
       uploadAvatar : { url: '/users/uploadAvatarImage', method: HTTP_METHODS.POST },
       uploadBanner : { url: '/users/uploadBannerImage', method: HTTP_METHODS.POST },
@@ -32,6 +33,7 @@ class UserRoutes {
       removeGenre : { url: '/users/removeGenre/{genre_id}', method: HTTP_METHODS.DELETE },
       addType : { url: '/users/addType', method: HTTP_METHODS.POST },
       removeType : { url: '/users/removeType/{type_id}', method: HTTP_METHODS.DELETE },
+      getCampaignInvites : { url: '/users/getCampaignInvites', method: HTTP_METHODS.GET },
     };
 
   }

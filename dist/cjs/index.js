@@ -20043,6 +20043,7 @@ var UserRoutes = /** @class */ (function () {
         follow: { url: '/users/{user_id}/follow', method: HTTP_METHODS.POST },
         profile: { url: '/users/{user_id}/profile', method: HTTP_METHODS.GET },
         me: { url: '/users/me', method: HTTP_METHODS.GET },
+        syncInfluencer: { url: '/users/syncInfluencer', method: HTTP_METHODS.POST },
         oneTimeToken: { url: '/users/oneTimeToken', method: HTTP_METHODS.GET },
         uploadAvatar: { url: '/users/uploadAvatarImage', method: HTTP_METHODS.POST },
         uploadBanner: { url: '/users/uploadBannerImage', method: HTTP_METHODS.POST },
@@ -20066,6 +20067,7 @@ var UserRoutes = /** @class */ (function () {
         removeGenre: { url: '/users/removeGenre/{genre_id}', method: HTTP_METHODS.DELETE },
         addType: { url: '/users/addType', method: HTTP_METHODS.POST },
         removeType: { url: '/users/removeType/{type_id}', method: HTTP_METHODS.DELETE },
+        getCampaignInvites: { url: '/users/getCampaignInvites', method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -20107,6 +20109,32 @@ var Users = /** @class */ (function () {
      */
     Users.me = function (params) {
         return Requests.processRoute(UserRoutes.routes.me, {}, undefined, params);
+    };
+    /**
+     * Gets the campaigns the users has been invited too.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
+     *
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Users.getCampaignInvites = function (params) {
+        return Requests.processRoute(UserRoutes.routes.getCampaignInvites, {}, undefined, params);
+    };
+    /**
+     * Sync the current influencer's information.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
+     *
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Users.syncInfluencer = function (params) {
+        return Requests.processRoute(UserRoutes.routes.syncInfluencer, {}, undefined, params);
     };
     /**
      * Will follow and unfollow a user. If the user is not being following, it will follow the user. If they are following, it will unfollow the user. The current JWT is used for the follower.
@@ -22166,6 +22194,13 @@ var CampaignsRoute = /** @class */ (function () {
         removeEthnicity: { url: '/campaigns/{campaign_id}/removeEthnicity/{ethnicity_id}', method: HTTP_METHODS.DELETE },
         addType: { url: '/campaigns/{campaign_id}/addType', method: HTTP_METHODS.POST },
         removeType: { url: '/campaigns/{campaign_id}/removeType/{type_id}', method: HTTP_METHODS.DELETE },
+        inviteInfluencer: { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
+        viewInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}', method: HTTP_METHODS.GET },
+        listInfluencerInvites: { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.GET },
+        sendInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
+        acceptInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/accept', method: HTTP_METHODS.POST },
+        declineInfluencernInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/decline', method: HTTP_METHODS.POST },
+        widthdrawInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/withdraw', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -22513,6 +22548,80 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.removeType = function (campaign_id, type_id, params) {
         return Requests.processRoute(CampaignsRoute.routes.removeType, undefined, { campaign_id: campaign_id, type_id: type_id }, params);
+    };
+    /**
+     * Get a list of influencer invites that have been sent for this campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInvites
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.listInfluencerInvites = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerInvites, {}, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Invites an influencer to join this campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/inviteInfluencer
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.sendInfluencerInvite = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.sendInfluencerInvite, {}, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Invites an influencer to join this campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInvite
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.viewInfluencerInvite = function (campaign_id, influencer_id, token, params) {
+        // Ensure params is defined and includes the token
+        var updatedParams = __assign(__assign({}, params), { token: token });
+        return Requests.processRoute(CampaignsRoute.routes.viewInfluencerInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, updatedParams);
+    };
+    /**
+    * The route for an influencer to accept an invite.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencerInvite
+    *
+    * @param campaign_id The id fo the campaign to retrieve.
+    *
+    * @returns promise
+    */
+    Campaigns.acceptInfluencerInvite = function (campaign_id, influencer_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.acceptInfluencerInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    };
+    /**
+     * The route for an influencer to decline an invite.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/delinceInfluencerInvite
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.declineInfluencernInvite = function (campaign_id, influencer_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    };
+    /**
+     * The route for an influencer to decline an invite.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/withdrawInfluencerInvite
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.widthdrawInfluencerInvite = function (campaign_id, influencer_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.widthdrawInfluencerInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     };
     return Campaigns;
 }());

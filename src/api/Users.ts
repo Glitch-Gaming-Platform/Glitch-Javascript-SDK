@@ -47,6 +47,36 @@ class Users {
     }
 
     /**
+     * Gets the campaigns the users has been invited too.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
+     * 
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     * 
+     * @returns promise
+     */
+    public static getCampaignInvites<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.getCampaignInvites, {}, undefined, params);
+    }
+
+    /**
+     * Sync the current influencer's information.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
+     * 
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     * 
+     * @returns promise
+     */
+    public static syncInfluencer<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.syncInfluencer, {}, undefined, params);
+    }
+
+    /**
      * Will follow and unfollow a user. If the user is not being following, it will follow the user. If they are following, it will unfollow the user. The current JWT is used for the follower.
      * 
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/userToggleFollow
