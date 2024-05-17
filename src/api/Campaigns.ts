@@ -492,6 +492,48 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.widthdrawInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     }
 
+     /**
+    * The route to accept an influnecers request to join the campaign.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencer
+    * 
+    * @param campaign_id The id fo the campaign to retrieve.
+    * 
+    * @returns promise
+    */
+     public static acceptInfluencerRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.acceptInfluencerRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    }
+
+    /**
+     * The route to deny an influencer request to join the campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/denyInfluencer
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static declineInfluencernRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    }
+
+    /**
+     * The route the route to mark the influencers request as in review.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/reviewInfluencer
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static reviewInfluencerRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.reviewInfluencerRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    }
+
 
 }
 

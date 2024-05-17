@@ -34,6 +34,8 @@ class UserRoutes {
       addType : { url: '/users/addType', method: HTTP_METHODS.POST },
       removeType : { url: '/users/removeType/{type_id}', method: HTTP_METHODS.DELETE },
       getCampaignInvites : { url: '/users/getCampaignInvites', method: HTTP_METHODS.GET },
+      getPayouts : { url: '/users/payouts', method: HTTP_METHODS.GET },
+
     };
 
   }

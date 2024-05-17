@@ -319,7 +319,59 @@ class Communities {
         return Requests.processRoute(CommunitiesRoute.routes.join, data, {community_id : community_id}, params);
     }
 
+    /**
+     * Add a payment method to the community.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/51802cc0cb758850807345918130cf3e
+     * 
+     * @param community_id The id of the community to update.
+     * 
+     * @returns promise
+     */
+    public static addPaymentMethod<T>(community_id : string, data : object, params?: Record<string, any>)  :  AxiosPromise<Response<T>>{
 
+        return Requests.processRoute(CommunitiesRoute.routes.addPaymentMethod, data, {community_id : community_id}, params);
+    }
+
+    /**
+     * Sets the default payment method for the community.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/dd743e8a7da3b2bebe557cbc6675380d
+     * 
+     * @param community_id The id of the community to update.
+     * 
+     * @returns promise
+     */
+    public static setDefaultPaymentMethod<T>(community_id : string, data : object, params?: Record<string, any>)  :  AxiosPromise<Response<T>>{
+
+        return Requests.processRoute(CommunitiesRoute.routes.setDefaultPaymentMethod, data, {community_id : community_id}, params);
+    }
+
+    /**
+     * Get the available payment methods.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communitysUserInviteList
+     * 
+     * @param community_id The id of the community
+     * 
+     * @returns promise
+     */
+    public static getPaymentMethods<T>(community_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.getPaymentMethods, {}, {community_id : community_id}, params);  
+    }
+
+    /**
+     * Get the ledger for all transactions from the community.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communitysUserInviteList
+     * 
+     * @param community_id The id of the community
+     * 
+     * @returns promise
+     */
+    public static getLedger<T>(community_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.getLedger, {}, {community_id : community_id}, params);  
+    }
 
     
 

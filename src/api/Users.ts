@@ -62,6 +62,21 @@ class Users {
     }
 
     /**
+     * Gets payouts from past campaings
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
+     * 
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     * 
+     * @returns promise
+     */
+    public static getPayouts<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.getPayouts, {}, undefined, params);
+    }
+
+    /**
      * Sync the current influencer's information.
      * 
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
