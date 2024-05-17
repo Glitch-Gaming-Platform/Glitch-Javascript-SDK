@@ -6564,7 +6564,11 @@ var CommunitiesRoute = /** @class */ (function () {
         updateUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.PUT },
         removeUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.DELETE },
         join: { url: '/communities/{community_id}/join', method: HTTP_METHODS.POST },
-        findByDomain: { url: '/communities/findByDomain/{domain}', method: HTTP_METHODS.GET }
+        findByDomain: { url: '/communities/findByDomain/{domain}', method: HTTP_METHODS.GET },
+        addPaymentMethod: { url: '/communities/{community_id}/payment/methods', method: HTTP_METHODS.POST },
+        getPaymentMethods: { url: '/communities/{community_i}/payment/methods', method: HTTP_METHODS.GET },
+        setDefaultPaymentMethod: { url: '/communities/{community_i}/payment/methods/default', method: HTTP_METHODS.POST },
+        getLedger: { url: '/communities/{community_i}/payment/ledger', method: HTTP_METHODS.GET },
     };
     return CommunitiesRoute;
 }());
@@ -6847,6 +6851,54 @@ var Communities = /** @class */ (function () {
     Communities.join = function (community_id, data, params) {
         return Requests.processRoute(CommunitiesRoute.routes.join, data, { community_id: community_id }, params);
     };
+    /**
+     * Add a payment method to the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/51802cc0cb758850807345918130cf3e
+     *
+     * @param community_id The id of the community to update.
+     *
+     * @returns promise
+     */
+    Communities.addPaymentMethod = function (community_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.addPaymentMethod, data, { community_id: community_id }, params);
+    };
+    /**
+     * Sets the default payment method for the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/dd743e8a7da3b2bebe557cbc6675380d
+     *
+     * @param community_id The id of the community to update.
+     *
+     * @returns promise
+     */
+    Communities.setDefaultPaymentMethod = function (community_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.setDefaultPaymentMethod, data, { community_id: community_id }, params);
+    };
+    /**
+     * Get the available payment methods.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communitysUserInviteList
+     *
+     * @param community_id The id of the community
+     *
+     * @returns promise
+     */
+    Communities.getPaymentMethods = function (community_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.getPaymentMethods, {}, { community_id: community_id }, params);
+    };
+    /**
+     * Get the ledger for all transactions from the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communitysUserInviteList
+     *
+     * @param community_id The id of the community
+     *
+     * @returns promise
+     */
+    Communities.getLedger = function (community_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.getLedger, {}, { community_id: community_id }, params);
+    };
     return Communities;
 }());
 
@@ -6884,6 +6936,7 @@ var UserRoutes = /** @class */ (function () {
         addType: { url: '/users/addType', method: HTTP_METHODS.POST },
         removeType: { url: '/users/removeType/{type_id}', method: HTTP_METHODS.DELETE },
         getCampaignInvites: { url: '/users/getCampaignInvites', method: HTTP_METHODS.GET },
+        getPayouts: { url: '/users/payouts', method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -6938,6 +6991,19 @@ var Users = /** @class */ (function () {
      */
     Users.getCampaignInvites = function (params) {
         return Requests.processRoute(UserRoutes.routes.getCampaignInvites, {}, undefined, params);
+    };
+    /**
+     * Gets payouts from past campaings
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
+     *
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Users.getPayouts = function (params) {
+        return Requests.processRoute(UserRoutes.routes.getPayouts, {}, undefined, params);
     };
     /**
      * Sync the current influencer's information.
@@ -9017,6 +9083,9 @@ var CampaignsRoute = /** @class */ (function () {
         acceptInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/accept', method: HTTP_METHODS.POST },
         declineInfluencernInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/decline', method: HTTP_METHODS.POST },
         widthdrawInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/withdraw', method: HTTP_METHODS.POST },
+        acceptInfluencerRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/accept', method: HTTP_METHODS.POST },
+        declineInfluencernRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/deny', method: HTTP_METHODS.POST },
+        reviewInfluencerRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/review', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -9438,6 +9507,42 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.widthdrawInfluencerInvite = function (campaign_id, influencer_id, data, params) {
         return Requests.processRoute(CampaignsRoute.routes.widthdrawInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    };
+    /**
+   * The route to accept an influnecers request to join the campaign.
+   *
+   * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencer
+   *
+   * @param campaign_id The id fo the campaign to retrieve.
+   *
+   * @returns promise
+   */
+    Campaigns.acceptInfluencerRequest = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.acceptInfluencerRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * The route to deny an influencer request to join the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/denyInfluencer
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.declineInfluencernRequest = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * The route the route to mark the influencers request as in review.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/reviewInfluencer
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.reviewInfluencerRequest = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.reviewInfluencerRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
     };
     return Campaigns;
 }());

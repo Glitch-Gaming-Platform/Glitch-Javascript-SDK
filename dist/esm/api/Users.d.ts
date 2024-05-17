@@ -42,6 +42,17 @@ declare class Users {
      */
     static getCampaignInvites<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Gets payouts from past campaings
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
+     *
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static getPayouts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Sync the current influencer's information.
      *
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe

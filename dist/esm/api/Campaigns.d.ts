@@ -344,5 +344,35 @@ declare class Campaigns {
      * @returns promise
      */
     static widthdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+   * The route to accept an influnecers request to join the campaign.
+   *
+   * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencer
+   *
+   * @param campaign_id The id fo the campaign to retrieve.
+   *
+   * @returns promise
+   */
+    static acceptInfluencerRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * The route to deny an influencer request to join the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/denyInfluencer
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static declineInfluencernRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * The route the route to mark the influencers request as in review.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/reviewInfluencer
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static reviewInfluencerRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Campaigns;

@@ -868,6 +868,46 @@ declare class Communities {
      * @returns promise
      */
     static join<T>(community_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Add a payment method to the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/51802cc0cb758850807345918130cf3e
+     *
+     * @param community_id The id of the community to update.
+     *
+     * @returns promise
+     */
+    static addPaymentMethod<T>(community_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Sets the default payment method for the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/dd743e8a7da3b2bebe557cbc6675380d
+     *
+     * @param community_id The id of the community to update.
+     *
+     * @returns promise
+     */
+    static setDefaultPaymentMethod<T>(community_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get the available payment methods.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communitysUserInviteList
+     *
+     * @param community_id The id of the community
+     *
+     * @returns promise
+     */
+    static getPaymentMethods<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get the ledger for all transactions from the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/communitys%20Route/communitysUserInviteList
+     *
+     * @param community_id The id of the community
+     *
+     * @returns promise
+     */
+    static getLedger<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Users {
@@ -911,6 +951,17 @@ declare class Users {
      * @returns promise
      */
     static getCampaignInvites<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Gets payouts from past campaings
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
+     *
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static getPayouts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Sync the current influencer's information.
      *
@@ -2682,6 +2733,36 @@ declare class Campaigns {
      * @returns promise
      */
     static widthdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+   * The route to accept an influnecers request to join the campaign.
+   *
+   * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencer
+   *
+   * @param campaign_id The id fo the campaign to retrieve.
+   *
+   * @returns promise
+   */
+    static acceptInfluencerRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * The route to deny an influencer request to join the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/denyInfluencer
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static declineInfluencernRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * The route the route to mark the influencers request as in review.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/reviewInfluencer
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static reviewInfluencerRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {
