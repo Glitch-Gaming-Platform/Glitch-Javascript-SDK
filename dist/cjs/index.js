@@ -19750,9 +19750,9 @@ var CommunitiesRoute = /** @class */ (function () {
         join: { url: '/communities/{community_id}/join', method: HTTP_METHODS.POST },
         findByDomain: { url: '/communities/findByDomain/{domain}', method: HTTP_METHODS.GET },
         addPaymentMethod: { url: '/communities/{community_id}/payment/methods', method: HTTP_METHODS.POST },
-        getPaymentMethods: { url: '/communities/{community_i}/payment/methods', method: HTTP_METHODS.GET },
-        setDefaultPaymentMethod: { url: '/communities/{community_i}/payment/methods/default', method: HTTP_METHODS.POST },
-        getLedger: { url: '/communities/{community_i}/payment/ledger', method: HTTP_METHODS.GET },
+        getPaymentMethods: { url: '/communities/{community_id}/payment/methods', method: HTTP_METHODS.GET },
+        setDefaultPaymentMethod: { url: '/communities/{community_id}/payment/methods/default', method: HTTP_METHODS.POST },
+        getLedger: { url: '/communities/{community_id}/payment/ledger', method: HTTP_METHODS.GET },
     };
     return CommunitiesRoute;
 }());
