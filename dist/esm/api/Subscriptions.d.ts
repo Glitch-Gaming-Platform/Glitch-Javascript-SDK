@@ -65,5 +65,13 @@ declare class Subscriptions {
      * @returns A promise
      */
     static cancelCommunityInfluencerSubscription<T>(community_id: string, stripe_subscription_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Change the current subscription that the community is associated with.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/createCreatorSubscription
+     *
+     * @returns A promise
+     */
+    static changeCommunityInfluencerSubscription<T>(community_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Subscriptions;

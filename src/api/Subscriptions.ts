@@ -90,7 +90,18 @@ class Subscriptions {
      * @returns A promise
      */
     public static cancelCommunityInfluencerSubscription<T>(community_id : string, stripe_subscription_id: string, data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(SubscriptionsRoute.routes.cancelCreatorSubscription, data, {community_id: community_id, stripe_subscription_id : stripe_subscription_id}, params);
+        return Requests.processRoute(SubscriptionsRoute.routes.cancelCommunityInfluencerSubscription, data, {community_id: community_id, stripe_subscription_id : stripe_subscription_id}, params);
+    }
+
+    /**
+     * Change the current subscription that the community is associated with.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/createCreatorSubscription
+     * 
+     * @returns A promise
+     */
+    public static changeCommunityInfluencerSubscription<T>(community_id : string, data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.changeCommunityInfluencerSubscription, data, {community_id: community_id}, params);
     }
    
 
