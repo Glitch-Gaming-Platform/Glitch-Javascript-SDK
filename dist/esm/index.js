@@ -9160,8 +9160,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns promise
      */
-    Campaigns.getLedger = function (params) {
-        return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, undefined, params);
+    Campaigns.getLedger = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
     };
     /**
      * List all the campaign links.
@@ -9180,8 +9180,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns promise
      */
-    Campaigns.listCampaignLinkClicks = function (campaign_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.listCampaignLinkClicks, undefined, { campaign_id: campaign_id }, params);
+    Campaigns.listInfluencerCampaignLinkClicks = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinkClicks, undefined, { campaign_id: campaign_id }, params);
     };
     /**
      * Create a new campaign link.

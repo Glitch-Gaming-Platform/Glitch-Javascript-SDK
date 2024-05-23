@@ -79,8 +79,8 @@ class Campaigns {
      * 
      * @returns promise
      */
-    public static getLedger<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, undefined, params);
+    public static getLedger<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
     }
 
 
@@ -102,8 +102,8 @@ class Campaigns {
      * 
      * @returns promise
      */
-    public static listCampaignLinkClicks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CampaignsRoute.routes.listCampaignLinkClicks, undefined, { campaign_id: campaign_id }, params);
+    public static listInfluencerCampaignLinkClicks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinkClicks, undefined, { campaign_id: campaign_id }, params);
     }
 
 

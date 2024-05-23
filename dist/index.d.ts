@@ -2445,7 +2445,7 @@ declare class Campaigns {
      *
      * @returns promise
      */
-    static getLedger<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static getLedger<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List all the campaign links.
      *
@@ -2461,7 +2461,7 @@ declare class Campaigns {
      *
      * @returns promise
      */
-    static listCampaignLinkClicks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static listInfluencerCampaignLinkClicks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a new campaign link.
      *
