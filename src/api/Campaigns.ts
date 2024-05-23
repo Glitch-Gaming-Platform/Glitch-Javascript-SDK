@@ -102,8 +102,8 @@ class Campaigns {
      * 
      * @returns promise
      */
-    public static listInfluencerCampaignLinkClicks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinkClicks, undefined, { campaign_id: campaign_id }, params);
+    public static listInfluencerCampaignLinkClicks<T>(campaign_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinkClicks, undefined, { campaign_id: campaign_id, user_id : user_id }, params);
     }
 
 

@@ -2461,7 +2461,7 @@ declare class Campaigns {
      *
      * @returns promise
      */
-    static listInfluencerCampaignLinkClicks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static listInfluencerCampaignLinkClicks<T>(campaign_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a new campaign link.
      *

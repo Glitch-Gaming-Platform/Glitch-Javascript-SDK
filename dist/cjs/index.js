@@ -22364,8 +22364,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns promise
      */
-    Campaigns.listInfluencerCampaignLinkClicks = function (campaign_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinkClicks, undefined, { campaign_id: campaign_id }, params);
+    Campaigns.listInfluencerCampaignLinkClicks = function (campaign_id, user_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinkClicks, undefined, { campaign_id: campaign_id, user_id: user_id }, params);
     };
     /**
      * Create a new campaign link.
