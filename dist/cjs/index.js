@@ -22236,6 +22236,7 @@ var CampaignsRoute = /** @class */ (function () {
         viewCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.GET },
         updateCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.PUT },
         deleteCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE },
+        getLedger: { url: '/campaigns/{campaign_id}/ledger', method: HTTP_METHODS.GET },
         listCampaignLinks: { url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.GET },
         createCampaignLink: { url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.POST },
         getCampaignLink: { url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.GET },
@@ -22247,6 +22248,7 @@ var CampaignsRoute = /** @class */ (function () {
         markInfluencerCampaignComplete: { url: '/campaigns/{campaign_id}/influencers/{user_id}/setComplete', method: HTTP_METHODS.POST },
         markInfluencerCampaignIncomplete: { url: '/campaigns/{campaign_id}/influencers/{user_id}/setIncomplete', method: HTTP_METHODS.POST },
         listInfluencerCampaignLinks: { url: '/campaigns/{campaign_id}/influencers/{user_id}/links', method: HTTP_METHODS.GET },
+        listInfluencerCampaignLinkClicks: { url: '/campaigns/{campaign_id}/influencers/{user_id}/linkClicks', method: HTTP_METHODS.GET },
         listCampaignMentions: { url: '/campaigns/{campaign_id}/mentions', method: HTTP_METHODS.GET },
         createCampaignMention: { url: '/campaigns/{campaign_id}/mentions', method: HTTP_METHODS.POST },
         getCampaignMention: { url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.GET },
@@ -22265,10 +22267,10 @@ var CampaignsRoute = /** @class */ (function () {
         listInfluencerInvites: { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.GET },
         sendInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
         acceptInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/accept', method: HTTP_METHODS.POST },
-        declineInfluencernInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/decline', method: HTTP_METHODS.POST },
+        declineInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/decline', method: HTTP_METHODS.POST },
         widthdrawInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/withdraw', method: HTTP_METHODS.POST },
         acceptInfluencerRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/accept', method: HTTP_METHODS.POST },
-        declineInfluencernRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/deny', method: HTTP_METHODS.POST },
+        declineInfluencerRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/deny', method: HTTP_METHODS.POST },
         reviewInfluencerRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/review', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
@@ -22336,6 +22338,16 @@ var Campaigns = /** @class */ (function () {
         return Requests.processRoute(CampaignsRoute.routes.deleteCampaign, {}, { campaign_id: campaign_id }, params);
     };
     /**
+     * Get the ledger for this campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLedger
+     *
+     * @returns promise
+     */
+    Campaigns.getLedger = function (params) {
+        return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, undefined, params);
+    };
+    /**
      * List all the campaign links.
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
@@ -22344,6 +22356,16 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.listCampaignLinks = function (campaign_id, params) {
         return Requests.processRoute(CampaignsRoute.routes.listCampaignLinks, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * List all the campaign links.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
+     *
+     * @returns promise
+     */
+    Campaigns.listCampaignLinkClicks = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.listCampaignLinkClicks, undefined, { campaign_id: campaign_id }, params);
     };
     /**
      * Create a new campaign link.
@@ -22677,8 +22699,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns promise
      */
-    Campaigns.declineInfluencernInvite = function (campaign_id, influencer_id, data, params) {
-        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    Campaigns.declineInfluencerInvite = function (campaign_id, influencer_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.declineInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     };
     /**
      * The route for an influencer to decline an invite.
@@ -22713,8 +22735,8 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns promise
      */
-    Campaigns.declineInfluencernRequest = function (campaign_id, user_id, data, params) {
-        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    Campaigns.declineInfluencerRequest = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.declineInfluencerRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
     };
     /**
      * The route the route to mark the influencers request as in review.

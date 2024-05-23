@@ -2439,6 +2439,14 @@ declare class Campaigns {
      */
     static delete<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Get the ledger for this campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLedger
+     *
+     * @returns promise
+     */
+    static getLedger<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List all the campaign links.
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
@@ -2446,6 +2454,14 @@ declare class Campaigns {
      * @returns promise
      */
     static listCampaignLinks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all the campaign links.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
+     *
+     * @returns promise
+     */
+    static listCampaignLinkClicks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a new campaign link.
      *
@@ -2722,7 +2738,7 @@ declare class Campaigns {
      *
      * @returns promise
      */
-    static declineInfluencernInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static declineInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * The route for an influencer to decline an invite.
      *
@@ -2752,7 +2768,7 @@ declare class Campaigns {
      *
      * @returns promise
      */
-    static declineInfluencernRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static declineInfluencerRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * The route the route to mark the influencers request as in review.
      *

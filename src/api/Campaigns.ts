@@ -72,6 +72,17 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.deleteCampaign, {}, { campaign_id: campaign_id }, params);
     }
 
+    /**
+     * Get the ledger for this campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLedger
+     * 
+     * @returns promise
+     */
+    public static getLedger<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, undefined, params);
+    }
+
 
     /**
      * List all the campaign links.
@@ -83,6 +94,18 @@ class Campaigns {
     public static listCampaignLinks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(CampaignsRoute.routes.listCampaignLinks, undefined, { campaign_id: campaign_id }, params);
     }
+
+    /**
+     * List all the campaign links.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
+     * 
+     * @returns promise
+     */
+    public static listCampaignLinkClicks<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.listCampaignLinkClicks, undefined, { campaign_id: campaign_id }, params);
+    }
+
 
     /**
      * Create a new campaign link.
@@ -473,9 +496,9 @@ class Campaigns {
      * 
      * @returns promise
      */
-    public static declineInfluencernInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static declineInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.declineInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     }
 
     /**
@@ -515,9 +538,9 @@ class Campaigns {
      * 
      * @returns promise
      */
-    public static declineInfluencernRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static declineInfluencerRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.declineInfluencernRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.declineInfluencerRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
     }
 
     /**

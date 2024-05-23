@@ -9,6 +9,7 @@ class CampaignsRoute {
       viewCampaign : { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.GET  },
       updateCampaign  :{ url: '/campaigns/{campaign_id}', method: HTTP_METHODS.PUT  },
       deleteCampaign  :{ url: '/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE  },
+      getLedger : { url: '/campaigns/{campaign_id}/ledger', method: HTTP_METHODS.GET  },
       listCampaignLinks  :{ url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.GET },
       createCampaignLink  :{ url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.POST },
       getCampaignLink  :{ url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.GET },
@@ -20,6 +21,7 @@ class CampaignsRoute {
       markInfluencerCampaignComplete  :{ url: '/campaigns/{campaign_id}/influencers/{user_id}/setComplete', method: HTTP_METHODS.POST },
       markInfluencerCampaignIncomplete  :{ url: '/campaigns/{campaign_id}/influencers/{user_id}/setIncomplete', method: HTTP_METHODS.POST },
       listInfluencerCampaignLinks  :{ url: '/campaigns/{campaign_id}/influencers/{user_id}/links', method: HTTP_METHODS.GET },
+      listInfluencerCampaignLinkClicks  :{ url: '/campaigns/{campaign_id}/influencers/{user_id}/linkClicks', method: HTTP_METHODS.GET },
       listCampaignMentions  :{ url: '/campaigns/{campaign_id}/mentions', method: HTTP_METHODS.GET },
       createCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions', method: HTTP_METHODS.POST },
       getCampaignMention  :{ url: '/campaigns/{campaign_id}/mentions/{mention_id}', method: HTTP_METHODS.GET },
@@ -38,10 +40,10 @@ class CampaignsRoute {
       listInfluencerInvites : { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.GET }, 
       sendInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
       acceptInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/accept', method: HTTP_METHODS.POST },
-      declineInfluencernInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/decline', method: HTTP_METHODS.POST }, 
+      declineInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/decline', method: HTTP_METHODS.POST }, 
       widthdrawInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/withdraw', method: HTTP_METHODS.POST },
       acceptInfluencerRequest : { url: '/campaigns/{campaign_id}/influencers/{user_id}/accept', method: HTTP_METHODS.POST },
-      declineInfluencernRequest : { url: '/campaigns/{campaign_id}/influencers/{user_id}/deny', method: HTTP_METHODS.POST }, 
+      declineInfluencerRequest : { url: '/campaigns/{campaign_id}/influencers/{user_id}/deny', method: HTTP_METHODS.POST }, 
       reviewInfluencerRequest : { url: '/campaigns/{campaign_id}/influencers/{user_id}/review', method: HTTP_METHODS.POST },                 
     };
 
