@@ -37,7 +37,7 @@ declare class Config {
      */
     static setCommunity(community: Record<string, any>): void;
     /**
-     * Sets the root level domain so data can accessed across
+     * Sets the root level domain so data can be accessed across
      * multiple subdomains
      *
      * @param domain The domain ie: example.com

@@ -78,12 +78,16 @@ class Config {
   }
 
   /**
-   * Sets the root level domain so data can accessed across
+   * Sets the root level domain so data can be accessed across
    * multiple subdomains
    * 
    * @param domain The domain ie: example.com
    */
   public static setRootDomain(domain: string) {
+    if (!domain) {
+      console.error("setRootDomain: domain is undefined or null");
+      return;
+    }
 
     const parts = domain.split('.');
 

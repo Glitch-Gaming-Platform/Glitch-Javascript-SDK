@@ -5716,12 +5716,16 @@ var Config = /** @class */ (function () {
         LabelManager.initialize(community);
     };
     /**
-     * Sets the root level domain so data can accessed across
+     * Sets the root level domain so data can be accessed across
      * multiple subdomains
      *
      * @param domain The domain ie: example.com
      */
     Config.setRootDomain = function (domain) {
+        if (!domain) {
+            console.error("setRootDomain: domain is undefined or null");
+            return;
+        }
         var parts = domain.split('.');
         if (parts.length > 2) {
             parts.shift();
