@@ -20,6 +20,7 @@ import Subscriptions from "./Subscriptions";
 import Messages from "./Messages";
 import Feedback from "./Feedback";
 import Influencers from "./Influencers";
+import Games from "./Games";
 
 export {Auth};
 export {Competitions};
@@ -43,3 +44,4 @@ export {Subscriptions};
 export {Messages};
 export {Feedback};
 export {Influencers};
+export {Games};

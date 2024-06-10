@@ -23051,6 +23051,53 @@ var Influencers = /** @class */ (function () {
     return Influencers;
 }());
 
+var GamesRoutes = /** @class */ (function () {
+    function GamesRoutes() {
+    }
+    GamesRoutes.routes = {
+        listGames: { url: '/games', method: HTTP_METHODS.GET },
+        viewGame: { url: '/games/{game_id}', method: HTTP_METHODS.GET },
+        createCampaignData: { url: '/games/{game_id}/generateCampaign', method: HTTP_METHODS.POST },
+    };
+    return GamesRoutes;
+}());
+
+var Games = /** @class */ (function () {
+    function Games() {
+    }
+    /**
+     * Get a list of Games available on he platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/ExternalGames/getExternalGames
+     *
+     * @returns promise
+     */
+    Games.listGames = function (params) {
+        return Requests.processRoute(GamesRoutes.routes.listGames, undefined, undefined, params);
+    };
+    /**
+     * Retrieve information on a single game.
+     *
+     * @see https://api.glitch.fun/api/documentation#/ExternalGames/getExternalGameById
+     *
+     * @returns promise
+     */
+    Games.viewGame = function (game_id, params) {
+        return Requests.processRoute(GamesRoutes.routes.viewGame, undefined, { game_id: game_id }, params);
+    };
+    /**
+     * Generates campaign data for this game.
+     *
+     * @see https://api.glitch.fun/api/documentation#/ExternalGames/generateCampaign
+     *
+     * @returns promise
+     */
+    Games.createCampaignData = function (game_id, data, params) {
+        return Requests.processRoute(GamesRoutes.routes.createCampaignData, data, { game_id: game_id }, params);
+    };
+    return Games;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -23454,6 +23501,7 @@ var Glitch = /** @class */ (function () {
         Communities: Communities,
         Users: Users,
         Events: Events,
+        Games: Games,
         Feedback: Feedback,
         Influencers: Influencers,
         Teams: Teams,

@@ -2968,6 +2968,33 @@ declare class Influencers {
     static viewInfluencer<T>(influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class Games {
+    /**
+     * Get a list of Games available on he platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/ExternalGames/getExternalGames
+     *
+     * @returns promise
+     */
+    static listGames<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve information on a single game.
+     *
+     * @see https://api.glitch.fun/api/documentation#/ExternalGames/getExternalGameById
+     *
+     * @returns promise
+     */
+    static viewGame<T>(game_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Generates campaign data for this game.
+     *
+     * @see https://api.glitch.fun/api/documentation#/ExternalGames/generateCampaign
+     *
+     * @returns promise
+     */
+    static createCampaignData<T>(game_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -3273,6 +3300,7 @@ declare class Glitch {
         Communities: typeof Communities;
         Users: typeof Users;
         Events: typeof Events;
+        Games: typeof Games;
         Feedback: typeof Feedback;
         Influencers: typeof Influencers;
         Teams: typeof Teams;
