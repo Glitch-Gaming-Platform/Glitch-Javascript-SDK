@@ -27,6 +27,17 @@ class Influencers {
         return Requests.processRoute(InfluencerRoutes.routes.viewInfluencer, undefined, {influencer_id : influencer_id}, params);
     }
 
+    /**
+     * Generate a profile for an influencer based on their data.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Influencers/generateInfluencerProfile
+     * 
+     * @returns promise
+     */
+    public static generateProfile<T>(influencer_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(InfluencerRoutes.routes.generateProfile, undefined, {influencer_id : influencer_id}, params);
+    }
+
 }
 
 export default Influencers;

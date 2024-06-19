@@ -974,6 +974,17 @@ declare class Users {
      */
     static syncInfluencer<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Create profile data for an influencer based on their synced information and social media posts.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/generateUserInfluencerProfile
+     *
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static generateInfluencerProfile<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Will follow and unfollow a user. If the user is not being following, it will follow the user. If they are following, it will unfollow the user. The current JWT is used for the follower.
      *
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/userToggleFollow
@@ -2966,6 +2977,14 @@ declare class Influencers {
      * @returns promise
      */
     static viewInfluencer<T>(influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Generate a profile for an influencer based on their data.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/generateInfluencerProfile
+     *
+     * @returns promise
+     */
+    static generateProfile<T>(influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Games {

@@ -17,5 +17,13 @@ declare class Influencers {
      * @returns promise
      */
     static viewInfluencer<T>(influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Generate a profile for an influencer based on their data.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/generateInfluencerProfile
+     *
+     * @returns promise
+     */
+    static generateProfile<T>(influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Influencers;

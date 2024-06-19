@@ -10,6 +10,7 @@ class UserRoutes {
       profile  :{ url: '/users/{user_id}/profile', method: HTTP_METHODS.GET  },
       me : { url: '/users/me', method: HTTP_METHODS.GET },
       syncInfluencer : { url: '/users/syncInfluencer', method: HTTP_METHODS.POST },
+      generateInfluencerProfile : { url: '/users/generateInfluencerProfile', method: HTTP_METHODS.POST },
       oneTimeToken : { url: '/users/oneTimeToken', method: HTTP_METHODS.GET },
       uploadAvatar : { url: '/users/uploadAvatarImage', method: HTTP_METHODS.POST },
       uploadBanner : { url: '/users/uploadBannerImage', method: HTTP_METHODS.POST },

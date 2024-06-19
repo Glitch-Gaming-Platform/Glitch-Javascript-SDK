@@ -92,6 +92,22 @@ class Users {
     }
 
     /**
+     * Create profile data for an influencer based on their synced information and social media posts.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/generateUserInfluencerProfile
+     * 
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     * 
+     * @returns promise
+     */
+    public static generateInfluencerProfile<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.generateInfluencerProfile, {}, undefined, params);
+    }
+
+
+    /**
      * Will follow and unfollow a user. If the user is not being following, it will follow the user. If they are following, it will unfollow the user. The current JWT is used for the follower.
      * 
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/userToggleFollow

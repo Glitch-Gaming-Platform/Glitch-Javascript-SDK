@@ -6916,6 +6916,7 @@ var UserRoutes = /** @class */ (function () {
         profile: { url: '/users/{user_id}/profile', method: HTTP_METHODS.GET },
         me: { url: '/users/me', method: HTTP_METHODS.GET },
         syncInfluencer: { url: '/users/syncInfluencer', method: HTTP_METHODS.POST },
+        generateInfluencerProfile: { url: '/users/generateInfluencerProfile', method: HTTP_METHODS.POST },
         oneTimeToken: { url: '/users/oneTimeToken', method: HTTP_METHODS.GET },
         uploadAvatar: { url: '/users/uploadAvatarImage', method: HTTP_METHODS.POST },
         uploadBanner: { url: '/users/uploadBannerImage', method: HTTP_METHODS.POST },
@@ -7021,6 +7022,19 @@ var Users = /** @class */ (function () {
      */
     Users.syncInfluencer = function (params) {
         return Requests.processRoute(UserRoutes.routes.syncInfluencer, {}, undefined, params);
+    };
+    /**
+     * Create profile data for an influencer based on their synced information and social media posts.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/generateUserInfluencerProfile
+     *
+     * @param user_id The id of the user to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Users.generateInfluencerProfile = function (params) {
+        return Requests.processRoute(UserRoutes.routes.generateInfluencerProfile, {}, undefined, params);
     };
     /**
      * Will follow and unfollow a user. If the user is not being following, it will follow the user. If they are following, it will unfollow the user. The current JWT is used for the follower.
@@ -9837,6 +9851,7 @@ var InfluencerRoutes = /** @class */ (function () {
     InfluencerRoutes.routes = {
         listInfluencers: { url: '/influencers', method: HTTP_METHODS.GET },
         viewInfluencer: { url: '/influencers/{influencer_id}', method: HTTP_METHODS.GET },
+        generateProfile: { url: '/influencers/{influencer_id}/generateProfile', method: HTTP_METHODS.POST },
     };
     return InfluencerRoutes;
 }());
@@ -9863,6 +9878,16 @@ var Influencers = /** @class */ (function () {
      */
     Influencers.viewInfluencer = function (influencer_id, params) {
         return Requests.processRoute(InfluencerRoutes.routes.viewInfluencer, undefined, { influencer_id: influencer_id }, params);
+    };
+    /**
+     * Generate a profile for an influencer based on their data.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/generateInfluencerProfile
+     *
+     * @returns promise
+     */
+    Influencers.generateProfile = function (influencer_id, params) {
+        return Requests.processRoute(InfluencerRoutes.routes.generateProfile, undefined, { influencer_id: influencer_id }, params);
     };
     return Influencers;
 }());
