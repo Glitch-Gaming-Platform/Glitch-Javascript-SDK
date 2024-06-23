@@ -22282,6 +22282,7 @@ var CampaignsRoute = /** @class */ (function () {
         removeType: { url: '/campaigns/{campaign_id}/removeType/{type_id}', method: HTTP_METHODS.DELETE },
         inviteInfluencer: { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
         viewInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}', method: HTTP_METHODS.GET },
+        updateInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}', method: HTTP_METHODS.PUT },
         listInfluencerInvites: { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.GET },
         sendInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
         acceptInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/accept', method: HTTP_METHODS.POST },
@@ -22695,6 +22696,18 @@ var Campaigns = /** @class */ (function () {
         // Ensure params is defined and includes the token
         var updatedParams = __assign(__assign({}, params), { token: token });
         return Requests.processRoute(CampaignsRoute.routes.viewInfluencerInvite, {}, { campaign_id: campaign_id, influencer_id: influencer_id }, updatedParams);
+    };
+    /**
+     * Updates the influencer invite information.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/updateInfluencerInvite
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.updateInfluencerInvite = function (campaign_id, data, influencer_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.updateInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     };
     /**
     * The route for an influencer to accept an invite.

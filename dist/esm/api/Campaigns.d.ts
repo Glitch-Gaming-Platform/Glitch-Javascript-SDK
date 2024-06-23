@@ -331,6 +331,16 @@ declare class Campaigns {
      */
     static viewInfluencerInvite<T>(campaign_id: string, influencer_id: string, token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Updates the influencer invite information.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/updateInfluencerInvite
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static updateInfluencerInvite<T>(campaign_id: string, data: object, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
     * The route for an influencer to accept an invite.
     *
     * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencerInvite

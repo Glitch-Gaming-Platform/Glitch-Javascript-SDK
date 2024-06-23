@@ -474,6 +474,21 @@ class Campaigns {
     }
 
     /**
+     * Updates the influencer invite information.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/updateInfluencerInvite
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static updateInfluencerInvite<T>(campaign_id: string, data: object, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+
+        return Requests.processRoute(CampaignsRoute.routes.updateInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    }
+
+    /**
     * The route for an influencer to accept an invite.
     * 
     * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencerInvite
