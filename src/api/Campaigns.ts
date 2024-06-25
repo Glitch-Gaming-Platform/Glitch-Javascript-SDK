@@ -83,6 +83,17 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
     }
 
+    /**
+     * Retrieve recommended influencers for a campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/recommendInfluencers
+     * 
+     * @returns promise
+     */
+    public static getRecommendedInfluencers<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.getRecommendedInfluencers, undefined, { campaign_id: campaign_id }, params);
+    }
+
 
     /**
      * List all the campaign links.
@@ -482,7 +493,7 @@ class Campaigns {
      * 
      * @returns promise
      */
-    public static updateInfluencerInvite<T>(campaign_id: string, data: object, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static updateInfluencerInvite<T>(campaign_id: string,influencer_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
 
         return Requests.processRoute(CampaignsRoute.routes.updateInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);

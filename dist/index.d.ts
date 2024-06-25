@@ -2458,6 +2458,14 @@ declare class Campaigns {
      */
     static getLedger<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Retrieve recommended influencers for a campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/recommendInfluencers
+     *
+     * @returns promise
+     */
+    static getRecommendedInfluencers<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List all the campaign links.
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLinks
@@ -2739,7 +2747,7 @@ declare class Campaigns {
      *
      * @returns promise
      */
-    static updateInfluencerInvite<T>(campaign_id: string, data: object, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static updateInfluencerInvite<T>(campaign_id: string, influencer_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
     * The route for an influencer to accept an invite.
     *

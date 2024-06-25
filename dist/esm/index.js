@@ -9107,6 +9107,7 @@ var CampaignsRoute = /** @class */ (function () {
         acceptInfluencerRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/accept', method: HTTP_METHODS.POST },
         declineInfluencerRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/deny', method: HTTP_METHODS.POST },
         reviewInfluencerRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/review', method: HTTP_METHODS.POST },
+        getRecommendedInfluencers: { url: '/campaigns/{campaign_id}/recommendInfluencers', method: HTTP_METHODS.GET },
     };
     return CampaignsRoute;
 }());
@@ -9181,6 +9182,16 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.getLedger = function (campaign_id, params) {
         return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Retrieve recommended influencers for a campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/recommendInfluencers
+     *
+     * @returns promise
+     */
+    Campaigns.getRecommendedInfluencers = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.getRecommendedInfluencers, undefined, { campaign_id: campaign_id }, params);
     };
     /**
      * List all the campaign links.
@@ -9522,7 +9533,7 @@ var Campaigns = /** @class */ (function () {
      *
      * @returns promise
      */
-    Campaigns.updateInfluencerInvite = function (campaign_id, data, influencer_id, params) {
+    Campaigns.updateInfluencerInvite = function (campaign_id, influencer_id, data, params) {
         return Requests.processRoute(CampaignsRoute.routes.updateInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     };
     /**

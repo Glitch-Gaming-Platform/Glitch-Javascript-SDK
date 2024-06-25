@@ -45,7 +45,8 @@ class CampaignsRoute {
       widthdrawInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/withdraw', method: HTTP_METHODS.POST },
       acceptInfluencerRequest : { url: '/campaigns/{campaign_id}/influencers/{user_id}/accept', method: HTTP_METHODS.POST },
       declineInfluencerRequest : { url: '/campaigns/{campaign_id}/influencers/{user_id}/deny', method: HTTP_METHODS.POST }, 
-      reviewInfluencerRequest : { url: '/campaigns/{campaign_id}/influencers/{user_id}/review', method: HTTP_METHODS.POST },                 
+      reviewInfluencerRequest : { url: '/campaigns/{campaign_id}/influencers/{user_id}/review', method: HTTP_METHODS.POST }, 
+      getRecommendedInfluencers : { url: '/campaigns/{campaign_id}/recommendInfluencers', method: HTTP_METHODS.GET },                 
     };
 
   }
