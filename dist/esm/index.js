@@ -9071,6 +9071,7 @@ var CampaignsRoute = /** @class */ (function () {
         updateCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.PUT },
         deleteCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE },
         getLedger: { url: '/campaigns/{campaign_id}/ledger', method: HTTP_METHODS.GET },
+        getPosts: { url: '/campaigns/{campaign_id}/posts', method: HTTP_METHODS.GET },
         listCampaignLinks: { url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.GET },
         createCampaignLink: { url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.POST },
         getCampaignLink: { url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.GET },
@@ -9182,6 +9183,16 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.getLedger = function (campaign_id, params) {
         return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Get the post associated with the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLedger
+     *
+     * @returns promise
+     */
+    Campaigns.getPosts = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.getPosts, undefined, { campaign_id: campaign_id }, params);
     };
     /**
      * Retrieve recommended influencers for a campaign.

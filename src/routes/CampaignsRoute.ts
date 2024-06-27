@@ -10,6 +10,7 @@ class CampaignsRoute {
       updateCampaign  :{ url: '/campaigns/{campaign_id}', method: HTTP_METHODS.PUT  },
       deleteCampaign  :{ url: '/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE  },
       getLedger : { url: '/campaigns/{campaign_id}/ledger', method: HTTP_METHODS.GET  },
+      getPosts : { url: '/campaigns/{campaign_id}/posts', method: HTTP_METHODS.GET  },
       listCampaignLinks  :{ url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.GET },
       createCampaignLink  :{ url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.POST },
       getCampaignLink  :{ url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.GET },

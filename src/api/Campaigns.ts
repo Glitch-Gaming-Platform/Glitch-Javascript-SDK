@@ -84,6 +84,17 @@ class Campaigns {
     }
 
     /**
+     * Get the post associated with the campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLedger
+     * 
+     * @returns promise
+     */
+    public static getPosts<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.getPosts, undefined, { campaign_id: campaign_id }, params);
+    }
+
+    /**
      * Retrieve recommended influencers for a campaign.
      * 
      * @see https://api.glitch.fun/api/documentation#/Campaigns/recommendInfluencers
