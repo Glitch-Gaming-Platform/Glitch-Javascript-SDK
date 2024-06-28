@@ -594,6 +594,20 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.reviewInfluencerRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
     }
 
+    /**
+     * Generate post content for the influencer to help them with their content creation.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/generatePostContent
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static generateContentForInfluencer<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.generateContentForInfluencer, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    }
+
 
 }
 

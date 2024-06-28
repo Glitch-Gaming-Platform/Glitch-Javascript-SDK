@@ -416,5 +416,15 @@ declare class Campaigns {
      * @returns promise
      */
     static reviewInfluencerRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Generate post content for the influencer to help them with their content creation.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/generatePostContent
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static generateContentForInfluencer<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Campaigns;

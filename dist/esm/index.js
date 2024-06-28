@@ -9109,6 +9109,7 @@ var CampaignsRoute = /** @class */ (function () {
         declineInfluencerRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/deny', method: HTTP_METHODS.POST },
         reviewInfluencerRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/review', method: HTTP_METHODS.POST },
         getRecommendedInfluencers: { url: '/campaigns/{campaign_id}/recommendInfluencers', method: HTTP_METHODS.GET },
+        generateContentForInfluencer: { url: '/campaigns/{campaign_id}/influencers/{user_id}/generatePostContent', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -9618,6 +9619,18 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.reviewInfluencerRequest = function (campaign_id, user_id, data, params) {
         return Requests.processRoute(CampaignsRoute.routes.reviewInfluencerRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Generate post content for the influencer to help them with their content creation.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/generatePostContent
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.generateContentForInfluencer = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.generateContentForInfluencer, data, { campaign_id: campaign_id, user_id: user_id }, params);
     };
     return Campaigns;
 }());
