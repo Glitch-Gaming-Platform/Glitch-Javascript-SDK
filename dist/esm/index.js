@@ -8832,6 +8832,7 @@ var SocialPostsRoute = /** @class */ (function () {
         getPosts: { url: '/socialposts', method: HTTP_METHODS.GET },
         createPost: { url: '/socialposts', method: HTTP_METHODS.POST },
         retrievePost: { url: '/socialposts/{post_id}', method: HTTP_METHODS.GET },
+        dispute: { url: '/social/{post_id}/dispute', method: HTTP_METHODS.POST },
     };
     return SocialPostsRoute;
 }());
@@ -8870,6 +8871,18 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.view = function (post_id, params) {
         return Requests.processRoute(SocialPostsRoute.routes.retrievePost, {}, { post_id: post_id }, params);
+    };
+    /**
+    * Dispute a post as being fraudulent.,s
+    *
+    * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/disputePost
+    *
+    * @param post_id The id fo the post to retrieve.
+    *
+    * @returns promise
+    */
+    SocialPosts.dispute = function (post_id, data, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.dispute, data, { post_id: post_id }, params);
     };
     return SocialPosts;
 }());

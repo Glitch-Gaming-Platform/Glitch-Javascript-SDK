@@ -41,6 +41,20 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.retrievePost, {}, { post_id: post_id }, params);
     }
 
+     /**
+     * Dispute a post as being fraudulent.,s
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/disputePost
+     * 
+     * @param post_id The id fo the post to retrieve.
+     * 
+     * @returns promise
+     */
+     public static dispute<T>(post_id: string, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(SocialPostsRoute.routes.dispute, data, { post_id: post_id }, params);
+    }
+
 }
 
 export default SocialPosts;

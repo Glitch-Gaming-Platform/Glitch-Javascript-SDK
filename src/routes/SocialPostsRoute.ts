@@ -7,6 +7,7 @@ class SocialPostsRoute {
         getPosts: { url: '/socialposts', method: HTTP_METHODS.GET },
         createPost: { url: '/socialposts', method: HTTP_METHODS.POST },
         retrievePost : { url: '/socialposts/{post_id}', method: HTTP_METHODS.GET },
+        dispute: { url: '/social/{post_id}/dispute', method: HTTP_METHODS.POST },
     };
 
   }
