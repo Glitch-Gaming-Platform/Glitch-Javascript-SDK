@@ -552,6 +552,28 @@ class Events {
         return Requests.processRoute(EventsRoutes.routes.setAIAvatarRespondToMe, data, { event_id: event_id }, params);
     }
 
+    /**
+     * Get the associated statistics for the campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/getStreamStatistics
+     * 
+     * @returns promise
+     */
+    public static statistics<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EventsRoutes.routes.statistics, undefined, { event_id: event_id }, params);
+    }
+
+    /**
+     * Get the stream view counts for the campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/getEventStreamViewCounts
+     * 
+     * @returns promise
+     */
+    public static getStreamViewCounts<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EventsRoutes.routes.getStreamViewCounts, undefined, { event_id: event_id }, params);
+    }
+
 
 }
 

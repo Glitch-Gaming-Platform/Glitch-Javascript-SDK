@@ -1601,6 +1601,22 @@ declare class Events {
      * @returns promise
      */
     static setAIAvatarRespondToMe<T>(event_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get the associated statistics for the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/getStreamStatistics
+     *
+     * @returns promise
+     */
+    static statistics<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get the stream view counts for the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/getEventStreamViewCounts
+     *
+     * @returns promise
+     */
+    static getStreamViewCounts<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Teams {
@@ -2475,6 +2491,22 @@ declare class Campaigns {
      * @returns promise
      */
     static getPosts<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get the associated statistics for the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/campaignStatistics
+     *
+     * @returns promise
+     */
+    static statistics<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get the stream view counts for the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignStreamViewCounts
+     *
+     * @returns promise
+     */
+    static getStreamViewCounts<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieve recommended influencers for a campaign.
      *

@@ -38,6 +38,8 @@ class EventsRoutes {
       setAIAccent : {url : '/events/{event_id}/setAIAccent', method : HTTP_METHODS.POST},
       setAIAvatarRespondToChat : {url : '/events/{event_id}/setAIAvatarRespondToChat', method : HTTP_METHODS.POST},
       setAIAvatarRespondToMe : {url : '/events/{event_id}/setAIAvatarRespondToMe', method : HTTP_METHODS.POST},
+      statistics : { url: '/events/{event_id}/statistics', method: HTTP_METHODS.GET  },
+      streamViewCounts : { url: '/events/{event_id}/streamViewCounts', method: HTTP_METHODS.GET },
     };
 
   }

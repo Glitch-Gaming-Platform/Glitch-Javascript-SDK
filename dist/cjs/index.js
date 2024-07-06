@@ -20546,6 +20546,8 @@ var EventsRoutes = /** @class */ (function () {
         setAIAccent: { url: '/events/{event_id}/setAIAccent', method: HTTP_METHODS.POST },
         setAIAvatarRespondToChat: { url: '/events/{event_id}/setAIAvatarRespondToChat', method: HTTP_METHODS.POST },
         setAIAvatarRespondToMe: { url: '/events/{event_id}/setAIAvatarRespondToMe', method: HTTP_METHODS.POST },
+        statistics: { url: '/events/{event_id}/statistics', method: HTTP_METHODS.GET },
+        streamViewCounts: { url: '/events/{event_id}/streamViewCounts', method: HTTP_METHODS.GET },
     };
     return EventsRoutes;
 }());
@@ -21024,6 +21026,26 @@ var Events = /** @class */ (function () {
      */
     Events.setAIAvatarRespondToMe = function (event_id, data, params) {
         return Requests.processRoute(EventsRoutes.routes.setAIAvatarRespondToMe, data, { event_id: event_id }, params);
+    };
+    /**
+     * Get the associated statistics for the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/getStreamStatistics
+     *
+     * @returns promise
+     */
+    Events.statistics = function (event_id, params) {
+        return Requests.processRoute(EventsRoutes.routes.statistics, undefined, { event_id: event_id }, params);
+    };
+    /**
+     * Get the stream view counts for the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Event%20Route/getEventStreamViewCounts
+     *
+     * @returns promise
+     */
+    Events.getStreamViewCounts = function (event_id, params) {
+        return Requests.processRoute(EventsRoutes.routes.getStreamViewCounts, undefined, { event_id: event_id }, params);
     };
     return Events;
 }());
@@ -22269,6 +22291,8 @@ var CampaignsRoute = /** @class */ (function () {
         deleteCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE },
         getLedger: { url: '/campaigns/{campaign_id}/ledger', method: HTTP_METHODS.GET },
         getPosts: { url: '/campaigns/{campaign_id}/posts', method: HTTP_METHODS.GET },
+        statistics: { url: '/campaigns/{campaign_id}/statistics', method: HTTP_METHODS.GET },
+        streamViewCounts: { url: '/campaigns/{campaign_id}/streamViewCounts', method: HTTP_METHODS.GET },
         listCampaignLinks: { url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.GET },
         createCampaignLink: { url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.POST },
         getCampaignLink: { url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.GET },
@@ -22391,6 +22415,26 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.getPosts = function (campaign_id, params) {
         return Requests.processRoute(CampaignsRoute.routes.getPosts, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Get the associated statistics for the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/campaignStatistics
+     *
+     * @returns promise
+     */
+    Campaigns.statistics = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.statistics, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Get the stream view counts for the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignStreamViewCounts
+     *
+     * @returns promise
+     */
+    Campaigns.getStreamViewCounts = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.getStreamViewCounts, undefined, { campaign_id: campaign_id }, params);
     };
     /**
      * Retrieve recommended influencers for a campaign.

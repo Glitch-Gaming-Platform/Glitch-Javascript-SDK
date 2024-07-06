@@ -95,6 +95,28 @@ class Campaigns {
     }
 
     /**
+     * Get the associated statistics for the campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/campaignStatistics
+     * 
+     * @returns promise
+     */
+    public static statistics<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.statistics, undefined, { campaign_id: campaign_id }, params);
+    }
+
+    /**
+     * Get the stream view counts for the campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignStreamViewCounts
+     * 
+     * @returns promise
+     */
+    public static getStreamViewCounts<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.getStreamViewCounts, undefined, { campaign_id: campaign_id }, params);
+    }
+
+    /**
      * Retrieve recommended influencers for a campaign.
      * 
      * @see https://api.glitch.fun/api/documentation#/Campaigns/recommendInfluencers
