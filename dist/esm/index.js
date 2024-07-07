@@ -7861,7 +7861,7 @@ var Events = /** @class */ (function () {
      * @returns promise
      */
     Events.getStreamViewCounts = function (event_id, params) {
-        return Requests.processRoute(EventsRoutes.routes.getStreamViewCounts, undefined, { event_id: event_id }, params);
+        return Requests.processRoute(EventsRoutes.routes.streamViewCounts, undefined, { event_id: event_id }, params);
     };
     return Events;
 }());
@@ -9250,7 +9250,7 @@ var Campaigns = /** @class */ (function () {
      * @returns promise
      */
     Campaigns.getStreamViewCounts = function (campaign_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.getStreamViewCounts, undefined, { campaign_id: campaign_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.streamViewCounts, undefined, { campaign_id: campaign_id }, params);
     };
     /**
      * Retrieve recommended influencers for a campaign.

@@ -571,7 +571,7 @@ class Events {
      * @returns promise
      */
     public static getStreamViewCounts<T>(event_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(EventsRoutes.routes.getStreamViewCounts, undefined, { event_id: event_id }, params);
+        return Requests.processRoute(EventsRoutes.routes.streamViewCounts, undefined, { event_id: event_id }, params);
     }
 
 

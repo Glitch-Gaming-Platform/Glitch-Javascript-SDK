@@ -113,7 +113,7 @@ class Campaigns {
      * @returns promise
      */
     public static getStreamViewCounts<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CampaignsRoute.routes.getStreamViewCounts, undefined, { campaign_id: campaign_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.streamViewCounts, undefined, { campaign_id: campaign_id }, params);
     }
 
     /**
