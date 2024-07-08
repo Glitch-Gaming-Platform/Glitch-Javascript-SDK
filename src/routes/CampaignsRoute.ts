@@ -41,6 +41,7 @@ class CampaignsRoute {
       inviteInfluencer : { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
       viewInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}', method: HTTP_METHODS.GET },
       updateInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}', method: HTTP_METHODS.PUT },
+      updateInfluencerCompensationInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/compensation', method: HTTP_METHODS.PUT },
       listInfluencerInvites : { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.GET }, 
       sendInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
       acceptInfluencerInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/accept', method: HTTP_METHODS.POST },
