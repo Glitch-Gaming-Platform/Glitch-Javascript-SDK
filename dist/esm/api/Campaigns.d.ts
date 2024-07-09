@@ -413,6 +413,16 @@ declare class Campaigns {
      */
     static widthdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+    * The route to mark an influencer reachout and finished, and it will no longer send reachouts.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/finishInfluencerInvite
+    *
+    * @param campaign_id The id fo the campaign to retrieve.
+    *
+    * @returns promise
+    */
+    static finishInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
    * The route to accept an influnecers request to join the campaign.
    *
    * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencer
