@@ -22332,6 +22332,7 @@ var CampaignsRoute = /** @class */ (function () {
         reviewInfluencerRequest: { url: '/campaigns/{campaign_id}/influencers/{user_id}/review', method: HTTP_METHODS.POST },
         getRecommendedInfluencers: { url: '/campaigns/{campaign_id}/recommendInfluencers', method: HTTP_METHODS.GET },
         generateContentForInfluencer: { url: '/campaigns/{campaign_id}/influencers/{user_id}/generatePostContent', method: HTTP_METHODS.POST },
+        getActiveCampaignLinks: { url: '/campaigns/active', method: HTTP_METHODS.GET },
     };
     return CampaignsRoute;
 }());
@@ -22885,6 +22886,16 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.generateContentForInfluencer = function (campaign_id, user_id, data, params) {
         return Requests.processRoute(CampaignsRoute.routes.generateContentForInfluencer, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Get a list of all active campaigns.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getActiveCampaignLinks
+     *
+     * @returns promise
+     */
+    Campaigns.getActiveCampaignLinks = function (params) {
+        return Requests.processRoute(CampaignsRoute.routes.getActiveCampaignLinks, undefined, undefined, params);
     };
     return Campaigns;
 }());

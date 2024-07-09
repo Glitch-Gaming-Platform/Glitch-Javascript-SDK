@@ -452,5 +452,13 @@ declare class Campaigns {
      * @returns promise
      */
     static generateContentForInfluencer<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a list of all active campaigns.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getActiveCampaignLinks
+     *
+     * @returns promise
+     */
+    static getActiveCampaignLinks<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Campaigns;

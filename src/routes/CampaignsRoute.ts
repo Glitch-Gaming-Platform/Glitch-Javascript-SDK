@@ -51,7 +51,8 @@ class CampaignsRoute {
       declineInfluencerRequest : { url: '/campaigns/{campaign_id}/influencers/{user_id}/deny', method: HTTP_METHODS.POST }, 
       reviewInfluencerRequest : { url: '/campaigns/{campaign_id}/influencers/{user_id}/review', method: HTTP_METHODS.POST }, 
       getRecommendedInfluencers : { url: '/campaigns/{campaign_id}/recommendInfluencers', method: HTTP_METHODS.GET },
-      generateContentForInfluencer : { url: '/campaigns/{campaign_id}/influencers/{user_id}/generatePostContent', method: HTTP_METHODS.POST },                  
+      generateContentForInfluencer : { url: '/campaigns/{campaign_id}/influencers/{user_id}/generatePostContent', method: HTTP_METHODS.POST }, 
+      getActiveCampaignLinks : { url: '/campaigns/active', method: HTTP_METHODS.GET },                  
     };
 
   }

@@ -645,6 +645,17 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.generateContentForInfluencer, data, { campaign_id: campaign_id, user_id: user_id }, params);
     }
 
+    /**
+     * Get a list of all active campaigns.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getActiveCampaignLinks
+     * 
+     * @returns promise
+     */
+    public static getActiveCampaignLinks<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.getActiveCampaignLinks, undefined, undefined, params);
+    }
+
 
 }
 
