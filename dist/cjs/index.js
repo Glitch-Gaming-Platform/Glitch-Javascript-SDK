@@ -23178,6 +23178,11 @@ var InfluencerRoutes = /** @class */ (function () {
         listInfluencers: { url: '/influencers', method: HTTP_METHODS.GET },
         viewInfluencer: { url: '/influencers/{influencer_id}', method: HTTP_METHODS.GET },
         generateProfile: { url: '/influencers/{influencer_id}/generateProfile', method: HTTP_METHODS.POST },
+        listNotes: { url: '/influencers/{influencer_id}/notes', method: HTTP_METHODS.GET },
+        viewNote: { url: '/influencers/{influencer_id}/notes/{note_id}', method: HTTP_METHODS.GET },
+        createNote: { url: '/influencers/{influencer_id}/notes', method: HTTP_METHODS.POST },
+        updateNote: { url: '/influencers/{influencer_id}/notes/{note_id}', method: HTTP_METHODS.PUT },
+        deleteNote: { url: '/influencers/{influencer_id}/notes/{note_id}', method: HTTP_METHODS.DELETE },
     };
     return InfluencerRoutes;
 }());
@@ -23214,6 +23219,56 @@ var Influencers = /** @class */ (function () {
      */
     Influencers.generateProfile = function (influencer_id, params) {
         return Requests.processRoute(InfluencerRoutes.routes.generateProfile, undefined, { influencer_id: influencer_id }, params);
+    };
+    /**
+     * List all the notes left about an influencer.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/getInfluencersNotes
+     *
+     * @returns promise
+     */
+    Influencers.listNotes = function (influencer_id, params) {
+        return Requests.processRoute(InfluencerRoutes.routes.listNotes, undefined, { influencer_id: influencer_id }, params);
+    };
+    /**
+     * View a note left about an influencer.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/getInfluencersNote
+     *
+     * @returns promise
+     */
+    Influencers.viewNote = function (influencer_id, note_id, params) {
+        return Requests.processRoute(InfluencerRoutes.routes.viewNote, undefined, { influencer_id: influencer_id, note_id: note_id }, params);
+    };
+    /**
+     * Create a new note about an influencer.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/createInfluencersNotes
+     *
+     * @returns promise
+     */
+    Influencers.createNote = function (influencer_id, data, params) {
+        return Requests.processRoute(InfluencerRoutes.routes.createNote, data, { influencer_id: influencer_id }, params);
+    };
+    /**
+    * Update a note about an influencer.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Influencers/updateInfluencersNote
+    *
+    * @returns promise
+    */
+    Influencers.updateNote = function (influencer_id, note_id, data, params) {
+        return Requests.processRoute(InfluencerRoutes.routes.updateNote, data, { influencer_id: influencer_id, note_id: note_id }, params);
+    };
+    /**
+     * Delete a note about an influencer.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/deleteInfluencersNote
+     *
+     * @returns promise
+     */
+    Influencers.deleteNote = function (influencer_id, note_id, data, params) {
+        return Requests.processRoute(InfluencerRoutes.routes.deleteNote, data, { influencer_id: influencer_id, note_id: note_id }, params);
     };
     return Influencers;
 }());
