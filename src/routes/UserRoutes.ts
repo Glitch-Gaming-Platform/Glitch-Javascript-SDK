@@ -36,6 +36,8 @@ class UserRoutes {
       removeType : { url: '/users/removeType/{type_id}', method: HTTP_METHODS.DELETE },
       getCampaignInvites : { url: '/users/getCampaignInvites', method: HTTP_METHODS.GET },
       getPayouts : { url: '/users/payouts', method: HTTP_METHODS.GET },
+      verifyAccount : { url: '/users/verify', method: HTTP_METHODS.POST },
+      getInstagramAccounts : { url: '/users/instagramAccounts', method: HTTP_METHODS.GET },
 
     };
 

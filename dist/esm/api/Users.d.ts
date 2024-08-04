@@ -307,5 +307,23 @@ declare class Users {
      * @returns Promise
      */
     static removeType<T>(type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Verify a user's account to complete their sign-up process.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Users%20Route/verifyAccount
+    *
+    * @param data The genre information to be passed to update the type information.
+    *
+    * @returns Promise
+    */
+    static verifyAccount<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Gets the instagram accounts associated with the user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getInstagramAccounts
+     *
+     * @returns promise
+     */
+    static getInstagramAccounts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Users;

@@ -20126,6 +20126,8 @@ var UserRoutes = /** @class */ (function () {
         removeType: { url: '/users/removeType/{type_id}', method: HTTP_METHODS.DELETE },
         getCampaignInvites: { url: '/users/getCampaignInvites', method: HTTP_METHODS.GET },
         getPayouts: { url: '/users/payouts', method: HTTP_METHODS.GET },
+        verifyAccount: { url: '/users/verify', method: HTTP_METHODS.POST },
+        getInstagramAccounts: { url: '/users/instagramAccounts', method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -20504,6 +20506,28 @@ var Users = /** @class */ (function () {
      */
     Users.removeType = function (type_id, params) {
         return Requests.processRoute(UserRoutes.routes.removeType, undefined, { type_id: type_id }, params);
+    };
+    /**
+    * Verify a user's account to complete their sign-up process.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Users%20Route/verifyAccount
+    *
+    * @param data The genre information to be passed to update the type information.
+    *
+    * @returns Promise
+    */
+    Users.verifyAccount = function (data, params) {
+        return Requests.processRoute(UserRoutes.routes.verifyAccount, data, undefined, params);
+    };
+    /**
+     * Gets the instagram accounts associated with the user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getInstagramAccounts
+     *
+     * @returns promise
+     */
+    Users.getInstagramAccounts = function (params) {
+        return Requests.processRoute(UserRoutes.routes.getInstagramAccounts, undefined, undefined, params);
     };
     return Users;
 }());

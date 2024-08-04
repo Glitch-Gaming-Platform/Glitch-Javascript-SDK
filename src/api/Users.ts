@@ -443,6 +443,32 @@ class Users {
 
         return Requests.processRoute(UserRoutes.routes.removeType, undefined, {type_id : type_id}, params);
     }
+
+     /**
+     * Verify a user's account to complete their sign-up process.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/verifyAccount
+     * 
+     * @param data The genre information to be passed to update the type information.
+     * 
+     * @returns Promise
+     */
+     public static verifyAccount<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.verifyAccount, data, undefined, params);
+    }
+
+    /**
+     * Gets the instagram accounts associated with the user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getInstagramAccounts
+     * 
+     * @returns promise
+     */
+    public static getInstagramAccounts<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.getInstagramAccounts, undefined, undefined, params);
+    }
     
 
 
