@@ -8879,6 +8879,7 @@ var SocialPostsRoute = /** @class */ (function () {
         createPost: { url: '/socialposts', method: HTTP_METHODS.POST },
         retrievePost: { url: '/socialposts/{post_id}', method: HTTP_METHODS.GET },
         dispute: { url: '/social/{post_id}/dispute', method: HTTP_METHODS.POST },
+        history: { url: '/socialposts/{post_id}/history', method: HTTP_METHODS.GET },
     };
     return SocialPostsRoute;
 }());
@@ -8929,6 +8930,18 @@ var SocialPosts = /** @class */ (function () {
     */
     SocialPosts.dispute = function (post_id, data, params) {
         return Requests.processRoute(SocialPostsRoute.routes.dispute, data, { post_id: post_id }, params);
+    };
+    /**
+    * Get the change of the post metrics over a period of time.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/getSocialMediaPostHistory
+    *
+    * @param post_id The id fo the post to retrieve.
+    *
+    * @returns promise
+    */
+    SocialPosts.history = function (post_id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.history, {}, { post_id: post_id }, params);
     };
     return SocialPosts;
 }());
