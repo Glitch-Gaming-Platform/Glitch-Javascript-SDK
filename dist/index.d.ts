@@ -908,6 +908,30 @@ declare class Communities {
      * @returns promise
      */
     static getLedger<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Clear Docusign authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearDocusignAuth<T>(community_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Clear SimpleSin authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearSimplesignAuth<T>(community_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Clear SimpleSin authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearHellosignAuth<T>(community_id: string): AxiosPromise<Response<T>>;
 }
 
 declare class Users {
@@ -1121,6 +1145,14 @@ declare class Users {
      * @returns promise
      */
     static clearRedditAuth<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Clear Docusign authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/clearDocusignAuth
+     *
+     * @returns promise
+     */
+    static clearDocusignAuth<T>(): AxiosPromise<Response<T>>;
     /**
      * Clear Twitter authentication information from the current user.
      *
@@ -2924,6 +2956,36 @@ declare class Campaigns {
      * @returns promise
      */
     static getActiveCampaignLinks<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Generate a contract for the influencer based on the values in the invite.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/generateInfluencerContract
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static generateContractFromInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send a contract with Docusign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/sendContractWithDocusign
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static sendContractWithDocusign<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Resend the acceptance email for the influencer.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/resendInfluencerAcceptance
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static resendAcceptanceEmail<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {

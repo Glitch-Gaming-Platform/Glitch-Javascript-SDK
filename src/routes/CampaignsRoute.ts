@@ -53,7 +53,12 @@ class CampaignsRoute {
       reviewInfluencerRequest : { url: '/campaigns/{campaign_id}/influencers/{user_id}/review', method: HTTP_METHODS.POST }, 
       getRecommendedInfluencers : { url: '/campaigns/{campaign_id}/recommendInfluencers', method: HTTP_METHODS.GET },
       generateContentForInfluencer : { url: '/campaigns/{campaign_id}/influencers/{user_id}/generatePostContent', method: HTTP_METHODS.POST }, 
-      getActiveCampaignLinks : { url: '/campaigns/active', method: HTTP_METHODS.GET },                  
+      getActiveCampaignLinks : { url: '/campaigns/active', method: HTTP_METHODS.GET }, 
+      generateContractFromInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/contract', method: HTTP_METHODS.POST }, 
+      sendContractWithDocusign : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/docusign', method: HTTP_METHODS.POST },
+      resendAcceptanceEmail : { url: '/campaigns/{campaign_id}/influencers/{user_id}/resendInvite', method: HTTP_METHODS.POST }, 
+ 
+
     };
 
   }

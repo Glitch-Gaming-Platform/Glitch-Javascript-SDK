@@ -670,6 +670,48 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.getActiveCampaignLinks, undefined, undefined, params);
     }
 
+    /**
+     * Generate a contract for the influencer based on the values in the invite.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/generateInfluencerContract
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static generateContractFromInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.generateContractFromInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    }
+
+    /**
+     * Send a contract with Docusign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/sendContractWithDocusign
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static sendContractWithDocusign<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.sendContractWithDocusign, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    }
+
+    /**
+     * Resend the acceptance email for the influencer.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/resendInfluencerAcceptance
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static resendAcceptanceEmail<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.resendAcceptanceEmail, data, { campaign_id: campaign_id, user_id : user_id }, params);
+    }
+
 
 }
 

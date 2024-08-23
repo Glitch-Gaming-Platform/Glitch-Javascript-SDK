@@ -27,6 +27,9 @@ class CommunitiesRoute {
       getPaymentMethods : {url : '/communities/{community_id}/payment/methods', method : HTTP_METHODS.GET},
       setDefaultPaymentMethod : {url : '/communities/{community_id}/payment/methods/default', method : HTTP_METHODS.POST},
       getLedger : {url : '/communities/{community_id}/payment/ledger', method : HTTP_METHODS.GET},
+      clearDocusignAuth : { url: '/communities/{community_id}/clearDocusignAuth', method: HTTP_METHODS.DELETE },
+      clearHellosignAuth : { url: '/communities/{community_id}/clearHellosignAuth', method: HTTP_METHODS.DELETE },
+      clearSimplesignAuth : { url: '/communities/{community_id}/clearSimplesignAuth', method: HTTP_METHODS.DELETE },
 
     };
 

@@ -373,6 +373,42 @@ class Communities {
         return Requests.processRoute(CommunitiesRoute.routes.getLedger, {}, {community_id : community_id}, params);  
     }
 
+    /**
+     * Clear Docusign authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static clearDocusignAuth<T>(community_id : string): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CommunitiesRoute.routes.clearDocusignAuth, {}, {community_id : community_id});
+    }
+
+    /**
+     * Clear SimpleSin authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static clearSimplesignAuth<T>(community_id : string): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CommunitiesRoute.routes.clearSimplesignAuth, {}, {community_id : community_id});
+    }
+
+    /**
+     * Clear SimpleSin authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     * 
+     * @returns promise
+     */
+    public static clearHellosignAuth<T>(community_id : string): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CommunitiesRoute.routes.clearHellosignAuth, {}, {community_id : community_id});
+    }
+
     
 
     

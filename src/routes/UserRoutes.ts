@@ -23,6 +23,7 @@ class UserRoutes {
       clearYoutubeAuth : { url: '/users/clearYoutubeAuth', method: HTTP_METHODS.DELETE },
       clearRedditAuth : { url: '/users/clearRedditAuth', method: HTTP_METHODS.DELETE },
       clearTwitterAuth : { url: '/users/clearTwitterAuth', method: HTTP_METHODS.DELETE },
+      clearDocusignAuth : { url: '/users/clearDocusignAuth', method: HTTP_METHODS.DELETE },
       clearStreamElementsAuth : { url: '/users/clearStreamElementsAuth', method: HTTP_METHODS.DELETE },
       getTipsReceivedForMonth : { url: '/users/getTipsReceivedForMonth', method: HTTP_METHODS.GET },
       getTipsGivenForMonth : { url: '/users/getTipsGivenForMonth', method: HTTP_METHODS.GET },

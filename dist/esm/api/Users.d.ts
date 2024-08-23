@@ -212,6 +212,14 @@ declare class Users {
      */
     static clearRedditAuth<T>(): AxiosPromise<Response<T>>;
     /**
+     * Clear Docusign authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/clearDocusignAuth
+     *
+     * @returns promise
+     */
+    static clearDocusignAuth<T>(): AxiosPromise<Response<T>>;
+    /**
      * Clear Twitter authentication information from the current user.
      *
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage

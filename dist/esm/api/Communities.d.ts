@@ -266,5 +266,29 @@ declare class Communities {
      * @returns promise
      */
     static getLedger<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Clear Docusign authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearDocusignAuth<T>(community_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Clear SimpleSin authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearSimplesignAuth<T>(community_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Clear SimpleSin authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    static clearHellosignAuth<T>(community_id: string): AxiosPromise<Response<T>>;
 }
 export default Communities;

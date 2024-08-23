@@ -305,6 +305,18 @@ class Users {
     }
 
     /**
+     * Clear Docusign authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/clearDocusignAuth
+     * 
+     * @returns promise
+     */
+    public static clearDocusignAuth<T>(): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.clearDocusignAuth, {});
+    }
+
+    /**
      * Clear Twitter authentication information from the current user.
      * 
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage

@@ -470,5 +470,35 @@ declare class Campaigns {
      * @returns promise
      */
     static getActiveCampaignLinks<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Generate a contract for the influencer based on the values in the invite.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/generateInfluencerContract
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static generateContractFromInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send a contract with Docusign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/sendContractWithDocusign
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static sendContractWithDocusign<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Resend the acceptance email for the influencer.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/resendInfluencerAcceptance
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static resendAcceptanceEmail<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Campaigns;

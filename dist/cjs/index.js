@@ -19757,6 +19757,9 @@ var CommunitiesRoute = /** @class */ (function () {
         getPaymentMethods: { url: '/communities/{community_id}/payment/methods', method: HTTP_METHODS.GET },
         setDefaultPaymentMethod: { url: '/communities/{community_id}/payment/methods/default', method: HTTP_METHODS.POST },
         getLedger: { url: '/communities/{community_id}/payment/ledger', method: HTTP_METHODS.GET },
+        clearDocusignAuth: { url: '/communities/{community_id}/clearDocusignAuth', method: HTTP_METHODS.DELETE },
+        clearHellosignAuth: { url: '/communities/{community_id}/clearHellosignAuth', method: HTTP_METHODS.DELETE },
+        clearSimplesignAuth: { url: '/communities/{community_id}/clearSimplesignAuth', method: HTTP_METHODS.DELETE },
     };
     return CommunitiesRoute;
 }());
@@ -20087,6 +20090,36 @@ var Communities = /** @class */ (function () {
     Communities.getLedger = function (community_id, params) {
         return Requests.processRoute(CommunitiesRoute.routes.getLedger, {}, { community_id: community_id }, params);
     };
+    /**
+     * Clear Docusign authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Communities.clearDocusignAuth = function (community_id) {
+        return Requests.processRoute(CommunitiesRoute.routes.clearDocusignAuth, {}, { community_id: community_id });
+    };
+    /**
+     * Clear SimpleSin authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Communities.clearSimplesignAuth = function (community_id) {
+        return Requests.processRoute(CommunitiesRoute.routes.clearSimplesignAuth, {}, { community_id: community_id });
+    };
+    /**
+     * Clear SimpleSin authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+     *
+     * @returns promise
+     */
+    Communities.clearHellosignAuth = function (community_id) {
+        return Requests.processRoute(CommunitiesRoute.routes.clearHellosignAuth, {}, { community_id: community_id });
+    };
     return Communities;
 }());
 
@@ -20113,6 +20146,7 @@ var UserRoutes = /** @class */ (function () {
         clearYoutubeAuth: { url: '/users/clearYoutubeAuth', method: HTTP_METHODS.DELETE },
         clearRedditAuth: { url: '/users/clearRedditAuth', method: HTTP_METHODS.DELETE },
         clearTwitterAuth: { url: '/users/clearTwitterAuth', method: HTTP_METHODS.DELETE },
+        clearDocusignAuth: { url: '/users/clearDocusignAuth', method: HTTP_METHODS.DELETE },
         clearStreamElementsAuth: { url: '/users/clearStreamElementsAuth', method: HTTP_METHODS.DELETE },
         getTipsReceivedForMonth: { url: '/users/getTipsReceivedForMonth', method: HTTP_METHODS.GET },
         getTipsGivenForMonth: { url: '/users/getTipsGivenForMonth', method: HTTP_METHODS.GET },
@@ -20388,6 +20422,16 @@ var Users = /** @class */ (function () {
      */
     Users.clearRedditAuth = function () {
         return Requests.processRoute(UserRoutes.routes.clearRedditAuth, {});
+    };
+    /**
+     * Clear Docusign authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/clearDocusignAuth
+     *
+     * @returns promise
+     */
+    Users.clearDocusignAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearDocusignAuth, {});
     };
     /**
      * Clear Twitter authentication information from the current user.
@@ -22371,6 +22415,9 @@ var CampaignsRoute = /** @class */ (function () {
         getRecommendedInfluencers: { url: '/campaigns/{campaign_id}/recommendInfluencers', method: HTTP_METHODS.GET },
         generateContentForInfluencer: { url: '/campaigns/{campaign_id}/influencers/{user_id}/generatePostContent', method: HTTP_METHODS.POST },
         getActiveCampaignLinks: { url: '/campaigns/active', method: HTTP_METHODS.GET },
+        generateContractFromInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/contract', method: HTTP_METHODS.POST },
+        sendContractWithDocusign: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/docusign', method: HTTP_METHODS.POST },
+        resendAcceptanceEmail: { url: '/campaigns/{campaign_id}/influencers/{user_id}/resendInvite', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -22946,6 +22993,42 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.getActiveCampaignLinks = function (params) {
         return Requests.processRoute(CampaignsRoute.routes.getActiveCampaignLinks, undefined, undefined, params);
+    };
+    /**
+     * Generate a contract for the influencer based on the values in the invite.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/generateInfluencerContract
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.generateContractFromInvite = function (campaign_id, influencer_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.generateContractFromInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    };
+    /**
+     * Send a contract with Docusign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/sendContractWithDocusign
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.sendContractWithDocusign = function (campaign_id, influencer_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.sendContractWithDocusign, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    };
+    /**
+     * Resend the acceptance email for the influencer.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/resendInfluencerAcceptance
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.resendAcceptanceEmail = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.resendAcceptanceEmail, data, { campaign_id: campaign_id, user_id: user_id }, params);
     };
     return Campaigns;
 }());
