@@ -104,6 +104,17 @@ class Influencers {
         return Requests.processRoute(InfluencerRoutes.routes.deleteNote, data, {influencer_id : influencer_id, note_id : note_id}, params);
     }
 
+     /**
+     * Get a list of contracts associated with an influencer.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Influencers/getInfluencers
+     * 
+     * @returns promise
+     */
+     public static listContracts<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(InfluencerRoutes.routes.listContracts, undefined, undefined, params);
+    }
+
 
 }
 

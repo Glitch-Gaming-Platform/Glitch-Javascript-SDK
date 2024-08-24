@@ -3277,6 +3277,14 @@ declare class Influencers {
      * @returns promise
      */
     static deleteNote<T>(influencer_id: string, note_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Get a list of contracts associated with an influencer.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Influencers/getInfluencers
+    *
+    * @returns promise
+    */
+    static listContracts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Games {

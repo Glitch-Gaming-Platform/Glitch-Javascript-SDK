@@ -13,6 +13,7 @@ class InfluencerRoutes {
     createNote: { url: '/influencers/{influencer_id}/notes', method: HTTP_METHODS.POST },
     updateNote: { url: '/influencers/{influencer_id}/notes/{note_id}', method: HTTP_METHODS.PUT },
     deleteNote: { url: '/influencers/{influencer_id}/notes/{note_id}', method: HTTP_METHODS.DELETE },
+    listContracts: { url: '/influencers/contracts', method: HTTP_METHODS.GET },
   };
 
 }

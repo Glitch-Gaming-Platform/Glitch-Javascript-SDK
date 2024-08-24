@@ -10183,6 +10183,7 @@ var InfluencerRoutes = /** @class */ (function () {
         createNote: { url: '/influencers/{influencer_id}/notes', method: HTTP_METHODS.POST },
         updateNote: { url: '/influencers/{influencer_id}/notes/{note_id}', method: HTTP_METHODS.PUT },
         deleteNote: { url: '/influencers/{influencer_id}/notes/{note_id}', method: HTTP_METHODS.DELETE },
+        listContracts: { url: '/influencers/contracts', method: HTTP_METHODS.GET },
     };
     return InfluencerRoutes;
 }());
@@ -10279,6 +10280,16 @@ var Influencers = /** @class */ (function () {
      */
     Influencers.deleteNote = function (influencer_id, note_id, data, params) {
         return Requests.processRoute(InfluencerRoutes.routes.deleteNote, data, { influencer_id: influencer_id, note_id: note_id }, params);
+    };
+    /**
+    * Get a list of contracts associated with an influencer.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Influencers/getInfluencers
+    *
+    * @returns promise
+    */
+    Influencers.listContracts = function (params) {
+        return Requests.processRoute(InfluencerRoutes.routes.listContracts, undefined, undefined, params);
     };
     return Influencers;
 }());
