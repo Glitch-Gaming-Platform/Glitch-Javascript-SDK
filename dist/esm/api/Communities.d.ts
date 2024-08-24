@@ -290,5 +290,53 @@ declare class Communities {
      * @returns promise
      */
     static clearHellosignAuth<T>(community_id: string): AxiosPromise<Response<T>>;
+    /**
+     * List all the saved email templates for the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/resourceCommunityList
+     *
+     * @returns promise
+     */
+    static listEmailTemplates<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new email template for the community
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/newCommunityResourceStorage
+     *
+     * @param data The data to be passed when creating a community.
+     *
+     * @returns Promise
+     */
+    static createEmailTemplate<T>(community_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update an email template for the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/updateCommunityStorage
+     *
+     * @param community_id The id of the community to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static updateEmailTemplate<T>(community_id: string, template_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve a single email template for the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/showCommunityStorage
+     *
+     * @param community_id The id fo the community to retrieve.
+     *
+     * @returns promise
+     */
+    static viewEmailTemplate<T>(community_id: string, template_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Deletes an email template for the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/destoryCommunityStorage
+     *
+     * @param community_id The id of the community to delete.
+     * @returns promise
+     */
+    static deleteEmailTemplate<T>(community_id: string, template_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Communities;

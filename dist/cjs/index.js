@@ -19760,6 +19760,11 @@ var CommunitiesRoute = /** @class */ (function () {
         clearDocusignAuth: { url: '/communities/{community_id}/clearDocusignAuth', method: HTTP_METHODS.DELETE },
         clearHellosignAuth: { url: '/communities/{community_id}/clearHellosignAuth', method: HTTP_METHODS.DELETE },
         clearSimplesignAuth: { url: '/communities/{community_id}/clearSimplesignAuth', method: HTTP_METHODS.DELETE },
+        listEmailTemplates: { url: '/communities/{community_id}/emails/templates', method: HTTP_METHODS.GET },
+        createEmailTemplate: { url: '/communities/{community_id}/emails/templates', method: HTTP_METHODS.POST },
+        viewEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.GET },
+        updateEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.PUT },
+        deleteEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.DELETE },
     };
     return CommunitiesRoute;
 }());
@@ -20119,6 +20124,64 @@ var Communities = /** @class */ (function () {
      */
     Communities.clearHellosignAuth = function (community_id) {
         return Requests.processRoute(CommunitiesRoute.routes.clearHellosignAuth, {}, { community_id: community_id });
+    };
+    /**
+     * List all the saved email templates for the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/resourceCommunityList
+     *
+     * @returns promise
+     */
+    Communities.listEmailTemplates = function (community_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.listEmailTemplates, undefined, { community_id: community_id }, params);
+    };
+    /**
+     * Create a new email template for the community
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/newCommunityResourceStorage
+     *
+     * @param data The data to be passed when creating a community.
+     *
+     * @returns Promise
+     */
+    Communities.createEmailTemplate = function (community_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.createEmailTemplate, data, { community_id: community_id }, params);
+    };
+    /**
+     * Update an email template for the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/updateCommunityStorage
+     *
+     * @param community_id The id of the community to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Communities.updateEmailTemplate = function (community_id, template_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.updateEmailTemplate, data, { community_id: community_id, template_id: template_id }, params);
+    };
+    /**
+     * Retrieve a single email template for the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/showCommunityStorage
+     *
+     * @param community_id The id fo the community to retrieve.
+     *
+     * @returns promise
+     */
+    Communities.viewEmailTemplate = function (community_id, template_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.viewEmailTemplate, {}, { community_id: community_id, template_id: template_id }, params);
+    };
+    /**
+     * Deletes an email template for the community.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/destoryCommunityStorage
+     *
+     * @param community_id The id of the community to delete.
+     * @returns promise
+     */
+    Communities.deleteEmailTemplate = function (community_id, template_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.deleteEmailTemplate, {}, { community_id: community_id, template_id: template_id });
     };
     return Communities;
 }());
@@ -23295,6 +23358,7 @@ var InfluencerRoutes = /** @class */ (function () {
     function InfluencerRoutes() {
     }
     InfluencerRoutes.routes = {
+        addInfluencer: { url: '/influencers', method: HTTP_METHODS.POST },
         listInfluencers: { url: '/influencers', method: HTTP_METHODS.GET },
         viewInfluencer: { url: '/influencers/{influencer_id}', method: HTTP_METHODS.GET },
         generateProfile: { url: '/influencers/{influencer_id}/generateProfile', method: HTTP_METHODS.POST },
@@ -23310,6 +23374,16 @@ var InfluencerRoutes = /** @class */ (function () {
 var Influencers = /** @class */ (function () {
     function Influencers() {
     }
+    /**
+     * Add a new influencer to the platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/createInfluencersNotes
+     *
+     * @returns promise
+     */
+    Influencers.addInfluencer = function (data, params) {
+        return Requests.processRoute(InfluencerRoutes.routes.addInfluencer, data, {}, params);
+    };
     /**
      * Get a list of influencers available on he platform.
      *

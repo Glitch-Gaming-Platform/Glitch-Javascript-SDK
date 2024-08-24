@@ -6,6 +6,17 @@ import { AxiosPromise } from "axios";
 class Influencers {
 
     /**
+     * Add a new influencer to the platform.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Influencers/createInfluencersNotes
+     * 
+     * @returns promise
+     */
+    public static addInfluencer<T>(data?: object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(InfluencerRoutes.routes.addInfluencer, data, {}, params);
+    }
+
+    /**
      * Get a list of influencers available on he platform.
      * 
      * @see https://api.glitch.fun/api/documentation#/Influencers/getInfluencers

@@ -30,6 +30,11 @@ class CommunitiesRoute {
       clearDocusignAuth : { url: '/communities/{community_id}/clearDocusignAuth', method: HTTP_METHODS.DELETE },
       clearHellosignAuth : { url: '/communities/{community_id}/clearHellosignAuth', method: HTTP_METHODS.DELETE },
       clearSimplesignAuth : { url: '/communities/{community_id}/clearSimplesignAuth', method: HTTP_METHODS.DELETE },
+      listEmailTemplates : { url: '/communities/{community_id}/emails/templates', method: HTTP_METHODS.GET },
+      createEmailTemplate: { url: '/communities/{community_id}/emails/templates', method: HTTP_METHODS.POST  },
+      viewEmailTemplate : { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.GET  },
+      updateEmailTemplate  :{ url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.PUT  },
+      deleteEmailTemplate : { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.DELETE },
 
     };
 

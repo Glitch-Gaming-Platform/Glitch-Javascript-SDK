@@ -409,6 +409,72 @@ class Communities {
         return Requests.processRoute(CommunitiesRoute.routes.clearHellosignAuth, {}, {community_id : community_id});
     }
 
+    /**
+     * List all the saved email templates for the community.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/resourceCommunityList
+     * 
+     * @returns promise
+     */
+    public static listEmailTemplates<T>(community_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.listEmailTemplates, undefined, {community_id : community_id}, params);
+    }
+
+    /**
+     * Create a new email template for the community
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/newCommunityResourceStorage
+     * 
+     * @param data The data to be passed when creating a community.
+     * 
+     * @returns Promise
+     */
+    public static createEmailTemplate<T>(community_id : string, data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CommunitiesRoute.routes.createEmailTemplate, data, {community_id : community_id}, params);
+    }
+
+    /**
+     * Update an email template for the community.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/updateCommunityStorage
+     * 
+     * @param community_id The id of the community to update.
+     * @param data The data to update.
+     * 
+     * @returns promise
+     */
+    public static updateEmailTemplate<T>(community_id : string, template_id : string, data : object, params?: Record<string, any>)  :  AxiosPromise<Response<T>>{
+
+        return Requests.processRoute(CommunitiesRoute.routes.updateEmailTemplate, data, {community_id : community_id, template_id : template_id}, params);
+    }
+
+    /**
+     * Retrieve a single email template for the community.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/showCommunityStorage
+     * 
+     * @param community_id The id fo the community to retrieve.
+     * 
+     * @returns promise
+     */
+    public static viewEmailTemplate<T>(community_id : string, template_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CommunitiesRoute.routes.viewEmailTemplate, {}, {community_id : community_id, template_id : template_id}, params);
+    }
+
+    /**
+     * Deletes an email template for the community.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/destoryCommunityStorage
+     * 
+     * @param community_id The id of the community to delete.
+     * @returns promise
+     */
+    public static deleteEmailTemplate<T>(community_id : string, template_id : string, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CommunitiesRoute.routes.deleteEmailTemplate, {}, {community_id : community_id, template_id : template_id});
+    }
     
 
     
