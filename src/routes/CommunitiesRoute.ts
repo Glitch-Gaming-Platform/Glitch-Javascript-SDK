@@ -35,7 +35,7 @@ class CommunitiesRoute {
       viewEmailTemplate : { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.GET  },
       updateEmailTemplate  :{ url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.PUT  },
       deleteEmailTemplate : { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.DELETE },
-
+      populateEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}/populate', method: HTTP_METHODS.POST },
     };
 
   }

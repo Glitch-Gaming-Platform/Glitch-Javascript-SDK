@@ -475,6 +475,20 @@ class Communities {
 
         return Requests.processRoute(CommunitiesRoute.routes.deleteEmailTemplate, {}, {community_id : community_id, template_id : template_id});
     }
+
+    /**
+     * Populates an email template for the community that will replace the platholders with the data provided.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/newCommunityResourceStorage
+     * 
+     * @param data The data to be passed when creating a community.
+     * 
+     * @returns Promise
+     */
+    public static populateEmailTemplate<T>(community_id : string, template_id : string, data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CommunitiesRoute.routes.createEmailTemplate, data, {community_id : community_id, template_id : template_id}, params);
+    }
     
 
     

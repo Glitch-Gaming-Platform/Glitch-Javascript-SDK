@@ -6581,6 +6581,7 @@ var CommunitiesRoute = /** @class */ (function () {
         viewEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.GET },
         updateEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.PUT },
         deleteEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.DELETE },
+        populateEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}/populate', method: HTTP_METHODS.POST },
     };
     return CommunitiesRoute;
 }());
@@ -6998,6 +6999,18 @@ var Communities = /** @class */ (function () {
      */
     Communities.deleteEmailTemplate = function (community_id, template_id, params) {
         return Requests.processRoute(CommunitiesRoute.routes.deleteEmailTemplate, {}, { community_id: community_id, template_id: template_id });
+    };
+    /**
+     * Populates an email template for the community that will replace the platholders with the data provided.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/newCommunityResourceStorage
+     *
+     * @param data The data to be passed when creating a community.
+     *
+     * @returns Promise
+     */
+    Communities.populateEmailTemplate = function (community_id, template_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.createEmailTemplate, data, { community_id: community_id, template_id: template_id }, params);
     };
     return Communities;
 }());

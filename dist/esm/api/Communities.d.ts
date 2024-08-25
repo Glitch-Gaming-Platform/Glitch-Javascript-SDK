@@ -338,5 +338,15 @@ declare class Communities {
      * @returns promise
      */
     static deleteEmailTemplate<T>(community_id: string, template_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Populates an email template for the community that will replace the platholders with the data provided.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Community%20Route/newCommunityResourceStorage
+     *
+     * @param data The data to be passed when creating a community.
+     *
+     * @returns Promise
+     */
+    static populateEmailTemplate<T>(community_id: string, template_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Communities;
