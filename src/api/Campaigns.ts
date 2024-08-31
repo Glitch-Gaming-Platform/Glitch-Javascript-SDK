@@ -726,6 +726,17 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.payInfluencer, data, { campaign_id: campaign_id, user_id : user_id }, params);
     }
 
+    /**
+     * Get the ledger for this campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignPayouts
+     * 
+     * @returns promise
+     */
+    public static listPayouts<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
+    }
+
 
 }
 

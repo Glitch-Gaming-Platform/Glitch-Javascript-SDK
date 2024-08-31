@@ -57,7 +57,8 @@ class CampaignsRoute {
       generateContractFromInvite : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/contract', method: HTTP_METHODS.POST }, 
       sendContractWithDocusign : { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/docusign', method: HTTP_METHODS.POST },
       resendAcceptanceEmail : { url: '/campaigns/{campaign_id}/influencers/{user_id}/resendInvite', method: HTTP_METHODS.POST },
-      payInfluencer : { url: '/campaigns/{campaign_id}/influencers/{user_id}/payInfluencer', method: HTTP_METHODS.POST }, 
+      payInfluencer : { url: '/campaigns/{campaign_id}/influencers/{user_id}/payInfluencer', method: HTTP_METHODS.POST },
+      listPayouts  :{ url: '/campaigns/{campaign_id}/payouts', method: HTTP_METHODS.GET },
 
  
 

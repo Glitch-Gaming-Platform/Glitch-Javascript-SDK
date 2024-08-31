@@ -510,5 +510,13 @@ declare class Campaigns {
      * @returns promise
      */
     static payInfluencer<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get the ledger for this campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignPayouts
+     *
+     * @returns promise
+     */
+    static listPayouts<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Campaigns;

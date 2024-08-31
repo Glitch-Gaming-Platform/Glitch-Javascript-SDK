@@ -22495,6 +22495,7 @@ var CampaignsRoute = /** @class */ (function () {
         sendContractWithDocusign: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/docusign', method: HTTP_METHODS.POST },
         resendAcceptanceEmail: { url: '/campaigns/{campaign_id}/influencers/{user_id}/resendInvite', method: HTTP_METHODS.POST },
         payInfluencer: { url: '/campaigns/{campaign_id}/influencers/{user_id}/payInfluencer', method: HTTP_METHODS.POST },
+        listPayouts: { url: '/campaigns/{campaign_id}/payouts', method: HTTP_METHODS.GET },
     };
     return CampaignsRoute;
 }());
@@ -23118,6 +23119,16 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.payInfluencer = function (campaign_id, user_id, data, params) {
         return Requests.processRoute(CampaignsRoute.routes.payInfluencer, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Get the ledger for this campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignPayouts
+     *
+     * @returns promise
+     */
+    Campaigns.listPayouts = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
     };
     return Campaigns;
 }());
