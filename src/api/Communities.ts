@@ -487,7 +487,7 @@ class Communities {
      */
     public static populateEmailTemplate<T>(community_id : string, template_id : string, data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CommunitiesRoute.routes.createEmailTemplate, data, {community_id : community_id, template_id : template_id}, params);
+        return Requests.processRoute(CommunitiesRoute.routes.populateEmailTemplate, data, {community_id : community_id, template_id : template_id}, params);
     }
     
 

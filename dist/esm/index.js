@@ -7010,7 +7010,7 @@ var Communities = /** @class */ (function () {
      * @returns Promise
      */
     Communities.populateEmailTemplate = function (community_id, template_id, data, params) {
-        return Requests.processRoute(CommunitiesRoute.routes.createEmailTemplate, data, { community_id: community_id, template_id: template_id }, params);
+        return Requests.processRoute(CommunitiesRoute.routes.populateEmailTemplate, data, { community_id: community_id, template_id: template_id }, params);
     };
     return Communities;
 }());
@@ -9310,6 +9310,7 @@ var CampaignsRoute = /** @class */ (function () {
         generateContractFromInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/contract', method: HTTP_METHODS.POST },
         sendContractWithDocusign: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/docusign', method: HTTP_METHODS.POST },
         resendAcceptanceEmail: { url: '/campaigns/{campaign_id}/influencers/{user_id}/resendInvite', method: HTTP_METHODS.POST },
+        payInfluencer: { url: '/campaigns/{campaign_id}/influencers/{user_id}/payInfluencer', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -9921,6 +9922,18 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.resendAcceptanceEmail = function (campaign_id, user_id, data, params) {
         return Requests.processRoute(CampaignsRoute.routes.resendAcceptanceEmail, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Pay the influencer a custom amount for the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/payInfluencer
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.payInfluencer = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.payInfluencer, data, { campaign_id: campaign_id, user_id: user_id }, params);
     };
     return Campaigns;
 }());

@@ -3044,6 +3044,16 @@ declare class Campaigns {
      * @returns promise
      */
     static resendAcceptanceEmail<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Pay the influencer a custom amount for the campaign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/payInfluencer
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static payInfluencer<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {
