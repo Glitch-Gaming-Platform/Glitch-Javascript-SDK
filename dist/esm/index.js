@@ -9312,6 +9312,8 @@ var CampaignsRoute = /** @class */ (function () {
         resendAcceptanceEmail: { url: '/campaigns/{campaign_id}/influencers/{user_id}/resendInvite', method: HTTP_METHODS.POST },
         payInfluencer: { url: '/campaigns/{campaign_id}/influencers/{user_id}/payInfluencer', method: HTTP_METHODS.POST },
         listPayouts: { url: '/campaigns/{campaign_id}/payouts', method: HTTP_METHODS.GET },
+        generateCampaignContract: { url: '/campaigns/{campaign_id}/influencers/{user_id}/contract', method: HTTP_METHODS.POST },
+        sendCampaignContractWithDocusign: { url: '/campaigns/{campaign_id}/influencers/{user_id}/docusign', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -9945,6 +9947,30 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.listPayouts = function (campaign_id, params) {
         return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+    * Generate a contract for the influencer based on the values in the campaign.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/generateCampaignContract
+    *
+    * @param campaign_id The id fo the campaign to retrieve.
+    *
+    * @returns promise
+    */
+    Campaigns.generateCampaignContract = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.generateCampaignContract, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Send a contract with Docusign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/sendCampaignContractWithDocusign
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    Campaigns.sendCampaignContractWithDocusign = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.sendCampaignContractWithDocusign, data, { campaign_id: campaign_id, user_id: user_id }, params);
     };
     return Campaigns;
 }());

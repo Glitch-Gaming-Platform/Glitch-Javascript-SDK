@@ -3062,6 +3062,26 @@ declare class Campaigns {
      * @returns promise
      */
     static listPayouts<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Generate a contract for the influencer based on the values in the campaign.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/generateCampaignContract
+    *
+    * @param campaign_id The id fo the campaign to retrieve.
+    *
+    * @returns promise
+    */
+    static generateCampaignContract<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send a contract with Docusign.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/sendCampaignContractWithDocusign
+     *
+     * @param campaign_id The id fo the campaign to retrieve.
+     *
+     * @returns promise
+     */
+    static sendCampaignContractWithDocusign<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {

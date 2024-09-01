@@ -737,6 +737,34 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
     }
 
+     /**
+     * Generate a contract for the influencer based on the values in the campaign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/generateCampaignContract
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static generateCampaignContract<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.generateCampaignContract, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    }
+
+    /**
+     * Send a contract with Docusign.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/sendCampaignContractWithDocusign
+     * 
+     * @param campaign_id The id fo the campaign to retrieve.
+     * 
+     * @returns promise
+     */
+    public static sendCampaignContractWithDocusign<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.sendCampaignContractWithDocusign, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    }
+
 
 }
 
