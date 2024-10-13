@@ -25,6 +25,7 @@ import {Messages} from "./api";
 import {Feedback} from "./api";
 import {Influencers} from "./api";
 import {Games} from "./api";
+import {Publications} from "./api";
 
 
 
@@ -80,7 +81,8 @@ class Glitch {
         Subscriptions : Subscriptions,
         TipPackages : TipPackages,
         TipEmojis : TipEmojis ,
-        TipPackagePurchases: TipPackagePurchases
+        TipPackagePurchases: TipPackagePurchases,
+        Publications : Publications
     }
 
     public static util = {

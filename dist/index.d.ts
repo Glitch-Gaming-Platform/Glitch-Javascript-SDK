@@ -3362,6 +3362,27 @@ declare class Games {
     static createCampaignData<T>(game_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class Publications {
+    /**
+     * Get a list of all publictions, podcasts and blogs.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Publications/getPublications
+     *
+     * @returns promise
+     */
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Download the list of publictions, podcasts and blogs.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Publications/downloadPublications
+     *
+     * @param data The data to be passed when creating a team.
+     *
+     * @returns Promise
+     */
+    static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -3684,6 +3705,7 @@ declare class Glitch {
         TipPackages: typeof TipPackages;
         TipEmojis: typeof TipEmojis;
         TipPackagePurchases: typeof TipPackagePurchases;
+        Publications: typeof Publications;
     };
     static util: {
         Requests: typeof Requests;

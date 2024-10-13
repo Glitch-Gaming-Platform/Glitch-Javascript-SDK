@@ -10404,6 +10404,44 @@ var Games = /** @class */ (function () {
     return Games;
 }());
 
+var PublicationsRoutes = /** @class */ (function () {
+    function PublicationsRoutes() {
+    }
+    PublicationsRoutes.routes = {
+        list: { url: '/publications', method: HTTP_METHODS.GET },
+        download: { url: '/publications/download', method: HTTP_METHODS.POST },
+    };
+    return PublicationsRoutes;
+}());
+
+var Publications = /** @class */ (function () {
+    function Publications() {
+    }
+    /**
+     * Get a list of all publictions, podcasts and blogs.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Publications/getPublications
+     *
+     * @returns promise
+     */
+    Publications.list = function (params) {
+        return Requests.processRoute(PublicationsRoutes.routes.list, undefined, undefined, params);
+    };
+    /**
+     * Download the list of publictions, podcasts and blogs.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Publications/downloadPublications
+     *
+     * @param data The data to be passed when creating a team.
+     *
+     * @returns Promise
+     */
+    Publications.create = function (data, params) {
+        return Requests.processRoute(PublicationsRoutes.routes.download, data, undefined, params);
+    };
+    return Publications;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -10823,7 +10861,8 @@ var Glitch = /** @class */ (function () {
         Subscriptions: Subscriptions,
         TipPackages: TipPackages,
         TipEmojis: TipEmojis,
-        TipPackagePurchases: TipPackagePurchases
+        TipPackagePurchases: TipPackagePurchases,
+        Publications: Publications
     };
     Glitch.util = {
         Requests: Requests,
