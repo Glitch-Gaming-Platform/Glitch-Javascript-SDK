@@ -14,6 +14,7 @@ class InfluencerRoutes {
     updateNote: { url: '/influencers/{influencer_id}/notes/{note_id}', method: HTTP_METHODS.PUT },
     deleteNote: { url: '/influencers/{influencer_id}/notes/{note_id}', method: HTTP_METHODS.DELETE },
     listContracts: { url: '/influencers/contracts', method: HTTP_METHODS.GET },
+    workbook : { url: '/influencers/workbook', method: HTTP_METHODS.POST },
   };
 
 }

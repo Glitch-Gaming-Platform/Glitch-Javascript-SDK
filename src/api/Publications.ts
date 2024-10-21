@@ -25,7 +25,7 @@ class Publications {
      * 
      * @returns Promise
      */
-    public static create<T>(data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+    public static download<T>(data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
 
         return Requests.processRoute(PublicationsRoutes.routes.download, data, undefined, params);
     }

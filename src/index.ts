@@ -26,6 +26,7 @@ import {Feedback} from "./api";
 import {Influencers} from "./api";
 import {Games} from "./api";
 import {Publications} from "./api";
+import {GameShows} from "./api";
 
 
 
@@ -66,6 +67,7 @@ class Glitch {
         Users: Users,
         Events: Events,
         Games : Games,
+        GameShows : GameShows,
         Feedback : Feedback,
         Influencers : Influencers,
         Teams: Teams,

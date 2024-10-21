@@ -18,6 +18,6 @@ declare class Publications {
      *
      * @returns Promise
      */
-    static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static download<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Publications;

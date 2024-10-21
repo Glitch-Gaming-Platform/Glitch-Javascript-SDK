@@ -81,5 +81,13 @@ declare class Influencers {
     * @returns promise
     */
     static listContracts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Download the influencer work
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/downloadInfluencersWorkbook
+     *
+     * @returns promise
+     */
+    static workbook<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Influencers;

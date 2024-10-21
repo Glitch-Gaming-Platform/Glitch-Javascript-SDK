@@ -10247,6 +10247,7 @@ var InfluencerRoutes = /** @class */ (function () {
         updateNote: { url: '/influencers/{influencer_id}/notes/{note_id}', method: HTTP_METHODS.PUT },
         deleteNote: { url: '/influencers/{influencer_id}/notes/{note_id}', method: HTTP_METHODS.DELETE },
         listContracts: { url: '/influencers/contracts', method: HTTP_METHODS.GET },
+        workbook: { url: '/influencers/workbook', method: HTTP_METHODS.POST },
     };
     return InfluencerRoutes;
 }());
@@ -10354,6 +10355,16 @@ var Influencers = /** @class */ (function () {
     Influencers.listContracts = function (params) {
         return Requests.processRoute(InfluencerRoutes.routes.listContracts, undefined, undefined, params);
     };
+    /**
+     * Download the influencer work
+     *
+     * @see https://api.glitch.fun/api/documentation#/Influencers/downloadInfluencersWorkbook
+     *
+     * @returns promise
+     */
+    Influencers.workbook = function (data, params) {
+        return Requests.processRoute(InfluencerRoutes.routes.workbook, data, {}, params);
+    };
     return Influencers;
 }());
 
@@ -10436,10 +10447,145 @@ var Publications = /** @class */ (function () {
      *
      * @returns Promise
      */
-    Publications.create = function (data, params) {
+    Publications.download = function (data, params) {
         return Requests.processRoute(PublicationsRoutes.routes.download, data, undefined, params);
     };
     return Publications;
+}());
+
+var GameShowsRoute = /** @class */ (function () {
+    function GameShowsRoute() {
+    }
+    GameShowsRoute.routes = {
+        list: { url: '/gameshows', method: HTTP_METHODS.GET },
+        create: { url: '/gameshows', method: HTTP_METHODS.POST },
+        view: { url: '/gameshows/{show_id}', method: HTTP_METHODS.GET },
+        update: { url: '/gameshows/{show_id}', method: HTTP_METHODS.PUT },
+        delete: { url: '/gameshows/{show_id}', method: HTTP_METHODS.DELETE },
+        uploadLogo: { url: '/gameshows/{show_id}/uploadLogo', method: HTTP_METHODS.POST },
+        uploadBannerImage: { url: '/gameshows/{show_id}/uploadBannerImage', method: HTTP_METHODS.POST },
+    };
+    return GameShowsRoute;
+}());
+
+var GameShows = /** @class */ (function () {
+    function GameShows() {
+    }
+    /**
+     * List all the GameShows.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/getGameShows
+     *
+     * @returns promise
+     */
+    GameShows.list = function (params) {
+        return Requests.processRoute(GameShowsRoute.routes.list, undefined, undefined, params);
+    };
+    /**
+     * Create a new game show.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/createGameShow
+     *
+     * @param data The data to be passed when creating a game show.
+     *
+     * @returns Promise
+     */
+    GameShows.create = function (data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.create, data, undefined, params);
+    };
+    /**
+     * Update a game show.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/updateGameShow
+     *
+     * @param show_id The id of the game show to update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    GameShows.update = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.update, data, { show_id: show_id }, params);
+    };
+    /**
+     * Retrieve the information for a single game show.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/getGameShowByUuid
+     *
+     * @param show_id The id fo the game show to retrieve.
+     *
+     * @returns promise
+     */
+    GameShows.view = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.view, {}, { show_id: show_id }, params);
+    };
+    /**
+     * Deletes a game show.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/deleteGameShow
+     *
+     * @param show_id The id of the game show to delete.
+     * @returns promise
+     */
+    GameShows.delete = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.delete, {}, { show_id: show_id }, params);
+    };
+    /**
+       * Updates the main image for the game show using a File object.
+       *
+       * @see https://api.glitch.fun/api/documentation#/GameShows/uploadGameShowLogo
+       *
+       * @param file The file object to upload.
+       * @param data Any additional data to pass along to the upload.
+       *
+       * @returns promise
+       */
+    GameShows.uploadLogoFile = function (show_id, file, data, params) {
+        var url = GameShowsRoute.routes.uploadLogo.url.replace('{show_id}', show_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the main image for the game show using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/uploadGameShowLogo
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    GameShows.uploadLogoBlob = function (show_id, blob, data, params) {
+        var url = GameShowsRoute.routes.uploadLogo.url.replace('{show_id}', show_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    /**
+     * Updates the banner image for the game show using a File object.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/uploadGameShowBannerImage
+     *
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    GameShows.uploadBannerImageFile = function (show_id, file, data, params) {
+        var url = GameShowsRoute.routes.uploadBannerImage.url.replace('{show_id}', show_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the banner image for the game show using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/uploadGameShowBannerImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    GameShows.uploadBannerImageBlob = function (show_id, blob, data, params) {
+        var url = GameShowsRoute.routes.uploadBannerImage.url.replace('{show_id}', show_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    return GameShows;
 }());
 
 var Parser = /** @class */ (function () {
@@ -10846,6 +10992,7 @@ var Glitch = /** @class */ (function () {
         Users: Users,
         Events: Events,
         Games: Games,
+        GameShows: GameShows,
         Feedback: Feedback,
         Influencers: Influencers,
         Teams: Teams,

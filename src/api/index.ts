@@ -22,6 +22,7 @@ import Feedback from "./Feedback";
 import Influencers from "./Influencers";
 import Games from "./Games";
 import Publications from "./Publications";
+import GameShows from "./GameShows";
 
 export {Auth};
 export {Competitions};
@@ -47,3 +48,4 @@ export {Feedback};
 export {Influencers};
 export {Games};
 export {Publications};
+export {GameShows};

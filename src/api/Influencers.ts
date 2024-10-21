@@ -115,6 +115,17 @@ class Influencers {
         return Requests.processRoute(InfluencerRoutes.routes.listContracts, undefined, undefined, params);
     }
 
+    /**
+     * Download the influencer work
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Influencers/downloadInfluencersWorkbook
+     * 
+     * @returns promise
+     */
+    public static workbook<T>(data?: object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(InfluencerRoutes.routes.workbook, data, {}, params);
+    }
+
 
 }
 

@@ -22,6 +22,7 @@ import { Feedback } from "./api";
 import { Influencers } from "./api";
 import { Games } from "./api";
 import { Publications } from "./api";
+import { GameShows } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -48,6 +49,7 @@ declare class Glitch {
         Users: typeof Users;
         Events: typeof Events;
         Games: typeof Games;
+        GameShows: typeof GameShows;
         Feedback: typeof Feedback;
         Influencers: typeof Influencers;
         Teams: typeof Teams;
