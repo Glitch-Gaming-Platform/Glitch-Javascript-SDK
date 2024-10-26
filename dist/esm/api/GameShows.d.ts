@@ -93,5 +93,29 @@ declare class GameShows {
      * @returns promise
      */
     static uploadBannerImageBlob<T>(show_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Register a title to a game show.
+     */
+    static registerTitle<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Add a title to a game show by admin.
+     */
+    static addTitle<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all titles for a game show.
+     */
+    static listTitles<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get details of a specific title in a game show.
+     */
+    static getTitle<T>(show_id: string, title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a specific title in a game show.
+     */
+    static updateTitle<T>(show_id: string, title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a specific title from a game show.
+     */
+    static deleteTitle<T>(show_id: string, title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default GameShows;

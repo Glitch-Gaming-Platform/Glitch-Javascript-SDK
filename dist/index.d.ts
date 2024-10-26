@@ -990,6 +990,203 @@ declare class Communities {
      * @returns Promise
      */
     static populateEmailTemplate<T>(community_id: string, template_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+   * List all newsletters for a community.
+   *
+   * @param community_id The ID of the community.
+   * @param params Query parameters.
+   * @returns Promise
+   */
+    static listNewsletters<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new newsletter for a community.
+     *
+     * @param community_id The ID of the community.
+     * @param data The data for the new newsletter.
+     * @returns Promise
+     */
+    static createNewsletter<T>(community_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a specific newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    static viewNewsletter<T>(community_id: string, newsletter_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a specific newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param data The data to update.
+     * @returns Promise
+     */
+    static updateNewsletter<T>(community_id: string, newsletter_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a specific newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @returns Promise
+     */
+    static deleteNewsletter<T>(community_id: string, newsletter_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Import subscribers from a CSV or XLS file into a newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param file The CSV or XLS file.
+     * @param params Additional parameters.
+     * @returns Promise
+     */
+    static importNewsletterSubscribers<T>(community_id: string, newsletter_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Updates the banner image for the game show using a File object.
+    *
+    * @see https://api.glitch.fun/api/documentation#/GameShows/uploadGameShowBannerImage
+    *
+    * @param file The file object to upload.
+    * @param data Any additional data to pass along to the upload.
+    *
+    * @returns promise
+    */
+    static uploadNewsletterBannerImageFile<T>(community_id: string, newsletter_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Updates the banner image for the game show using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/uploadGameShowBannerImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    static uploadNewsletterBannerImageBlob<T>(community_id: string, newsletter_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all campaigns for a newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    static listCampaigns<T>(community_id: string, newsletter_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new campaign for a newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param data The data for the new campaign.
+     * @returns Promise
+     */
+    static createCampaign<T>(community_id: string, newsletter_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a specific campaign.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    static viewCampaign<T>(community_id: string, newsletter_id: string, campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a specific campaign.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param data The data to update.
+     * @returns Promise
+     */
+    static updateCampaign<T>(community_id: string, newsletter_id: string, campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a specific campaign.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @returns Promise
+     */
+    static deleteCampaign<T>(community_id: string, newsletter_id: string, campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send a campaign immediately.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @returns Promise
+     */
+    static sendCampaign<T>(community_id: string, newsletter_id: string, campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Schedule a campaign to be sent later.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param data The scheduling data (e.g., scheduled_at).
+     * @returns Promise
+     */
+    static scheduleCampaign<T>(community_id: string, newsletter_id: string, campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all emails sent in a campaign.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    static listCampaignEmails<T>(community_id: string, newsletter_id: string, campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all subscribers of a newsletter (admin only).
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    static listNewsletterSubscribers<T>(community_id: string, newsletter_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a specific subscriber of a newsletter (admin only).
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param subscriber_id The ID of the subscriber.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    static viewNewsletterSubscriber<T>(community_id: string, newsletter_id: string, subscriber_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a specific subscriber of a newsletter (admin only).
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param subscriber_id The ID of the subscriber.
+     * @param data The data to update.
+     * @returns Promise
+     */
+    static updateNewsletterSubscriber<T>(community_id: string, newsletter_id: string, subscriber_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a specific subscriber from a newsletter (admin only).
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param subscriber_id The ID of the subscriber.
+     * @returns Promise
+     */
+    static deleteNewsletterSubscriber<T>(community_id: string, newsletter_id: string, subscriber_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Register a new subscriber to a newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param data The subscriber data.
+     * @returns Promise
+     */
+    static registerNewsletterSubscriber<T>(community_id: string, newsletter_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Users {
@@ -3484,6 +3681,30 @@ declare class GameShows {
      * @returns promise
      */
     static uploadBannerImageBlob<T>(show_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Register a title to a game show.
+     */
+    static registerTitle<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Add a title to a game show by admin.
+     */
+    static addTitle<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all titles for a game show.
+     */
+    static listTitles<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get details of a specific title in a game show.
+     */
+    static getTitle<T>(show_id: string, title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a specific title in a game show.
+     */
+    static updateTitle<T>(show_id: string, title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a specific title from a game show.
+     */
+    static deleteTitle<T>(show_id: string, title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 interface Route {

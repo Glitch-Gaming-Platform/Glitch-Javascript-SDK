@@ -140,6 +140,48 @@ class GameShows {
         return Requests.uploadBlob(url, 'image', blob, data);
     }
 
+    /**
+     * Register a title to a game show.
+     */
+    public static registerTitle<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.registerTitle, data, { show_id: show_id }, params);
+    }
+
+    /**
+     * Add a title to a game show by admin.
+     */
+    public static addTitle<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.addTitle, data, { show_id: show_id }, params);
+    }
+
+    /**
+     * List all titles for a game show.
+     */
+    public static listTitles<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listTitles, {}, { show_id: show_id }, params);
+    }
+
+    /**
+     * Get details of a specific title in a game show.
+     */
+    public static getTitle<T>(show_id: string, title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.getTitle, {}, { show_id: show_id, title_id: title_id }, params);
+    }
+
+    /**
+     * Update a specific title in a game show.
+     */
+    public static updateTitle<T>(show_id: string, title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.updateTitle, data, { show_id: show_id, title_id: title_id }, params);
+    }
+
+    /**
+     * Delete a specific title from a game show.
+     */
+    public static deleteTitle<T>(show_id: string, title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.deleteTitle, {}, { show_id: show_id, title_id: title_id }, params);
+    }
+
 }
 
 export default GameShows;

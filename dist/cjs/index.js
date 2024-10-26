@@ -19766,6 +19766,31 @@ var CommunitiesRoute = /** @class */ (function () {
         updateEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.PUT },
         deleteEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.DELETE },
         populateEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}/populate', method: HTTP_METHODS.POST },
+        // Newsletters
+        listNewsletters: { url: '/communities/{community_id}/newsletters', method: HTTP_METHODS.GET },
+        createNewsletter: { url: '/communities/{community_id}/newsletters', method: HTTP_METHODS.POST },
+        viewNewsletter: { url: '/communities/{community_id}/newsletters/{newsletter_id}', method: HTTP_METHODS.GET },
+        updateNewsletter: { url: '/communities/{community_id}/newsletters/{newsletter_id}', method: HTTP_METHODS.PUT },
+        deleteNewsletter: { url: '/communities/{community_id}/newsletters/{newsletter_id}', method: HTTP_METHODS.DELETE },
+        importNewsletterSubscribers: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers/import', method: HTTP_METHODS.POST },
+        uploadNewsletterBannerImage: { url: '/communities/{community_id}/newsletters/{newsletter_id}/uploadBannerImage', method: HTTP_METHODS.POST },
+        // Campaigns
+        listCampaigns: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.GET },
+        createCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.POST },
+        viewCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns/{campaign_id}', method: HTTP_METHODS.GET },
+        updateCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns/{campaign_id}', method: HTTP_METHODS.PUT },
+        deleteCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE },
+        sendCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns/{campaign_id}/send', method: HTTP_METHODS.POST },
+        scheduleCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns/{campaign_id}/schedule', method: HTTP_METHODS.POST },
+        // Emails
+        listCampaignEmails: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns/{campaign_id}/emails', method: HTTP_METHODS.GET },
+        // Subscribers (admin routes)
+        listNewsletterSubscribers: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers', method: HTTP_METHODS.GET },
+        viewNewsletterSubscriber: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers/{subscriber_id}', method: HTTP_METHODS.GET },
+        updateNewsletterSubscriber: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers/{subscriber_id}', method: HTTP_METHODS.PUT },
+        deleteNewsletterSubscriber: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers/{subscriber_id}', method: HTTP_METHODS.DELETE },
+        // Subscriber registration (open route)
+        registerNewsletterSubscriber: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers', method: HTTP_METHODS.POST },
     };
     return CommunitiesRoute;
 }());
@@ -20195,6 +20220,258 @@ var Communities = /** @class */ (function () {
      */
     Communities.populateEmailTemplate = function (community_id, template_id, data, params) {
         return Requests.processRoute(CommunitiesRoute.routes.populateEmailTemplate, data, { community_id: community_id, template_id: template_id }, params);
+    };
+    /**
+   * List all newsletters for a community.
+   *
+   * @param community_id The ID of the community.
+   * @param params Query parameters.
+   * @returns Promise
+   */
+    Communities.listNewsletters = function (community_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.listNewsletters, undefined, { community_id: community_id }, params);
+    };
+    /**
+     * Create a new newsletter for a community.
+     *
+     * @param community_id The ID of the community.
+     * @param data The data for the new newsletter.
+     * @returns Promise
+     */
+    Communities.createNewsletter = function (community_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.createNewsletter, data, { community_id: community_id }, params);
+    };
+    /**
+     * Get a specific newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    Communities.viewNewsletter = function (community_id, newsletter_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.viewNewsletter, undefined, { community_id: community_id, newsletter_id: newsletter_id }, params);
+    };
+    /**
+     * Update a specific newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param data The data to update.
+     * @returns Promise
+     */
+    Communities.updateNewsletter = function (community_id, newsletter_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.updateNewsletter, data, { community_id: community_id, newsletter_id: newsletter_id }, params);
+    };
+    /**
+     * Delete a specific newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @returns Promise
+     */
+    Communities.deleteNewsletter = function (community_id, newsletter_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.deleteNewsletter, undefined, { community_id: community_id, newsletter_id: newsletter_id }, params);
+    };
+    /**
+     * Import subscribers from a CSV or XLS file into a newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param file The CSV or XLS file.
+     * @param params Additional parameters.
+     * @returns Promise
+     */
+    Communities.importNewsletterSubscribers = function (community_id, newsletter_id, file, data, params) {
+        var url = CommunitiesRoute.routes.importNewsletterSubscribers.url
+            .replace('{community_id}', community_id)
+            .replace('{newsletter_id}', newsletter_id);
+        return Requests.uploadFile(url, 'file', file, data, params);
+    };
+    /**
+     * Updates the banner image for the game show using a File object.
+    *
+    * @see https://api.glitch.fun/api/documentation#/GameShows/uploadGameShowBannerImage
+    *
+    * @param file The file object to upload.
+    * @param data Any additional data to pass along to the upload.
+    *
+    * @returns promise
+    */
+    Communities.uploadNewsletterBannerImageFile = function (community_id, newsletter_id, file, data, params) {
+        var url = CommunitiesRoute.routes.uploadNewsletterBannerImage.url
+            .replace('{community_id}', community_id)
+            .replace('{newsletter_id}', newsletter_id);
+        return Requests.uploadFile(url, 'image', file, data);
+    };
+    /**
+     * Updates the banner image for the game show using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/uploadGameShowBannerImage
+     *
+     * @param blob The blob to upload.
+     * @param data Any additional data to pass along to the upload
+     *
+     * @returns promise
+     */
+    Communities.uploadNewsletterBannerImageBlob = function (community_id, newsletter_id, blob, data, params) {
+        var url = CommunitiesRoute.routes.uploadNewsletterBannerImage.url
+            .replace('{community_id}', community_id)
+            .replace('{newsletter_id}', newsletter_id);
+        return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    // Campaigns
+    /**
+     * List all campaigns for a newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    Communities.listCampaigns = function (community_id, newsletter_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.listCampaigns, undefined, { community_id: community_id, newsletter_id: newsletter_id }, params);
+    };
+    /**
+     * Create a new campaign for a newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param data The data for the new campaign.
+     * @returns Promise
+     */
+    Communities.createCampaign = function (community_id, newsletter_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.createCampaign, data, { community_id: community_id, newsletter_id: newsletter_id }, params);
+    };
+    /**
+     * Get a specific campaign.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    Communities.viewCampaign = function (community_id, newsletter_id, campaign_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.viewCampaign, undefined, { community_id: community_id, newsletter_id: newsletter_id, campaign_id: campaign_id }, params);
+    };
+    /**
+     * Update a specific campaign.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param data The data to update.
+     * @returns Promise
+     */
+    Communities.updateCampaign = function (community_id, newsletter_id, campaign_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.updateCampaign, data, { community_id: community_id, newsletter_id: newsletter_id, campaign_id: campaign_id }, params);
+    };
+    /**
+     * Delete a specific campaign.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @returns Promise
+     */
+    Communities.deleteCampaign = function (community_id, newsletter_id, campaign_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.deleteCampaign, undefined, { community_id: community_id, newsletter_id: newsletter_id, campaign_id: campaign_id }, params);
+    };
+    /**
+     * Send a campaign immediately.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @returns Promise
+     */
+    Communities.sendCampaign = function (community_id, newsletter_id, campaign_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.sendCampaign, undefined, { community_id: community_id, newsletter_id: newsletter_id, campaign_id: campaign_id }, params);
+    };
+    /**
+     * Schedule a campaign to be sent later.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param data The scheduling data (e.g., scheduled_at).
+     * @returns Promise
+     */
+    Communities.scheduleCampaign = function (community_id, newsletter_id, campaign_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.scheduleCampaign, data, { community_id: community_id, newsletter_id: newsletter_id, campaign_id: campaign_id }, params);
+    };
+    // Emails
+    /**
+     * List all emails sent in a campaign.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    Communities.listCampaignEmails = function (community_id, newsletter_id, campaign_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.listCampaignEmails, undefined, { community_id: community_id, newsletter_id: newsletter_id, campaign_id: campaign_id }, params);
+    };
+    // Subscribers (admin routes)
+    /**
+     * List all subscribers of a newsletter (admin only).
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    Communities.listNewsletterSubscribers = function (community_id, newsletter_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.listNewsletterSubscribers, undefined, { community_id: community_id, newsletter_id: newsletter_id }, params);
+    };
+    /**
+     * Get a specific subscriber of a newsletter (admin only).
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param subscriber_id The ID of the subscriber.
+     * @param params Query parameters.
+     * @returns Promise
+     */
+    Communities.viewNewsletterSubscriber = function (community_id, newsletter_id, subscriber_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.viewNewsletterSubscriber, undefined, { community_id: community_id, newsletter_id: newsletter_id, subscriber_id: subscriber_id }, params);
+    };
+    /**
+     * Update a specific subscriber of a newsletter (admin only).
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param subscriber_id The ID of the subscriber.
+     * @param data The data to update.
+     * @returns Promise
+     */
+    Communities.updateNewsletterSubscriber = function (community_id, newsletter_id, subscriber_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.updateNewsletterSubscriber, data, { community_id: community_id, newsletter_id: newsletter_id, subscriber_id: subscriber_id }, params);
+    };
+    /**
+     * Delete a specific subscriber from a newsletter (admin only).
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param subscriber_id The ID of the subscriber.
+     * @returns Promise
+     */
+    Communities.deleteNewsletterSubscriber = function (community_id, newsletter_id, subscriber_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.deleteNewsletterSubscriber, undefined, { community_id: community_id, newsletter_id: newsletter_id, subscriber_id: subscriber_id }, params);
+    };
+    // Subscriber registration (open route)
+    /**
+     * Register a new subscriber to a newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param data The subscriber data.
+     * @returns Promise
+     */
+    Communities.registerNewsletterSubscriber = function (community_id, newsletter_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.registerNewsletterSubscriber, data, { community_id: community_id, newsletter_id: newsletter_id }, params);
     };
     return Communities;
 }());
@@ -23648,6 +23925,12 @@ var GameShowsRoute = /** @class */ (function () {
         delete: { url: '/gameshows/{show_id}', method: HTTP_METHODS.DELETE },
         uploadLogo: { url: '/gameshows/{show_id}/uploadLogo', method: HTTP_METHODS.POST },
         uploadBannerImage: { url: '/gameshows/{show_id}/uploadBannerImage', method: HTTP_METHODS.POST },
+        registerTitle: { url: '/gameshows/{show_id}/registerTitle', method: HTTP_METHODS.POST },
+        listTitles: { url: '/gameshows/{show_id}/titles', method: HTTP_METHODS.GET },
+        addTitle: { url: '/gameshows/{show_id}/addTitle', method: HTTP_METHODS.POST },
+        viewTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.GET },
+        updateTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.PUT },
+        deleteTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.DELETE },
     };
     return GameShowsRoute;
 }());
@@ -23768,6 +24051,42 @@ var GameShows = /** @class */ (function () {
     GameShows.uploadBannerImageBlob = function (show_id, blob, data, params) {
         var url = GameShowsRoute.routes.uploadBannerImage.url.replace('{show_id}', show_id);
         return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    /**
+     * Register a title to a game show.
+     */
+    GameShows.registerTitle = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.registerTitle, data, { show_id: show_id }, params);
+    };
+    /**
+     * Add a title to a game show by admin.
+     */
+    GameShows.addTitle = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.addTitle, data, { show_id: show_id }, params);
+    };
+    /**
+     * List all titles for a game show.
+     */
+    GameShows.listTitles = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listTitles, {}, { show_id: show_id }, params);
+    };
+    /**
+     * Get details of a specific title in a game show.
+     */
+    GameShows.getTitle = function (show_id, title_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.getTitle, {}, { show_id: show_id, title_id: title_id }, params);
+    };
+    /**
+     * Update a specific title in a game show.
+     */
+    GameShows.updateTitle = function (show_id, title_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.updateTitle, data, { show_id: show_id, title_id: title_id }, params);
+    };
+    /**
+     * Delete a specific title from a game show.
+     */
+    GameShows.deleteTitle = function (show_id, title_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.deleteTitle, {}, { show_id: show_id, title_id: title_id }, params);
     };
     return GameShows;
 }());
