@@ -6583,7 +6583,7 @@ var CommunitiesRoute = /** @class */ (function () {
         deleteEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}', method: HTTP_METHODS.DELETE },
         populateEmailTemplate: { url: '/communities/{community_id}/emails/templates/{template_id}/populate', method: HTTP_METHODS.POST },
         // Newsletters
-        listNewsletters: { url: '/communities/{community_id}/newsletters', method: HTTP_METHODS.GET },
+        listNewsletters: { url: '/communities/newsletters', method: HTTP_METHODS.GET },
         createNewsletter: { url: '/communities/{community_id}/newsletters', method: HTTP_METHODS.POST },
         viewNewsletter: { url: '/communities/{community_id}/newsletters/{newsletter_id}', method: HTTP_METHODS.GET },
         updateNewsletter: { url: '/communities/{community_id}/newsletters/{newsletter_id}', method: HTTP_METHODS.PUT },
@@ -7044,8 +7044,8 @@ var Communities = /** @class */ (function () {
    * @param params Query parameters.
    * @returns Promise
    */
-    Communities.listNewsletters = function (community_id, params) {
-        return Requests.processRoute(CommunitiesRoute.routes.listNewsletters, undefined, { community_id: community_id }, params);
+    Communities.listNewsletters = function (params) {
+        return Requests.processRoute(CommunitiesRoute.routes.listNewsletters, undefined, undefined, params);
     };
     /**
      * Create a new newsletter for a community.

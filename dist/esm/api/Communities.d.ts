@@ -355,7 +355,7 @@ declare class Communities {
    * @param params Query parameters.
    * @returns Promise
    */
-    static listNewsletters<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static listNewsletters<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a new newsletter for a community.
      *

@@ -497,8 +497,8 @@ class Communities {
    * @param params Query parameters.
    * @returns Promise
    */
-    public static listNewsletters<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.listNewsletters, undefined, { community_id }, params);
+    public static listNewsletters<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.listNewsletters, undefined, undefined, params);
     }
 
     /**
