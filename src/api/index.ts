@@ -23,6 +23,7 @@ import Influencers from "./Influencers";
 import Games from "./Games";
 import Publications from "./Publications";
 import GameShows from "./GameShows";
+import Newsletters from "./Newsletters"
 
 export {Auth};
 export {Competitions};
@@ -49,3 +50,4 @@ export {Influencers};
 export {Games};
 export {Publications};
 export {GameShows};
+export {Newsletters};

@@ -3707,6 +3707,19 @@ declare class GameShows {
     static deleteTitle<T>(show_id: string, title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class Newsletters {
+    /**
+     * Download the list of publictions, podcasts and blogs.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Newsletters/downloadMarketingChecklists
+     *
+     * @param data The data to be passed when creating a team.
+     *
+     * @returns Promise
+     */
+    static downloadMarketingChecklist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -4031,6 +4044,7 @@ declare class Glitch {
         TipEmojis: typeof TipEmojis;
         TipPackagePurchases: typeof TipPackagePurchases;
         Publications: typeof Publications;
+        Newsletters: typeof Newsletters;
     };
     static util: {
         Requests: typeof Requests;

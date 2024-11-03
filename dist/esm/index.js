@@ -10907,6 +10907,33 @@ var GameShows = /** @class */ (function () {
     return GameShows;
 }());
 
+var NewslettersRoutes = /** @class */ (function () {
+    function NewslettersRoutes() {
+    }
+    NewslettersRoutes.routes = {
+        downloadMarketingChecklist: { url: '/newsletters/downloadMarketingChecklist', method: HTTP_METHODS.POST },
+    };
+    return NewslettersRoutes;
+}());
+
+var Newsletters = /** @class */ (function () {
+    function Newsletters() {
+    }
+    /**
+     * Download the list of publictions, podcasts and blogs.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Newsletters/downloadMarketingChecklists
+     *
+     * @param data The data to be passed when creating a team.
+     *
+     * @returns Promise
+     */
+    Newsletters.downloadMarketingChecklist = function (data, params) {
+        return Requests.processRoute(NewslettersRoutes.routes.downloadMarketingChecklist, data, undefined, params);
+    };
+    return Newsletters;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -11328,7 +11355,8 @@ var Glitch = /** @class */ (function () {
         TipPackages: TipPackages,
         TipEmojis: TipEmojis,
         TipPackagePurchases: TipPackagePurchases,
-        Publications: Publications
+        Publications: Publications,
+        Newsletters: Newsletters
     };
     Glitch.util = {
         Requests: Requests,
