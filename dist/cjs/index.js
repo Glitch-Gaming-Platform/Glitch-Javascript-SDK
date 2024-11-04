@@ -24118,6 +24118,143 @@ var Newsletters = /** @class */ (function () {
     return Newsletters;
 }());
 
+var PlayTestsRoute = /** @class */ (function () {
+    function PlayTestsRoute() {
+    }
+    PlayTestsRoute.routes = {
+        index: { url: '/playtests/{title_id}', method: HTTP_METHODS.GET },
+        request: { url: '/playtests/{title_id}/request', method: HTTP_METHODS.POST },
+        invite: { url: '/playtests/{title_id}/invite', method: HTTP_METHODS.POST },
+        submitAnswers: { url: '/playtests/{title_id}/answers/{playtest_id}', method: HTTP_METHODS.PUT },
+        updateQuestions: { url: '/playtests/{title_id}/questions/{playtest_id}', method: HTTP_METHODS.PUT },
+        acceptInvite: { url: '/playtests/{title_id}/accept/{playtest_id}', method: HTTP_METHODS.POST },
+        rejectInvite: { url: '/playtests/{title_id}/reject/{playtest_id}', method: HTTP_METHODS.POST },
+        approveRequest: { url: '/playtests/{title_id}/approve/{playtest_id}', method: HTTP_METHODS.POST },
+        declineRequest: { url: '/playtests/{title_id}/decline/{playtest_id}', method: HTTP_METHODS.POST },
+        cancelRequest: { url: '/playtests/{title_id}/cancel/{playtest_id}', method: HTTP_METHODS.POST },
+        show: { url: '/playtests/{title_id}/view/{playtest_id}', method: HTTP_METHODS.GET },
+    };
+    return PlayTestsRoute;
+}());
+
+var PlayTests = /** @class */ (function () {
+    function PlayTests() {
+    }
+    /**
+     * Get a list of play tests associated with a title.
+     *
+     * @param title_id The ID of the title.
+     * @param params Optional query parameters.
+     * @returns Promise
+     */
+    PlayTests.index = function (title_id, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.index, undefined, { title_id: title_id }, params);
+    };
+    /**
+     * User requests to test a title.
+     *
+     * @param title_id The ID of the title.
+     * @param data Optional data for the request.
+     * @returns Promise
+     */
+    PlayTests.requestPlayTest = function (title_id, data) {
+        return Requests.processRoute(PlayTestsRoute.routes.request, data, { title_id: title_id });
+    };
+    /**
+     * Title administrator invites a user to test a title.
+     *
+     * @param title_id The ID of the title.
+     * @param data The data containing user_id and other optional fields.
+     * @returns Promise
+     */
+    PlayTests.invitePlayTester = function (title_id, data) {
+        return Requests.processRoute(PlayTestsRoute.routes.invite, data, { title_id: title_id });
+    };
+    /**
+     * User submits or updates their answers for a play test.
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @param data The answers data.
+     * @returns Promise
+     */
+    PlayTests.submitAnswers = function (title_id, playtest_id, data) {
+        return Requests.processRoute(PlayTestsRoute.routes.submitAnswers, data, { title_id: title_id, playtest_id: playtest_id });
+    };
+    /**
+     * Title admin updates test questions for a play test.
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @param data The questions data.
+     * @returns Promise
+     */
+    PlayTests.updateQuestions = function (title_id, playtest_id, data) {
+        return Requests.processRoute(PlayTestsRoute.routes.updateQuestions, data, { title_id: title_id, playtest_id: playtest_id });
+    };
+    /**
+     * User accepts an invite to a play test.
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @returns Promise
+     */
+    PlayTests.acceptInvite = function (title_id, playtest_id) {
+        return Requests.processRoute(PlayTestsRoute.routes.acceptInvite, {}, { title_id: title_id, playtest_id: playtest_id });
+    };
+    /**
+     * User rejects an invite to a play test.
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @returns Promise
+     */
+    PlayTests.rejectInvite = function (title_id, playtest_id) {
+        return Requests.processRoute(PlayTestsRoute.routes.rejectInvite, {}, { title_id: title_id, playtest_id: playtest_id });
+    };
+    /**
+     * Title admin approves a user's play test request.
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @returns Promise
+     */
+    PlayTests.approveRequest = function (title_id, playtest_id) {
+        return Requests.processRoute(PlayTestsRoute.routes.approveRequest, {}, { title_id: title_id, playtest_id: playtest_id });
+    };
+    /**
+     * Title admin declines a user's play test request.
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @returns Promise
+     */
+    PlayTests.declineRequest = function (title_id, playtest_id) {
+        return Requests.processRoute(PlayTestsRoute.routes.declineRequest, {}, { title_id: title_id, playtest_id: playtest_id });
+    };
+    /**
+     * User cancels their own play test request.
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @returns Promise
+     */
+    PlayTests.cancelRequest = function (title_id, playtest_id) {
+        return Requests.processRoute(PlayTestsRoute.routes.cancelRequest, {}, { title_id: title_id, playtest_id: playtest_id });
+    };
+    /**
+     * Retrieve a single play test.
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @returns Promise
+     */
+    PlayTests.show = function (title_id, playtest_id) {
+        return Requests.processRoute(PlayTestsRoute.routes.show, {}, { title_id: title_id, playtest_id: playtest_id });
+    };
+    return PlayTests;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -24540,7 +24677,8 @@ var Glitch = /** @class */ (function () {
         TipEmojis: TipEmojis,
         TipPackagePurchases: TipPackagePurchases,
         Publications: Publications,
-        Newsletters: Newsletters
+        Newsletters: Newsletters,
+        PlayTests: PlayTests
     };
     Glitch.util = {
         Requests: Requests,

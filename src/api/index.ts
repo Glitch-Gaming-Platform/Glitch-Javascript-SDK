@@ -24,6 +24,7 @@ import Games from "./Games";
 import Publications from "./Publications";
 import GameShows from "./GameShows";
 import Newsletters from "./Newsletters"
+import PlayTests from "./PlayTests";
 
 export {Auth};
 export {Competitions};
@@ -51,3 +52,4 @@ export {Games};
 export {Publications};
 export {GameShows};
 export {Newsletters};
+export {PlayTests};
