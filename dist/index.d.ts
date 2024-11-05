@@ -3746,7 +3746,7 @@ declare class PlayTests {
      * @param data Optional data for the request.
      * @returns Promise
      */
-    static requestPlayTest<T>(title_id: string, data?: object): AxiosPromise<Response<T>>;
+    static requestPlayTest<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Title administrator invites a user to test a title.
      *
@@ -3754,7 +3754,7 @@ declare class PlayTests {
      * @param data The data containing user_id and other optional fields.
      * @returns Promise
      */
-    static invitePlayTester<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    static invitePlayTester<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * User submits or updates their answers for a play test.
      *
@@ -3763,7 +3763,7 @@ declare class PlayTests {
      * @param data The answers data.
      * @returns Promise
      */
-    static submitAnswers<T>(title_id: string, playtest_id: string, data: object): AxiosPromise<Response<T>>;
+    static submitAnswers<T>(title_id: string, playtest_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Title admin updates test questions for a play test.
      *
@@ -3772,7 +3772,7 @@ declare class PlayTests {
      * @param data The questions data.
      * @returns Promise
      */
-    static updateQuestions<T>(title_id: string, playtest_id: string, data: object): AxiosPromise<Response<T>>;
+    static updateQuestions<T>(title_id: string, playtest_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * User accepts an invite to a play test.
      *
@@ -3780,7 +3780,7 @@ declare class PlayTests {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    static acceptInvite<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>>;
+    static acceptInvite<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * User rejects an invite to a play test.
      *
@@ -3788,7 +3788,7 @@ declare class PlayTests {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    static rejectInvite<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>>;
+    static rejectInvite<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Title admin approves a user's play test request.
      *
@@ -3796,7 +3796,7 @@ declare class PlayTests {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    static approveRequest<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>>;
+    static approveRequest<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Title admin declines a user's play test request.
      *
@@ -3804,7 +3804,7 @@ declare class PlayTests {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    static declineRequest<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>>;
+    static declineRequest<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * User cancels their own play test request.
      *
@@ -3812,7 +3812,7 @@ declare class PlayTests {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    static cancelRequest<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>>;
+    static cancelRequest<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieve a single play test.
      *
@@ -3820,7 +3820,7 @@ declare class PlayTests {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    static show<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>>;
+    static show<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Get all the play tests that are associated with the current user.
      *
@@ -3828,7 +3828,7 @@ declare class PlayTests {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    static mine<T>(title_id: string): AxiosPromise<Response<T>>;
+    static mine<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 interface Route {

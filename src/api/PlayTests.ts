@@ -22,8 +22,8 @@ class PlayTests {
    * @param data Optional data for the request.
    * @returns Promise
    */
-  public static requestPlayTest<T>(title_id: string, data?: object): AxiosPromise<Response<T>> {
-    return Requests.processRoute(PlayTestsRoute.routes.request, data, { title_id });
+  public static requestPlayTest<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.request, data, { title_id }, params);
   }
 
   /**
@@ -33,8 +33,8 @@ class PlayTests {
    * @param data The data containing user_id and other optional fields.
    * @returns Promise
    */
-  public static invitePlayTester<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
-    return Requests.processRoute(PlayTestsRoute.routes.invite, data, { title_id });
+  public static invitePlayTester<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.invite, data, { title_id }, params);
   }
 
   /**
@@ -45,8 +45,8 @@ class PlayTests {
    * @param data The answers data.
    * @returns Promise
    */
-  public static submitAnswers<T>(title_id: string, playtest_id: string, data: object): AxiosPromise<Response<T>> {
-    return Requests.processRoute(PlayTestsRoute.routes.submitAnswers, data, { title_id, playtest_id });
+  public static submitAnswers<T>(title_id: string, playtest_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.submitAnswers, data, { title_id, playtest_id }, params);
   }
 
   /**
@@ -57,8 +57,8 @@ class PlayTests {
    * @param data The questions data.
    * @returns Promise
    */
-  public static updateQuestions<T>(title_id: string, playtest_id: string, data: object): AxiosPromise<Response<T>> {
-    return Requests.processRoute(PlayTestsRoute.routes.updateQuestions, data, { title_id, playtest_id });
+  public static updateQuestions<T>(title_id: string, playtest_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.updateQuestions, data, { title_id, playtest_id }, params);
   }
 
   /**
@@ -68,8 +68,8 @@ class PlayTests {
    * @param playtest_id The ID of the play test.
    * @returns Promise
    */
-  public static acceptInvite<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>> {
-    return Requests.processRoute(PlayTestsRoute.routes.acceptInvite, {}, { title_id, playtest_id });
+  public static acceptInvite<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.acceptInvite, {}, { title_id, playtest_id }, params);
   }
 
   /**
@@ -79,8 +79,8 @@ class PlayTests {
    * @param playtest_id The ID of the play test.
    * @returns Promise
    */
-  public static rejectInvite<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>> {
-    return Requests.processRoute(PlayTestsRoute.routes.rejectInvite, {}, { title_id, playtest_id });
+  public static rejectInvite<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.rejectInvite, {}, { title_id, playtest_id }, params);
   }
 
   /**
@@ -90,8 +90,8 @@ class PlayTests {
    * @param playtest_id The ID of the play test.
    * @returns Promise
    */
-  public static approveRequest<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>> {
-    return Requests.processRoute(PlayTestsRoute.routes.approveRequest, {}, { title_id, playtest_id });
+  public static approveRequest<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.approveRequest, {}, { title_id, playtest_id }, params);
   }
 
   /**
@@ -101,8 +101,8 @@ class PlayTests {
    * @param playtest_id The ID of the play test.
    * @returns Promise
    */
-  public static declineRequest<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>> {
-    return Requests.processRoute(PlayTestsRoute.routes.declineRequest, {}, { title_id, playtest_id });
+  public static declineRequest<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.declineRequest, {}, { title_id, playtest_id }, params);
   }
 
   /**
@@ -112,8 +112,8 @@ class PlayTests {
    * @param playtest_id The ID of the play test.
    * @returns Promise
    */
-  public static cancelRequest<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>> {
-    return Requests.processRoute(PlayTestsRoute.routes.cancelRequest, {}, { title_id, playtest_id });
+  public static cancelRequest<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.cancelRequest, {}, { title_id, playtest_id }, params);
   }
 
   /**
@@ -123,8 +123,8 @@ class PlayTests {
    * @param playtest_id The ID of the play test.
    * @returns Promise
    */
-  public static show<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>> {
-    return Requests.processRoute(PlayTestsRoute.routes.show, {}, { title_id, playtest_id });
+  public static show<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.show, {}, { title_id, playtest_id }, params);
   }
 
   /**
@@ -134,8 +134,8 @@ class PlayTests {
    * @param playtest_id The ID of the play test.
    * @returns Promise
    */
-  public static mine<T>(title_id: string): AxiosPromise<Response<T>> {
-    return Requests.processRoute(PlayTestsRoute.routes.mine, {}, { title_id });
+  public static mine<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.mine, {}, {}, params);
   }
 }
 

@@ -10962,7 +10962,7 @@ var PlayTestsRoute = /** @class */ (function () {
         declineRequest: { url: '/playtests/{title_id}/decline/{playtest_id}', method: HTTP_METHODS.POST },
         cancelRequest: { url: '/playtests/{title_id}/cancel/{playtest_id}', method: HTTP_METHODS.POST },
         show: { url: '/playtests/{title_id}/view/{playtest_id}', method: HTTP_METHODS.GET },
-        mine: { url: '/playtests/{title_id}/mine', method: HTTP_METHODS.GET },
+        mine: { url: '/playtests/mine', method: HTTP_METHODS.GET },
     };
     return PlayTestsRoute;
 }());
@@ -10987,8 +10987,8 @@ var PlayTests = /** @class */ (function () {
      * @param data Optional data for the request.
      * @returns Promise
      */
-    PlayTests.requestPlayTest = function (title_id, data) {
-        return Requests.processRoute(PlayTestsRoute.routes.request, data, { title_id: title_id });
+    PlayTests.requestPlayTest = function (title_id, data, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.request, data, { title_id: title_id }, params);
     };
     /**
      * Title administrator invites a user to test a title.
@@ -10997,8 +10997,8 @@ var PlayTests = /** @class */ (function () {
      * @param data The data containing user_id and other optional fields.
      * @returns Promise
      */
-    PlayTests.invitePlayTester = function (title_id, data) {
-        return Requests.processRoute(PlayTestsRoute.routes.invite, data, { title_id: title_id });
+    PlayTests.invitePlayTester = function (title_id, data, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.invite, data, { title_id: title_id }, params);
     };
     /**
      * User submits or updates their answers for a play test.
@@ -11008,8 +11008,8 @@ var PlayTests = /** @class */ (function () {
      * @param data The answers data.
      * @returns Promise
      */
-    PlayTests.submitAnswers = function (title_id, playtest_id, data) {
-        return Requests.processRoute(PlayTestsRoute.routes.submitAnswers, data, { title_id: title_id, playtest_id: playtest_id });
+    PlayTests.submitAnswers = function (title_id, playtest_id, data, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.submitAnswers, data, { title_id: title_id, playtest_id: playtest_id }, params);
     };
     /**
      * Title admin updates test questions for a play test.
@@ -11019,8 +11019,8 @@ var PlayTests = /** @class */ (function () {
      * @param data The questions data.
      * @returns Promise
      */
-    PlayTests.updateQuestions = function (title_id, playtest_id, data) {
-        return Requests.processRoute(PlayTestsRoute.routes.updateQuestions, data, { title_id: title_id, playtest_id: playtest_id });
+    PlayTests.updateQuestions = function (title_id, playtest_id, data, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.updateQuestions, data, { title_id: title_id, playtest_id: playtest_id }, params);
     };
     /**
      * User accepts an invite to a play test.
@@ -11029,8 +11029,8 @@ var PlayTests = /** @class */ (function () {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    PlayTests.acceptInvite = function (title_id, playtest_id) {
-        return Requests.processRoute(PlayTestsRoute.routes.acceptInvite, {}, { title_id: title_id, playtest_id: playtest_id });
+    PlayTests.acceptInvite = function (title_id, playtest_id, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.acceptInvite, {}, { title_id: title_id, playtest_id: playtest_id }, params);
     };
     /**
      * User rejects an invite to a play test.
@@ -11039,8 +11039,8 @@ var PlayTests = /** @class */ (function () {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    PlayTests.rejectInvite = function (title_id, playtest_id) {
-        return Requests.processRoute(PlayTestsRoute.routes.rejectInvite, {}, { title_id: title_id, playtest_id: playtest_id });
+    PlayTests.rejectInvite = function (title_id, playtest_id, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.rejectInvite, {}, { title_id: title_id, playtest_id: playtest_id }, params);
     };
     /**
      * Title admin approves a user's play test request.
@@ -11049,8 +11049,8 @@ var PlayTests = /** @class */ (function () {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    PlayTests.approveRequest = function (title_id, playtest_id) {
-        return Requests.processRoute(PlayTestsRoute.routes.approveRequest, {}, { title_id: title_id, playtest_id: playtest_id });
+    PlayTests.approveRequest = function (title_id, playtest_id, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.approveRequest, {}, { title_id: title_id, playtest_id: playtest_id }, params);
     };
     /**
      * Title admin declines a user's play test request.
@@ -11059,8 +11059,8 @@ var PlayTests = /** @class */ (function () {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    PlayTests.declineRequest = function (title_id, playtest_id) {
-        return Requests.processRoute(PlayTestsRoute.routes.declineRequest, {}, { title_id: title_id, playtest_id: playtest_id });
+    PlayTests.declineRequest = function (title_id, playtest_id, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.declineRequest, {}, { title_id: title_id, playtest_id: playtest_id }, params);
     };
     /**
      * User cancels their own play test request.
@@ -11069,8 +11069,8 @@ var PlayTests = /** @class */ (function () {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    PlayTests.cancelRequest = function (title_id, playtest_id) {
-        return Requests.processRoute(PlayTestsRoute.routes.cancelRequest, {}, { title_id: title_id, playtest_id: playtest_id });
+    PlayTests.cancelRequest = function (title_id, playtest_id, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.cancelRequest, {}, { title_id: title_id, playtest_id: playtest_id }, params);
     };
     /**
      * Retrieve a single play test.
@@ -11079,8 +11079,8 @@ var PlayTests = /** @class */ (function () {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    PlayTests.show = function (title_id, playtest_id) {
-        return Requests.processRoute(PlayTestsRoute.routes.show, {}, { title_id: title_id, playtest_id: playtest_id });
+    PlayTests.show = function (title_id, playtest_id, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.show, {}, { title_id: title_id, playtest_id: playtest_id }, params);
     };
     /**
      * Get all the play tests that are associated with the current user.
@@ -11089,8 +11089,8 @@ var PlayTests = /** @class */ (function () {
      * @param playtest_id The ID of the play test.
      * @returns Promise
      */
-    PlayTests.mine = function (title_id) {
-        return Requests.processRoute(PlayTestsRoute.routes.mine, {}, { title_id: title_id });
+    PlayTests.mine = function (params) {
+        return Requests.processRoute(PlayTestsRoute.routes.mine, {}, {}, params);
     };
     return PlayTests;
 }());

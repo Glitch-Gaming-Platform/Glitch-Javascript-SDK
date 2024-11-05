@@ -14,7 +14,7 @@ class PlayTestsRoute {
     declineRequest: { url: '/playtests/{title_id}/decline/{playtest_id}', method: HTTP_METHODS.POST },
     cancelRequest: { url: '/playtests/{title_id}/cancel/{playtest_id}', method: HTTP_METHODS.POST },
     show: { url: '/playtests/{title_id}/view/{playtest_id}', method: HTTP_METHODS.GET },
-    mine: { url: '/playtests/{title_id}/mine', method: HTTP_METHODS.GET },
+    mine: { url: '/playtests/mine', method: HTTP_METHODS.GET },
 
   };
 }
