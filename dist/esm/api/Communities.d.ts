@@ -489,6 +489,16 @@ declare class Communities {
      */
     static scheduleCampaign<T>(community_id: string, newsletter_id: string, campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Test an email campaign by sending an email to the current user.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param data The scheduling data (e.g., scheduled_at).
+     * @returns Promise
+     */
+    static testCampaign<T>(community_id: string, newsletter_id: string, campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List all emails sent in a campaign.
      *
      * @param community_id The ID of the community.

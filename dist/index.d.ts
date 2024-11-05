@@ -1131,6 +1131,16 @@ declare class Communities {
      */
     static scheduleCampaign<T>(community_id: string, newsletter_id: string, campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Test an email campaign by sending an email to the current user.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param data The scheduling data (e.g., scheduled_at).
+     * @returns Promise
+     */
+    static testCampaign<T>(community_id: string, newsletter_id: string, campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List all emails sent in a campaign.
      *
      * @param community_id The ID of the community.
@@ -3728,7 +3738,7 @@ declare class PlayTests {
      * @param params Optional query parameters.
      * @returns Promise
      */
-    static index<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static list<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * User requests to test a title.
      *
@@ -3811,6 +3821,14 @@ declare class PlayTests {
      * @returns Promise
      */
     static show<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Get all the play tests that are associated with the current user.
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @returns Promise
+     */
+    static mine<T>(title_id: string): AxiosPromise<Response<T>>;
 }
 
 interface Route {

@@ -694,6 +694,19 @@ class Communities {
         return Requests.processRoute(CommunitiesRoute.routes.scheduleCampaign, data, { community_id, newsletter_id, campaign_id }, params);
     }
 
+    /**
+     * Test an email campaign by sending an email to the current user.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param data The scheduling data (e.g., scheduled_at).
+     * @returns Promise
+     */
+    public static testCampaign<T>(community_id: string, newsletter_id: string, campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.testCampaign, data, { community_id, newsletter_id, campaign_id }, params);
+    }
+
     // Emails
 
     /**

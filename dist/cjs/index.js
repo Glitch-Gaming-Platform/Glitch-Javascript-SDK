@@ -19782,6 +19782,7 @@ var CommunitiesRoute = /** @class */ (function () {
         deleteCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE },
         sendCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns/{campaign_id}/send', method: HTTP_METHODS.POST },
         scheduleCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns/{campaign_id}/schedule', method: HTTP_METHODS.POST },
+        testCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns/{campaign_id}/test', method: HTTP_METHODS.POST },
         // Emails
         listCampaignEmails: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns/{campaign_id}/emails', method: HTTP_METHODS.GET },
         // Subscribers (admin routes)
@@ -20400,6 +20401,18 @@ var Communities = /** @class */ (function () {
      */
     Communities.scheduleCampaign = function (community_id, newsletter_id, campaign_id, data, params) {
         return Requests.processRoute(CommunitiesRoute.routes.scheduleCampaign, data, { community_id: community_id, newsletter_id: newsletter_id, campaign_id: campaign_id }, params);
+    };
+    /**
+     * Test an email campaign by sending an email to the current user.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param campaign_id The ID of the campaign.
+     * @param data The scheduling data (e.g., scheduled_at).
+     * @returns Promise
+     */
+    Communities.testCampaign = function (community_id, newsletter_id, campaign_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.testCampaign, data, { community_id: community_id, newsletter_id: newsletter_id, campaign_id: campaign_id }, params);
     };
     // Emails
     /**
@@ -24133,6 +24146,7 @@ var PlayTestsRoute = /** @class */ (function () {
         declineRequest: { url: '/playtests/{title_id}/decline/{playtest_id}', method: HTTP_METHODS.POST },
         cancelRequest: { url: '/playtests/{title_id}/cancel/{playtest_id}', method: HTTP_METHODS.POST },
         show: { url: '/playtests/{title_id}/view/{playtest_id}', method: HTTP_METHODS.GET },
+        mine: { url: '/playtests/{title_id}/mine', method: HTTP_METHODS.GET },
     };
     return PlayTestsRoute;
 }());
@@ -24147,7 +24161,7 @@ var PlayTests = /** @class */ (function () {
      * @param params Optional query parameters.
      * @returns Promise
      */
-    PlayTests.index = function (title_id, params) {
+    PlayTests.list = function (title_id, params) {
         return Requests.processRoute(PlayTestsRoute.routes.index, undefined, { title_id: title_id }, params);
     };
     /**
@@ -24251,6 +24265,16 @@ var PlayTests = /** @class */ (function () {
      */
     PlayTests.show = function (title_id, playtest_id) {
         return Requests.processRoute(PlayTestsRoute.routes.show, {}, { title_id: title_id, playtest_id: playtest_id });
+    };
+    /**
+     * Get all the play tests that are associated with the current user.
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @returns Promise
+     */
+    PlayTests.mine = function (title_id) {
+        return Requests.processRoute(PlayTestsRoute.routes.mine, {}, { title_id: title_id });
     };
     return PlayTests;
 }());

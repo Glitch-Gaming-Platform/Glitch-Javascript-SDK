@@ -8,7 +8,7 @@ declare class PlayTests {
      * @param params Optional query parameters.
      * @returns Promise
      */
-    static index<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static list<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * User requests to test a title.
      *
@@ -91,5 +91,13 @@ declare class PlayTests {
      * @returns Promise
      */
     static show<T>(title_id: string, playtest_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Get all the play tests that are associated with the current user.
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @returns Promise
+     */
+    static mine<T>(title_id: string): AxiosPromise<Response<T>>;
 }
 export default PlayTests;
