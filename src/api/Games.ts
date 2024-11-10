@@ -38,6 +38,17 @@ class Games {
         return Requests.processRoute(GamesRoutes.routes.createCampaignData, data, {game_id : game_id}, params);
     }
 
+    /**
+     * Generates game data for this game.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/ExternalGames/generateCampaign
+     * 
+     * @returns promise
+     */
+    public static createGameTitle<T>(game_id : string, data?: object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(GamesRoutes.routes.createGameTitle, data, {game_id : game_id}, params);
+    }
+
 }
 
 export default Games;

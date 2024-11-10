@@ -10665,6 +10665,7 @@ var GamesRoutes = /** @class */ (function () {
         listGames: { url: '/games', method: HTTP_METHODS.GET },
         viewGame: { url: '/games/{game_id}', method: HTTP_METHODS.GET },
         createCampaignData: { url: '/games/{game_id}/generateCampaign', method: HTTP_METHODS.POST },
+        createGameTitle: { url: '/games/{game_id}/generateTitle', method: HTTP_METHODS.POST },
     };
     return GamesRoutes;
 }());
@@ -10701,6 +10702,16 @@ var Games = /** @class */ (function () {
      */
     Games.createCampaignData = function (game_id, data, params) {
         return Requests.processRoute(GamesRoutes.routes.createCampaignData, data, { game_id: game_id }, params);
+    };
+    /**
+     * Generates game data for this game.
+     *
+     * @see https://api.glitch.fun/api/documentation#/ExternalGames/generateCampaign
+     *
+     * @returns promise
+     */
+    Games.createGameTitle = function (game_id, data, params) {
+        return Requests.processRoute(GamesRoutes.routes.createGameTitle, data, { game_id: game_id }, params);
     };
     return Games;
 }());
