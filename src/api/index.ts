@@ -25,6 +25,8 @@ import Publications from "./Publications";
 import GameShows from "./GameShows";
 import Newsletters from "./Newsletters"
 import PlayTests from "./PlayTests";
+import Media from "./Media";
+import Scheduler from "./Scheduler";
 
 export {Auth};
 export {Competitions};
@@ -53,3 +55,5 @@ export {Publications};
 export {GameShows};
 export {Newsletters};
 export {PlayTests};
+export {Media};
+export {Scheduler};

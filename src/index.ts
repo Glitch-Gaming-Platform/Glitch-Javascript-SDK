@@ -29,6 +29,8 @@ import {Publications} from "./api";
 import {GameShows} from "./api";
 import {Newsletters} from "./api";
 import {PlayTests} from "./api";
+import {Media} from "./api";
+import {Scheduler} from "./api";
 
 
 
@@ -88,7 +90,9 @@ class Glitch {
         TipPackagePurchases: TipPackagePurchases,
         Publications : Publications,
         Newsletters : Newsletters,
-        PlayTests : PlayTests
+        PlayTests : PlayTests,
+        Media : Media,
+        Scheduler : Scheduler,
     }
 
     public static util = {

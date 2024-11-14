@@ -9288,8 +9288,11 @@ var SocialPostsRoute = /** @class */ (function () {
         getPosts: { url: '/socialposts', method: HTTP_METHODS.GET },
         createPost: { url: '/socialposts', method: HTTP_METHODS.POST },
         retrievePost: { url: '/socialposts/{post_id}', method: HTTP_METHODS.GET },
+        updatePost: { url: '/socialposts/{post_id}', method: HTTP_METHODS.PUT },
         dispute: { url: '/social/{post_id}/dispute', method: HTTP_METHODS.POST },
         history: { url: '/socialposts/{post_id}/history', method: HTTP_METHODS.GET },
+        addMedia: { url: '/socialposts/{post_id}/addMedia', method: HTTP_METHODS.POST },
+        removeMedia: { url: '/socialposts/{post_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
     };
     return SocialPostsRoute;
 }());
@@ -9330,6 +9333,18 @@ var SocialPosts = /** @class */ (function () {
         return Requests.processRoute(SocialPostsRoute.routes.retrievePost, {}, { post_id: post_id }, params);
     };
     /**
+     * Update the informationa bout a post, as long as it hasn't been posted.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/showPostStorage
+     *
+     * @param post_id The id fo the post to retrieve.
+     *
+     * @returns promise
+     */
+    SocialPosts.update = function (post_id, data, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.updatePost, data, { post_id: post_id }, params);
+    };
+    /**
     * Dispute a post as being fraudulent.,s
     *
     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/disputePost
@@ -9352,6 +9367,32 @@ var SocialPosts = /** @class */ (function () {
     */
     SocialPosts.history = function (post_id, params) {
         return Requests.processRoute(SocialPostsRoute.routes.history, {}, { post_id: post_id }, params);
+    };
+    /**
+     * Add media to a social media post.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/addMediaToSocialMediaPost
+     *
+     * @param post_id The ID of the social media post.
+     * @param data The data to be sent in the request body.
+     *
+     * @returns promise
+     */
+    SocialPosts.addMedia = function (post_id, data, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.addMedia, data, { post_id: post_id }, params);
+    };
+    /**
+     * Remove media from a social media post.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/removeMediaFromSocialMediaPost
+     *
+     * @param post_id The ID of the social media post.
+     * @param media_id The ID of the media to remove.
+     *
+     * @returns promise
+     */
+    SocialPosts.removeMedia = function (post_id, media_id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.removeMedia, {}, { post_id: post_id, media_id: media_id }, params);
     };
     return SocialPosts;
 }());
@@ -11106,6 +11147,364 @@ var PlayTests = /** @class */ (function () {
     return PlayTests;
 }());
 
+var MediaRoute = /** @class */ (function () {
+    function MediaRoute() {
+    }
+    MediaRoute.routes = {
+        upload: { url: '/media', method: HTTP_METHODS.POST },
+        getMedia: { url: '/media/{meda_id}', method: HTTP_METHODS.GET },
+    };
+    return MediaRoute;
+}());
+
+var Media = /** @class */ (function () {
+    function Media() {
+    }
+    /**
+     * Upload media content using a File object.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Media%20Route/uploadMedia
+     *
+     * @param file The file object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    Media.uploadFile = function (file, data, params) {
+        return Requests.uploadFile(MediaRoute.routes.upload.url, 'media', file, data, params);
+    };
+    /**
+     * Upload media content using a Blob.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Media%20Route/uploadMedia
+     *
+     * @param blob The Blob object to upload.
+     * @param data Any additional data to pass along to the upload.
+     *
+     * @returns promise
+     */
+    Media.uploadBlob = function (blob, data, params) {
+        return Requests.uploadBlob(MediaRoute.routes.upload.url, 'media', blob, data, params);
+    };
+    /**
+     * Get media details.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Media%20Route/getMedia
+     *
+     * @param id The ID of the media item.
+     *
+     * @returns promise
+     */
+    Media.get = function (media_id, params) {
+        return Requests.processRoute(MediaRoute.routes.getMedia, {}, { media_id: media_id }, params);
+    };
+    return Media;
+}());
+
+var SchedulerRoute = /** @class */ (function () {
+    function SchedulerRoute() {
+    }
+    SchedulerRoute.routes = {
+        // Title Promotion Schedule Routes
+        listSchedules: { url: '/schedulers', method: HTTP_METHODS.GET },
+        createSchedule: { url: '/schedulers', method: HTTP_METHODS.POST },
+        getSchedule: { url: '/schedulers/{scheduler_id}', method: HTTP_METHODS.GET },
+        updateSchedule: { url: '/schedulers/{scheduler_id}', method: HTTP_METHODS.PUT },
+        deleteSchedule: { url: '/schedulers/{scheduler_id}', method: HTTP_METHODS.DELETE },
+        getSchedulePosts: { url: '/schedulers/{scheduler_id}/posts', method: HTTP_METHODS.GET },
+        // Title Update Routes
+        listUpdates: { url: '/schedulers/{scheduler_id}/updates', method: HTTP_METHODS.GET },
+        createUpdate: { url: '/schedulers/{scheduler_id}/updates', method: HTTP_METHODS.POST },
+        getUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.GET },
+        updateUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.PUT },
+        deleteUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.DELETE },
+        // Clear OAuth Routes
+        clearTwitterAuth: { url: '/schedulers/{scheduler_id}/clearTwitterAuth', method: HTTP_METHODS.DELETE },
+        clearFacebookAuth: { url: '/schedulers/{scheduler_id}/clearFacebookAuth', method: HTTP_METHODS.DELETE },
+        clearInstagramAuth: { url: '/schedulers/{scheduler_id}/clearInstagramAuth', method: HTTP_METHODS.DELETE },
+        clearSnapchatAuth: { url: '/schedulers/{scheduler_id}/clearSnapchatAuth', method: HTTP_METHODS.DELETE },
+        clearTikTokAuth: { url: '/schedulers/{scheduler_id}/clearTikTokAuth', method: HTTP_METHODS.DELETE },
+        clearTwitchAuth: { url: '/schedulers/{scheduler_id}/clearTwitchAuth', method: HTTP_METHODS.DELETE },
+        clearKickAuth: { url: '/schedulers/{scheduler_id}/clearKickAuth', method: HTTP_METHODS.DELETE },
+        clearRedditAuth: { url: '/schedulers/{scheduler_id}/clearRedditAuth', method: HTTP_METHODS.DELETE },
+        clearYouTubeAuth: { url: '/schedulers/{scheduler_id}/clearYouTubeAuth', method: HTTP_METHODS.DELETE },
+        clearPatreonAuth: { url: '/schedulers/{scheduler_id}/clearPatreonAuth', method: HTTP_METHODS.DELETE },
+        clearPinterestAuth: { url: '/schedulers/{scheduler_id}/clearPinterestAuth', method: HTTP_METHODS.DELETE },
+        clearSteamAuth: { url: '/schedulers/{scheduler_id}/clearSteamAuth', method: HTTP_METHODS.DELETE },
+        clearDiscordAuth: { url: '/schedulers/{scheduler_id}/clearDiscordAuth', method: HTTP_METHODS.DELETE },
+        clearBlueskyAuth: { url: '/schedulers/{scheduler_id}/clearBlueskyAuth', method: HTTP_METHODS.DELETE },
+    };
+    return SchedulerRoute;
+}());
+
+var Scheduler = /** @class */ (function () {
+    function Scheduler() {
+    }
+    /**
+     * List promotion schedules.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/getTitlePromotionSchedules
+     *
+     * @returns promise
+     */
+    Scheduler.listSchedules = function (params) {
+        return Requests.processRoute(SchedulerRoute.routes.listSchedules, {}, {}, params);
+    };
+    /**
+     * Create a new promotion schedule.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/createTitlePromotionSchedule
+     *
+     * @param data The data for the new schedule.
+     *
+     * @returns promise
+     */
+    Scheduler.createSchedule = function (data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.createSchedule, data, {}, params);
+    };
+    /**
+     * Get a specific promotion schedule.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/getTitlePromotionSchedule
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     *
+     * @returns promise
+     */
+    Scheduler.getSchedule = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getSchedule, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Update a promotion schedule.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitlePromotionSchedule
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Scheduler.updateSchedule = function (scheduler_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.updateSchedule, data, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Delete a promotion schedule.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/deleteTitlePromotionSchedule
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     *
+     * @returns promise
+     */
+    Scheduler.deleteSchedule = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.deleteSchedule, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Get social media posts related to a promotion schedule.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/getPromotionScheduleSocialPosts
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     *
+     * @returns promise
+     */
+    Scheduler.getSchedulePosts = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getSchedulePosts, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * List title updates for a promotion schedule.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/getTitleUpdates
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     *
+     * @returns promise
+     */
+    Scheduler.listUpdates = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.listUpdates, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Create a new title update for a promotion schedule.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/createTitleUpdate
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The data for the new update.
+     *
+     * @returns promise
+     */
+    Scheduler.createUpdate = function (scheduler_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.createUpdate, data, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Get a specific title update.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/getTitleUpdate
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     *
+     * @returns promise
+     */
+    Scheduler.getUpdate = function (scheduler_id, update_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getUpdate, {}, { scheduler_id: scheduler_id, update_id: update_id }, params);
+    };
+    /**
+     * Update a title update.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitleUpdate
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Scheduler.updateUpdate = function (scheduler_id, update_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.updateUpdate, data, { scheduler_id: scheduler_id, update_id: update_id }, params);
+    };
+    /**
+     * Delete a title update.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/deleteTitleUpdate
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     *
+     * @returns promise
+     */
+    Scheduler.deleteUpdate = function (scheduler_id, update_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.deleteUpdate, {}, { scheduler_id: scheduler_id, update_id: update_id }, params);
+    };
+    /**
+     * Clear Twitter OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearTwitterAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearTwitterAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Facebook OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearFacebookAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearFacebookAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Instagram OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearInstagramAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearInstagramAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Snapchat OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearSnapchatAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearSnapchatAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear TikTok OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearTikTokAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearTikTokAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Twitch OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearTwitchAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearTwitchAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Kick OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearKickAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearKickAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Reddit OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearRedditAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearRedditAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear YouTube OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearYouTubeAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearYouTubeAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Patreon OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearPatreonAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearPatreonAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Pinterest OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearPinterestAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearPinterestAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Steam OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearSteamAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearSteamAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Discord OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearDiscordAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearDiscordAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Bluesky OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearBlueskyAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearBlueskyAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    return Scheduler;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -11529,7 +11928,9 @@ var Glitch = /** @class */ (function () {
         TipPackagePurchases: TipPackagePurchases,
         Publications: Publications,
         Newsletters: Newsletters,
-        PlayTests: PlayTests
+        PlayTests: PlayTests,
+        Media: Media,
+        Scheduler: Scheduler,
     };
     Glitch.util = {
         Requests: Requests,

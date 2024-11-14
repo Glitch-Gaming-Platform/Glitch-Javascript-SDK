@@ -25,6 +25,8 @@ import { Publications } from "./api";
 import { GameShows } from "./api";
 import { Newsletters } from "./api";
 import { PlayTests } from "./api";
+import { Media } from "./api";
+import { Scheduler } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -71,6 +73,8 @@ declare class Glitch {
         Publications: typeof Publications;
         Newsletters: typeof Newsletters;
         PlayTests: typeof PlayTests;
+        Media: typeof Media;
+        Scheduler: typeof Scheduler;
     };
     static util: {
         Requests: typeof Requests;
