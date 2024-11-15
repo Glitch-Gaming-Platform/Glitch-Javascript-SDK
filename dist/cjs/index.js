@@ -23891,6 +23891,7 @@ var GamesRoutes = /** @class */ (function () {
         viewGame: { url: '/games/{game_id}', method: HTTP_METHODS.GET },
         createCampaignData: { url: '/games/{game_id}/generateCampaign', method: HTTP_METHODS.POST },
         createGameTitle: { url: '/games/{game_id}/generateTitle', method: HTTP_METHODS.POST },
+        createGameScheduler: { url: '/games/{game_id}/generateScheduler', method: HTTP_METHODS.POST },
     };
     return GamesRoutes;
 }());
@@ -23937,6 +23938,16 @@ var Games = /** @class */ (function () {
      */
     Games.createGameTitle = function (game_id, data, params) {
         return Requests.processRoute(GamesRoutes.routes.createGameTitle, data, { game_id: game_id }, params);
+    };
+    /**
+     * Generates game scheduler data for this game.
+     *
+     * @see https://api.glitch.fun/api/documentation#/ExternalGames/generateCampaign
+     *
+     * @returns promise
+     */
+    Games.createGameScheduler = function (game_id, data, params) {
+        return Requests.processRoute(GamesRoutes.routes.createGameScheduler, data, { game_id: game_id }, params);
     };
     return Games;
 }());
@@ -24417,6 +24428,11 @@ var SchedulerRoute = /** @class */ (function () {
         clearSteamAuth: { url: '/schedulers/{scheduler_id}/clearSteamAuth', method: HTTP_METHODS.DELETE },
         clearDiscordAuth: { url: '/schedulers/{scheduler_id}/clearDiscordAuth', method: HTTP_METHODS.DELETE },
         clearBlueskyAuth: { url: '/schedulers/{scheduler_id}/clearBlueskyAuth', method: HTTP_METHODS.DELETE },
+        //Social Utility Routes
+        getFacebookGroups: { url: '/schedulers/{scheduler_id}/facebook/groups', method: HTTP_METHODS.GET },
+        getInstagramAccounts: { url: '/schedulers/{scheduler_id}/instagram/accounts', method: HTTP_METHODS.GET },
+        getRedditSubreddits: { url: '/schedulers/{scheduler_id}/reddit/subreddits', method: HTTP_METHODS.GET },
+        getRedditSubredditFlairs: { url: '/schedulers/{scheduler_id}/reddit/subreddits/{subreddit}/flairs', method: HTTP_METHODS.GET },
     };
     return SchedulerRoute;
 }());
@@ -24685,6 +24701,43 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.clearBlueskyAuth = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.clearBlueskyAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+    * Get Facebook groups associated with the scheduler's Facebook account.
+    *
+    * @param scheduler_id The ID of the promotion schedule.
+    * @returns promise
+    */
+    Scheduler.getFacebookGroups = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getFacebookGroups, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Get Instagram accounts associated with the scheduler's Instagram account.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.getInstagramAccounts = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getInstagramAccounts, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Get Reddit subreddits associated with the scheduler's Reddit account.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.getRedditSubreddits = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getRedditSubreddits, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Get flairs for a specific Reddit subreddit.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param subreddit The name of the subreddit.
+     * @returns promise
+     */
+    Scheduler.getRedditSubredditFlairs = function (scheduler_id, subreddit, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getRedditSubredditFlairs, {}, { scheduler_id: scheduler_id, subreddit: subreddit }, params);
     };
     return Scheduler;
 }());

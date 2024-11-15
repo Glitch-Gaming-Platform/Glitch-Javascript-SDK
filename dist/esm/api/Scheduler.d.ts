@@ -213,5 +213,34 @@ declare class Scheduler {
      * @returns promise
      */
     static clearBlueskyAuth<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Get Facebook groups associated with the scheduler's Facebook account.
+    *
+    * @param scheduler_id The ID of the promotion schedule.
+    * @returns promise
+    */
+    static getFacebookGroups<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get Instagram accounts associated with the scheduler's Instagram account.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    static getInstagramAccounts<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get Reddit subreddits associated with the scheduler's Reddit account.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    static getRedditSubreddits<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get flairs for a specific Reddit subreddit.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param subreddit The name of the subreddit.
+     * @returns promise
+     */
+    static getRedditSubredditFlairs<T>(scheduler_id: string, subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Scheduler;

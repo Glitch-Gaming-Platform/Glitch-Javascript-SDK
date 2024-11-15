@@ -49,6 +49,17 @@ class Games {
         return Requests.processRoute(GamesRoutes.routes.createGameTitle, data, {game_id : game_id}, params);
     }
 
+    /**
+     * Generates game scheduler data for this game.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/ExternalGames/generateCampaign
+     * 
+     * @returns promise
+     */
+    public static createGameScheduler<T>(game_id : string, data?: object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(GamesRoutes.routes.createGameScheduler, data, {game_id : game_id}, params);
+    }
+
 }
 
 export default Games;

@@ -291,6 +291,47 @@ class Scheduler {
         return Requests.processRoute(SchedulerRoute.routes.clearBlueskyAuth, {}, { scheduler_id }, params);
     }
 
+     /**
+     * Get Facebook groups associated with the scheduler's Facebook account.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+     public static getFacebookGroups<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getFacebookGroups, {}, { scheduler_id }, params);
+    }
+
+    /**
+     * Get Instagram accounts associated with the scheduler's Instagram account.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    public static getInstagramAccounts<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getInstagramAccounts, {}, { scheduler_id }, params);
+    }
+
+    /**
+     * Get Reddit subreddits associated with the scheduler's Reddit account.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    public static getRedditSubreddits<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getRedditSubreddits, {}, { scheduler_id }, params);
+    }
+
+    /**
+     * Get flairs for a specific Reddit subreddit.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param subreddit The name of the subreddit.
+     * @returns promise
+     */
+    public static getRedditSubredditFlairs<T>(scheduler_id: string, subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getRedditSubredditFlairs, {}, { scheduler_id, subreddit }, params);
+    }
+
 }
 
 export default Scheduler;

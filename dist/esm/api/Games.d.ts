@@ -33,5 +33,13 @@ declare class Games {
      * @returns promise
      */
     static createGameTitle<T>(game_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Generates game scheduler data for this game.
+     *
+     * @see https://api.glitch.fun/api/documentation#/ExternalGames/generateCampaign
+     *
+     * @returns promise
+     */
+    static createGameScheduler<T>(game_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Games;
