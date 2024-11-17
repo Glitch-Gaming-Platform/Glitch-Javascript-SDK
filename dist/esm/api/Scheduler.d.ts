@@ -242,5 +242,12 @@ declare class Scheduler {
      * @returns promise
      */
     static getRedditSubredditFlairs<T>(scheduler_id: string, subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Get Discord channels associated with the scheduler's Discord account.
+    *
+    * @param scheduler_id The ID of the promotion schedule.
+    * @returns promise
+    */
+    static getDiscordChannels<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Scheduler;

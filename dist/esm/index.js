@@ -11249,6 +11249,7 @@ var SchedulerRoute = /** @class */ (function () {
         getInstagramAccounts: { url: '/schedulers/{scheduler_id}/instagram/accounts', method: HTTP_METHODS.GET },
         getRedditSubreddits: { url: '/schedulers/{scheduler_id}/reddit/subreddits', method: HTTP_METHODS.GET },
         getRedditSubredditFlairs: { url: '/schedulers/{scheduler_id}/reddit/subreddits/{subreddit}/flairs', method: HTTP_METHODS.GET },
+        getDiscordChannels: { url: '/schedulers/{scheduler_id}/discord/channels', method: HTTP_METHODS.GET },
     };
     return SchedulerRoute;
 }());
@@ -11554,6 +11555,15 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.getRedditSubredditFlairs = function (scheduler_id, subreddit, params) {
         return Requests.processRoute(SchedulerRoute.routes.getRedditSubredditFlairs, {}, { scheduler_id: scheduler_id, subreddit: subreddit }, params);
+    };
+    /**
+    * Get Discord channels associated with the scheduler's Discord account.
+    *
+    * @param scheduler_id The ID of the promotion schedule.
+    * @returns promise
+    */
+    Scheduler.getDiscordChannels = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getDiscordChannels, {}, { scheduler_id: scheduler_id }, params);
     };
     return Scheduler;
 }());

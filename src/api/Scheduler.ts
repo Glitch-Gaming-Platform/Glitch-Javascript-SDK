@@ -332,6 +332,16 @@ class Scheduler {
         return Requests.processRoute(SchedulerRoute.routes.getRedditSubredditFlairs, {}, { scheduler_id, subreddit }, params);
     }
 
+     /**
+     * Get Discord channels associated with the scheduler's Discord account.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+     public static getDiscordChannels<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getDiscordChannels, {}, { scheduler_id }, params);
+    }
+
 }
 
 export default Scheduler;
