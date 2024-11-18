@@ -9293,6 +9293,7 @@ var SocialPostsRoute = /** @class */ (function () {
         history: { url: '/socialposts/{post_id}/history', method: HTTP_METHODS.GET },
         addMedia: { url: '/socialposts/{post_id}/addMedia', method: HTTP_METHODS.POST },
         removeMedia: { url: '/socialposts/{post_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
+        reschedule: { url: '/socialposts/{post_id}/reschedule', method: HTTP_METHODS.POST },
     };
     return SocialPostsRoute;
 }());
@@ -9393,6 +9394,19 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.removeMedia = function (post_id, media_id, params) {
         return Requests.processRoute(SocialPostsRoute.routes.removeMedia, {}, { post_id: post_id, media_id: media_id }, params);
+    };
+    /**
+    * Reschedule a post that has failed.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/addMediaToSocialMediaPost
+    *
+    * @param post_id The ID of the social media post.
+    * @param data The data to be sent in the request body.
+    *
+    * @returns promise
+    */
+    SocialPosts.reschedule = function (post_id, data, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.reschedule, data, { post_id: post_id }, params);
     };
     return SocialPosts;
 }());

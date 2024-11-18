@@ -2646,6 +2646,17 @@ declare class SocialPosts {
      * @returns promise
      */
     static removeMedia<T>(post_id: string, media_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Reschedule a post that has failed.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/addMediaToSocialMediaPost
+    *
+    * @param post_id The ID of the social media post.
+    * @param data The data to be sent in the request body.
+    *
+    * @returns promise
+    */
+    static reschedule<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Titles {

@@ -112,6 +112,20 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.removeMedia, {}, { post_id: post_id, media_id: media_id }, params);
     }
 
+     /**
+     * Reschedule a post that has failed.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/addMediaToSocialMediaPost
+     * 
+     * @param post_id The ID of the social media post.
+     * @param data The data to be sent in the request body.
+     * 
+     * @returns promise
+     */
+     public static reschedule<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.reschedule, data, { post_id: post_id }, params);
+    }
+
 }
 
 export default SocialPosts;
