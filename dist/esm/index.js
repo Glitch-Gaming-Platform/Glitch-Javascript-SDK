@@ -11582,6 +11582,104 @@ var Scheduler = /** @class */ (function () {
     return Scheduler;
 }());
 
+// src/routes/FunnelRoutes.tsx
+var FunnelRoutes = /** @class */ (function () {
+    function FunnelRoutes() {
+    }
+    FunnelRoutes.routes = {
+        index: { url: '/funnels', method: HTTP_METHODS.GET },
+        funnel: { url: '/funnels/funnel', method: HTTP_METHODS.GET },
+        metrics: { url: '/funnels/metrics', method: HTTP_METHODS.GET },
+        stages: { url: '/funnels/stages', method: HTTP_METHODS.GET },
+        daily: { url: '/funnels/daily', method: HTTP_METHODS.GET },
+        monthly: { url: '/funnels/monthly', method: HTTP_METHODS.GET },
+        yearly: { url: '/funnels/yearly', method: HTTP_METHODS.GET },
+    };
+    return FunnelRoutes;
+}());
+
+// src/controllers/Funnel.tsx
+var Funnel = /** @class */ (function () {
+    function Funnel() {
+    }
+    /**
+     * Get funnel metrics.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels
+     *
+     * @param params Query parameters for filtering (title_id, community_id, start_date, end_date)
+     * @returns Promise with funnel metrics data
+     */
+    Funnel.index = function (params) {
+        return Requests.processRoute(FunnelRoutes.routes.index, undefined, undefined, params);
+    };
+    /**
+     * Get funnel-optimized metrics.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels_funnel
+     *
+     * @param params Query parameters for filtering (title_id, community_id, start_date, end_date)
+     * @returns Promise with funnel data optimized for visual funnels
+     */
+    Funnel.funnel = function (params) {
+        return Requests.processRoute(FunnelRoutes.routes.funnel, undefined, undefined, params);
+    };
+    /**
+     * Get available metrics.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels_metrics
+     *
+     * @returns Promise with list of available metrics
+     */
+    Funnel.metrics = function () {
+        return Requests.processRoute(FunnelRoutes.routes.metrics);
+    };
+    /**
+     * Get available stages.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels_stages
+     *
+     * @returns Promise with list of available stages
+     */
+    Funnel.stages = function () {
+        return Requests.processRoute(FunnelRoutes.routes.stages);
+    };
+    /**
+     * Get daily funnel metrics.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels_daily
+     *
+     * @param params Query parameters for filtering (title_id, community_id, start_date, end_date)
+     * @returns Promise with daily funnel metrics data
+     */
+    Funnel.daily = function (params) {
+        return Requests.processRoute(FunnelRoutes.routes.daily, undefined, undefined, params);
+    };
+    /**
+     * Get monthly funnel metrics.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels_monthly
+     *
+     * @param params Query parameters for filtering (title_id, community_id, start_date, end_date)
+     * @returns Promise with monthly funnel metrics data
+     */
+    Funnel.monthly = function (params) {
+        return Requests.processRoute(FunnelRoutes.routes.monthly, undefined, undefined, params);
+    };
+    /**
+     * Get yearly funnel metrics.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels_yearly
+     *
+     * @param params Query parameters for filtering (title_id, community_id, start_date, end_date)
+     * @returns Promise with yearly funnel metrics data
+     */
+    Funnel.yearly = function (params) {
+        return Requests.processRoute(FunnelRoutes.routes.yearly, undefined, undefined, params);
+    };
+    return Funnel;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -12008,6 +12106,7 @@ var Glitch = /** @class */ (function () {
         PlayTests: PlayTests,
         Media: Media,
         Scheduler: Scheduler,
+        Funnel: Funnel,
     };
     Glitch.util = {
         Requests: Requests,
