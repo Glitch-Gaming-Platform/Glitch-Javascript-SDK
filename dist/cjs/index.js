@@ -18594,8 +18594,8 @@ var Requests = /** @class */ (function () {
         }
         return Requests.request('DELETE', url);
     };
-    Requests.uploadFile = function (url, filename, file, data, params, onUploadProgress // Correct type here
-    ) {
+    Requests.uploadFile = function (url, filename, file, data, params, onUploadProgress) {
+        // Process URL and params
         if (params && Object.keys(params).length > 0) {
             var queryString = Object.entries(params)
                 .map(function (_a) {
@@ -18605,6 +18605,7 @@ var Requests = /** @class */ (function () {
                 .join('&');
             url = "".concat(url, "?").concat(queryString);
         }
+        // Prepare FormData
         var formData = new FormData();
         formData.append(filename, file);
         if (Requests.community_id) {
@@ -18613,18 +18614,27 @@ var Requests = /** @class */ (function () {
         for (var key in data) {
             formData.append(key, data[key]);
         }
-        var config = {
-            method: 'POST',
-            url: url,
-            data: formData,
-            headers: __assign({ 'Content-Type': 'multipart/form-data' }, (Requests.authToken && { Authorization: "Bearer ".concat(Requests.authToken) })),
-            onUploadProgress: onUploadProgress,
+        // Prepare headers
+        var headers = {
+            'Content-Type': 'multipart/form-data',
         };
-        return axios$1(config);
+        if (Requests.authToken) {
+            headers['Authorization'] = "Bearer ".concat(Requests.authToken);
+        }
+        // Format URL
+        url = url.replace(/\/\//g, '/');
+        var uri = "".concat(Requests.baseUrl).concat(url).replace(/\/\//g, '/');
+        // Make the request
+        return axios$1({
+            method: 'POST',
+            url: uri,
+            data: formData,
+            headers: headers,
+            onUploadProgress: onUploadProgress,
+        });
     };
-    // Modify uploadBlob method
-    Requests.uploadBlob = function (url, filename, blob, data, params, onUploadProgress // Corrected type
-    ) {
+    Requests.uploadBlob = function (url, filename, blob, data, params, onUploadProgress) {
+        // Process URL and params
         if (params && Object.keys(params).length > 0) {
             var queryString = Object.entries(params)
                 .map(function (_a) {
@@ -18634,6 +18644,7 @@ var Requests = /** @class */ (function () {
                 .join('&');
             url = "".concat(url, "?").concat(queryString);
         }
+        // Prepare FormData
         var formData = new FormData();
         formData.append(filename, blob);
         if (Requests.community_id) {
@@ -18642,14 +18653,24 @@ var Requests = /** @class */ (function () {
         for (var key in data) {
             formData.append(key, data[key]);
         }
-        var config = {
-            method: 'POST',
-            url: url,
-            data: formData,
-            headers: __assign({ 'Content-Type': 'multipart/form-data' }, (Requests.authToken && { Authorization: "Bearer ".concat(Requests.authToken) })),
-            onUploadProgress: onUploadProgress,
+        // Prepare headers
+        var headers = {
+            'Content-Type': 'multipart/form-data',
         };
-        return axios$1(config);
+        if (Requests.authToken) {
+            headers['Authorization'] = "Bearer ".concat(Requests.authToken);
+        }
+        // Format URL
+        url = url.replace(/\/\//g, '/');
+        var uri = "".concat(Requests.baseUrl).concat(url).replace(/\/\//g, '/');
+        // Make the request
+        return axios$1({
+            method: 'POST',
+            url: uri,
+            data: formData,
+            headers: headers,
+            onUploadProgress: onUploadProgress,
+        });
     };
     // Method adapted for browser environments
     Requests.uploadFileInChunks = function (file, uploadUrl, onProgress, data, chunkSize) {

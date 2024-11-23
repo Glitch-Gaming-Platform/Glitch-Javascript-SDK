@@ -141,87 +141,109 @@ class Requests {
     file: File | Blob,
     data?: any,
     params?: Record<string, any>,
-    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void // Correct type here
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
   ): AxiosPromise<Response<T>> {
+    // Process URL and params
     if (params && Object.keys(params).length > 0) {
       const queryString = Object.entries(params)
         .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
         .join('&');
       url = `${url}?${queryString}`;
     }
-  
+
+    // Prepare FormData
     const formData = new FormData();
     formData.append(filename, file);
-  
+
     if (Requests.community_id) {
       data = {
         ...data,
         communities: [Requests.community_id],
       };
     }
-  
+
     for (let key in data) {
       formData.append(key, data[key]);
     }
-  
-    const config: AxiosRequestConfig = {
-      method: 'POST',
-      url,
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        ...(Requests.authToken && { Authorization: `Bearer ${Requests.authToken}` }),
-      },
-      onUploadProgress, // Pass directly, as the type now matches
+
+    // Prepare headers
+    let headers: { [key: string]: string } = {
+      'Content-Type': 'multipart/form-data',
     };
-  
-    return axios(config);
+
+    if (Requests.authToken) {
+      headers['Authorization'] = `Bearer ${Requests.authToken}`;
+    }
+
+    // Format URL
+    url = url.replace(/\/\//g, '/');
+    const uri = `${Requests.baseUrl}${url}`.replace(/\/\//g, '/');
+
+    // Make the request
+    return axios({
+      method: 'POST',
+      url: uri,
+      data: formData,
+      headers,
+      onUploadProgress,
+    });
   }
 
-  // Modify uploadBlob method
   public static uploadBlob<T>(
     url: string,
     filename: string,
     blob: Blob,
     data?: any,
     params?: Record<string, any>,
-    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void // Corrected type
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
   ): AxiosPromise<Response<T>> {
+    // Process URL and params
     if (params && Object.keys(params).length > 0) {
       const queryString = Object.entries(params)
         .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
         .join('&');
       url = `${url}?${queryString}`;
     }
-  
+
+    // Prepare FormData
     const formData = new FormData();
     formData.append(filename, blob);
-  
+
     if (Requests.community_id) {
       data = {
         ...data,
         communities: [Requests.community_id],
       };
     }
-  
+
     for (let key in data) {
       formData.append(key, data[key]);
     }
-  
-    const config: AxiosRequestConfig = {
-      method: 'POST',
-      url,
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        ...(Requests.authToken && { Authorization: `Bearer ${Requests.authToken}` }),
-      },
-      onUploadProgress, // Pass directly
+
+    // Prepare headers
+    let headers: { [key: string]: string } = {
+      'Content-Type': 'multipart/form-data',
     };
-  
-    return axios(config);
+
+    if (Requests.authToken) {
+      headers['Authorization'] = `Bearer ${Requests.authToken}`;
+    }
+
+    // Format URL
+    url = url.replace(/\/\//g, '/');
+    const uri = `${Requests.baseUrl}${url}`.replace(/\/\//g, '/');
+
+    // Make the request
+    return axios({
+      method: 'POST',
+      url: uri,
+      data: formData,
+      headers,
+      onUploadProgress,
+    });
   }
-  
+
+
   // Method adapted for browser environments
 
   public static async uploadFileInChunks<T>(
@@ -229,27 +251,27 @@ class Requests {
     uploadUrl: string,
     onProgress?: (totalSize: number, amountUploaded: number) => void,
     data?: any,
-    chunkSize ?: number, // Default chunk size of 1MB
+    chunkSize?: number, // Default chunk size of 1MB
   ): Promise<void> {
 
-    if(!chunkSize) {
+    if (!chunkSize) {
       chunkSize = 1024 * 1024
     }
     const fileSize = file.size;
     const totalChunks = Math.ceil(fileSize / chunkSize);
     let currentChunkIndex = 0;
     let totalUploaded = 0; // Keep track of the total uploaded bytes
-  
+
     // Generate a unique identifier for this upload session using the Web Cryptography API
     const array = new Uint32Array(4);
     window.crypto.getRandomValues(array);
     const identifier = Array.from(array, dec => ('0' + dec.toString(16)).substr(-2)).join('');
-  
+
     while (currentChunkIndex <= totalChunks) {
       const start = currentChunkIndex * chunkSize;
       const end = Math.min(start + chunkSize, fileSize);
       const chunk = file.slice(start, end);
-  
+
       const formData = new FormData();
       formData.append('video', chunk, file.name);
       formData.append('chunkIndex', currentChunkIndex.toString());
@@ -262,30 +284,30 @@ class Requests {
           formData.append(key, data[key]);
         }
       }
-  
+
       // Construct the full URL if necessary or use a method to determine the base URL
       const fullUploadUrl = `${Requests.baseUrl}${uploadUrl}`;
-  
+
       // Make sure the authorization token is included if required
       const headers: { [key: string]: string } = {};
       if (Requests.authToken) {
         headers['Authorization'] = `Bearer ${Requests.authToken}`;
       }
-  
+
       // Perform the upload
-      await axios.post(fullUploadUrl, formData, { 
+      await axios.post(fullUploadUrl, formData, {
         headers,
         onUploadProgress: (progressEvent) => {
           const currentChunkProgress = progressEvent.loaded; // Bytes uploaded of the current chunk
           // Calculate the total uploaded size including previous chunks and the current chunk's progress
           const totalProgress = totalUploaded + currentChunkProgress;
 
-          if(onProgress){
+          if (onProgress) {
             onProgress(fileSize, end);
           }
-        } 
+        }
       });
-  
+
       currentChunkIndex++;
     }
   }
