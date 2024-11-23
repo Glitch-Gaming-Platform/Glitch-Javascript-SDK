@@ -1,5 +1,5 @@
 import Response from "../util/Response";
-import { AxiosPromise } from "axios";
+import { AxiosProgressEvent, AxiosPromise } from "axios";
 declare class Media {
     /**
      * Upload media content using a File object.
@@ -11,7 +11,7 @@ declare class Media {
      *
      * @returns promise
      */
-    static uploadFile<T>(file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static uploadFile<T>(file: File, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     /**
      * Upload media content using a Blob.
      *
@@ -22,7 +22,7 @@ declare class Media {
      *
      * @returns promise
      */
-    static uploadBlob<T>(blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static uploadBlob<T>(blob: Blob, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     /**
      * Get media details.
      *

@@ -69,6 +69,20 @@ class Scheduler {
     }
 
     /**
+     * Test the tone of the scheduler.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitlePromotionSchedule
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The data to update.
+     * 
+     * @returns promise
+     */
+    public static testTone<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.testTone, data, { scheduler_id }, params);
+    }
+
+    /**
      * Get social media posts related to a promotion schedule.
      * 
      * @see https://api.glitch.fun/api/documentation#/Scheduler/getPromotionScheduleSocialPosts

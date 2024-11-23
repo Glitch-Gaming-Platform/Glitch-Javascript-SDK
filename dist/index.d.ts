@@ -1,4 +1,4 @@
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosProgressEvent } from 'axios';
 
 /**
  * Config
@@ -2792,6 +2792,14 @@ declare class Titles {
      * @returns promise
      */
     static uploadBannerImageBlob<T>(title_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Add media to a title.
+    */
+    static addMedia<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Remove media from a title.
+     */
+    static removeMedia<T>(title_id: string, media_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {
@@ -3901,7 +3909,7 @@ declare class Media {
      *
      * @returns promise
      */
-    static uploadFile<T>(file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static uploadFile<T>(file: File, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     /**
      * Upload media content using a Blob.
      *
@@ -3912,7 +3920,7 @@ declare class Media {
      *
      * @returns promise
      */
-    static uploadBlob<T>(blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static uploadBlob<T>(blob: Blob, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     /**
      * Get media details.
      *
@@ -3975,6 +3983,17 @@ declare class Scheduler {
      * @returns promise
      */
     static deleteSchedule<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Test the tone of the scheduler.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitlePromotionSchedule
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static testTone<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Get social media posts related to a promotion schedule.
      *
@@ -4259,8 +4278,8 @@ declare class Requests {
     static post<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static put<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static delete<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
-    static uploadFile<T>(url: string, filename: string, file: File | Blob, data?: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
-    static uploadBlob<T>(url: string, filename: string, blob: Blob, data?: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static uploadFile<T>(url: string, filename: string, file: File | Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    static uploadBlob<T>(url: string, filename: string, blob: Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     static uploadFileInChunks<T>(file: File, uploadUrl: string, onProgress?: (totalSize: number, amountUploaded: number) => void, data?: any, chunkSize?: number): Promise<void>;
     static processRoute<T>(route: Route, data?: object, routeReplace?: {
         [key: string]: any;

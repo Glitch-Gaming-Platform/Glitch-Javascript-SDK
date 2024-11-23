@@ -51,6 +51,17 @@ declare class Scheduler {
      */
     static deleteSchedule<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Test the tone of the scheduler.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitlePromotionSchedule
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static testTone<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Get social media posts related to a promotion schedule.
      *
      * @see https://api.glitch.fun/api/documentation#/Scheduler/getPromotionScheduleSocialPosts

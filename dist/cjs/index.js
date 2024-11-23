@@ -18594,7 +18594,8 @@ var Requests = /** @class */ (function () {
         }
         return Requests.request('DELETE', url);
     };
-    Requests.uploadFile = function (url, filename, file, data, params) {
+    Requests.uploadFile = function (url, filename, file, data, params, onUploadProgress // Correct type here
+    ) {
         if (params && Object.keys(params).length > 0) {
             var queryString = Object.entries(params)
                 .map(function (_a) {
@@ -18612,9 +18613,18 @@ var Requests = /** @class */ (function () {
         for (var key in data) {
             formData.append(key, data[key]);
         }
-        return Requests.request('POST', url, data, formData);
+        var config = {
+            method: 'POST',
+            url: url,
+            data: formData,
+            headers: __assign({ 'Content-Type': 'multipart/form-data' }, (Requests.authToken && { Authorization: "Bearer ".concat(Requests.authToken) })),
+            onUploadProgress: onUploadProgress,
+        };
+        return axios$1(config);
     };
-    Requests.uploadBlob = function (url, filename, blob, data, params) {
+    // Modify uploadBlob method
+    Requests.uploadBlob = function (url, filename, blob, data, params, onUploadProgress // Corrected type
+    ) {
         if (params && Object.keys(params).length > 0) {
             var queryString = Object.entries(params)
                 .map(function (_a) {
@@ -18632,7 +18642,14 @@ var Requests = /** @class */ (function () {
         for (var key in data) {
             formData.append(key, data[key]);
         }
-        return Requests.request('POST', url, data, formData);
+        var config = {
+            method: 'POST',
+            url: url,
+            data: formData,
+            headers: __assign({ 'Content-Type': 'multipart/form-data' }, (Requests.authToken && { Authorization: "Bearer ".concat(Requests.authToken) })),
+            onUploadProgress: onUploadProgress,
+        };
+        return axios$1(config);
     };
     // Method adapted for browser environments
     Requests.uploadFileInChunks = function (file, uploadUrl, onProgress, data, chunkSize) {
@@ -22610,6 +22627,8 @@ var TitlesRoute = /** @class */ (function () {
         uploadBannerImage: { url: '/titles/{title_id}/uploadBannerImage', method: HTTP_METHODS.POST },
         addAdministrator: { url: '/titles/{title_id}/addAdministrator', method: HTTP_METHODS.POST },
         removeAdministrator: { url: '/titles/{title_id}/removeAdministrator/{user_id}', method: HTTP_METHODS.DELETE },
+        addMedia: { url: '/titles/{title_id}/addMedia', method: HTTP_METHODS.POST },
+        removeMedia: { url: '/titles/{title_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
     };
     return TitlesRoute;
 }());
@@ -22778,6 +22797,18 @@ var Titles = /** @class */ (function () {
     Titles.uploadBannerImageBlob = function (title_id, blob, data, params) {
         var url = TitlesRoute.routes.uploadBannerImage.url.replace('{title_id}', title_id);
         return Requests.uploadBlob(url, 'image', blob, data);
+    };
+    /**
+    * Add media to a title.
+    */
+    Titles.addMedia = function (title_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.addMedia, data, { title_id: title_id }, params);
+    };
+    /**
+     * Remove media from a title.
+     */
+    Titles.removeMedia = function (title_id, media_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.removeMedia, {}, { title_id: title_id, media_id: media_id }, params);
     };
     return Titles;
 }());
@@ -24379,8 +24410,8 @@ var Media = /** @class */ (function () {
      *
      * @returns promise
      */
-    Media.uploadFile = function (file, data, params) {
-        return Requests.uploadFile(MediaRoute.routes.upload.url, 'media', file, data, params);
+    Media.uploadFile = function (file, data, params, onUploadProgress) {
+        return Requests.uploadFile(MediaRoute.routes.upload.url, 'media', file, data, params, onUploadProgress);
     };
     /**
      * Upload media content using a Blob.
@@ -24392,8 +24423,8 @@ var Media = /** @class */ (function () {
      *
      * @returns promise
      */
-    Media.uploadBlob = function (blob, data, params) {
-        return Requests.uploadBlob(MediaRoute.routes.upload.url, 'media', blob, data, params);
+    Media.uploadBlob = function (blob, data, params, onUploadProgress) {
+        return Requests.uploadBlob(MediaRoute.routes.upload.url, 'media', blob, data, params, onUploadProgress);
     };
     /**
      * Get media details.
@@ -24427,6 +24458,7 @@ var SchedulerRoute = /** @class */ (function () {
         getUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.GET },
         updateUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.PUT },
         deleteUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.DELETE },
+        testTone: { url: '/schedulers/{scheduler_id}/tone', method: HTTP_METHODS.POST },
         // Clear OAuth Routes
         clearTwitterAuth: { url: '/schedulers/{scheduler_id}/clearTwitterAuth', method: HTTP_METHODS.DELETE },
         clearFacebookAuth: { url: '/schedulers/{scheduler_id}/clearFacebookAuth', method: HTTP_METHODS.DELETE },
@@ -24513,6 +24545,19 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.deleteSchedule = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.deleteSchedule, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Test the tone of the scheduler.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitlePromotionSchedule
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Scheduler.testTone = function (scheduler_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.testTone, data, { scheduler_id: scheduler_id }, params);
     };
     /**
      * Get social media posts related to a promotion schedule.

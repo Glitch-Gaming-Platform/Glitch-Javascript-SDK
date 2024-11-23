@@ -1,7 +1,7 @@
 import MediaRoute from "../routes/MediaRoute";
 import Requests from "../util/Requests";
 import Response from "../util/Response";
-import { AxiosPromise } from "axios";
+import { AxiosProgressEvent, AxiosPromise } from "axios";
 
 class Media {
     /**
@@ -14,8 +14,8 @@ class Media {
      * 
      * @returns promise
      */
-    public static uploadFile<T>(file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.uploadFile(MediaRoute.routes.upload.url, 'media', file, data, params);
+    public static uploadFile<T>(file: File, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>> {
+        return Requests.uploadFile(MediaRoute.routes.upload.url, 'media', file, data, params, onUploadProgress);
     }
 
     /**
@@ -28,8 +28,8 @@ class Media {
      * 
      * @returns promise
      */
-    public static uploadBlob<T>(blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.uploadBlob(MediaRoute.routes.upload.url, 'media', blob, data, params);
+    public static uploadBlob<T>(blob: Blob, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>> {
+        return Requests.uploadBlob(MediaRoute.routes.upload.url, 'media', blob, data, params, onUploadProgress);
     }
 
     /**

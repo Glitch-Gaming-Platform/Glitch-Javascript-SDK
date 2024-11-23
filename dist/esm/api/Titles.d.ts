@@ -133,5 +133,13 @@ declare class Titles {
      * @returns promise
      */
     static uploadBannerImageBlob<T>(title_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Add media to a title.
+    */
+    static addMedia<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Remove media from a title.
+     */
+    static removeMedia<T>(title_id: string, media_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Titles;

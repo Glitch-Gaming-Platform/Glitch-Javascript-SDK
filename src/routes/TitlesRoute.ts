@@ -15,6 +15,8 @@ class TitlesRoute {
       uploadBannerImage : {url : '/titles/{title_id}/uploadBannerImage', method: HTTP_METHODS.POST},
       addAdministrator : { url: '/titles/{title_id}/addAdministrator', method: HTTP_METHODS.POST },
       removeAdministrator : { url: '/titles/{title_id}/removeAdministrator/{user_id}', method: HTTP_METHODS.DELETE },
+      addMedia: { url: '/titles/{title_id}/addMedia', method: HTTP_METHODS.POST },
+      removeMedia: { url: '/titles/{title_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
     };
 
   }

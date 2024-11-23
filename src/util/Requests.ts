@@ -1,4 +1,4 @@
-import axios, { AxiosPromise } from 'axios';
+import axios, { AxiosPromise, AxiosRequestConfig, AxiosProgressEvent } from 'axios';
 import Config from '../config/Config';
 import HTTP_METHODS from '../constants/HttpMethods';
 import Route from '../routes/interface';
@@ -140,7 +140,8 @@ class Requests {
     filename: string,
     file: File | Blob,
     data?: any,
-    params?: Record<string, any>
+    params?: Record<string, any>,
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void // Correct type here
   ): AxiosPromise<Response<T>> {
     if (params && Object.keys(params).length > 0) {
       const queryString = Object.entries(params)
@@ -148,31 +149,43 @@ class Requests {
         .join('&');
       url = `${url}?${queryString}`;
     }
-
+  
     const formData = new FormData();
-
     formData.append(filename, file);
-
+  
     if (Requests.community_id) {
       data = {
         ...data,
         communities: [Requests.community_id],
       };
     }
-
+  
     for (let key in data) {
       formData.append(key, data[key]);
     }
-
-    return Requests.request<T>('POST', url, data, formData);
+  
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      url,
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        ...(Requests.authToken && { Authorization: `Bearer ${Requests.authToken}` }),
+      },
+      onUploadProgress, // Pass directly, as the type now matches
+    };
+  
+    return axios(config);
   }
 
+  // Modify uploadBlob method
   public static uploadBlob<T>(
     url: string,
     filename: string,
     blob: Blob,
     data?: any,
-    params?: Record<string, any>
+    params?: Record<string, any>,
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void // Corrected type
   ): AxiosPromise<Response<T>> {
     if (params && Object.keys(params).length > 0) {
       const queryString = Object.entries(params)
@@ -180,25 +193,35 @@ class Requests {
         .join('&');
       url = `${url}?${queryString}`;
     }
-
+  
     const formData = new FormData();
-
     formData.append(filename, blob);
-
+  
     if (Requests.community_id) {
       data = {
         ...data,
         communities: [Requests.community_id],
       };
     }
-
+  
     for (let key in data) {
       formData.append(key, data[key]);
     }
-
-    return Requests.request<T>('POST', url, data, formData);
+  
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      url,
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        ...(Requests.authToken && { Authorization: `Bearer ${Requests.authToken}` }),
+      },
+      onUploadProgress, // Pass directly
+    };
+  
+    return axios(config);
   }
-
+  
   // Method adapted for browser environments
 
   public static async uploadFileInChunks<T>(
