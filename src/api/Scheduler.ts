@@ -356,6 +356,28 @@ class Scheduler {
         return Requests.processRoute(SchedulerRoute.routes.getDiscordChannels, {}, { scheduler_id }, params);
     }
 
+    /**
+     * Get aggregated reports for a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param params Query parameters (e.g., social_platform, start_date, end_date)
+     * @returns promise
+     */
+    public static getSchedulerReports<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getSchedulerReports, {}, { scheduler_id }, params);
+    }
+
+    /**
+     * Get progression data for social media posts over time.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param params Query parameters (e.g., social_platform, start_date, end_date)
+     * @returns promise
+     */
+    public static getSchedulerProgression<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getSchedulerProgression, {}, { scheduler_id }, params);
+    }
+
 }
 
 export default Scheduler;

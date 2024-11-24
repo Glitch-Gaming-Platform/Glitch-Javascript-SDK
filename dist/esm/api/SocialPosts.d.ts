@@ -90,5 +90,13 @@ declare class SocialPosts {
     * @returns promise
     */
     static reschedule<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Get the reports for a social media post
+    *
+    * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+    *
+    * @returns promise
+    */
+    static reports<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default SocialPosts;

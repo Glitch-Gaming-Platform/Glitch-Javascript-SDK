@@ -13,6 +13,8 @@ class SocialPostsRoute {
         addMedia: { url: '/socialposts/{post_id}/addMedia', method: HTTP_METHODS.POST },
         removeMedia: { url: '/socialposts/{post_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
         reschedule: { url: '/socialposts/{post_id}/reschedule', method: HTTP_METHODS.POST },
+        reports: { url: '/socialposts/{post_id}/reports', method: HTTP_METHODS.GET },
+
     };
 
   }

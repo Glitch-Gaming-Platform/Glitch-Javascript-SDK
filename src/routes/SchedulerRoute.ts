@@ -19,6 +19,8 @@ class SchedulerRoute {
         deleteUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.DELETE },
 
         testTone: { url: '/schedulers/{scheduler_id}/tone', method: HTTP_METHODS.POST },
+        getSchedulerReports: { url: '/schedulers/{scheduler_id}/reports', method: HTTP_METHODS.GET },
+        getSchedulerProgression: { url: '/schedulers/{scheduler_id}/progression', method: HTTP_METHODS.GET },
 
         // Clear OAuth Routes
         clearTwitterAuth: { url: '/schedulers/{scheduler_id}/clearTwitterAuth', method: HTTP_METHODS.DELETE },

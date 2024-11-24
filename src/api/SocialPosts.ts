@@ -126,6 +126,17 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.reschedule, data, { post_id: post_id }, params);
     }
 
+     /**
+     * Get the reports for a social media post
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+     * 
+     * @returns promise
+     */
+     public static reports<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.reports, undefined, undefined, params);
+    }
+
 }
 
 export default SocialPosts;

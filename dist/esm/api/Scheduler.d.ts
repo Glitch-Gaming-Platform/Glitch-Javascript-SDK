@@ -260,5 +260,21 @@ declare class Scheduler {
     * @returns promise
     */
     static getDiscordChannels<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get aggregated reports for a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param params Query parameters (e.g., social_platform, start_date, end_date)
+     * @returns promise
+     */
+    static getSchedulerReports<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get progression data for social media posts over time.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param params Query parameters (e.g., social_platform, start_date, end_date)
+     * @returns promise
+     */
+    static getSchedulerProgression<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Scheduler;

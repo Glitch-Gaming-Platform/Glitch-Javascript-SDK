@@ -9332,6 +9332,7 @@ var SocialPostsRoute = /** @class */ (function () {
         addMedia: { url: '/socialposts/{post_id}/addMedia', method: HTTP_METHODS.POST },
         removeMedia: { url: '/socialposts/{post_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
         reschedule: { url: '/socialposts/{post_id}/reschedule', method: HTTP_METHODS.POST },
+        reports: { url: '/socialposts/{post_id}/reports', method: HTTP_METHODS.GET },
     };
     return SocialPostsRoute;
 }());
@@ -9445,6 +9446,16 @@ var SocialPosts = /** @class */ (function () {
     */
     SocialPosts.reschedule = function (post_id, data, params) {
         return Requests.processRoute(SocialPostsRoute.routes.reschedule, data, { post_id: post_id }, params);
+    };
+    /**
+    * Get the reports for a social media post
+    *
+    * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+    *
+    * @returns promise
+    */
+    SocialPosts.reports = function (params) {
+        return Requests.processRoute(SocialPostsRoute.routes.reports, undefined, undefined, params);
     };
     return SocialPosts;
 }());
@@ -11296,6 +11307,8 @@ var SchedulerRoute = /** @class */ (function () {
         updateUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.PUT },
         deleteUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.DELETE },
         testTone: { url: '/schedulers/{scheduler_id}/tone', method: HTTP_METHODS.POST },
+        getSchedulerReports: { url: '/schedulers/{scheduler_id}/reports', method: HTTP_METHODS.GET },
+        getSchedulerProgression: { url: '/schedulers/{scheduler_id}/progression', method: HTTP_METHODS.GET },
         // Clear OAuth Routes
         clearTwitterAuth: { url: '/schedulers/{scheduler_id}/clearTwitterAuth', method: HTTP_METHODS.DELETE },
         clearFacebookAuth: { url: '/schedulers/{scheduler_id}/clearFacebookAuth', method: HTTP_METHODS.DELETE },
@@ -11644,6 +11657,26 @@ var Scheduler = /** @class */ (function () {
     */
     Scheduler.getDiscordChannels = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.getDiscordChannels, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Get aggregated reports for a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param params Query parameters (e.g., social_platform, start_date, end_date)
+     * @returns promise
+     */
+    Scheduler.getSchedulerReports = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getSchedulerReports, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Get progression data for social media posts over time.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param params Query parameters (e.g., social_platform, start_date, end_date)
+     * @returns promise
+     */
+    Scheduler.getSchedulerProgression = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getSchedulerProgression, {}, { scheduler_id: scheduler_id }, params);
     };
     return Scheduler;
 }());
