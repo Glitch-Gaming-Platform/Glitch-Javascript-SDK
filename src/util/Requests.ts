@@ -150,34 +150,32 @@ class Requests {
         .join('&');
       url = `${url}?${queryString}`;
     }
-  
+
     // Prepare FormData
     const formData = new FormData();
     formData.append(filename, file);
-  
+
     if (Requests.community_id) {
       data = {
         ...data,
         communities: [Requests.community_id],
       };
     }
-  
+
     for (let key in data) {
       formData.append(key, data[key]);
     }
-  
+
     // Prepare headers
-    let headers: { [key: string]: string } = {
-      'Content-Type': 'multipart/form-data',
-    };
-  
+    let headers: { [key: string]: string } = {};
+
     if (Requests.authToken) {
       headers['Authorization'] = `Bearer ${Requests.authToken}`;
     }
-  
-    // Construct the full URL properly
-    const uri = new URL(url, Requests.baseUrl).href;
-  
+
+    // Format URL correctly
+    const uri = Requests.baseUrl.replace(/\/+$/, '') + '/' + url.replace(/^\/+/, '');
+
     // Make the request
     return axios({
       method: 'POST',
@@ -187,7 +185,8 @@ class Requests {
       onUploadProgress,
     });
   }
-  
+
+
   public static uploadBlob<T>(
     url: string,
     filename: string,
@@ -220,16 +219,14 @@ class Requests {
     }
   
     // Prepare headers
-    let headers: { [key: string]: string } = {
-      'Content-Type': 'multipart/form-data',
-    };
+    let headers: { [key: string]: string } = {};
   
     if (Requests.authToken) {
       headers['Authorization'] = `Bearer ${Requests.authToken}`;
     }
   
-    // Construct the full URL properly
-    const uri = new URL(url, Requests.baseUrl).href;
+    // Format URL correctly
+    const uri = Requests.baseUrl.replace(/\/+$/, '') + '/' + url.replace(/^\/+/, '');
   
     // Make the request
     return axios({
@@ -241,6 +238,7 @@ class Requests {
     });
   }
   
+
 
   // Method adapted for browser environments
 

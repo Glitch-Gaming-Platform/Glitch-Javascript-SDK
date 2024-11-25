@@ -5431,14 +5431,12 @@ var Requests = /** @class */ (function () {
             formData.append(key, data[key]);
         }
         // Prepare headers
-        var headers = {
-            'Content-Type': 'multipart/form-data',
-        };
+        var headers = {};
         if (Requests.authToken) {
             headers['Authorization'] = "Bearer ".concat(Requests.authToken);
         }
-        // Construct the full URL properly
-        var uri = new URL(url, Requests.baseUrl).href;
+        // Format URL correctly
+        var uri = Requests.baseUrl.replace(/\/+$/, '') + '/' + url.replace(/^\/+/, '');
         // Make the request
         return axios$1({
             method: 'POST',
@@ -5469,14 +5467,12 @@ var Requests = /** @class */ (function () {
             formData.append(key, data[key]);
         }
         // Prepare headers
-        var headers = {
-            'Content-Type': 'multipart/form-data',
-        };
+        var headers = {};
         if (Requests.authToken) {
             headers['Authorization'] = "Bearer ".concat(Requests.authToken);
         }
-        // Construct the full URL properly
-        var uri = new URL(url, Requests.baseUrl).href;
+        // Format URL correctly
+        var uri = Requests.baseUrl.replace(/\/+$/, '') + '/' + url.replace(/^\/+/, '');
         // Make the request
         return axios$1({
             method: 'POST',
