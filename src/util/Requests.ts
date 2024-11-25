@@ -231,7 +231,7 @@ class Requests {
 
     // Format URL
     url = url.replace(/\/\//g, '/');
-    const uri = `${Requests.baseUrl}${url}`.replace(/\/\//g, '/');
+    const uri = `${url}`.replace(/\/\//g, '/');
 
     // Make the request
     return axios({
@@ -286,7 +286,7 @@ class Requests {
       }
 
       // Construct the full URL if necessary or use a method to determine the base URL
-      const fullUploadUrl = `${Requests.baseUrl}${uploadUrl}`;
+      const fullUploadUrl = `${uploadUrl}`;
 
       // Make sure the authorization token is included if required
       const headers: { [key: string]: string } = {};

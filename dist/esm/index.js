@@ -5478,7 +5478,7 @@ var Requests = /** @class */ (function () {
         }
         // Format URL
         url = url.replace(/\/\//g, '/');
-        var uri = "".concat(Requests.baseUrl).concat(url).replace(/\/\//g, '/');
+        var uri = "".concat(url).replace(/\/\//g, '/');
         // Make the request
         return axios$1({
             method: 'POST',
@@ -5523,7 +5523,7 @@ var Requests = /** @class */ (function () {
                                                 formData.append(key, data[key]);
                                             }
                                         }
-                                        fullUploadUrl = "".concat(Requests.baseUrl).concat(uploadUrl);
+                                        fullUploadUrl = "".concat(uploadUrl);
                                         headers = {};
                                         if (Requests.authToken) {
                                             headers['Authorization'] = "Bearer ".concat(Requests.authToken);
