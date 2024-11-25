@@ -150,35 +150,34 @@ class Requests {
         .join('&');
       url = `${url}?${queryString}`;
     }
-
+  
     // Prepare FormData
     const formData = new FormData();
     formData.append(filename, file);
-
+  
     if (Requests.community_id) {
       data = {
         ...data,
         communities: [Requests.community_id],
       };
     }
-
+  
     for (let key in data) {
       formData.append(key, data[key]);
     }
-
+  
     // Prepare headers
     let headers: { [key: string]: string } = {
       'Content-Type': 'multipart/form-data',
     };
-
+  
     if (Requests.authToken) {
       headers['Authorization'] = `Bearer ${Requests.authToken}`;
     }
-
-    // Format URL
-    url = url.replace(/\/\//g, '/');
-    const uri = `${Requests.baseUrl}${url}`.replace(/\/\//g, '/');
-
+  
+    // Construct the full URL properly
+    const uri = new URL(url, Requests.baseUrl).href;
+  
     // Make the request
     return axios({
       method: 'POST',
@@ -188,7 +187,7 @@ class Requests {
       onUploadProgress,
     });
   }
-
+  
   public static uploadBlob<T>(
     url: string,
     filename: string,
@@ -204,35 +203,34 @@ class Requests {
         .join('&');
       url = `${url}?${queryString}`;
     }
-
+  
     // Prepare FormData
     const formData = new FormData();
     formData.append(filename, blob);
-
+  
     if (Requests.community_id) {
       data = {
         ...data,
         communities: [Requests.community_id],
       };
     }
-
+  
     for (let key in data) {
       formData.append(key, data[key]);
     }
-
+  
     // Prepare headers
     let headers: { [key: string]: string } = {
       'Content-Type': 'multipart/form-data',
     };
-
+  
     if (Requests.authToken) {
       headers['Authorization'] = `Bearer ${Requests.authToken}`;
     }
-
-    // Format URL
-    url = url.replace(/\/\//g, '/');
-    const uri = `${url}`.replace(/\/\//g, '/');
-
+  
+    // Construct the full URL properly
+    const uri = new URL(url, Requests.baseUrl).href;
+  
     // Make the request
     return axios({
       method: 'POST',
@@ -242,7 +240,7 @@ class Requests {
       onUploadProgress,
     });
   }
-
+  
 
   // Method adapted for browser environments
 
@@ -286,7 +284,7 @@ class Requests {
       }
 
       // Construct the full URL if necessary or use a method to determine the base URL
-      const fullUploadUrl = `${uploadUrl}`;
+      const fullUploadUrl = `${Requests.baseUrl}${uploadUrl}`;
 
       // Make sure the authorization token is included if required
       const headers: { [key: string]: string } = {};
