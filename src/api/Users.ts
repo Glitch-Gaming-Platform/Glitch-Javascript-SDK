@@ -157,7 +157,7 @@ class Users {
      * 
      * @returns promise
      */
-    public static uploadAvatarImageFile<T>(file : File, data? : object): AxiosPromise<Response<T>> {
+    public static uploadAvatarImageFile<T>(file: File, data?: object): AxiosPromise<Response<T>> {
 
         return Requests.uploadFile(UserRoutes.routes.uploadAvatar.url, 'image', file, data);
     }
@@ -172,7 +172,7 @@ class Users {
      * 
      * @returns promise
      */
-    public static uploadAvatarImageBlob<T>(blob : Blob, data? : object): AxiosPromise<Response<T>> {
+    public static uploadAvatarImageBlob<T>(blob: Blob, data?: object): AxiosPromise<Response<T>> {
 
         return Requests.uploadBlob(UserRoutes.routes.uploadAvatar.url, 'image', blob, data);
     }
@@ -187,7 +187,7 @@ class Users {
      * 
      * @returns promise
      */
-    public static uploadBannerImageFile<T>(file : File, data? : object): AxiosPromise<Response<T>> {
+    public static uploadBannerImageFile<T>(file: File, data?: object): AxiosPromise<Response<T>> {
 
         return Requests.uploadFile(UserRoutes.routes.uploadBanner.url, 'image', file, data);
     }
@@ -202,7 +202,7 @@ class Users {
      * 
      * @returns promise
      */
-    public static uploadBannerImageBlob<T>(blob : Blob, data? : object): AxiosPromise<Response<T>> {
+    public static uploadBannerImageBlob<T>(blob: Blob, data?: object): AxiosPromise<Response<T>> {
 
         return Requests.uploadBlob(UserRoutes.routes.uploadBanner.url, 'image', blob, data);
     }
@@ -220,14 +220,14 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.createDonationPage, {});
     }
 
-     /**
-     * Clear Twitches authentication information from the current user.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
-     * 
-     * @returns promise
-     */
-     public static clearTwitchAuth<T>(): AxiosPromise<Response<T>> {
+    /**
+    * Clear Twitches authentication information from the current user.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+    * 
+    * @returns promise
+    */
+    public static clearTwitchAuth<T>(): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(UserRoutes.routes.clearTwitchAuth, {});
     }
@@ -328,14 +328,14 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.clearTwitterAuth, {});
     }
 
-     /**
-     * Clear StreamElements authentication information from the current user.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
-     * 
-     * @returns promise
-     */
-     public static clearStreamElementsAuth<T>(): AxiosPromise<Response<T>> {
+    /**
+    * Clear StreamElements authentication information from the current user.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage
+    * 
+    * @returns promise
+    */
+    public static clearStreamElementsAuth<T>(): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(UserRoutes.routes.clearStreamElementsAuth, {});
     }
@@ -425,7 +425,7 @@ class Users {
      */
     public static removeGenre<T>(genre_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(UserRoutes.routes.removeGenre, undefined, {genre_id : genre_id}, params);
+        return Requests.processRoute(UserRoutes.routes.removeGenre, undefined, { genre_id: genre_id }, params);
     }
 
     /**
@@ -453,19 +453,19 @@ class Users {
      */
     public static removeType<T>(type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(UserRoutes.routes.removeType, undefined, {type_id : type_id}, params);
+        return Requests.processRoute(UserRoutes.routes.removeType, undefined, { type_id: type_id }, params);
     }
 
-     /**
-     * Verify a user's account to complete their sign-up process.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Users%20Route/verifyAccount
-     * 
-     * @param data The genre information to be passed to update the type information.
-     * 
-     * @returns Promise
-     */
-     public static verifyAccount<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+    * Verify a user's account to complete their sign-up process.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Users%20Route/verifyAccount
+    * 
+    * @param data The genre information to be passed to update the type information.
+    * 
+    * @returns Promise
+    */
+    public static verifyAccount<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(UserRoutes.routes.verifyAccount, data, undefined, params);
     }
@@ -481,7 +481,41 @@ class Users {
 
         return Requests.processRoute(UserRoutes.routes.getInstagramAccounts, undefined, undefined, params);
     }
-    
+
+    /**
+   * Gets the Facebook Pages associated with the user.
+   *
+   * @see https://api.glitch.fun/api/documentation#/Users%20Route/getFacebookPages
+   *
+   * @returns Promise resolving to the list of Facebook Pages
+   */
+    public static getFacebookPages<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.getFacebookPages, undefined, undefined, params);
+    }
+
+    /**
+     * Gets the subreddits the user is subscribed to.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getSubreddits
+     *
+     * @returns Promise resolving to the list of subreddits
+     */
+    public static getSubreddits<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.getSubreddits, undefined, undefined, params);
+    }
+
+    /**
+     * Gets the flairs for a specific subreddit.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getSubredditFlairs
+     *
+     * @param subreddit The name of the subreddit to get flairs for.
+     * @returns Promise resolving to the list of flairs
+     */
+    public static getSubredditFlairs<T>(subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.getSubredditFlairs, undefined, { subreddit: subreddit }, params);
+    }
+
 
 
 

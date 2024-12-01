@@ -7376,6 +7376,9 @@ var UserRoutes = /** @class */ (function () {
         getPayouts: { url: '/users/payouts', method: HTTP_METHODS.GET },
         verifyAccount: { url: '/users/verify', method: HTTP_METHODS.POST },
         getInstagramAccounts: { url: '/users/instagramAccounts', method: HTTP_METHODS.GET },
+        getFacebookPages: { url: "/users/facebookPages", method: HTTP_METHODS.GET },
+        getSubreddits: { url: "/users/reddit/subreddits", method: HTTP_METHODS.GET },
+        getSubredditFlairs: { url: "/users/reddit/redditflairs/{subreddit}", method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -7786,6 +7789,37 @@ var Users = /** @class */ (function () {
      */
     Users.getInstagramAccounts = function (params) {
         return Requests.processRoute(UserRoutes.routes.getInstagramAccounts, undefined, undefined, params);
+    };
+    /**
+   * Gets the Facebook Pages associated with the user.
+   *
+   * @see https://api.glitch.fun/api/documentation#/Users%20Route/getFacebookPages
+   *
+   * @returns Promise resolving to the list of Facebook Pages
+   */
+    Users.getFacebookPages = function (params) {
+        return Requests.processRoute(UserRoutes.routes.getFacebookPages, undefined, undefined, params);
+    };
+    /**
+     * Gets the subreddits the user is subscribed to.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getSubreddits
+     *
+     * @returns Promise resolving to the list of subreddits
+     */
+    Users.getSubreddits = function (params) {
+        return Requests.processRoute(UserRoutes.routes.getSubreddits, undefined, undefined, params);
+    };
+    /**
+     * Gets the flairs for a specific subreddit.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getSubredditFlairs
+     *
+     * @param subreddit The name of the subreddit to get flairs for.
+     * @returns Promise resolving to the list of flairs
+     */
+    Users.getSubredditFlairs = function (subreddit, params) {
+        return Requests.processRoute(UserRoutes.routes.getSubredditFlairs, undefined, { subreddit: subreddit }, params);
     };
     return Users;
 }());

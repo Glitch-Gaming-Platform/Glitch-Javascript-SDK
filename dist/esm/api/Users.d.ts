@@ -333,5 +333,30 @@ declare class Users {
      * @returns promise
      */
     static getInstagramAccounts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+   * Gets the Facebook Pages associated with the user.
+   *
+   * @see https://api.glitch.fun/api/documentation#/Users%20Route/getFacebookPages
+   *
+   * @returns Promise resolving to the list of Facebook Pages
+   */
+    static getFacebookPages<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Gets the subreddits the user is subscribed to.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getSubreddits
+     *
+     * @returns Promise resolving to the list of subreddits
+     */
+    static getSubreddits<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Gets the flairs for a specific subreddit.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getSubredditFlairs
+     *
+     * @param subreddit The name of the subreddit to get flairs for.
+     * @returns Promise resolving to the list of flairs
+     */
+    static getSubredditFlairs<T>(subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Users;
