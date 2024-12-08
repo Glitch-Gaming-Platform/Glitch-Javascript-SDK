@@ -22539,6 +22539,7 @@ var SocialPostsRoute = /** @class */ (function () {
         createPost: { url: '/socialposts', method: HTTP_METHODS.POST },
         retrievePost: { url: '/socialposts/{post_id}', method: HTTP_METHODS.GET },
         updatePost: { url: '/socialposts/{post_id}', method: HTTP_METHODS.PUT },
+        deletePost: { url: '/socialposts/{post_id}', method: HTTP_METHODS.DELETE },
         dispute: { url: '/social/{post_id}/dispute', method: HTTP_METHODS.POST },
         history: { url: '/socialposts/{post_id}/history', method: HTTP_METHODS.GET },
         addMedia: { url: '/socialposts/{post_id}/addMedia', method: HTTP_METHODS.POST },
@@ -22595,6 +22596,17 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.update = function (post_id, data, params) {
         return Requests.processRoute(SocialPostsRoute.routes.updatePost, data, { post_id: post_id }, params);
+    };
+    /**
+     * Deletes a post.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/destoryPostStorage
+     *
+     * @param post_id The id of the post to delete.
+     * @returns promise
+     */
+    SocialPosts.delete = function (post_id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.deletePost, {}, { post_id: post_id }, params);
     };
     /**
     * Dispute a post as being fraudulent.,s

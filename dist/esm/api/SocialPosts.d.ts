@@ -38,6 +38,15 @@ declare class SocialPosts {
      */
     static update<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Deletes a post.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/destoryPostStorage
+     *
+     * @param post_id The id of the post to delete.
+     * @returns promise
+     */
+    static delete<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
     * Dispute a post as being fraudulent.,s
     *
     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/disputePost

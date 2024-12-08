@@ -23,7 +23,7 @@ class SocialPosts {
      * 
      * @returns A promise
      */
-    public static create<T>(data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+    public static create<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(SocialPostsRoute.routes.createPost, data, {}, params);
     }
 
@@ -50,36 +50,50 @@ class SocialPosts {
      * 
      * @returns promise
      */
-    public static update<T>(post_id: string, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static update<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(SocialPostsRoute.routes.updatePost, data, { post_id: post_id }, params);
     }
 
-
-     /**
-     * Dispute a post as being fraudulent.,s
+    /**
+     * Deletes a post.
      * 
-     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/disputePost
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/destoryPostStorage
      * 
-     * @param post_id The id fo the post to retrieve.
-     * 
+     * @param post_id The id of the post to delete.
      * @returns promise
      */
-     public static dispute<T>(post_id: string, data? : object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static delete<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(SocialPostsRoute.routes.deletePost, {}, { post_id: post_id }, params);
+    }
+
+
+
+    /**
+    * Dispute a post as being fraudulent.,s
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/disputePost
+    * 
+    * @param post_id The id fo the post to retrieve.
+    * 
+    * @returns promise
+    */
+    public static dispute<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(SocialPostsRoute.routes.dispute, data, { post_id: post_id }, params);
     }
 
-     /**
-     * Get the change of the post metrics over a period of time.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/getSocialMediaPostHistory
-     * 
-     * @param post_id The id fo the post to retrieve.
-     * 
-     * @returns promise
-     */
-     public static history<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+    * Get the change of the post metrics over a period of time.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/getSocialMediaPostHistory
+    * 
+    * @param post_id The id fo the post to retrieve.
+    * 
+    * @returns promise
+    */
+    public static history<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(SocialPostsRoute.routes.history, {}, { post_id: post_id }, params);
     }
@@ -112,28 +126,28 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.removeMedia, {}, { post_id: post_id, media_id: media_id }, params);
     }
 
-     /**
-     * Reschedule a post that has failed.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/addMediaToSocialMediaPost
-     * 
-     * @param post_id The ID of the social media post.
-     * @param data The data to be sent in the request body.
-     * 
-     * @returns promise
-     */
-     public static reschedule<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+    * Reschedule a post that has failed.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/addMediaToSocialMediaPost
+    * 
+    * @param post_id The ID of the social media post.
+    * @param data The data to be sent in the request body.
+    * 
+    * @returns promise
+    */
+    public static reschedule<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(SocialPostsRoute.routes.reschedule, data, { post_id: post_id }, params);
     }
 
-     /**
-     * Get the reports for a social media post
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
-     * 
-     * @returns promise
-     */
-     public static reports<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+    * Get the reports for a social media post
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+    * 
+    * @returns promise
+    */
+    public static reports<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(SocialPostsRoute.routes.reports, undefined, undefined, params);
     }
 
