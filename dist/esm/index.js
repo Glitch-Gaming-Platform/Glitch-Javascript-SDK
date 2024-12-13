@@ -11346,6 +11346,7 @@ var SchedulerRoute = /** @class */ (function () {
         getUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.GET },
         updateUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.PUT },
         deleteUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.DELETE },
+        scheduleUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}/schedule', method: HTTP_METHODS.POST },
         testTone: { url: '/schedulers/{scheduler_id}/tone', method: HTTP_METHODS.POST },
         getSchedulerReports: { url: '/schedulers/{scheduler_id}/reports', method: HTTP_METHODS.GET },
         getSchedulerProgression: { url: '/schedulers/{scheduler_id}/progression', method: HTTP_METHODS.GET },
@@ -11525,6 +11526,20 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.deleteUpdate = function (scheduler_id, update_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.deleteUpdate, {}, { scheduler_id: scheduler_id, update_id: update_id }, params);
+    };
+    /**
+     * Schedule title update.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitleUpdate
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    Scheduler.scheduleUpdate = function (scheduler_id, update_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.scheduleUpdate, data, { scheduler_id: scheduler_id, update_id: update_id }, params);
     };
     /**
      * Clear Twitter OAuth credentials from a promotion schedule.

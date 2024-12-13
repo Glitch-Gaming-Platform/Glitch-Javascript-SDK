@@ -166,6 +166,21 @@ class Scheduler {
     }
 
     /**
+     * Schedule title update.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitleUpdate
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param data The data to update.
+     * 
+     * @returns promise
+     */
+    public static scheduleUpdate<T>(scheduler_id: string, update_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.scheduleUpdate, data, { scheduler_id, update_id }, params);
+    }
+
+    /**
      * Clear Twitter OAuth credentials from a promotion schedule.
      *
      * @param scheduler_id The ID of the promotion schedule.

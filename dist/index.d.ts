@@ -4102,6 +4102,18 @@ declare class Scheduler {
      */
     static deleteUpdate<T>(scheduler_id: string, update_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Schedule title update.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitleUpdate
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param data The data to update.
+     *
+     * @returns promise
+     */
+    static scheduleUpdate<T>(scheduler_id: string, update_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Clear Twitter OAuth credentials from a promotion schedule.
      *
      * @param scheduler_id The ID of the promotion schedule.
