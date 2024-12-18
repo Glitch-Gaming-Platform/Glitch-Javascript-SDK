@@ -11280,7 +11280,7 @@ var MediaRoute = /** @class */ (function () {
     }
     MediaRoute.routes = {
         upload: { url: '/media', method: HTTP_METHODS.POST },
-        getMedia: { url: '/media/{meda_id}', method: HTTP_METHODS.GET },
+        getMedia: { url: '/media/{media_id}', method: HTTP_METHODS.GET },
     };
     return MediaRoute;
 }());
@@ -11834,6 +11834,92 @@ var Funnel = /** @class */ (function () {
     return Funnel;
 }());
 
+var SocialStatsRoute = /** @class */ (function () {
+    function SocialStatsRoute() {
+    }
+    SocialStatsRoute.routes = {
+        /**
+         * Retrieve a list of social statistics with optional filters.
+         * @see https://api.glitch.fun/api/documentation#/SocialMediaAccountStatistics
+         */
+        getStats: { url: '/socialstats', method: HTTP_METHODS.GET },
+        /**
+         * Retrieve platform-level statistics (e.g., average followers).
+         * @see https://api.glitch.fun/api/documentation#/SocialMediaAccountStatistics/platformStatistics
+         */
+        getPlatformStatistics: { url: '/socialstats/statistics', method: HTTP_METHODS.GET },
+        /**
+         * Generate reports with various insights based on report_type and filters.
+         * @see https://api.glitch.fun/api/documentation#/SocialMediaAccountStatistics/reports
+         */
+        getReports: { url: '/socialstats/reports', method: HTTP_METHODS.GET },
+        /**
+         * Retrieve a single social media account statistic record by its ID.
+         * @see https://api.glitch.fun/api/documentation#/SocialMediaAccountStatistics/show
+         */
+        getStatById: { url: '/socialstats/{id}', method: HTTP_METHODS.GET },
+    };
+    return SocialStatsRoute;
+}());
+
+// src/api/SocialStats.ts
+var SocialStats = /** @class */ (function () {
+    function SocialStats() {
+    }
+    /**
+     * List all the social media account statistics, with optional filters.
+     * @see https://api.glitch.fun/api/documentation#/SocialMediaAccountStatistics
+     *
+     * @param params Optional query parameters:
+     *  - platform (string | string[]): Filter by platform(s)
+     *  - start_date (string): Filter records created on or after this date (YYYY-MM-DD)
+     *  - end_date (string): Filter records created on or before this date (YYYY-MM-DD)
+     *  - user_id (string): Filter by user ID
+     *  - title_promotion_schedule_id (string): Filter by TitlePromotionSchedule ID
+     * @returns promise
+     */
+    SocialStats.list = function (params) {
+        return Requests.processRoute(SocialStatsRoute.routes.getStats, undefined, undefined, params);
+    };
+    /**
+     * Get platform-level statistics, such as average follower count per platform.
+     * @see https://api.glitch.fun/api/documentation#/SocialMediaAccountStatistics/platformStatistics
+     *
+     * @returns promise
+     */
+    SocialStats.platformStatistics = function (params) {
+        return Requests.processRoute(SocialStatsRoute.routes.getPlatformStatistics, undefined, undefined, params);
+    };
+    /**
+     * Generate various reports for social media account statistics.
+     * @see https://api.glitch.fun/api/documentation#/SocialMediaAccountStatistics/reports
+     *
+     * @param params Query parameters:
+     *  - report_type (string): Required (e.g. average_followers, growth, platform_breakdown)
+     *  - platform (string or string[]): Filter by platform(s)
+     *  - start_date (string): Filter from date (YYYY-MM-DD)
+     *  - end_date (string): Filter to date (YYYY-MM-DD)
+     *  - user_id (string): Filter by user ID
+     *  - title_promotion_schedule_id (string): Filter by schedule ID
+     *
+     * @returns promise
+     */
+    SocialStats.reports = function (params) {
+        return Requests.processRoute(SocialStatsRoute.routes.getReports, undefined, undefined, params);
+    };
+    /**
+     * Retrieve a single social media account statistic record by its ID.
+     * @see https://api.glitch.fun/api/documentation#/SocialMediaAccountStatistics/show
+     *
+     * @param id The ID of the statistic record.
+     * @returns promise
+     */
+    SocialStats.view = function (id, params) {
+        return Requests.processRoute(SocialStatsRoute.routes.getStatById, {}, { id: id }, params);
+    };
+    return SocialStats;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -12261,6 +12347,7 @@ var Glitch = /** @class */ (function () {
         Media: Media,
         Scheduler: Scheduler,
         Funnel: Funnel,
+        SocialStats: SocialStats
     };
     Glitch.util = {
         Requests: Requests,

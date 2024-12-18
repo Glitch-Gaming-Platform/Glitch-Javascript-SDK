@@ -32,6 +32,7 @@ import {PlayTests} from "./api";
 import {Media} from "./api";
 import {Scheduler} from "./api";
 import {Funnel} from "./api";
+import {SocialStats} from "./api";
 
 
 
@@ -95,6 +96,7 @@ class Glitch {
         Media : Media,
         Scheduler : Scheduler,
         Funnel: Funnel,
+        SocialStats : SocialStats
     }
 
     public static util = {

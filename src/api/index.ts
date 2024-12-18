@@ -28,6 +28,7 @@ import PlayTests from "./PlayTests";
 import Media from "./Media";
 import Scheduler from "./Scheduler";
 import Funnel from "./Funnel";
+import SocialStats from "./SocialStats";
 
 export {Auth};
 export {Competitions};
@@ -59,3 +60,4 @@ export {PlayTests};
 export {Media};
 export {Scheduler};
 export {Funnel};
+export {SocialStats};
