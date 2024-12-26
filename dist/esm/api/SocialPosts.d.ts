@@ -107,5 +107,15 @@ declare class SocialPosts {
     * @returns promise
     */
     static reports<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update the information about a post impressions, for posts who API do not give view counts.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/showPostStorage
+     *
+     * @param post_id The id fo the post to retrieve.
+     *
+     * @returns promise
+     */
+    static updatePostImpressions<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default SocialPosts;

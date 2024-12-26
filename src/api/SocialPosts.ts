@@ -151,6 +151,20 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.reports, undefined, undefined, params);
     }
 
+    /**
+     * Update the information about a post impressions, for posts who API do not give view counts.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/showPostStorage
+     * 
+     * @param post_id The id fo the post to retrieve.
+     * 
+     * @returns promise
+     */
+    public static updatePostImpressions<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(SocialPostsRoute.routes.updatePostImpressions, data, { post_id: post_id }, params);
+    }
+
 }
 
 export default SocialPosts;

@@ -9362,6 +9362,7 @@ var SocialPostsRoute = /** @class */ (function () {
         removeMedia: { url: '/socialposts/{post_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
         reschedule: { url: '/socialposts/{post_id}/reschedule', method: HTTP_METHODS.POST },
         reports: { url: '/socialposts/{post_id}/reports', method: HTTP_METHODS.GET },
+        updatePostImpressions: { url: '/socialposts/{post_id}/impressions', method: HTTP_METHODS.PUT },
     };
     return SocialPostsRoute;
 }());
@@ -9496,6 +9497,18 @@ var SocialPosts = /** @class */ (function () {
     */
     SocialPosts.reports = function (params) {
         return Requests.processRoute(SocialPostsRoute.routes.reports, undefined, undefined, params);
+    };
+    /**
+     * Update the information about a post impressions, for posts who API do not give view counts.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Post%20Route/showPostStorage
+     *
+     * @param post_id The id fo the post to retrieve.
+     *
+     * @returns promise
+     */
+    SocialPosts.updatePostImpressions = function (post_id, data, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.updatePostImpressions, data, { post_id: post_id }, params);
     };
     return SocialPosts;
 }());
