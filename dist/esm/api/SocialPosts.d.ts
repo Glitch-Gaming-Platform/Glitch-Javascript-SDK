@@ -75,7 +75,7 @@ declare class SocialPosts {
     *
     * @returns promise
     */
-    static progression<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static progression<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Add media to a social media post.
      *

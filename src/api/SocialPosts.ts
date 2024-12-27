@@ -107,9 +107,9 @@ class SocialPosts {
     * 
     * @returns promise
     */
-    public static progression<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static progression<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(SocialPostsRoute.routes.progression, {}, { post_id: post_id }, params);
+        return Requests.processRoute(SocialPostsRoute.routes.progression, {}, { }, params);
     }
 
     /**
