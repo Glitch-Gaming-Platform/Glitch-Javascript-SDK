@@ -22542,6 +22542,7 @@ var SocialPostsRoute = /** @class */ (function () {
         deletePost: { url: '/socialposts/{post_id}', method: HTTP_METHODS.DELETE },
         dispute: { url: '/social/{post_id}/dispute', method: HTTP_METHODS.POST },
         history: { url: '/socialposts/{post_id}/history', method: HTTP_METHODS.GET },
+        progression: { url: '/socialposts/{post_id}/progression', method: HTTP_METHODS.GET },
         addMedia: { url: '/socialposts/{post_id}/addMedia', method: HTTP_METHODS.POST },
         removeMedia: { url: '/socialposts/{post_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
         reschedule: { url: '/socialposts/{post_id}/reschedule', method: HTTP_METHODS.POST },
@@ -22632,6 +22633,18 @@ var SocialPosts = /** @class */ (function () {
     */
     SocialPosts.history = function (post_id, params) {
         return Requests.processRoute(SocialPostsRoute.routes.history, {}, { post_id: post_id }, params);
+    };
+    /**
+    * Get the change progression of a social media post over period of time.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/getSocialMediaPostHistory
+    *
+    * @param post_id The id fo the post to retrieve.
+    *
+    * @returns promise
+    */
+    SocialPosts.progression = function (post_id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.progression, {}, { post_id: post_id }, params);
     };
     /**
      * Add media to a social media post.

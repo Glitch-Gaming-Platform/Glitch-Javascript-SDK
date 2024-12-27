@@ -99,6 +99,20 @@ class SocialPosts {
     }
 
     /**
+    * Get the change progression of a social media post over period of time.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/getSocialMediaPostHistory
+    * 
+    * @param post_id The id fo the post to retrieve.
+    * 
+    * @returns promise
+    */
+    public static progression<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(SocialPostsRoute.routes.progression, {}, { post_id: post_id }, params);
+    }
+
+    /**
      * Add media to a social media post.
      * 
      * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/addMediaToSocialMediaPost
