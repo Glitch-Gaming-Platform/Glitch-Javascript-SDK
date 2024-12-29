@@ -17,6 +17,8 @@ class TitlesRoute {
       removeAdministrator : { url: '/titles/{title_id}/removeAdministrator/{user_id}', method: HTTP_METHODS.DELETE },
       addMedia: { url: '/titles/{title_id}/addMedia', method: HTTP_METHODS.POST },
       removeMedia: { url: '/titles/{title_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
+      updateMediaOrder: { url: '/titles/{title_id}/updateMediaOrder', method: HTTP_METHODS.POST },
+
     };
 
   }

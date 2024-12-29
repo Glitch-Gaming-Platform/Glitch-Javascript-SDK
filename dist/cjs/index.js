@@ -22727,6 +22727,7 @@ var TitlesRoute = /** @class */ (function () {
         removeAdministrator: { url: '/titles/{title_id}/removeAdministrator/{user_id}', method: HTTP_METHODS.DELETE },
         addMedia: { url: '/titles/{title_id}/addMedia', method: HTTP_METHODS.POST },
         removeMedia: { url: '/titles/{title_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
+        updateMediaOrder: { url: '/titles/{title_id}/updateMediaOrder', method: HTTP_METHODS.POST },
     };
     return TitlesRoute;
 }());
@@ -22907,6 +22908,9 @@ var Titles = /** @class */ (function () {
      */
     Titles.removeMedia = function (title_id, media_id, params) {
         return Requests.processRoute(TitlesRoute.routes.removeMedia, {}, { title_id: title_id, media_id: media_id }, params);
+    };
+    Titles.updateMediaOrder = function (title_id, media_order) {
+        return Requests.processRoute(TitlesRoute.routes.updateMediaOrder, { media_order: media_order }, { title_id: title_id });
     };
     return Titles;
 }());

@@ -2862,6 +2862,10 @@ declare class Titles {
      * Remove media from a title.
      */
     static removeMedia<T>(title_id: string, media_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static updateMediaOrder<T>(title_id: string, media_order: {
+        media_id: string;
+        order: number;
+    }[]): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {

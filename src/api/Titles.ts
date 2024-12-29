@@ -196,10 +196,10 @@ class Titles {
         return Requests.uploadBlob(url, 'image', blob, data);
     }
 
-     /**
-     * Add media to a title.
-     */
-     public static addMedia<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+    * Add media to a title.
+    */
+    public static addMedia<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.addMedia, data, { title_id: title_id }, params);
     }
 
@@ -208,6 +208,14 @@ class Titles {
      */
     public static removeMedia<T>(title_id: string, media_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.removeMedia, {}, { title_id: title_id, media_id: media_id }, params);
+    }
+
+    public static updateMediaOrder<T>(title_id: string, media_order: { media_id: string, order: number }[]): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.updateMediaOrder,
+            { media_order },
+            { title_id: title_id }
+        );
     }
 
 }
