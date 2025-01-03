@@ -18,7 +18,8 @@ class TitlesRoute {
       addMedia: { url: '/titles/{title_id}/addMedia', method: HTTP_METHODS.POST },
       removeMedia: { url: '/titles/{title_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
       updateMediaOrder: { url: '/titles/{title_id}/updateMediaOrder', method: HTTP_METHODS.POST },
-
+      importWishlist: { url: '/titles/{title_id}/wishlist/import', method: HTTP_METHODS.POST },
+      getWishlist: { url: '/titles/{title_id}/wishlist', method: HTTP_METHODS.GET },
     };
 
   }

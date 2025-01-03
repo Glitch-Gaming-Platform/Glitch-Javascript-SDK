@@ -9544,6 +9544,8 @@ var TitlesRoute = /** @class */ (function () {
         addMedia: { url: '/titles/{title_id}/addMedia', method: HTTP_METHODS.POST },
         removeMedia: { url: '/titles/{title_id}/removeMedia/{media_id}', method: HTTP_METHODS.DELETE },
         updateMediaOrder: { url: '/titles/{title_id}/updateMediaOrder', method: HTTP_METHODS.POST },
+        importWishlist: { url: '/titles/{title_id}/wishlist/import', method: HTTP_METHODS.POST },
+        getWishlist: { url: '/titles/{title_id}/wishlist', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());
@@ -9725,8 +9727,42 @@ var Titles = /** @class */ (function () {
     Titles.removeMedia = function (title_id, media_id, params) {
         return Requests.processRoute(TitlesRoute.routes.removeMedia, {}, { title_id: title_id, media_id: media_id }, params);
     };
+    /**
+     * Update the ordering of media items (images, videos, etc.) for a title.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/updateMediaOrder
+     *
+     * @param title_id The ID of the title to update
+     * @param media_order An array of objects, each containing:
+     *                    - media_id: string (the UUID of the media)
+     *                    - order: number (the new order/index)
+     * @returns Promise containing the server response
+     */
     Titles.updateMediaOrder = function (title_id, media_order) {
         return Requests.processRoute(TitlesRoute.routes.updateMediaOrder, { media_order: media_order }, { title_id: title_id });
+    };
+    /**
+     * Upload a CSV/Excel file containing wishlist data for a title.
+     *
+     * @param title_id The UUID of the title
+     * @param file The CSV or Excel file
+     * @param data Any additional form data, e.g. platform
+     * @returns AxiosPromise
+     */
+    Titles.importWishlist = function (title_id, file, data, params) {
+        var url = TitlesRoute.routes.importWishlist.url.replace('{title_id}', title_id);
+        return Requests.uploadFile(url, 'file', file, data, params);
+    };
+    /**
+     * Retrieve the wishlist data for a specific title.
+     *
+     * @param title_id The UUID of the title
+     * @param params Optional query params, e.g. { platform: 'steam', start_date: '2025-01-01', end_date: '2025-01-31'}
+     * @returns AxiosPromise
+     */
+    Titles.getWishlist = function (title_id, params) {
+        TitlesRoute.routes.getWishlist.url.replace('{title_id}', title_id);
+        return Requests.processRoute(TitlesRoute.routes.getWishlist, {}, { title_id: title_id }, params);
     };
     return Titles;
 }());

@@ -2862,10 +2862,38 @@ declare class Titles {
      * Remove media from a title.
      */
     static removeMedia<T>(title_id: string, media_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update the ordering of media items (images, videos, etc.) for a title.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/updateMediaOrder
+     *
+     * @param title_id The ID of the title to update
+     * @param media_order An array of objects, each containing:
+     *                    - media_id: string (the UUID of the media)
+     *                    - order: number (the new order/index)
+     * @returns Promise containing the server response
+     */
     static updateMediaOrder<T>(title_id: string, media_order: {
         media_id: string;
         order: number;
     }[]): AxiosPromise<Response<T>>;
+    /**
+     * Upload a CSV/Excel file containing wishlist data for a title.
+     *
+     * @param title_id The UUID of the title
+     * @param file The CSV or Excel file
+     * @param data Any additional form data, e.g. platform
+     * @returns AxiosPromise
+     */
+    static importWishlist<T>(title_id: string, file: File | Blob, data?: Record<string, any>, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve the wishlist data for a specific title.
+     *
+     * @param title_id The UUID of the title
+     * @param params Optional query params, e.g. { platform: 'steam', start_date: '2025-01-01', end_date: '2025-01-31'}
+     * @returns AxiosPromise
+     */
+    static getWishlist<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {
