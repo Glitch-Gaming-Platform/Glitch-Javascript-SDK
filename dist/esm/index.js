@@ -6630,6 +6630,10 @@ var CommunitiesRoute = /** @class */ (function () {
             url: '/communities/{community_id}/newsletters/{newsletter_id}/reports/campaign',
             method: HTTP_METHODS.GET
         },
+        newsletterSubscriberTrend: {
+            url: '/communities/{community_id}/newsletters/{newsletter_id}/reports/subscriber_trend',
+            method: HTTP_METHODS.GET
+        },
         // Campaigns
         listCampaigns: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.GET },
         createCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.POST },
@@ -7363,6 +7367,17 @@ var Communities = /** @class */ (function () {
      */
     Communities.newsletterCampaignReports = function (community_id, newsletter_id, params) {
         return Requests.processRoute(CommunitiesRoute.routes.newsletterCampaignReports, undefined, { community_id: community_id, newsletter_id: newsletter_id }, params);
+    };
+    /**
+    * Retrieves daily subscriber trend data for the specified newsletter.
+    *
+    * @param community_id The UUID of the community
+    * @param newsletter_id The UUID of the newsletter
+    * @param params Optional date-range filter (start_date, end_date, etc.)
+    */
+    Communities.newsletterSubscriberTrend = function (community_id, newsletter_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.newsletterSubscriberTrend, undefined, // no body data
+        { community_id: community_id, newsletter_id: newsletter_id }, params);
     };
     return Communities;
 }());

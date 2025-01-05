@@ -1215,6 +1215,14 @@ declare class Communities {
      * @returns Promise with campaign stats
      */
     static newsletterCampaignReports<T>(community_id: string, newsletter_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Retrieves daily subscriber trend data for the specified newsletter.
+    *
+    * @param community_id The UUID of the community
+    * @param newsletter_id The UUID of the newsletter
+    * @param params Optional date-range filter (start_date, end_date, etc.)
+    */
+    static newsletterSubscriberTrend<T>(community_id: string, newsletter_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Users {
