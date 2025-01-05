@@ -45,6 +45,14 @@ class CommunitiesRoute {
     deleteNewsletter: { url: '/communities/{community_id}/newsletters/{newsletter_id}', method: HTTP_METHODS.DELETE },
     importNewsletterSubscribers: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers/import', method: HTTP_METHODS.POST },
     uploadNewsletterBannerImage: { url: '/communities/{community_id}/newsletters/{newsletter_id}/uploadBannerImage', method: HTTP_METHODS.POST },
+    newsletterReports: {
+      url: '/communities/{community_id}/newsletters/{newsletter_id}/reports',
+      method: HTTP_METHODS.GET
+    },
+    newsletterCampaignReports: {
+      url: '/communities/{community_id}/newsletters/{newsletter_id}/reports/campaign',
+      method: HTTP_METHODS.GET
+    },
 
     // Campaigns
     listCampaigns: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.GET },

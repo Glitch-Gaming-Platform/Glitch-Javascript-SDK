@@ -788,6 +788,48 @@ class Communities {
         return Requests.processRoute(CommunitiesRoute.routes.registerNewsletterSubscriber, data, { community_id, newsletter_id }, params);
     }
 
+    /**
+     * Get newsletter overall reports (subscriber changes, unsubscribes, etc.).
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Optional query params (start_date, end_date, etc).
+     * @returns Promise with aggregated data
+     */
+    public static newsletterReports<T>(
+        community_id: string,
+        newsletter_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            CommunitiesRoute.routes.newsletterReports,
+            undefined,
+            { community_id, newsletter_id },
+            params
+        );
+    }
+
+    /**
+     * Get campaign-level stats for a newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Optional query params (start_date, end_date, etc).
+     * @returns Promise with campaign stats
+     */
+    public static newsletterCampaignReports<T>(
+        community_id: string,
+        newsletter_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            CommunitiesRoute.routes.newsletterCampaignReports,
+            undefined,
+            { community_id, newsletter_id },
+            params
+        );
+    }
+
 
 
 

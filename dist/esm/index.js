@@ -6622,6 +6622,14 @@ var CommunitiesRoute = /** @class */ (function () {
         deleteNewsletter: { url: '/communities/{community_id}/newsletters/{newsletter_id}', method: HTTP_METHODS.DELETE },
         importNewsletterSubscribers: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers/import', method: HTTP_METHODS.POST },
         uploadNewsletterBannerImage: { url: '/communities/{community_id}/newsletters/{newsletter_id}/uploadBannerImage', method: HTTP_METHODS.POST },
+        newsletterReports: {
+            url: '/communities/{community_id}/newsletters/{newsletter_id}/reports',
+            method: HTTP_METHODS.GET
+        },
+        newsletterCampaignReports: {
+            url: '/communities/{community_id}/newsletters/{newsletter_id}/reports/campaign',
+            method: HTTP_METHODS.GET
+        },
         // Campaigns
         listCampaigns: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.GET },
         createCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.POST },
@@ -7333,6 +7341,28 @@ var Communities = /** @class */ (function () {
      */
     Communities.registerNewsletterSubscriber = function (community_id, newsletter_id, data, params) {
         return Requests.processRoute(CommunitiesRoute.routes.registerNewsletterSubscriber, data, { community_id: community_id, newsletter_id: newsletter_id }, params);
+    };
+    /**
+     * Get newsletter overall reports (subscriber changes, unsubscribes, etc.).
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Optional query params (start_date, end_date, etc).
+     * @returns Promise with aggregated data
+     */
+    Communities.newsletterReports = function (community_id, newsletter_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.newsletterReports, undefined, { community_id: community_id, newsletter_id: newsletter_id }, params);
+    };
+    /**
+     * Get campaign-level stats for a newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Optional query params (start_date, end_date, etc).
+     * @returns Promise with campaign stats
+     */
+    Communities.newsletterCampaignReports = function (community_id, newsletter_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.newsletterCampaignReports, undefined, { community_id: community_id, newsletter_id: newsletter_id }, params);
     };
     return Communities;
 }());

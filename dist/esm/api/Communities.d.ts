@@ -555,5 +555,23 @@ declare class Communities {
      * @returns Promise
      */
     static registerNewsletterSubscriber<T>(community_id: string, newsletter_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get newsletter overall reports (subscriber changes, unsubscribes, etc.).
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Optional query params (start_date, end_date, etc).
+     * @returns Promise with aggregated data
+     */
+    static newsletterReports<T>(community_id: string, newsletter_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get campaign-level stats for a newsletter.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param params Optional query params (start_date, end_date, etc).
+     * @returns Promise with campaign stats
+     */
+    static newsletterCampaignReports<T>(community_id: string, newsletter_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Communities;
