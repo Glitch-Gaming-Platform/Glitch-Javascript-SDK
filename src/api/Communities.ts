@@ -830,6 +830,26 @@ class Communities {
         );
     }
 
+     /**
+     * Retrieves daily subscriber trend data for the specified newsletter.
+     *
+     * @param community_id The UUID of the community
+     * @param newsletter_id The UUID of the newsletter
+     * @param params Optional date-range filter (start_date, end_date, etc.)
+     */
+     public static newsletterSubscriberTrend<T>(
+        community_id: string,
+        newsletter_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            CommunitiesRoute.routes.newsletterSubscriberTrend,
+            undefined, // no body data
+            { community_id, newsletter_id },
+            params
+        );
+    }
+
 
 
 

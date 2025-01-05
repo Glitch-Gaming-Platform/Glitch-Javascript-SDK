@@ -54,6 +54,11 @@ class CommunitiesRoute {
       method: HTTP_METHODS.GET
     },
 
+    newsletterSubscriberTrend: {
+      url: '/communities/{community_id}/newsletters/{newsletter_id}/reports/subscriber_trend',
+      method: HTTP_METHODS.GET
+    },
+
     // Campaigns
     listCampaigns: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.GET },
     createCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.POST },
