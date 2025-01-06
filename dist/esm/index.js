@@ -9591,6 +9591,9 @@ var TitlesRoute = /** @class */ (function () {
         updateMediaOrder: { url: '/titles/{title_id}/updateMediaOrder', method: HTTP_METHODS.POST },
         importWishlist: { url: '/titles/{title_id}/wishlist/import', method: HTTP_METHODS.POST },
         getWishlist: { url: '/titles/{title_id}/wishlist', method: HTTP_METHODS.GET },
+        createToken: { url: '/titles/{title_id}/tokens', method: HTTP_METHODS.POST },
+        listTokens: { url: '/titles/{title_id}/tokens', method: HTTP_METHODS.GET },
+        revokeToken: { url: '/titles/{title_id}/tokens/{token_id}', method: HTTP_METHODS.DELETE },
     };
     return TitlesRoute;
 }());
@@ -9808,6 +9811,25 @@ var Titles = /** @class */ (function () {
     Titles.getWishlist = function (title_id, params) {
         TitlesRoute.routes.getWishlist.url.replace('{title_id}', title_id);
         return Requests.processRoute(TitlesRoute.routes.getWishlist, {}, { title_id: title_id }, params);
+    };
+    /**
+   * Create a new API token for a title.
+   * Returns { full_token: string, token: TitleToken }.
+   */
+    Titles.createTitleToken = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.createToken, data, { title_id: title_id });
+    };
+    /**
+     * List all tokens for a title.
+     */
+    Titles.listTitleTokens = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.listTokens, {}, { title_id: title_id });
+    };
+    /**
+     * Revoke a specific token by ID.
+     */
+    Titles.revokeTitleToken = function (title_id, token_id) {
+        return Requests.processRoute(TitlesRoute.routes.revokeToken, {}, { title_id: title_id, token_id: token_id });
     };
     return Titles;
 }());

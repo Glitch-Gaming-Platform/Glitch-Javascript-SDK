@@ -20,6 +20,9 @@ class TitlesRoute {
       updateMediaOrder: { url: '/titles/{title_id}/updateMediaOrder', method: HTTP_METHODS.POST },
       importWishlist: { url: '/titles/{title_id}/wishlist/import', method: HTTP_METHODS.POST },
       getWishlist: { url: '/titles/{title_id}/wishlist', method: HTTP_METHODS.GET },
+      createToken: { url: '/titles/{title_id}/tokens', method: HTTP_METHODS.POST },
+    listTokens: { url: '/titles/{title_id}/tokens', method: HTTP_METHODS.GET },
+    revokeToken: { url: '/titles/{title_id}/tokens/{token_id}', method: HTTP_METHODS.DELETE },
     };
 
   }

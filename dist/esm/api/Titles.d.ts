@@ -173,5 +173,20 @@ declare class Titles {
      * @returns AxiosPromise
      */
     static getWishlist<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+   * Create a new API token for a title.
+   * Returns { full_token: string, token: TitleToken }.
+   */
+    static createTitleToken<T>(title_id: string, data?: {
+        expires_at?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * List all tokens for a title.
+     */
+    static listTitleTokens<T>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Revoke a specific token by ID.
+     */
+    static revokeTitleToken<T>(title_id: string, token_id: string): AxiosPromise<Response<T>>;
 }
 export default Titles;

@@ -262,6 +262,48 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.getWishlist, {}, { title_id }, params);
     }
 
+    /**
+   * Create a new API token for a title.
+   * Returns { full_token: string, token: TitleToken }.
+   */
+  public static createTitleToken<T>(
+    title_id: string,
+    data?: { expires_at?: string }
+  ): AxiosPromise<Response<T>> {
+    return Requests.processRoute(
+      TitlesRoute.routes.createToken,
+      data,
+      { title_id }
+    );
+  }
+
+  /**
+   * List all tokens for a title.
+   */
+  public static listTitleTokens<T>(
+    title_id: string
+  ): AxiosPromise<Response<T>> {
+    return Requests.processRoute(
+      TitlesRoute.routes.listTokens,
+      {},
+      { title_id }
+    );
+  }
+
+  /**
+   * Revoke a specific token by ID.
+   */
+  public static revokeTitleToken<T>(
+    title_id: string,
+    token_id: string
+  ): AxiosPromise<Response<T>> {
+    return Requests.processRoute(
+      TitlesRoute.routes.revokeToken,
+      {},
+      { title_id, token_id }
+    );
+  }
+
 }
 
 export default Titles;
