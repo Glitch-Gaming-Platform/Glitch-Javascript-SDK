@@ -517,6 +517,18 @@ class Users {
     }
 
 
+    /**
+     * Search all the users with advanced meilisearch options
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userSearch
+     * 
+     * @returns promise
+     */
+    public static search<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.search, undefined, undefined, params);
+    }
+
+
 
 
 

@@ -7424,6 +7424,7 @@ var UserRoutes = /** @class */ (function () {
         getFacebookPages: { url: "/users/facebookPages", method: HTTP_METHODS.GET },
         getSubreddits: { url: "/users/reddit/subreddits", method: HTTP_METHODS.GET },
         getSubredditFlairs: { url: "/users/reddit/redditflairs/{subreddit}", method: HTTP_METHODS.GET },
+        search: { url: '/users/search', method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -7865,6 +7866,16 @@ var Users = /** @class */ (function () {
      */
     Users.getSubredditFlairs = function (subreddit, params) {
         return Requests.processRoute(UserRoutes.routes.getSubredditFlairs, undefined, { subreddit: subreddit }, params);
+    };
+    /**
+     * Search all the users with advanced meilisearch options
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userSearch
+     *
+     * @returns promise
+     */
+    Users.search = function (params) {
+        return Requests.processRoute(UserRoutes.routes.search, undefined, undefined, params);
     };
     return Users;
 }());

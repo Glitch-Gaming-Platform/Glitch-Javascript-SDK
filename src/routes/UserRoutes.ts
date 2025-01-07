@@ -44,6 +44,8 @@ class UserRoutes {
     getSubreddits: { url: "/users/reddit/subreddits", method: HTTP_METHODS.GET },
     getSubredditFlairs: { url: "/users/reddit/redditflairs/{subreddit}", method: HTTP_METHODS.GET },
 
+    search: { url: '/users/search', method: HTTP_METHODS.GET },
+
   };
 
 }

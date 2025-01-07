@@ -358,5 +358,13 @@ declare class Users {
      * @returns Promise resolving to the list of flairs
      */
     static getSubredditFlairs<T>(subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Search all the users with advanced meilisearch options
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userSearch
+     *
+     * @returns promise
+     */
+    static search<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Users;
