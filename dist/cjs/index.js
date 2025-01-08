@@ -24151,6 +24151,7 @@ var GamesRoutes = /** @class */ (function () {
         listGames: { url: '/games', method: HTTP_METHODS.GET },
         viewGame: { url: '/games/{game_id}', method: HTTP_METHODS.GET },
         createCampaignData: { url: '/games/{game_id}/generateCampaign', method: HTTP_METHODS.POST },
+        createCampaignWithTitle: { url: '/games/{game_id}/generateCampaignWithTitle', method: HTTP_METHODS.POST },
         createGameTitle: { url: '/games/{game_id}/generateTitle', method: HTTP_METHODS.POST },
         createGameScheduler: { url: '/games/{game_id}/generateScheduler', method: HTTP_METHODS.POST },
     };
@@ -24189,6 +24190,14 @@ var Games = /** @class */ (function () {
      */
     Games.createCampaignData = function (game_id, data, params) {
         return Requests.processRoute(GamesRoutes.routes.createCampaignData, data, { game_id: game_id }, params);
+    };
+    /**
+     * Generates campaign data with a game title.
+     *
+     * @returns promise
+     */
+    Games.createCampaignWithTitle = function (game_id, data, params) {
+        return Requests.processRoute(GamesRoutes.routes.createCampaignWithTitle, data, { game_id: game_id }, params);
     };
     /**
      * Generates game data for this game.

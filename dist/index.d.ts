@@ -3770,6 +3770,12 @@ declare class Games {
      */
     static createCampaignData<T>(game_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Generates campaign data with a game title.
+     *
+     * @returns promise
+     */
+    static createCampaignWithTitle<T>(game_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Generates game data for this game.
      *
      * @see https://api.glitch.fun/api/documentation#/ExternalGames/generateCampaign
