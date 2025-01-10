@@ -12,6 +12,7 @@ class FunnelRoutes {
     daily: { url: '/funnels/daily', method: HTTP_METHODS.GET },
     monthly: { url: '/funnels/monthly', method: HTTP_METHODS.GET },
     yearly: { url: '/funnels/yearly', method: HTTP_METHODS.GET },
+    gamify: { url: '/funnels/gamify', method: HTTP_METHODS.GET },
   };
 }
 

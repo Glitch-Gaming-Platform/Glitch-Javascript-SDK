@@ -4434,6 +4434,15 @@ declare class Funnel {
      * @returns Promise with yearly funnel metrics data
      */
     static yearly<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get gamified funnel metrics with recommended targets, scores, and ranks.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels_gamify
+     *
+     * @param params Query parameters (title_id, community_id, start_date, end_date)
+     * @returns Promise with the gamified funnel data
+     */
+    static gamify<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class SocialStats {

@@ -25085,6 +25085,7 @@ var FunnelRoutes = /** @class */ (function () {
         daily: { url: '/funnels/daily', method: HTTP_METHODS.GET },
         monthly: { url: '/funnels/monthly', method: HTTP_METHODS.GET },
         yearly: { url: '/funnels/yearly', method: HTTP_METHODS.GET },
+        gamify: { url: '/funnels/gamify', method: HTTP_METHODS.GET },
     };
     return FunnelRoutes;
 }());
@@ -25167,6 +25168,17 @@ var Funnel = /** @class */ (function () {
      */
     Funnel.yearly = function (params) {
         return Requests.processRoute(FunnelRoutes.routes.yearly, undefined, undefined, params);
+    };
+    /**
+     * Get gamified funnel metrics with recommended targets, scores, and ranks.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels_gamify
+     *
+     * @param params Query parameters (title_id, community_id, start_date, end_date)
+     * @returns Promise with the gamified funnel data
+     */
+    Funnel.gamify = function (params) {
+        return Requests.processRoute(FunnelRoutes.routes.gamify, undefined, undefined, params);
     };
     return Funnel;
 }());

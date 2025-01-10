@@ -87,6 +87,19 @@ class Funnel {
   public static yearly<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(FunnelRoutes.routes.yearly, undefined, undefined, params);
   }
+
+  /**
+   * Get gamified funnel metrics with recommended targets, scores, and ranks.
+   * 
+   * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels_gamify
+   * 
+   * @param params Query parameters (title_id, community_id, start_date, end_date)
+   * @returns Promise with the gamified funnel data
+   */
+  public static gamify<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(FunnelRoutes.routes.gamify, undefined, undefined, params);
+  }
+
 }
 
 export default Funnel;
