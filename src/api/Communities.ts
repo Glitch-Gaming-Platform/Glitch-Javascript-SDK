@@ -850,7 +850,29 @@ class Communities {
         );
     }
 
-
+    /**
+     * Export subscribers for a specific newsletter.
+     * The file is generated asynchronously on the server and
+     * the user is emailed a link to download the file.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param data Export options (format: 'csv' or 'xlsx').
+     * @returns Promise
+     */
+        public static exportNewsletterSubscribers<T>(
+            community_id: string,
+            newsletter_id: string,
+            data: { format: 'csv' | 'xlsx' },
+            params?: Record<string, any>
+        ): AxiosPromise<Response<T>> {
+            return Requests.processRoute(
+                CommunitiesRoute.routes.exportNewsletterSubscribers,
+                data,
+                { community_id, newsletter_id },
+                params
+            );
+        }
 
 
 }

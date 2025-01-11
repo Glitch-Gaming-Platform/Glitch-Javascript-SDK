@@ -581,5 +581,18 @@ declare class Communities {
     * @param params Optional date-range filter (start_date, end_date, etc.)
     */
     static newsletterSubscriberTrend<T>(community_id: string, newsletter_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Export subscribers for a specific newsletter.
+     * The file is generated asynchronously on the server and
+     * the user is emailed a link to download the file.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param data Export options (format: 'csv' or 'xlsx').
+     * @returns Promise
+     */
+    static exportNewsletterSubscribers<T>(community_id: string, newsletter_id: string, data: {
+        format: 'csv' | 'xlsx';
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Communities;

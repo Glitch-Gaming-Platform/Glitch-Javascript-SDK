@@ -19818,6 +19818,10 @@ var CommunitiesRoute = /** @class */ (function () {
             url: '/communities/{community_id}/newsletters/{newsletter_id}/reports/subscriber_trend',
             method: HTTP_METHODS.GET
         },
+        exportNewsletterSubscribers: {
+            url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers/export',
+            method: HTTP_METHODS.POST
+        },
         // Campaigns
         listCampaigns: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.GET },
         createCampaign: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.POST },
@@ -20562,6 +20566,19 @@ var Communities = /** @class */ (function () {
     Communities.newsletterSubscriberTrend = function (community_id, newsletter_id, params) {
         return Requests.processRoute(CommunitiesRoute.routes.newsletterSubscriberTrend, undefined, // no body data
         { community_id: community_id, newsletter_id: newsletter_id }, params);
+    };
+    /**
+     * Export subscribers for a specific newsletter.
+     * The file is generated asynchronously on the server and
+     * the user is emailed a link to download the file.
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param data Export options (format: 'csv' or 'xlsx').
+     * @returns Promise
+     */
+    Communities.exportNewsletterSubscribers = function (community_id, newsletter_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.exportNewsletterSubscribers, data, { community_id: community_id, newsletter_id: newsletter_id }, params);
     };
     return Communities;
 }());
