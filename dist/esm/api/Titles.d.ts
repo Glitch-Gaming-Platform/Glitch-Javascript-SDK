@@ -188,5 +188,16 @@ declare class Titles {
      * Revoke a specific token by ID.
      */
     static revokeTitleToken<T>(title_id: string, token_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Search for Titles using Meilisearch or fallback based on the query and filters.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/searchTitles
+     *
+     * @param params Object of query params:
+     *   - q?: string, filters?: string,
+     *   - sort_by?: string, sort_order?: 'asc'|'desc',
+     *   - page?: number, per_page?: number
+     */
+    static search<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Titles;

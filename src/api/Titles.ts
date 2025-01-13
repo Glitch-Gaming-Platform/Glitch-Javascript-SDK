@@ -238,7 +238,7 @@ class Titles {
      * @returns AxiosPromise
      */
     public static importWishlist<T>(
-        title_id: string, 
+        title_id: string,
         file: File | Blob,
         data?: Record<string, any>,
         params?: Record<string, any>
@@ -255,7 +255,7 @@ class Titles {
      * @returns AxiosPromise
      */
     public static getWishlist<T>(
-        title_id: string, 
+        title_id: string,
         params?: Record<string, any>
     ): AxiosPromise<Response<T>> {
         let url = TitlesRoute.routes.getWishlist.url.replace('{title_id}', title_id);
@@ -266,43 +266,57 @@ class Titles {
    * Create a new API token for a title.
    * Returns { full_token: string, token: TitleToken }.
    */
-  public static createTitleToken<T>(
-    title_id: string,
-    data?: { expires_at?: string }
-  ): AxiosPromise<Response<T>> {
-    return Requests.processRoute(
-      TitlesRoute.routes.createToken,
-      data,
-      { title_id }
-    );
-  }
+    public static createTitleToken<T>(
+        title_id: string,
+        data?: { expires_at?: string }
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.createToken,
+            data,
+            { title_id }
+        );
+    }
 
-  /**
-   * List all tokens for a title.
-   */
-  public static listTitleTokens<T>(
-    title_id: string
-  ): AxiosPromise<Response<T>> {
-    return Requests.processRoute(
-      TitlesRoute.routes.listTokens,
-      {},
-      { title_id }
-    );
-  }
+    /**
+     * List all tokens for a title.
+     */
+    public static listTitleTokens<T>(
+        title_id: string
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.listTokens,
+            {},
+            { title_id }
+        );
+    }
 
-  /**
-   * Revoke a specific token by ID.
-   */
-  public static revokeTitleToken<T>(
-    title_id: string,
-    token_id: string
-  ): AxiosPromise<Response<T>> {
-    return Requests.processRoute(
-      TitlesRoute.routes.revokeToken,
-      {},
-      { title_id, token_id }
-    );
-  }
+    /**
+     * Revoke a specific token by ID.
+     */
+    public static revokeTitleToken<T>(
+        title_id: string,
+        token_id: string
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.revokeToken,
+            {},
+            { title_id, token_id }
+        );
+    }
+
+    /**
+     * Search for Titles using Meilisearch or fallback based on the query and filters.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Titles/searchTitles
+     * 
+     * @param params Object of query params:
+     *   - q?: string, filters?: string,
+     *   - sort_by?: string, sort_order?: 'asc'|'desc',
+     *   - page?: number, per_page?: number
+     */
+    public static search<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.search, {}, undefined, params);
+    }
 
 }
 

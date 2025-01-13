@@ -2956,6 +2956,17 @@ declare class Titles {
      * Revoke a specific token by ID.
      */
     static revokeTitleToken<T>(title_id: string, token_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Search for Titles using Meilisearch or fallback based on the query and filters.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/searchTitles
+     *
+     * @param params Object of query params:
+     *   - q?: string, filters?: string,
+     *   - sort_by?: string, sort_order?: 'asc'|'desc',
+     *   - page?: number, per_page?: number
+     */
+    static search<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {
@@ -4504,6 +4515,23 @@ declare class SocialStats {
     static view<T>(id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class Hashtags {
+    /**
+     * List all the hashtags
+     *
+     *
+     * @returns A promise
+     */
+    static list<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get the top hashtags for a title, campaign, or schedule.
+     *
+     * @param params - e.g. { title_id: '...', limit: 10, sort: 'sum_views', start_date: 'YYYY-MM-DD', end_date: 'YYYY-MM-DD' }
+     * @returns AxiosPromise of an array of aggregated hashtags
+     */
+    static top<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -4811,6 +4839,7 @@ declare class Glitch {
         Events: typeof Events;
         Games: typeof Games;
         GameShows: typeof GameShows;
+        Hashtags: typeof Hashtags;
         Feedback: typeof Feedback;
         Influencers: typeof Influencers;
         Teams: typeof Teams;

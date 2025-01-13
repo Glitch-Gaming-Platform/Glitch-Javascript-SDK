@@ -23,6 +23,7 @@ class TitlesRoute {
     createToken: { url: '/titles/{title_id}/tokens', method: HTTP_METHODS.POST },
     listTokens: { url: '/titles/{title_id}/tokens', method: HTTP_METHODS.GET },
     revokeToken: { url: '/titles/{title_id}/tokens/{token_id}', method: HTTP_METHODS.DELETE },
+    search: { url: '/titles/search', method: HTTP_METHODS.GET },
   };
 
 }

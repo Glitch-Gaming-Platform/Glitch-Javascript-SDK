@@ -22806,6 +22806,7 @@ var TitlesRoute = /** @class */ (function () {
         createToken: { url: '/titles/{title_id}/tokens', method: HTTP_METHODS.POST },
         listTokens: { url: '/titles/{title_id}/tokens', method: HTTP_METHODS.GET },
         revokeToken: { url: '/titles/{title_id}/tokens/{token_id}', method: HTTP_METHODS.DELETE },
+        search: { url: '/titles/search', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());
@@ -23042,6 +23043,19 @@ var Titles = /** @class */ (function () {
      */
     Titles.revokeTitleToken = function (title_id, token_id) {
         return Requests.processRoute(TitlesRoute.routes.revokeToken, {}, { title_id: title_id, token_id: token_id });
+    };
+    /**
+     * Search for Titles using Meilisearch or fallback based on the query and filters.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/searchTitles
+     *
+     * @param params Object of query params:
+     *   - q?: string, filters?: string,
+     *   - sort_by?: string, sort_order?: 'asc'|'desc',
+     *   - page?: number, per_page?: number
+     */
+    Titles.search = function (params) {
+        return Requests.processRoute(TitlesRoute.routes.search, {}, undefined, params);
     };
     return Titles;
 }());
@@ -25286,6 +25300,40 @@ var SocialStats = /** @class */ (function () {
     return SocialStats;
 }());
 
+var HashtagRoute = /** @class */ (function () {
+    function HashtagRoute() {
+    }
+    HashtagRoute.routes = {
+        list: { url: '/hashtags', method: HTTP_METHODS.GET },
+        top: { url: '/hashtags/top', method: HTTP_METHODS.GET },
+    };
+    return HashtagRoute;
+}());
+
+var Hashtags = /** @class */ (function () {
+    function Hashtags() {
+    }
+    /**
+     * List all the hashtags
+     *
+     *
+     * @returns A promise
+     */
+    Hashtags.list = function (data, params) {
+        return Requests.processRoute(HashtagRoute.routes.list, data, {}, params);
+    };
+    /**
+     * Get the top hashtags for a title, campaign, or schedule.
+     *
+     * @param params - e.g. { title_id: '...', limit: 10, sort: 'sum_views', start_date: 'YYYY-MM-DD', end_date: 'YYYY-MM-DD' }
+     * @returns AxiosPromise of an array of aggregated hashtags
+     */
+    Hashtags.top = function (data, params) {
+        return Requests.processRoute(HashtagRoute.routes.list, data, {}, params);
+    };
+    return Hashtags;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -25691,6 +25739,7 @@ var Glitch = /** @class */ (function () {
         Events: Events,
         Games: Games,
         GameShows: GameShows,
+        Hashtags: Hashtags,
         Feedback: Feedback,
         Influencers: Influencers,
         Teams: Teams,

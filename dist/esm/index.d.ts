@@ -29,6 +29,7 @@ import { Media } from "./api";
 import { Scheduler } from "./api";
 import { Funnel } from "./api";
 import { SocialStats } from "./api";
+import { Hashtags } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -56,6 +57,7 @@ declare class Glitch {
         Events: typeof Events;
         Games: typeof Games;
         GameShows: typeof GameShows;
+        Hashtags: typeof Hashtags;
         Feedback: typeof Feedback;
         Influencers: typeof Influencers;
         Teams: typeof Teams;

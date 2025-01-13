@@ -29,6 +29,7 @@ import Media from "./Media";
 import Scheduler from "./Scheduler";
 import Funnel from "./Funnel";
 import SocialStats from "./SocialStats";
+import Hashtags from "./Hashtags";
 
 export {Auth};
 export {Competitions};
@@ -61,3 +62,4 @@ export {Media};
 export {Scheduler};
 export {Funnel};
 export {SocialStats};
+export {Hashtags};

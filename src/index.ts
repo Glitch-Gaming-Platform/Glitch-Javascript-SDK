@@ -33,6 +33,7 @@ import {Media} from "./api";
 import {Scheduler} from "./api";
 import {Funnel} from "./api";
 import {SocialStats} from "./api";
+import {Hashtags} from "./api";
 
 
 
@@ -74,6 +75,7 @@ class Glitch {
         Events: Events,
         Games : Games,
         GameShows : GameShows,
+        Hashtags: Hashtags,
         Feedback : Feedback,
         Influencers : Influencers,
         Teams: Teams,
