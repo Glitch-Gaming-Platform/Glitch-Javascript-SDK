@@ -179,6 +179,17 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.updatePostImpressions, data, { post_id: post_id }, params);
     }
 
+    /**
+    * Get reports on all the the short links
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+    * 
+    * @returns promise
+    */
+    public static shortLinkReports<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.shortLinkReports, undefined, undefined, params);
+    }
+
 }
 
 export default SocialPosts;

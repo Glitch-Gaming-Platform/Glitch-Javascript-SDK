@@ -23,7 +23,7 @@ class Hashtags {
      * @returns AxiosPromise of an array of aggregated hashtags
      */
     public static top<T>(data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(HashtagRoute.routes.list, data, {}, params);
+        return Requests.processRoute(HashtagRoute.routes.top, data, {}, params);
     }
 
 }

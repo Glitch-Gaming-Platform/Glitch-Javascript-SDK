@@ -9437,6 +9437,7 @@ var SocialPostsRoute = /** @class */ (function () {
         reschedule: { url: '/socialposts/{post_id}/reschedule', method: HTTP_METHODS.POST },
         reports: { url: '/socialposts/{post_id}/reports', method: HTTP_METHODS.GET },
         updatePostImpressions: { url: '/socialposts/{post_id}/impressions', method: HTTP_METHODS.PUT },
+        shortLinkReports: { url: '/socialposts/shortlinks/reports', method: HTTP_METHODS.GET },
     };
     return SocialPostsRoute;
 }());
@@ -9595,6 +9596,16 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.updatePostImpressions = function (post_id, data, params) {
         return Requests.processRoute(SocialPostsRoute.routes.updatePostImpressions, data, { post_id: post_id }, params);
+    };
+    /**
+    * Get reports on all the the short links
+    *
+    * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+    *
+    * @returns promise
+    */
+    SocialPosts.shortLinkReports = function (params) {
+        return Requests.processRoute(SocialPostsRoute.routes.shortLinkReports, undefined, undefined, params);
     };
     return SocialPosts;
 }());
@@ -12145,7 +12156,7 @@ var Hashtags = /** @class */ (function () {
      * @returns AxiosPromise of an array of aggregated hashtags
      */
     Hashtags.top = function (data, params) {
-        return Requests.processRoute(HashtagRoute.routes.list, data, {}, params);
+        return Requests.processRoute(HashtagRoute.routes.top, data, {}, params);
     };
     return Hashtags;
 }());

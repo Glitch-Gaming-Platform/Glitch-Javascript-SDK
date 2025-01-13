@@ -17,6 +17,7 @@ class SocialPostsRoute {
         reschedule: { url: '/socialposts/{post_id}/reschedule', method: HTTP_METHODS.POST },
         reports: { url: '/socialposts/{post_id}/reports', method: HTTP_METHODS.GET },
         updatePostImpressions : { url: '/socialposts/{post_id}/impressions', method: HTTP_METHODS.PUT },
+        shortLinkReports: { url: '/socialposts/shortlinks/reports', method: HTTP_METHODS.GET },
 
     };
 

@@ -127,5 +127,13 @@ declare class SocialPosts {
      * @returns promise
      */
     static updatePostImpressions<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Get reports on all the the short links
+    *
+    * @see https://api.glitch.fun/api/documentation#/Post%20Route/resourcePostList
+    *
+    * @returns promise
+    */
+    static shortLinkReports<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default SocialPosts;
