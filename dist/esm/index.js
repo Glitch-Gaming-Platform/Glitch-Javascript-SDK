@@ -9634,6 +9634,13 @@ var TitlesRoute = /** @class */ (function () {
         listTokens: { url: '/titles/{title_id}/tokens', method: HTTP_METHODS.GET },
         revokeToken: { url: '/titles/{title_id}/tokens/{token_id}', method: HTTP_METHODS.DELETE },
         search: { url: '/titles/search', method: HTTP_METHODS.GET },
+        listInstalls: { url: '/titles/{title_id}/installs', method: HTTP_METHODS.GET },
+        viewInstall: { url: '/titles/{title_id}/installs/{install_id}', method: HTTP_METHODS.GET },
+        createInstall: { url: '/titles/{title_id}/installs', method: HTTP_METHODS.POST },
+        listRetentions: { url: '/titles/{title_id}/retentions', method: HTTP_METHODS.GET },
+        retentionSummary: { url: '/titles/{title_id}/retentions/summary', method: HTTP_METHODS.GET },
+        activeRetentions: { url: '/titles/{title_id}/retentions/active', method: HTTP_METHODS.GET },
+        retentionAnalysis: { url: '/titles/{title_id}/retentions/analysis', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());
@@ -9883,6 +9890,42 @@ var Titles = /** @class */ (function () {
      */
     Titles.search = function (params) {
         return Requests.processRoute(TitlesRoute.routes.search, {}, undefined, params);
+    };
+    /**
+    * List game installs for a specific title.
+    */
+    Titles.listInstalls = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.listInstalls, {}, { title_id: title_id }, params);
+    };
+    /**
+     * View a single game install record.
+     */
+    Titles.viewInstall = function (title_id, install_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.viewInstall, {}, { title_id: title_id, install_id: install_id }, params);
+    };
+    /**
+     * Create a new game install record.
+     */
+    Titles.createInstall = function (title_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.createInstall, data, { title_id: title_id }, params);
+    };
+    /**
+     * List retention events for a specific title.
+     */
+    Titles.listRetentions = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.listRetentions, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Get a summary report of retention events for a specific title.
+     */
+    Titles.retentionSummary = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.retentionSummary, {}, { title_id: title_id }, params);
+    };
+    Titles.activeRetentions = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.activeRetentions, {}, { title_id: title_id }, params);
+    };
+    Titles.retentionAnalysis = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.retentionAnalysis, {}, { title_id: title_id }, params);
     };
     return Titles;
 }());

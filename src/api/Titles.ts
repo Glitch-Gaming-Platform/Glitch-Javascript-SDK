@@ -318,6 +318,49 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.search, {}, undefined, params);
     }
 
+     /**
+     * List game installs for a specific title.
+     */
+     public static listInstalls<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.listInstalls, {}, { title_id: title_id }, params);
+    }
+
+    /**
+     * View a single game install record.
+     */
+    public static viewInstall<T>(title_id: string, install_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.viewInstall, {}, { title_id: title_id, install_id: install_id }, params);
+    }
+
+    /**
+     * Create a new game install record.
+     */
+    public static createInstall<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.createInstall, data, { title_id: title_id }, params);
+    }
+
+    /**
+     * List retention events for a specific title.
+     */
+    public static listRetentions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.listRetentions, {}, { title_id: title_id }, params);
+    }
+
+    /**
+     * Get a summary report of retention events for a specific title.
+     */
+    public static retentionSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.retentionSummary, {}, { title_id: title_id }, params);
+    }
+
+    public static activeRetentions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.activeRetentions, {}, { title_id }, params);
+    }
+
+    public static retentionAnalysis<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.retentionAnalysis, {}, { title_id }, params);
+    }
+
 }
 
 export default Titles;

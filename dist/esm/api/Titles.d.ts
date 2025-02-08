@@ -199,5 +199,27 @@ declare class Titles {
      *   - page?: number, per_page?: number
      */
     static search<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * List game installs for a specific title.
+    */
+    static listInstalls<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * View a single game install record.
+     */
+    static viewInstall<T>(title_id: string, install_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new game install record.
+     */
+    static createInstall<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List retention events for a specific title.
+     */
+    static listRetentions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a summary report of retention events for a specific title.
+     */
+    static retentionSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static activeRetentions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static retentionAnalysis<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Titles;
