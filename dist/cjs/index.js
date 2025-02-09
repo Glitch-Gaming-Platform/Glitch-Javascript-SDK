@@ -25373,8 +25373,8 @@ var Hashtags = /** @class */ (function () {
      *
      * @returns A promise
      */
-    Hashtags.list = function (data, params) {
-        return Requests.processRoute(HashtagRoute.routes.list, data, {}, params);
+    Hashtags.list = function (params) {
+        return Requests.processRoute(HashtagRoute.routes.list, {}, {}, params);
     };
     /**
      * Get the top hashtags for a title, campaign, or schedule.
@@ -25382,8 +25382,8 @@ var Hashtags = /** @class */ (function () {
      * @param params - e.g. { title_id: '...', limit: 10, sort: 'sum_views', start_date: 'YYYY-MM-DD', end_date: 'YYYY-MM-DD' }
      * @returns AxiosPromise of an array of aggregated hashtags
      */
-    Hashtags.top = function (data, params) {
-        return Requests.processRoute(HashtagRoute.routes.top, data, {}, params);
+    Hashtags.top = function (params) {
+        return Requests.processRoute(HashtagRoute.routes.top, {}, {}, params);
     };
     return Hashtags;
 }());

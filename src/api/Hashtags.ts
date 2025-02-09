@@ -12,8 +12,8 @@ class Hashtags {
      * 
      * @returns A promise
      */
-    public static list<T>(data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(HashtagRoute.routes.list, data, {}, params);
+    public static list<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(HashtagRoute.routes.list, {}, {}, params);
     }
 
     /**
@@ -22,8 +22,8 @@ class Hashtags {
      * @param params - e.g. { title_id: '...', limit: 10, sort: 'sum_views', start_date: 'YYYY-MM-DD', end_date: 'YYYY-MM-DD' }
      * @returns AxiosPromise of an array of aggregated hashtags
      */
-    public static top<T>(data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(HashtagRoute.routes.top, data, {}, params);
+    public static top<T>(params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(HashtagRoute.routes.top, {}, {}, params);
     }
 
 }
