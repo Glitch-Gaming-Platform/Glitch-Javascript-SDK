@@ -9642,6 +9642,14 @@ var TitlesRoute = /** @class */ (function () {
         activeRetentions: { url: '/titles/{title_id}/retentions/active', method: HTTP_METHODS.GET },
         retentionAnalysis: { url: '/titles/{title_id}/retentions/analysis', method: HTTP_METHODS.GET },
         distinctDimensions: { url: '/titles/{title_id}/installs/distinctDimensions', method: HTTP_METHODS.GET },
+        listSessions: {
+            url: '/titles/{title_id}/installs/sessions',
+            method: HTTP_METHODS.GET
+        },
+        sessionsAverage: {
+            url: '/titles/{title_id}/installs/sessions/average',
+            method: HTTP_METHODS.GET
+        },
     };
     return TitlesRoute;
 }());
@@ -9930,6 +9938,20 @@ var Titles = /** @class */ (function () {
     };
     Titles.distinctDimensions = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.distinctDimensions, {}, { title_id: title_id }, params);
+    };
+    /**
+ * List sessions for a specific title, with optional filters and pagination.
+ * Returns a paginated list of sessions with start/end times, session_length, user info, etc.
+ */
+    Titles.listSessions = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.listSessions, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Get aggregated average session length data (daily/weekly/monthly) for a title.
+     * Optionally filter by platform/device_type/OS/version and group by one dimension.
+     */
+    Titles.sessionsAverage = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.sessionsAverage, {}, { title_id: title_id }, params);
     };
     return Titles;
 }());

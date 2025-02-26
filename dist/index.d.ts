@@ -2998,6 +2998,16 @@ declare class Titles {
     static activeRetentions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static retentionAnalysis<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static distinctDimensions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+ * List sessions for a specific title, with optional filters and pagination.
+ * Returns a paginated list of sessions with start/end times, session_length, user info, etc.
+ */
+    static listSessions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get aggregated average session length data (daily/weekly/monthly) for a title.
+     * Optionally filter by platform/device_type/OS/version and group by one dimension.
+     */
+    static sessionsAverage<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {

@@ -318,10 +318,10 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.search, {}, undefined, params);
     }
 
-     /**
-     * List game installs for a specific title.
-     */
-     public static listInstalls<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+    * List game installs for a specific title.
+    */
+    public static listInstalls<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.listInstalls, {}, { title_id: title_id }, params);
     }
 
@@ -363,7 +363,39 @@ class Titles {
 
     public static distinctDimensions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.distinctDimensions, {}, { title_id }, params);
-      }
+    }
+
+    /**
+ * List sessions for a specific title, with optional filters and pagination.
+ * Returns a paginated list of sessions with start/end times, session_length, user info, etc.
+ */
+    public static listSessions<T>(
+        title_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.listSessions,
+            {},
+            { title_id },
+            params
+        );
+    }
+
+    /**
+     * Get aggregated average session length data (daily/weekly/monthly) for a title.
+     * Optionally filter by platform/device_type/OS/version and group by one dimension.
+     */
+    public static sessionsAverage<T>(
+        title_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.sessionsAverage,
+            {},
+            { title_id },
+            params
+        );
+    }
 
 }
 

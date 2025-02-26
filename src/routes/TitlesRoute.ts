@@ -32,6 +32,14 @@ class TitlesRoute {
     activeRetentions: { url: '/titles/{title_id}/retentions/active', method: HTTP_METHODS.GET },
     retentionAnalysis: { url: '/titles/{title_id}/retentions/analysis', method: HTTP_METHODS.GET },
     distinctDimensions: { url: '/titles/{title_id}/installs/distinctDimensions', method: HTTP_METHODS.GET },
+    listSessions: {
+      url: '/titles/{title_id}/installs/sessions',
+      method: HTTP_METHODS.GET
+    },
+    sessionsAverage: {
+      url: '/titles/{title_id}/installs/sessions/average',
+      method: HTTP_METHODS.GET
+    },
   };
 
 }
