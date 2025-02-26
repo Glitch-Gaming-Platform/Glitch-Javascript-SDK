@@ -221,5 +221,6 @@ declare class Titles {
     static retentionSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static activeRetentions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static retentionAnalysis<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static distinctDimensions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Titles;

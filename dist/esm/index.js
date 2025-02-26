@@ -9641,6 +9641,7 @@ var TitlesRoute = /** @class */ (function () {
         retentionSummary: { url: '/titles/{title_id}/retentions/summary', method: HTTP_METHODS.GET },
         activeRetentions: { url: '/titles/{title_id}/retentions/active', method: HTTP_METHODS.GET },
         retentionAnalysis: { url: '/titles/{title_id}/retentions/analysis', method: HTTP_METHODS.GET },
+        distinctDimensions: { url: '/titles/{title_id}/installs/distinctDimensions', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());
@@ -9926,6 +9927,9 @@ var Titles = /** @class */ (function () {
     };
     Titles.retentionAnalysis = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.retentionAnalysis, {}, { title_id: title_id }, params);
+    };
+    Titles.distinctDimensions = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.distinctDimensions, {}, { title_id: title_id }, params);
     };
     return Titles;
 }());

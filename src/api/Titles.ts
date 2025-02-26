@@ -361,6 +361,10 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.retentionAnalysis, {}, { title_id }, params);
     }
 
+    public static distinctDimensions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.distinctDimensions, {}, { title_id }, params);
+      }
+
 }
 
 export default Titles;
