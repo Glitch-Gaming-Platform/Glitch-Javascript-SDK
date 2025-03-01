@@ -24819,6 +24819,54 @@ var SchedulerRoute = /** @class */ (function () {
         getRedditSubreddits: { url: '/schedulers/{scheduler_id}/reddit/subreddits', method: HTTP_METHODS.GET },
         getRedditSubredditFlairs: { url: '/schedulers/{scheduler_id}/reddit/subreddits/{subreddit}/flairs', method: HTTP_METHODS.GET },
         getDiscordChannels: { url: '/schedulers/{scheduler_id}/discord/channels', method: HTTP_METHODS.GET },
+        crossPromoteListRelationships: {
+            url: '/schedulers/{scheduler_id}/crosspromote/relationships',
+            method: HTTP_METHODS.GET
+        },
+        // 2) Find potential cross-promote partners
+        crossPromoteFind: {
+            url: '/schedulers/{scheduler_id}/crosspromote/find',
+            method: HTTP_METHODS.GET
+        },
+        // 3) List invites
+        crossPromoteInvitesList: {
+            url: '/schedulers/{scheduler_id}/crosspromote/invites',
+            method: HTTP_METHODS.GET
+        },
+        // 4) Send an invite to cross-promote
+        crossPromoteInviteSend: {
+            url: '/schedulers/{scheduler_id}/crosspromote/invites',
+            method: HTTP_METHODS.POST
+        },
+        // 5) Accept an invite
+        crossPromoteInviteAccept: {
+            url: '/schedulers/{scheduler_id}/crosspromote/invites/{invite_id}/accept',
+            method: HTTP_METHODS.POST
+        },
+        // 6) Reject an invite
+        crossPromoteInviteReject: {
+            url: '/schedulers/{scheduler_id}/crosspromote/invites/{invite_id}/reject',
+            method: HTTP_METHODS.POST
+        },
+        // 7) End a cross-promote relationship
+        crossPromoteRelationshipDelete: {
+            url: '/schedulers/{scheduler_id}/crosspromote/relationships/{relationship_id}',
+            method: HTTP_METHODS.DELETE
+        },
+        // 8) Get/Set which platforms are cross-promoted in an existing relationship
+        crossPromoteRelationshipGetPlatforms: {
+            url: '/schedulers/{scheduler_id}/crosspromote/relationships/{relationship_id}/platforms',
+            method: HTTP_METHODS.GET
+        },
+        crossPromoteRelationshipSetPlatforms: {
+            url: '/schedulers/{scheduler_id}/crosspromote/relationships/{relationship_id}/platforms',
+            method: HTTP_METHODS.PUT
+        },
+        // 9) Get recently cross-promoted posts under a relationship
+        crossPromoteRelationshipPosts: {
+            url: '/schedulers/{scheduler_id}/crosspromote/relationships/{relationship_id}/posts',
+            method: HTTP_METHODS.GET
+        },
     };
     return SchedulerRoute;
 }());
@@ -25180,6 +25228,97 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.getSchedulerProgression = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.getSchedulerProgression, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * List active cross-promote relationships for a scheduler.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param params Optional query params
+     */
+    Scheduler.crossPromoteListRelationships = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteListRelationships, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Find potential cross-promote partners for a scheduler.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param params Optional query params
+     */
+    Scheduler.crossPromoteFind = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteFind, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * List cross-promote invites for a scheduler.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param params Optional query params
+     */
+    Scheduler.crossPromoteInvitesList = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteInvitesList, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Send an invite to cross-promote.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param data { partner_scheduler_id, optional_message }
+     */
+    Scheduler.crossPromoteInviteSend = function (scheduler_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteInviteSend, data, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Accept an invite to cross-promote.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param invite_id The ID of the invite
+     */
+    Scheduler.crossPromoteInviteAccept = function (scheduler_id, invite_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteInviteAccept, {}, { scheduler_id: scheduler_id, invite_id: invite_id }, params);
+    };
+    /**
+     * Reject an invite to cross-promote.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param invite_id The ID of the invite
+     */
+    Scheduler.crossPromoteInviteReject = function (scheduler_id, invite_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteInviteReject, {}, { scheduler_id: scheduler_id, invite_id: invite_id }, params);
+    };
+    /**
+     * End a cross-promote relationship.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param relationship_id The ID of the relationship
+     */
+    Scheduler.crossPromoteRelationshipDelete = function (scheduler_id, relationship_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteRelationshipDelete, {}, { scheduler_id: scheduler_id, relationship_id: relationship_id }, params);
+    };
+    /**
+     * Get which platforms are cross-promoted in an existing relationship.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param relationship_id The ID of the relationship
+     */
+    Scheduler.crossPromoteRelationshipGetPlatforms = function (scheduler_id, relationship_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteRelationshipGetPlatforms, {}, { scheduler_id: scheduler_id, relationship_id: relationship_id }, params);
+    };
+    /**
+     * Set which platforms are cross-promoted in an existing relationship.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param relationship_id The ID of the relationship
+     * @param data An object like { platforms: ['twitter', 'facebook', ...] }
+     */
+    Scheduler.crossPromoteRelationshipSetPlatforms = function (scheduler_id, relationship_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteRelationshipSetPlatforms, data, { scheduler_id: scheduler_id, relationship_id: relationship_id }, params);
+    };
+    /**
+     * Get recently cross-promoted posts under a relationship.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param relationship_id The ID of the relationship
+     */
+    Scheduler.crossPromoteRelationshipPosts = function (scheduler_id, relationship_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteRelationshipPosts, {}, { scheduler_id: scheduler_id, relationship_id: relationship_id }, params);
     };
     return Scheduler;
 }());

@@ -288,5 +288,76 @@ declare class Scheduler {
      * @returns promise
      */
     static getSchedulerProgression<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List active cross-promote relationships for a scheduler.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param params Optional query params
+     */
+    static crossPromoteListRelationships<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Find potential cross-promote partners for a scheduler.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param params Optional query params
+     */
+    static crossPromoteFind<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List cross-promote invites for a scheduler.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param params Optional query params
+     */
+    static crossPromoteInvitesList<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send an invite to cross-promote.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param data { partner_scheduler_id, optional_message }
+     */
+    static crossPromoteInviteSend<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Accept an invite to cross-promote.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param invite_id The ID of the invite
+     */
+    static crossPromoteInviteAccept<T>(scheduler_id: string, invite_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Reject an invite to cross-promote.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param invite_id The ID of the invite
+     */
+    static crossPromoteInviteReject<T>(scheduler_id: string, invite_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * End a cross-promote relationship.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param relationship_id The ID of the relationship
+     */
+    static crossPromoteRelationshipDelete<T>(scheduler_id: string, relationship_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get which platforms are cross-promoted in an existing relationship.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param relationship_id The ID of the relationship
+     */
+    static crossPromoteRelationshipGetPlatforms<T>(scheduler_id: string, relationship_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Set which platforms are cross-promoted in an existing relationship.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param relationship_id The ID of the relationship
+     * @param data An object like { platforms: ['twitter', 'facebook', ...] }
+     */
+    static crossPromoteRelationshipSetPlatforms<T>(scheduler_id: string, relationship_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get recently cross-promoted posts under a relationship.
+     *
+     * @param scheduler_id The ID of the promotion schedule
+     * @param relationship_id The ID of the relationship
+     */
+    static crossPromoteRelationshipPosts<T>(scheduler_id: string, relationship_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Scheduler;
