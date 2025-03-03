@@ -63,6 +63,10 @@ class CommunitiesRoute {
       url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers/export', 
       method: HTTP_METHODS.POST 
     },
+    importGameInstalls: { 
+      url: '/communities/{community_id}/newsletters/{newsletter_id}/import_game_installs', 
+      method: HTTP_METHODS.POST 
+    },
 
     // Campaigns
     listCampaigns: { url: '/communities/{community_id}/newsletters/{newsletter_id}/campaigns', method: HTTP_METHODS.GET },

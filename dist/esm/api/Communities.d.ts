@@ -594,5 +594,16 @@ declare class Communities {
     static exportNewsletterSubscribers<T>(community_id: string, newsletter_id: string, data: {
         format: 'csv' | 'xlsx';
     }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Import game installs from a game title installations to a newsletter
+     *
+     * @param community_id The ID of the community.
+     * @param newsletter_id The ID of the newsletter.
+     * @param data Export options (format: 'csv' or 'xlsx').
+     * @returns Promise
+     */
+    static importGameInstalls<T>(community_id: string, newsletter_id: string, data: {
+        format: 'csv' | 'xlsx';
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Communities;
