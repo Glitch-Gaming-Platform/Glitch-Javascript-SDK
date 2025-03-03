@@ -9665,6 +9665,10 @@ var TitlesRoute = /** @class */ (function () {
             url: '/titles/{title_id}/installs/sessions/average',
             method: HTTP_METHODS.GET
         },
+        sessionsHistogram: {
+            url: '/titles/{title_id}/sessions/histogram',
+            method: HTTP_METHODS.GET
+        },
     };
     return TitlesRoute;
 }());
@@ -9967,6 +9971,9 @@ var Titles = /** @class */ (function () {
      */
     Titles.sessionsAverage = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.sessionsAverage, {}, { title_id: title_id }, params);
+    };
+    Titles.sessionsHistogram = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.sessionsHistogram, {}, { title_id: title_id }, params);
     };
     return Titles;
 }());

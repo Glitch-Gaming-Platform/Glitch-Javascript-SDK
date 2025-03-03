@@ -3019,6 +3019,7 @@ declare class Titles {
      * Optionally filter by platform/device_type/OS/version and group by one dimension.
      */
     static sessionsAverage<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static sessionsHistogram<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {

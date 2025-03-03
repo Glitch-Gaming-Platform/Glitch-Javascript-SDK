@@ -40,6 +40,10 @@ class TitlesRoute {
       url: '/titles/{title_id}/installs/sessions/average',
       method: HTTP_METHODS.GET
     },
+    sessionsHistogram: {
+      url: '/titles/{title_id}/sessions/histogram',
+      method: HTTP_METHODS.GET
+    },
   };
 
 }

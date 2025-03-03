@@ -397,6 +397,19 @@ class Titles {
         );
     }
 
+    public static sessionsHistogram<T>(
+        title_id: string,
+        params?: Record<string, any>
+      ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+          TitlesRoute.routes.sessionsHistogram,
+          {},
+          { title_id },
+          params
+        );
+      }
+      
+
 }
 
 export default Titles;
