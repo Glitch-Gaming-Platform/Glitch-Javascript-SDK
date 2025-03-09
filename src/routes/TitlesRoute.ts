@@ -44,6 +44,33 @@ class TitlesRoute {
       url: '/titles/{title_id}/sessions/histogram',
       method: HTTP_METHODS.GET
     },
+    /**
+     * 1) Import a CSV/Excel file containing daily UTM analytics data for a Title
+     *    POST /titles/{title_id}/utm/import
+     */
+    importUtmAnalytics: {
+      url: "/titles/{title_id}/utm/import",
+      method: HTTP_METHODS.POST,
+    },
+
+    /**
+     * 2) Retrieve paginated/filterable UTM analytics data for a Title
+     *    GET /titles/{title_id}/utm
+     */
+    getUtmAnalytics: {
+      url: "/titles/{title_id}/utm",
+      method: HTTP_METHODS.GET,
+    },
+
+    /**
+     * 3) Analyze UTM data with optional group_by / dimension-based aggregates
+     *    GET /titles/{title_id}/utm/analysis
+     */
+    analyzeUtmAnalytics: {
+      url: "/titles/{title_id}/utm/analysis",
+      method: HTTP_METHODS.GET,
+    },
+
   };
 
 }

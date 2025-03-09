@@ -22853,6 +22853,30 @@ var TitlesRoute = /** @class */ (function () {
             url: '/titles/{title_id}/sessions/histogram',
             method: HTTP_METHODS.GET
         },
+        /**
+         * 1) Import a CSV/Excel file containing daily UTM analytics data for a Title
+         *    POST /titles/{title_id}/utm/import
+         */
+        importUtmAnalytics: {
+            url: "/titles/{title_id}/utm/import",
+            method: HTTP_METHODS.POST,
+        },
+        /**
+         * 2) Retrieve paginated/filterable UTM analytics data for a Title
+         *    GET /titles/{title_id}/utm
+         */
+        getUtmAnalytics: {
+            url: "/titles/{title_id}/utm",
+            method: HTTP_METHODS.GET,
+        },
+        /**
+         * 3) Analyze UTM data with optional group_by / dimension-based aggregates
+         *    GET /titles/{title_id}/utm/analysis
+         */
+        analyzeUtmAnalytics: {
+            url: "/titles/{title_id}/utm/analysis",
+            method: HTTP_METHODS.GET,
+        },
     };
     return TitlesRoute;
 }());
@@ -23143,9 +23167,9 @@ var Titles = /** @class */ (function () {
         return Requests.processRoute(TitlesRoute.routes.distinctDimensions, {}, { title_id: title_id }, params);
     };
     /**
- * List sessions for a specific title, with optional filters and pagination.
- * Returns a paginated list of sessions with start/end times, session_length, user info, etc.
- */
+     * List sessions for a specific title, with optional filters and pagination.
+     * Returns a paginated list of sessions with start/end times, session_length, user info, etc.
+     */
     Titles.listSessions = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.listSessions, {}, { title_id: title_id }, params);
     };
@@ -23158,6 +23182,43 @@ var Titles = /** @class */ (function () {
     };
     Titles.sessionsHistogram = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.sessionsHistogram, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Upload a CSV/Excel file containing daily UTM analytics for a specific title.
+     *
+     * @param title_id The UUID of the title
+     * @param file The CSV or Excel file
+     * @param data Optional form fields (if needed)
+     * @param params Optional query parameters
+     * @returns AxiosPromise
+     */
+    Titles.importUtmAnalytics = function (title_id, file, data, params) {
+        var url = TitlesRoute.routes.importUtmAnalytics.url.replace("{title_id}", title_id);
+        return Requests.uploadFile(url, "file", file, data, params);
+    };
+    /**
+     * Retrieve the UTM analytics data for a title (paginated, filterable, sortable).
+     *
+     * GET /titles/{title_id}/utm
+     *
+     * @param title_id The UUID of the title
+     * @param params Optional query params: start_date, end_date, source, device_type, sort_by, etc.
+     * @returns AxiosPromise
+     */
+    Titles.getUtmAnalytics = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.getUtmAnalytics, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Analyze UTM data with optional group_by (source, campaign, medium, device_type, etc.)
+     *
+     * GET /titles/{title_id}/utm/analysis
+     *
+     * @param title_id The UUID of the title
+     * @param params e.g. ?group_by=source&start_date=YYYY-MM-DD
+     * @returns AxiosPromise
+     */
+    Titles.analyzeUtmAnalytics = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.analyzeUtmAnalytics, {}, { title_id: title_id }, params);
     };
     return Titles;
 }());

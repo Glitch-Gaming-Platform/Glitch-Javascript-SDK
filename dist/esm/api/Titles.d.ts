@@ -223,9 +223,9 @@ declare class Titles {
     static retentionAnalysis<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static distinctDimensions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
- * List sessions for a specific title, with optional filters and pagination.
- * Returns a paginated list of sessions with start/end times, session_length, user info, etc.
- */
+     * List sessions for a specific title, with optional filters and pagination.
+     * Returns a paginated list of sessions with start/end times, session_length, user info, etc.
+     */
     static listSessions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Get aggregated average session length data (daily/weekly/monthly) for a title.
@@ -233,5 +233,35 @@ declare class Titles {
      */
     static sessionsAverage<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static sessionsHistogram<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Upload a CSV/Excel file containing daily UTM analytics for a specific title.
+     *
+     * @param title_id The UUID of the title
+     * @param file The CSV or Excel file
+     * @param data Optional form fields (if needed)
+     * @param params Optional query parameters
+     * @returns AxiosPromise
+     */
+    static importUtmAnalytics<T>(title_id: string, file: File | Blob, data?: Record<string, any>, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve the UTM analytics data for a title (paginated, filterable, sortable).
+     *
+     * GET /titles/{title_id}/utm
+     *
+     * @param title_id The UUID of the title
+     * @param params Optional query params: start_date, end_date, source, device_type, sort_by, etc.
+     * @returns AxiosPromise
+     */
+    static getUtmAnalytics<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Analyze UTM data with optional group_by (source, campaign, medium, device_type, etc.)
+     *
+     * GET /titles/{title_id}/utm/analysis
+     *
+     * @param title_id The UUID of the title
+     * @param params e.g. ?group_by=source&start_date=YYYY-MM-DD
+     * @returns AxiosPromise
+     */
+    static analyzeUtmAnalytics<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Titles;
