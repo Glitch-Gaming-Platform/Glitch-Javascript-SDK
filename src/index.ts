@@ -6,6 +6,7 @@ import { Config } from "./config";
 import Auth  from "./api/Auth";
 import Competitions  from "./api/Competitions";
 import {Communities, Social} from "./api";
+import { Ads } from "./api";
 import { Users } from "./api";
 import { Events } from "./api";
 import { Teams } from "./api";
@@ -34,8 +35,6 @@ import {Scheduler} from "./api";
 import {Funnel} from "./api";
 import {SocialStats} from "./api";
 import {Hashtags} from "./api";
-
-
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -67,6 +66,7 @@ class Glitch {
     };
 
     public static api = {
+        Ads: Ads,
         Auth: Auth,
         Campaigns : Campaigns,
         Competitions: Competitions,

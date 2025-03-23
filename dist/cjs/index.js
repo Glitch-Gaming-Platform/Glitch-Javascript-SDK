@@ -19762,6 +19762,354 @@ var Competitions = /** @class */ (function () {
     return Competitions;
 }());
 
+/**
+ * AdsRoute holds all the endpoint definitions for:
+ * - Ad Campaigns
+ * - Ad Groups (Ad Sets)
+ * - Ads (Creatives)
+ * - Ad Group Triggers
+ */
+var AdsRoute = /** @class */ (function () {
+    function AdsRoute() {
+    }
+    AdsRoute.routes = {
+        // ----------------------------------------------------------------
+        // AD CAMPAIGNS
+        // ----------------------------------------------------------------
+        getCampaigns: {
+            url: "/ads/campaigns",
+            method: HTTP_METHODS.GET,
+        },
+        createCampaign: {
+            url: "/ads/campaigns",
+            method: HTTP_METHODS.POST,
+        },
+        retrieveCampaign: {
+            url: "/ads/campaigns/{campaign_id}",
+            method: HTTP_METHODS.GET,
+        },
+        updateCampaign: {
+            url: "/ads/campaigns/{campaign_id}",
+            method: HTTP_METHODS.PUT,
+        },
+        deleteCampaign: {
+            url: "/ads/campaigns/{campaign_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+        // ----------------------------------------------------------------
+        // AD GROUPS (AKA AD SETS)
+        // ----------------------------------------------------------------
+        getGroups: {
+            url: "/ads/campaigns/{campaign_id}/groups",
+            method: HTTP_METHODS.GET,
+        },
+        createGroup: {
+            url: "/ads/campaigns/{campaign_id}/groups",
+            method: HTTP_METHODS.POST,
+        },
+        retrieveGroup: {
+            url: "/ads/campaigns/{campaign_id}/groups/{group_id}",
+            method: HTTP_METHODS.GET,
+        },
+        updateGroup: {
+            url: "/ads/campaigns/{campaign_id}/groups/{group_id}",
+            method: HTTP_METHODS.PUT,
+        },
+        deleteGroup: {
+            url: "/ads/campaigns/{campaign_id}/groups/{group_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+        // ----------------------------------------------------------------
+        // ADS (CREATIVES)
+        // ----------------------------------------------------------------
+        getAds: {
+            url: "/ads/creatives",
+            method: HTTP_METHODS.GET,
+        },
+        createAd: {
+            url: "/ads/creatives",
+            method: HTTP_METHODS.POST,
+        },
+        retrieveAd: {
+            url: "/ads/creatives/{ad_id}",
+            method: HTTP_METHODS.GET,
+        },
+        updateAd: {
+            url: "/ads/creatives/{ad_id}",
+            method: HTTP_METHODS.PUT,
+        },
+        deleteAd: {
+            url: "/ads/creatives/{ad_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+        // ----------------------------------------------------------------
+        // AD GROUP TRIGGERS
+        // ----------------------------------------------------------------
+        getTriggers: {
+            url: "/ads/campaigns/{campaign_id}/groups/{group_id}/triggers",
+            method: HTTP_METHODS.GET,
+        },
+        createTrigger: {
+            url: "/ads/campaigns/{campaign_id}/groups/{group_id}/triggers",
+            method: HTTP_METHODS.POST,
+        },
+        retrieveTrigger: {
+            url: "/ads/campaigns/{campaign_id}/groups/{group_id}/triggers/{trigger_id}",
+            method: HTTP_METHODS.GET,
+        },
+        updateTrigger: {
+            url: "/ads/campaigns/{campaign_id}/groups/{group_id}/triggers/{trigger_id}",
+            method: HTTP_METHODS.PUT,
+        },
+        deleteTrigger: {
+            url: "/ads/campaigns/{campaign_id}/groups/{group_id}/triggers/{trigger_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+    };
+    return AdsRoute;
+}());
+
+var Ads = /** @class */ (function () {
+    function Ads() {
+    }
+    // ----------------------------------------------------------------------
+    // AD CAMPAIGNS
+    // ----------------------------------------------------------------------
+    /**
+     * List Ad Campaigns.
+     *
+     * Example usage:
+     *  Ads.listCampaigns({ community: 'uuid-of-community', platform: 'tiktok' })
+     *
+     * @param params Query parameters (e.g. community, platform, advertiser_id, etc.)
+     * @returns A paginated list of AdCampaign resources
+     */
+    Ads.listCampaigns = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getCampaigns, undefined, undefined, params);
+    };
+    /**
+     * Create a new Ad Campaign.
+     *
+     * @param data  The Ad Campaign payload (JSON) to create
+     * @param params Optional query parameters
+     * @returns The newly created AdCampaign resource
+     */
+    Ads.createCampaign = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.createCampaign, data, {}, params);
+    };
+    /**
+     * Retrieve a single Ad Campaign by ID.
+     *
+     * @param campaign_id The UUID of the campaign to fetch
+     * @param params Optional query parameters
+     * @returns The requested AdCampaign resource
+     */
+    Ads.viewCampaign = function (campaign_id, params) {
+        return Requests.processRoute(AdsRoute.routes.retrieveCampaign, {}, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Update an existing Ad Campaign by ID.
+     *
+     * @param campaign_id The UUID of the campaign to update
+     * @param data  The partial or full updated AdCampaign payload
+     * @param params Optional query parameters
+     * @returns The updated AdCampaign resource
+     */
+    Ads.updateCampaign = function (campaign_id, data, params) {
+        return Requests.processRoute(AdsRoute.routes.updateCampaign, data, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Delete an Ad Campaign by ID.
+     *
+     * @param campaign_id The UUID of the campaign to delete
+     * @param params Optional query parameters
+     * @returns A 204 No Content response on success
+     */
+    Ads.deleteCampaign = function (campaign_id, params) {
+        return Requests.processRoute(AdsRoute.routes.deleteCampaign, {}, { campaign_id: campaign_id }, params);
+    };
+    // ----------------------------------------------------------------------
+    // AD GROUPS (AD SETS)
+    // ----------------------------------------------------------------------
+    /**
+     * List Ad Groups (ad sets) for a specific campaign.
+     *
+     * Example usage:
+     *  Ads.listGroups('some-campaign-uuid', { promotion_type: 'WEBSITE' })
+     *
+     * @param campaign_id The UUID of the parent Ad Campaign
+     * @param params Optional query parameters (e.g. promotion_type, operation_status, etc.)
+     * @returns A paginated list of AdGroup resources
+     */
+    Ads.listGroups = function (campaign_id, params) {
+        return Requests.processRoute(AdsRoute.routes.getGroups, {}, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Create a new Ad Group (ad set) under a specific campaign.
+     *
+     * @param campaign_id The UUID of the parent Ad Campaign
+     * @param data The AdGroup creation payload
+     * @param params Optional query parameters
+     * @returns The newly created AdGroup resource
+     */
+    Ads.createGroup = function (campaign_id, data, params) {
+        return Requests.processRoute(AdsRoute.routes.createGroup, data, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Retrieve a single Ad Group by ID, under a specific campaign.
+     *
+     * @param campaign_id The UUID of the parent Ad Campaign
+     * @param group_id The UUID of the AdGroup to fetch
+     * @param params Optional query parameters
+     * @returns The requested AdGroup resource
+     */
+    Ads.viewGroup = function (campaign_id, group_id, params) {
+        return Requests.processRoute(AdsRoute.routes.retrieveGroup, {}, { campaign_id: campaign_id, group_id: group_id }, params);
+    };
+    /**
+     * Update an Ad Group (ad set) by ID.
+     *
+     * @param campaign_id The UUID of the parent Ad Campaign
+     * @param group_id The UUID of the AdGroup to update
+     * @param data Updated fields for the AdGroup
+     * @param params Optional query parameters
+     * @returns The updated AdGroup resource
+     */
+    Ads.updateGroup = function (campaign_id, group_id, data, params) {
+        return Requests.processRoute(AdsRoute.routes.updateGroup, data, { campaign_id: campaign_id, group_id: group_id }, params);
+    };
+    /**
+     * Delete an Ad Group (ad set) by ID, under a specific campaign.
+     *
+     * @param campaign_id The UUID of the parent Ad Campaign
+     * @param group_id The UUID of the AdGroup to delete
+     * @param params Optional query parameters
+     * @returns A 204 No Content response on success
+     */
+    Ads.deleteGroup = function (campaign_id, group_id, params) {
+        return Requests.processRoute(AdsRoute.routes.deleteGroup, {}, { campaign_id: campaign_id, group_id: group_id }, params);
+    };
+    // ----------------------------------------------------------------------
+    // ADS (CREATIVES)
+    // ----------------------------------------------------------------------
+    /**
+     * List Ads (creatives).
+     *
+     * Supports filtering by ad_group_id, social_media_post_id, operation_status, etc.
+     *
+     * @param params Optional query parameters for filtering/sorting
+     * @returns A paginated list of Ad resources
+     */
+    Ads.listAds = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getAds, undefined, undefined, params);
+    };
+    /**
+     * Create a new Ad (creative).
+     *
+     * @param data The Ad creation payload
+     * @param params Optional query parameters
+     * @returns The newly created Ad resource
+     */
+    Ads.createAd = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.createAd, data, {}, params);
+    };
+    /**
+     * Retrieve a single Ad by ID.
+     *
+     * @param ad_id The UUID of the Ad to fetch
+     * @param params Optional query parameters
+     * @returns The requested Ad resource
+     */
+    Ads.viewAd = function (ad_id, params) {
+        return Requests.processRoute(AdsRoute.routes.retrieveAd, {}, { ad_id: ad_id }, params);
+    };
+    /**
+     * Update an existing Ad by ID.
+     *
+     * @param ad_id The UUID of the Ad to update
+     * @param data The partial or full Ad payload
+     * @param params Optional query parameters
+     * @returns The updated Ad resource
+     */
+    Ads.updateAd = function (ad_id, data, params) {
+        return Requests.processRoute(AdsRoute.routes.updateAd, data, { ad_id: ad_id }, params);
+    };
+    /**
+     * Delete an Ad by ID.
+     *
+     * @param ad_id The UUID of the Ad to delete
+     * @param params Optional query parameters
+     * @returns A 204 No Content response on success
+     */
+    Ads.deleteAd = function (ad_id, params) {
+        return Requests.processRoute(AdsRoute.routes.deleteAd, {}, { ad_id: ad_id }, params);
+    };
+    // ----------------------------------------------------------------------
+    // AD GROUP TRIGGERS
+    // ----------------------------------------------------------------------
+    /**
+     * List triggers defined for a given Ad Group.
+     *
+     * @param campaign_id The UUID of the parent Ad Campaign
+     * @param group_id The UUID of the Ad Group
+     * @param params Optional query parameters (pagination, etc.)
+     * @returns A paginated list of AdGroupTrigger resources
+     */
+    Ads.listTriggers = function (campaign_id, group_id, params) {
+        return Requests.processRoute(AdsRoute.routes.getTriggers, {}, { campaign_id: campaign_id, group_id: group_id }, params);
+    };
+    /**
+     * Create a new Ad Group Trigger.
+     *
+     * @param campaign_id The UUID of the parent Ad Campaign
+     * @param group_id The UUID of the Ad Group
+     * @param data The trigger creation payload
+     * @param params Optional query parameters
+     * @returns The newly created AdGroupTrigger resource
+     */
+    Ads.createTrigger = function (campaign_id, group_id, data, params) {
+        return Requests.processRoute(AdsRoute.routes.createTrigger, data, { campaign_id: campaign_id, group_id: group_id }, params);
+    };
+    /**
+     * Retrieve a single Ad Group Trigger by ID.
+     *
+     * @param campaign_id The UUID of the parent Ad Campaign
+     * @param group_id The UUID of the Ad Group
+     * @param trigger_id The UUID of the trigger
+     * @param params Optional query parameters
+     * @returns The requested AdGroupTrigger resource
+     */
+    Ads.viewTrigger = function (campaign_id, group_id, trigger_id, params) {
+        return Requests.processRoute(AdsRoute.routes.retrieveTrigger, {}, { campaign_id: campaign_id, group_id: group_id, trigger_id: trigger_id }, params);
+    };
+    /**
+     * Update an existing Ad Group Trigger by ID.
+     *
+     * @param campaign_id The UUID of the parent Ad Campaign
+     * @param group_id The UUID of the Ad Group
+     * @param trigger_id The UUID of the trigger to update
+     * @param data Updated trigger fields
+     * @param params Optional query parameters
+     * @returns The updated AdGroupTrigger resource
+     */
+    Ads.updateTrigger = function (campaign_id, group_id, trigger_id, data, params) {
+        return Requests.processRoute(AdsRoute.routes.updateTrigger, data, { campaign_id: campaign_id, group_id: group_id, trigger_id: trigger_id }, params);
+    };
+    /**
+     * Delete an Ad Group Trigger by ID.
+     *
+     * @param campaign_id The UUID of the parent Ad Campaign
+     * @param group_id The UUID of the Ad Group
+     * @param trigger_id The UUID of the trigger
+     * @param params Optional query parameters
+     * @returns A 204 No Content response on success
+     */
+    Ads.deleteTrigger = function (campaign_id, group_id, trigger_id, params) {
+        return Requests.processRoute(AdsRoute.routes.deleteTrigger, {}, { campaign_id: campaign_id, group_id: group_id, trigger_id: trigger_id }, params);
+    };
+    return Ads;
+}());
+
 var CommunitiesRoute = /** @class */ (function () {
     function CommunitiesRoute() {
     }
@@ -26008,6 +26356,7 @@ var Glitch = /** @class */ (function () {
         Config: Config
     };
     Glitch.api = {
+        Ads: Ads,
         Auth: Auth,
         Campaigns: Campaigns,
         Competitions: Competitions,

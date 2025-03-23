@@ -1,4 +1,5 @@
 import Auth from "./Auth";
+import Ads from "./Ads";
 import Competitions from "./Competitions";
 import Communities from "./Communities";
 import Users from "./Users";
@@ -30,6 +31,7 @@ import Scheduler from "./Scheduler";
 import Funnel from "./Funnel";
 import SocialStats from "./SocialStats";
 import Hashtags from "./Hashtags";
+export { Ads };
 export { Auth };
 export { Competitions };
 export { Communities };
