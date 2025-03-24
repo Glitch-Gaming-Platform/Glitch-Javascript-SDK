@@ -87,6 +87,22 @@ class SchedulerRoute {
             method: HTTP_METHODS.GET
         },
 
+        getCampaignBusinesses: {
+            url: "/schedulers/{scheduler_id}/businesses",
+            method: HTTP_METHODS.GET,
+        },
+
+        getCampaignAdAccounts: {
+            url: "/schedulers/{scheduler_id}/ad_accounts",
+            method: HTTP_METHODS.GET,
+        },
+
+        getCampaignFundingInstruments: {
+            url: "/schedulers/{scheduler_id}/funding_instruments",
+            method: HTTP_METHODS.GET,
+        },
+
+
 
     };
 }

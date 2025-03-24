@@ -19796,6 +19796,18 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/campaigns/{campaign_id}",
             method: HTTP_METHODS.DELETE,
         },
+        getCampaignBusinesses: {
+            url: "/ads/campaigns/{campaign_id}/businesses",
+            method: HTTP_METHODS.GET,
+        },
+        getCampaignAdAccounts: {
+            url: "/ads/campaigns/{campaign_id}/ad_accounts",
+            method: HTTP_METHODS.GET,
+        },
+        getCampaignFundingInstruments: {
+            url: "/ads/campaigns/{campaign_id}/funding_instruments",
+            method: HTTP_METHODS.GET,
+        },
         // ----------------------------------------------------------------
         // AD GROUPS (AKA AD SETS)
         // ----------------------------------------------------------------
@@ -19818,18 +19830,6 @@ var AdsRoute = /** @class */ (function () {
         deleteGroup: {
             url: "/ads/campaigns/{campaign_id}/groups/{group_id}",
             method: HTTP_METHODS.DELETE,
-        },
-        getCampaignBusinesses: {
-            url: "/ads/campaigns/{campaign_id}/businesses",
-            method: HTTP_METHODS.GET,
-        },
-        getCampaignAdAccounts: {
-            url: "/ads/campaigns/{campaign_id}/ad_accounts",
-            method: HTTP_METHODS.GET,
-        },
-        getCampaignFundingInstruments: {
-            url: "/ads/campaigns/{campaign_id}/funding_instruments",
-            method: HTTP_METHODS.GET,
         },
         // ----------------------------------------------------------------
         // ADS (CREATIVES)
@@ -25347,6 +25347,18 @@ var SchedulerRoute = /** @class */ (function () {
             url: '/schedulers/{scheduler_id}/crosspromote/relationships/{relationship_id}/posts',
             method: HTTP_METHODS.GET
         },
+        getCampaignBusinesses: {
+            url: "/schedulers/{scheduler_id}/businesses",
+            method: HTTP_METHODS.GET,
+        },
+        getCampaignAdAccounts: {
+            url: "/schedulers/{scheduler_id}/ad_accounts",
+            method: HTTP_METHODS.GET,
+        },
+        getCampaignFundingInstruments: {
+            url: "/schedulers/{scheduler_id}/funding_instruments",
+            method: HTTP_METHODS.GET,
+        },
     };
     return SchedulerRoute;
 }());
@@ -25782,6 +25794,51 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.crossPromoteRelationshipPosts = function (scheduler_id, relationship_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.crossPromoteRelationshipPosts, {}, { scheduler_id: scheduler_id, relationship_id: relationship_id }, params);
+    };
+    /**
+     * List platform-level businesses for the given campaign ID,
+     * as defined by /schedulers/{scheduler_id}/businesses on the backend.
+     *
+     * Typically relevant for Reddit (list businesses), or might return a
+     * "not supported" message for Meta/TikTok.
+     *
+     * @param scheduler_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters, e.g. page.size, etc.
+     * @returns           A response object with data (business list or messages)
+     */
+    Scheduler.listCampaignBusinesses = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getCampaignBusinesses, undefined, // no request body
+        { scheduler_id: scheduler_id }, // path params
+        params // query params
+        );
+    };
+    /**
+     * List Ad Accounts for the given campaign ID,
+     * as defined by /schedulers/{scheduler_id}/ad_accounts on the backend.
+     *
+     * E.g. for Reddit, you can pass ?business_id= to get business-level ad accounts,
+     * or for Twitter, it might just return a user’s ad accounts, etc.
+     *
+     * @param scheduler_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters, e.g. business_id, page.size, etc.
+     * @returns           A response object with data (ad account list)
+     */
+    Scheduler.listCampaignAdAccounts = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getCampaignAdAccounts, undefined, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * List funding instruments for the given campaign ID,
+     * as defined by /schedulers/{scheduler_id}/funding_instruments on the backend.
+     *
+     * For Twitter, pass ?account_id=...
+     * For Reddit, pass ?ad_account_id=... or ?business_id=...
+     *
+     * @param scheduler_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters
+     * @returns           A response object with data (funding instruments)
+     */
+    Scheduler.listCampaignFundingInstruments = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getCampaignFundingInstruments, undefined, { scheduler_id: scheduler_id }, params);
     };
     return Scheduler;
 }());

@@ -527,6 +527,75 @@ class Scheduler {
         );
     }
 
+    /**
+     * List platform-level businesses for the given campaign ID,
+     * as defined by /schedulers/{scheduler_id}/businesses on the backend.
+     * 
+     * Typically relevant for Reddit (list businesses), or might return a 
+     * "not supported" message for Meta/TikTok.
+     *
+     * @param scheduler_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters, e.g. page.size, etc.
+     * @returns           A response object with data (business list or messages)
+     */
+    public static listCampaignBusinesses<T>(
+        scheduler_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.getCampaignBusinesses,
+            undefined,                // no request body
+            { scheduler_id },          // path params
+            params                    // query params
+        );
+    }
+
+    /**
+     * List Ad Accounts for the given campaign ID,
+     * as defined by /schedulers/{scheduler_id}/ad_accounts on the backend.
+     * 
+     * E.g. for Reddit, you can pass ?business_id= to get business-level ad accounts,
+     * or for Twitter, it might just return a user’s ad accounts, etc.
+     *
+     * @param scheduler_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters, e.g. business_id, page.size, etc.
+     * @returns           A response object with data (ad account list)
+     */
+    public static listCampaignAdAccounts<T>(
+        scheduler_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.getCampaignAdAccounts,
+            undefined,
+            { scheduler_id },
+            params
+        );
+    }
+
+    /**
+     * List funding instruments for the given campaign ID,
+     * as defined by /schedulers/{scheduler_id}/funding_instruments on the backend.
+     * 
+     * For Twitter, pass ?account_id=... 
+     * For Reddit, pass ?ad_account_id=... or ?business_id=... 
+     *
+     * @param scheduler_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters
+     * @returns           A response object with data (funding instruments)
+     */
+    public static listCampaignFundingInstruments<T>(
+        scheduler_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.getCampaignFundingInstruments,
+            undefined,
+            { scheduler_id },
+            params
+        );
+    }
+
 }
 
 export default Scheduler;

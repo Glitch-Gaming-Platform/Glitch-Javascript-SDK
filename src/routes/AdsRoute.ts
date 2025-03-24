@@ -37,6 +37,21 @@ class AdsRoute {
             url: "/ads/campaigns/{campaign_id}",
             method: HTTP_METHODS.DELETE,
         },
+        getCampaignBusinesses: {
+            url: "/ads/campaigns/{campaign_id}/businesses",
+            method: HTTP_METHODS.GET,
+        },
+
+        getCampaignAdAccounts: {
+            url: "/ads/campaigns/{campaign_id}/ad_accounts",
+            method: HTTP_METHODS.GET,
+        },
+
+        getCampaignFundingInstruments: {
+            url: "/ads/campaigns/{campaign_id}/funding_instruments",
+            method: HTTP_METHODS.GET,
+        },
+
 
 
         // ----------------------------------------------------------------
@@ -66,21 +81,6 @@ class AdsRoute {
             url: "/ads/campaigns/{campaign_id}/groups/{group_id}",
             method: HTTP_METHODS.DELETE,
         },
-        getCampaignBusinesses: {
-            url: "/ads/campaigns/{campaign_id}/businesses",
-            method: HTTP_METHODS.GET,
-        },
-
-        getCampaignAdAccounts: {
-            url: "/ads/campaigns/{campaign_id}/ad_accounts",
-            method: HTTP_METHODS.GET,
-        },
-
-        getCampaignFundingInstruments: {
-            url: "/ads/campaigns/{campaign_id}/funding_instruments",
-            method: HTTP_METHODS.GET,
-        },
-
         // ----------------------------------------------------------------
         // ADS (CREATIVES)
         // ----------------------------------------------------------------
