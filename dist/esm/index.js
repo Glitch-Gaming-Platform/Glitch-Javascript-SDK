@@ -6635,6 +6635,18 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/campaigns/{campaign_id}/groups/{group_id}",
             method: HTTP_METHODS.DELETE,
         },
+        getCampaignBusinesses: {
+            url: "/ads/campaigns/{campaign_id}/businesses",
+            method: HTTP_METHODS.GET,
+        },
+        getCampaignAdAccounts: {
+            url: "/ads/campaigns/{campaign_id}/ad_accounts",
+            method: HTTP_METHODS.GET,
+        },
+        getCampaignFundingInstruments: {
+            url: "/ads/campaigns/{campaign_id}/funding_instruments",
+            method: HTTP_METHODS.GET,
+        },
         // ----------------------------------------------------------------
         // ADS (CREATIVES)
         // ----------------------------------------------------------------
@@ -6922,6 +6934,51 @@ var Ads = /** @class */ (function () {
      */
     Ads.deleteTrigger = function (campaign_id, group_id, trigger_id, params) {
         return Requests.processRoute(AdsRoute.routes.deleteTrigger, {}, { campaign_id: campaign_id, group_id: group_id, trigger_id: trigger_id }, params);
+    };
+    /**
+     * List platform-level businesses for the given campaign ID,
+     * as defined by /ads/campaigns/{id}/businesses on the backend.
+     *
+     * Typically relevant for Reddit (list businesses), or might return a
+     * "not supported" message for Meta/TikTok.
+     *
+     * @param campaign_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters, e.g. page.size, etc.
+     * @returns           A response object with data (business list or messages)
+     */
+    Ads.listCampaignBusinesses = function (campaign_id, params) {
+        return Requests.processRoute(AdsRoute.routes.getCampaignBusinesses, undefined, // no request body
+        { campaign_id: campaign_id }, // path params
+        params // query params
+        );
+    };
+    /**
+     * List Ad Accounts for the given campaign ID,
+     * as defined by /ads/campaigns/{id}/ad_accounts on the backend.
+     *
+     * E.g. for Reddit, you can pass ?business_id= to get business-level ad accounts,
+     * or for Twitter, it might just return a user’s ad accounts, etc.
+     *
+     * @param campaign_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters, e.g. business_id, page.size, etc.
+     * @returns           A response object with data (ad account list)
+     */
+    Ads.listCampaignAdAccounts = function (campaign_id, params) {
+        return Requests.processRoute(AdsRoute.routes.getCampaignAdAccounts, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * List funding instruments for the given campaign ID,
+     * as defined by /ads/campaigns/{id}/funding_instruments on the backend.
+     *
+     * For Twitter, pass ?account_id=...
+     * For Reddit, pass ?ad_account_id=... or ?business_id=...
+     *
+     * @param campaign_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters
+     * @returns           A response object with data (funding instruments)
+     */
+    Ads.listCampaignFundingInstruments = function (campaign_id, params) {
+        return Requests.processRoute(AdsRoute.routes.getCampaignFundingInstruments, undefined, { campaign_id: campaign_id }, params);
     };
     return Ads;
 }());

@@ -184,5 +184,41 @@ declare class Ads {
      * @returns A 204 No Content response on success
      */
     static deleteTrigger<T>(campaign_id: string, group_id: string, trigger_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List platform-level businesses for the given campaign ID,
+     * as defined by /ads/campaigns/{id}/businesses on the backend.
+     *
+     * Typically relevant for Reddit (list businesses), or might return a
+     * "not supported" message for Meta/TikTok.
+     *
+     * @param campaign_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters, e.g. page.size, etc.
+     * @returns           A response object with data (business list or messages)
+     */
+    static listCampaignBusinesses<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List Ad Accounts for the given campaign ID,
+     * as defined by /ads/campaigns/{id}/ad_accounts on the backend.
+     *
+     * E.g. for Reddit, you can pass ?business_id= to get business-level ad accounts,
+     * or for Twitter, it might just return a user’s ad accounts, etc.
+     *
+     * @param campaign_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters, e.g. business_id, page.size, etc.
+     * @returns           A response object with data (ad account list)
+     */
+    static listCampaignAdAccounts<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List funding instruments for the given campaign ID,
+     * as defined by /ads/campaigns/{id}/funding_instruments on the backend.
+     *
+     * For Twitter, pass ?account_id=...
+     * For Reddit, pass ?ad_account_id=... or ?business_id=...
+     *
+     * @param campaign_id The UUID of the Ad Campaign
+     * @param params      Optional query parameters
+     * @returns           A response object with data (funding instruments)
+     */
+    static listCampaignFundingInstruments<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Ads;
