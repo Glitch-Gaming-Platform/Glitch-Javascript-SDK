@@ -862,6 +862,37 @@ declare class Ads {
      * @returns           A response object with data (funding instruments)
      */
     static listCampaignFundingInstruments<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+   * GET /ads/reddit/targeting/carriers
+   *
+   * Example usage:
+   *   Ads.listRedditCarriers({ scheduler_id: 'uuid-of-scheduler', 'page.size': 50 })
+   */
+    static listRedditCarriers<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/reddit/targeting/communities?names=sub1,sub2
+     */
+    static listRedditCommunities<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/reddit/targeting/communities/search?query=xyz
+     */
+    static searchRedditCommunities<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/reddit/targeting/devices
+     */
+    static listRedditDevices<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/reddit/targeting/geolocations
+     */
+    static listRedditGeolocations<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/reddit/targeting/interests
+     */
+    static listRedditInterests<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/reddit/targeting/third_party_audiences
+     */
+    static listRedditThirdPartyAudiences<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Communities {
@@ -4605,6 +4636,13 @@ declare class Scheduler {
      * @returns promise
      */
     static clearRedditAuth<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Clear Reddit Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    static clearRedditAdsAuth<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Clear YouTube OAuth credentials from a promotion schedule.
      *

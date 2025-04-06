@@ -261,6 +261,16 @@ class Scheduler {
     }
 
     /**
+     * Clear Reddit Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    public static clearRedditAdsAuth<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.clearRedditAdsAuth, {}, { scheduler_id }, params);
+    }
+
+    /**
      * Clear YouTube OAuth credentials from a promotion schedule.
      *
      * @param scheduler_id The ID of the promotion schedule.

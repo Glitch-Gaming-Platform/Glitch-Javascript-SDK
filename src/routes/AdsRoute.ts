@@ -136,6 +136,36 @@ class AdsRoute {
             url: "/ads/campaigns/{campaign_id}/groups/{group_id}/triggers/{trigger_id}",
             method: HTTP_METHODS.DELETE,
         },
+
+        // REDDIT TARGETING routes
+        getRedditCarriers: {
+            url: "/ads/reddit/targeting/carriers",
+            method: HTTP_METHODS.GET,
+        },
+        getRedditCommunities: {
+            url: "/ads/reddit/targeting/communities",
+            method: HTTP_METHODS.GET,
+        },
+        searchRedditCommunities: {
+            url: "/ads/reddit/targeting/communities/search",
+            method: HTTP_METHODS.GET,
+        },
+        getRedditDevices: {
+            url: "/ads/reddit/targeting/devices",
+            method: HTTP_METHODS.GET,
+        },
+        getRedditGeolocations: {
+            url: "/ads/reddit/targeting/geolocations",
+            method: HTTP_METHODS.GET,
+        },
+        getRedditInterests: {
+            url: "/ads/reddit/targeting/interests",
+            method: HTTP_METHODS.GET,
+        },
+        getRedditThirdPartyAudiences: {
+            url: "/ads/reddit/targeting/third_party_audiences",
+            method: HTTP_METHODS.GET,
+        },
     };
 }
 

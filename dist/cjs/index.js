@@ -19877,6 +19877,35 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/campaigns/{campaign_id}/groups/{group_id}/triggers/{trigger_id}",
             method: HTTP_METHODS.DELETE,
         },
+        // REDDIT TARGETING routes
+        getRedditCarriers: {
+            url: "/ads/reddit/targeting/carriers",
+            method: HTTP_METHODS.GET,
+        },
+        getRedditCommunities: {
+            url: "/ads/reddit/targeting/communities",
+            method: HTTP_METHODS.GET,
+        },
+        searchRedditCommunities: {
+            url: "/ads/reddit/targeting/communities/search",
+            method: HTTP_METHODS.GET,
+        },
+        getRedditDevices: {
+            url: "/ads/reddit/targeting/devices",
+            method: HTTP_METHODS.GET,
+        },
+        getRedditGeolocations: {
+            url: "/ads/reddit/targeting/geolocations",
+            method: HTTP_METHODS.GET,
+        },
+        getRedditInterests: {
+            url: "/ads/reddit/targeting/interests",
+            method: HTTP_METHODS.GET,
+        },
+        getRedditThirdPartyAudiences: {
+            url: "/ads/reddit/targeting/third_party_audiences",
+            method: HTTP_METHODS.GET,
+        },
     };
     return AdsRoute;
 }());
@@ -20163,6 +20192,51 @@ var Ads = /** @class */ (function () {
      */
     Ads.listCampaignFundingInstruments = function (campaign_id, params) {
         return Requests.processRoute(AdsRoute.routes.getCampaignFundingInstruments, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+   * GET /ads/reddit/targeting/carriers
+   *
+   * Example usage:
+   *   Ads.listRedditCarriers({ scheduler_id: 'uuid-of-scheduler', 'page.size': 50 })
+   */
+    Ads.listRedditCarriers = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getRedditCarriers, undefined, undefined, params);
+    };
+    /**
+     * GET /ads/reddit/targeting/communities?names=sub1,sub2
+     */
+    Ads.listRedditCommunities = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getRedditCommunities, undefined, undefined, params);
+    };
+    /**
+     * GET /ads/reddit/targeting/communities/search?query=xyz
+     */
+    Ads.searchRedditCommunities = function (params) {
+        return Requests.processRoute(AdsRoute.routes.searchRedditCommunities, undefined, undefined, params);
+    };
+    /**
+     * GET /ads/reddit/targeting/devices
+     */
+    Ads.listRedditDevices = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getRedditDevices, undefined, undefined, params);
+    };
+    /**
+     * GET /ads/reddit/targeting/geolocations
+     */
+    Ads.listRedditGeolocations = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getRedditGeolocations, undefined, undefined, params);
+    };
+    /**
+     * GET /ads/reddit/targeting/interests
+     */
+    Ads.listRedditInterests = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getRedditInterests, undefined, undefined, params);
+    };
+    /**
+     * GET /ads/reddit/targeting/third_party_audiences
+     */
+    Ads.listRedditThirdPartyAudiences = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getRedditThirdPartyAudiences, undefined, undefined, params);
     };
     return Ads;
 }());
@@ -25295,6 +25369,7 @@ var SchedulerRoute = /** @class */ (function () {
         clearTwitchAuth: { url: '/schedulers/{scheduler_id}/clearTwitchAuth', method: HTTP_METHODS.DELETE },
         clearKickAuth: { url: '/schedulers/{scheduler_id}/clearKickAuth', method: HTTP_METHODS.DELETE },
         clearRedditAuth: { url: '/schedulers/{scheduler_id}/clearRedditAuth', method: HTTP_METHODS.DELETE },
+        clearRedditAdsAuth: { url: '/schedulers/{scheduler_id}/clearRedditAdsAuth', method: HTTP_METHODS.DELETE },
         clearYouTubeAuth: { url: '/schedulers/{scheduler_id}/clearYouTubeAuth', method: HTTP_METHODS.DELETE },
         clearPatreonAuth: { url: '/schedulers/{scheduler_id}/clearPatreonAuth', method: HTTP_METHODS.DELETE },
         clearPinterestAuth: { url: '/schedulers/{scheduler_id}/clearPinterestAuth', method: HTTP_METHODS.DELETE },
@@ -25600,6 +25675,15 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.clearRedditAuth = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.clearRedditAuth, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Reddit Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearRedditAdsAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearRedditAdsAuth, {}, { scheduler_id: scheduler_id }, params);
     };
     /**
      * Clear YouTube OAuth credentials from a promotion schedule.

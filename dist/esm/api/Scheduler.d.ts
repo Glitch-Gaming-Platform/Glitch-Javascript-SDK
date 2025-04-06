@@ -195,6 +195,13 @@ declare class Scheduler {
      */
     static clearRedditAuth<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Clear Reddit Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    static clearRedditAdsAuth<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Clear YouTube OAuth credentials from a promotion schedule.
      *
      * @param scheduler_id The ID of the promotion schedule.
