@@ -13,9 +13,13 @@ interface CryptoInterface {
 
 // Browser implementation using crypto-js
 class BrowserCrypto implements CryptoInterface {
+  private CryptoJS: any;
+
+  constructor() {
+    this.CryptoJS = require('crypto-js');
+  }
+
   createHmac(algorithm: string, secret: string): HmacInterface {
-    const CryptoJS = require('crypto-js');
-    
     let data = '';
     
     const hmac: HmacInterface = {
@@ -27,7 +31,7 @@ class BrowserCrypto implements CryptoInterface {
         if (encoding !== 'hex') {
           throw new Error('Only hex encoding is supported in browser implementation');
         }
-        return CryptoJS.HmacSHA256(data, secret).toString(CryptoJS.enc.Hex);
+        return this.CryptoJS.HmacSHA256(data, secret).toString(this.CryptoJS.enc.Hex);
       }
     };
     
@@ -35,15 +39,24 @@ class BrowserCrypto implements CryptoInterface {
   }
 }
 
-// Node.js implementation using native crypto
+// Node.js implementation that maintains sync interface
 class NodeCrypto implements CryptoInterface {
-  private crypto: typeof import('crypto');
+  private crypto?: typeof import('crypto');
 
   constructor() {
-    this.crypto = require('crypto');
+    // Use dynamic import but handle it synchronously for interface compliance
+    try {
+      // This will throw in browser environments
+      this.crypto = require('crypto');
+    } catch (e) {
+      this.crypto = undefined;
+    }
   }
 
   createHmac(algorithm: string, secret: string): HmacInterface {
+    if (!this.crypto) {
+      throw new Error('Node.js crypto module not available');
+    }
     return this.crypto.createHmac(algorithm, secret);
   }
 }
@@ -51,18 +64,26 @@ class NodeCrypto implements CryptoInterface {
 // Determine which crypto implementation to use
 const getCrypto = (): CryptoInterface => {
   try {
-    // Check if we're in Node.js environment
-    if (typeof process !== 'undefined' && process.versions && process.versions.node) {
-      return new NodeCrypto();
+    // Check if we're in Node.js environment and crypto is available
+    if (typeof process !== 'undefined' && process.versions?.node) {
+      const nodeCrypto = new NodeCrypto();
+      // Verify crypto was actually loaded
+      try {
+        nodeCrypto.createHmac('sha256', 'test');
+        return nodeCrypto;
+      } catch (e) {
+        console.warn('Node.js crypto not available, falling back to browser implementation');
+      }
     }
-    // Fall back to browser implementation
-    return new BrowserCrypto();
   } catch (e) {
-    return new BrowserCrypto();
+    console.warn('Node.js environment detection failed, falling back to browser implementation');
   }
+  // Fall back to browser implementation
+  return new BrowserCrypto();
 };
 
-const crypto = getCrypto();
+// Singleton crypto instance
+const cryptoInstance: CryptoInterface = getCrypto();
 
 class Session {
   private static _id_key = 'user_id';
@@ -96,14 +117,9 @@ class Session {
     return Storage.get(Session._email_key);
   }
 
-  public static hasJoinedCommunity() {
+  public static hasJoinedCommunity(): boolean {
     const community = Storage.get('community');
-
-    if (!community) {
-      return false;
-    }
-
-    return (community?.me) ? true : false;
+    return !!community?.me;
   }
 
   public static end(): void {
@@ -115,7 +131,14 @@ class Session {
     Storage.set(Session._username_key, null);
   }
 
-  public static processAuthentication(data: { token: { access_token: string }, id: string, first_name: string, last_name: string, email: string, username: string }): void {
+  public static processAuthentication(data: { 
+    token: { access_token: string }, 
+    id: string, 
+    first_name: string, 
+    last_name: string, 
+    email: string, 
+    username: string 
+  }): void {
     Storage.setAuthToken(data.token.access_token);
     Storage.set(Session._id_key, data.id);
     Storage.set(Session._first_name_key, data.first_name);
@@ -142,7 +165,7 @@ class Session {
         throw new Error('secret is required');
       }
 
-      return crypto
+      return cryptoInstance
         .createHmac('sha256', secret)
         .update(titleId)
         .digest('hex');

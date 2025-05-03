@@ -82,6 +82,16 @@ declare class Scheduler {
      */
     static listUpdates<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Search the updates related to a promotion schedule.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/searchTitleUpdates
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     *
+     * @returns promise
+     */
+    static searchUpdates<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Create a new title update for a promotion schedule.
      *
      * @see https://api.glitch.fun/api/documentation#/Scheduler/createTitleUpdate

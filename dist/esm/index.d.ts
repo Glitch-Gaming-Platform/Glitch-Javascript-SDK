@@ -31,6 +31,7 @@ import { Scheduler } from "./api";
 import { Funnel } from "./api";
 import { SocialStats } from "./api";
 import { Hashtags } from "./api";
+import { WebsiteAnalytics } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -83,6 +84,7 @@ declare class Glitch {
         Scheduler: typeof Scheduler;
         Funnel: typeof Funnel;
         SocialStats: typeof SocialStats;
+        WebsiteAnalytics: typeof WebsiteAnalytics;
     };
     static util: {
         Requests: typeof Requests;

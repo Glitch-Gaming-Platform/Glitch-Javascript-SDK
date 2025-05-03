@@ -22,5 +22,13 @@ declare class Session {
         email: string;
         username: string;
     }): void;
+    /**
+     * Generate a tracking token for analytics collection
+     * @param titleId The title ID to generate token for
+     * @param secret The secret key (should match server config)
+     * @returns HMAC-SHA256 token
+     * @throws Error if crypto operations fail
+     */
+    static generateTrackingToken(titleId: string, secret: string): string;
 }
 export default Session;
