@@ -13,6 +13,7 @@ class SchedulerRoute {
 
         // Title Update Routes
         listUpdates: { url: '/schedulers/{scheduler_id}/updates', method: HTTP_METHODS.GET },
+        searchUpdates: { url: '/schedulers/{scheduler_id}/updates/search', method: HTTP_METHODS.GET },
         createUpdate: { url: '/schedulers/{scheduler_id}/updates', method: HTTP_METHODS.POST },
         getUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.GET },
         updateUpdate: { url: '/schedulers/{scheduler_id}/updates/{update_id}', method: HTTP_METHODS.PUT },

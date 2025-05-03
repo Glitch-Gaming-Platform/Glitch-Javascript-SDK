@@ -31,6 +31,7 @@ import Scheduler from "./Scheduler";
 import Funnel from "./Funnel";
 import SocialStats from "./SocialStats";
 import Hashtags from "./Hashtags";
+import WebsiteAnalytics from "./WebsiteAnalytics";
 
 export {Ads};
 export {Auth};
@@ -65,3 +66,4 @@ export {Scheduler};
 export {Funnel};
 export {SocialStats};
 export {Hashtags};
+export {WebsiteAnalytics};

@@ -35,6 +35,7 @@ import {Scheduler} from "./api";
 import {Funnel} from "./api";
 import {SocialStats} from "./api";
 import {Hashtags} from "./api";
+import {WebsiteAnalytics} from "./api";
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -98,7 +99,8 @@ class Glitch {
         Media : Media,
         Scheduler : Scheduler,
         Funnel: Funnel,
-        SocialStats : SocialStats
+        SocialStats : SocialStats,
+        WebsiteAnalytics: WebsiteAnalytics
     }
 
     public static util = {

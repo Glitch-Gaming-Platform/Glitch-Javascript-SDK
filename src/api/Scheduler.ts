@@ -109,6 +109,19 @@ class Scheduler {
     }
 
     /**
+     * Search the updates related to a promotion schedule.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/searchTitleUpdates
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * 
+     * @returns promise
+     */
+    public static searchUpdates<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.listUpdates, {}, { scheduler_id }, params);
+    }
+
+    /**
      * Create a new title update for a promotion schedule.
      * 
      * @see https://api.glitch.fun/api/documentation#/Scheduler/createTitleUpdate
