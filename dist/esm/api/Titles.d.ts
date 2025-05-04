@@ -254,6 +254,16 @@ declare class Titles {
      */
     static getUtmAnalytics<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Get the web tracking token used for websites.
+     *
+     * GET /titles/{title_id}/webTrackingToken
+     *
+     * @param title_id The UUID of the title
+     * @param params Optional query params:
+     * @returns AxiosPromise
+     */
+    static getWebTrackingToken<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Analyze UTM data with optional group_by (source, campaign, medium, device_type, etc.)
      *
      * GET /titles/{title_id}/utm/analysis

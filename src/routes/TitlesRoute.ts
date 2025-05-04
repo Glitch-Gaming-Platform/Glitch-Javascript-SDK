@@ -62,6 +62,11 @@ class TitlesRoute {
       method: HTTP_METHODS.GET,
     },
 
+    getWebTrackingToken: {
+      url: "/titles/{title_id}/webTrackingToken",
+      method: HTTP_METHODS.GET,
+    },
+
     /**
      * 3) Analyze UTM data with optional group_by / dimension-based aggregates
      *    GET /titles/{title_id}/utm/analysis

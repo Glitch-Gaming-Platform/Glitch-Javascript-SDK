@@ -23348,6 +23348,10 @@ var TitlesRoute = /** @class */ (function () {
             url: "/titles/{title_id}/utm",
             method: HTTP_METHODS.GET,
         },
+        getWebTrackingToken: {
+            url: "/titles/{title_id}/webTrackingToken",
+            method: HTTP_METHODS.GET,
+        },
         /**
          * 3) Analyze UTM data with optional group_by / dimension-based aggregates
          *    GET /titles/{title_id}/utm/analysis
@@ -23686,6 +23690,18 @@ var Titles = /** @class */ (function () {
      */
     Titles.getUtmAnalytics = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.getUtmAnalytics, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Get the web tracking token used for websites.
+     *
+     * GET /titles/{title_id}/webTrackingToken
+     *
+     * @param title_id The UUID of the title
+     * @param params Optional query params:
+     * @returns AxiosPromise
+     */
+    Titles.getWebTrackingToken = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.getWebTrackingToken, {}, { title_id: title_id }, params);
     };
     /**
      * Analyze UTM data with optional group_by (source, campaign, medium, device_type, etc.)
