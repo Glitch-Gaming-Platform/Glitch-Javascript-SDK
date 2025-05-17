@@ -32,6 +32,7 @@ import { Funnel } from "./api";
 import { SocialStats } from "./api";
 import { Hashtags } from "./api";
 import { WebsiteAnalytics } from "./api";
+import { Fingerprinting } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -85,6 +86,7 @@ declare class Glitch {
         Funnel: typeof Funnel;
         SocialStats: typeof SocialStats;
         WebsiteAnalytics: typeof WebsiteAnalytics;
+        Fingerprinting: typeof Fingerprinting;
     };
     static util: {
         Requests: typeof Requests;

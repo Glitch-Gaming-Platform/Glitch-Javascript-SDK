@@ -19906,6 +19906,14 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/reddit/targeting/third_party_audiences",
             method: HTTP_METHODS.GET,
         },
+        syncCampaign: {
+            url: "/ads/campaigns/{campaign_id}/sync",
+            method: HTTP_METHODS.POST,
+        },
+        syncGroup: {
+            url: "/ads/campaigns/{campaign_id}/groups/{group_id}/sync",
+            method: HTTP_METHODS.POST,
+        },
     };
     return AdsRoute;
 }());
@@ -20237,6 +20245,27 @@ var Ads = /** @class */ (function () {
      */
     Ads.listRedditThirdPartyAudiences = function (params) {
         return Requests.processRoute(AdsRoute.routes.getRedditThirdPartyAudiences, undefined, undefined, params);
+    };
+    /**
+   * Sync an Ad Campaign with the remote platform
+   *
+   * @param campaign_id The UUID of the campaign to sync
+   * @param params Optional query parameters
+   * @returns The synced AdCampaign resource
+   */
+    Ads.syncCampaign = function (campaign_id, params) {
+        return Requests.processRoute(AdsRoute.routes.syncCampaign, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Sync an Ad Group with the remote platform
+     *
+     * @param campaign_id The UUID of the parent campaign
+     * @param group_id The UUID of the ad group to sync
+     * @param params Optional query parameters
+     * @returns The synced AdGroup resource
+     */
+    Ads.syncGroup = function (campaign_id, group_id, params) {
+        return Requests.processRoute(AdsRoute.routes.syncGroup, undefined, { campaign_id: campaign_id, group_id: group_id }, params);
     };
     return Ads;
 }());
@@ -22115,6 +22144,207 @@ var Events = /** @class */ (function () {
         return Requests.processRoute(EventsRoutes.routes.streamViewCounts, undefined, { event_id: event_id }, params);
     };
     return Events;
+}());
+
+var FingerprintingRoute = /** @class */ (function () {
+    function FingerprintingRoute() {
+    }
+    FingerprintingRoute.routes = {
+        listFingerprints: {
+            url: '/reports/fingerprinting/fingerprints',
+            method: HTTP_METHODS.GET
+        },
+        userJourneyReport: {
+            url: '/reports/fingerprinting/user-journeys',
+            method: HTTP_METHODS.GET
+        },
+        attributionReport: {
+            url: '/reports/fingerprinting/attribution',
+            method: HTTP_METHODS.GET
+        },
+        deviceClusterReport: {
+            url: '/reports/fingerprinting/device-clusters',
+            method: HTTP_METHODS.GET
+        },
+        identityClusterReport: {
+            url: '/reports/fingerprinting/identity-clusters',
+            method: HTTP_METHODS.GET
+        },
+        attributionFunnelReport: {
+            url: '/reports/fingerprinting/attribution-funnel',
+            method: HTTP_METHODS.GET
+        },
+        deviceEnvironmentReport: {
+            url: '/reports/fingerprinting/device-environment',
+            method: HTTP_METHODS.GET
+        },
+        uniqueReturningReport: {
+            url: '/reports/fingerprinting/unique-returning',
+            method: HTTP_METHODS.GET
+        },
+        fraudDetectionReport: {
+            url: '/reports/fingerprinting/fraud-detection',
+            method: HTTP_METHODS.GET
+        },
+        geolocationReport: {
+            url: '/reports/fingerprinting/geolocation',
+            method: HTTP_METHODS.GET
+        }
+    };
+    return FingerprintingRoute;
+}());
+
+var Fingerprinting = /** @class */ (function () {
+    function Fingerprinting() {
+    }
+    /**
+     * List identified user fingerprints with filtering options
+     *
+     * @param params Filtering options:
+     *   - title_id?: string - Filter by title ID
+     *   - device_id?: string - Filter by device ID
+     *   - user_install_id?: string - Filter by user install ID
+     *   - browser_fingerprint?: string - Filter by browser fingerprint hash
+     *   - device_fingerprint?: string - Filter by device fingerprint hash
+     *   - is_bot?: boolean - Filter by bot status
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - sort?: 'first_seen_at'|'last_seen_at'|'match_confidence' - Sort field
+     *   - order?: 'asc'|'desc' - Sort order
+     *   - per_page?: number - Items per page (max 100)
+     * @returns Promise with paginated fingerprints data
+     */
+    Fingerprinting.listFingerprints = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.listFingerprints, {}, undefined, params);
+    };
+    /**
+     * Get cross-platform user journey reports
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - fingerprint_id?: string - Specific fingerprint ID to analyze
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - platform?: 'web'|'ios'|'android'|'steam'|'console' - Filter by platform
+     *   - event_type?: string - Filter by event type
+     *   - group_by?: 'day'|'week'|'month'|'year' - Grouping period
+     *   - include_paths?: boolean - Include journey paths in response
+     * @returns Promise with user journey report data
+     */
+    Fingerprinting.userJourneyReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.userJourneyReport, {}, undefined, params);
+    };
+    /**
+     * Get cross-platform attribution reports
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - conversion_event?: 'game_install'|'game_purchase'|'web_event' - Conversion event to analyze
+     *   - attribution_model?: 'first_touch'|'last_touch'|'linear'|'time_decay'|'position_based' - Attribution model
+     * @returns Promise with attribution report data
+     */
+    Fingerprinting.attributionReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.attributionReport, {}, undefined, params);
+    };
+    /**
+     * Get cross-device identity clusters
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - min_confidence?: number - Minimum match confidence score (0-100)
+     * @returns Promise with device cluster report data
+     */
+    Fingerprinting.deviceClusterReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.deviceClusterReport, {}, undefined, params);
+    };
+    /**
+     * Get combined identity clusters and user journey reports
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - min_confidence?: number - Minimum confidence score to include (0-100)
+     *   - platform?: string - Filter by platform
+     *   - include_journeys?: boolean - Include detailed journeys
+     * @returns Promise with identity cluster report data
+     */
+    Fingerprinting.identityClusterReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.identityClusterReport, {}, undefined, params);
+    };
+    /**
+     * Get combined attribution paths and conversion funnels
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - conversion_event?: string - Conversion event type
+     *   - attribution_model?: string - Attribution model
+     *   - funnel_steps?: string - Comma-separated funnel steps
+     * @returns Promise with attribution and funnel report data
+     */
+    Fingerprinting.attributionFunnelReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.attributionFunnelReport, {}, undefined, params);
+    };
+    /**
+     * Get device and environment breakdown reports
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - platform?: string - Filter by platform
+     *   - group_by?: 'device_type'|'os'|'browser'|'country_code' - Grouping field
+     * @returns Promise with device and environment report data
+     */
+    Fingerprinting.deviceEnvironmentReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.deviceEnvironmentReport, {}, undefined, params);
+    };
+    /**
+     * Get unique vs returning user metrics
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - retention_period?: number - Days to consider for retention
+     * @returns Promise with retention metrics data
+     */
+    Fingerprinting.uniqueReturningReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.uniqueReturningReport, {}, undefined, params);
+    };
+    /**
+     * Get fraud and bot detection metrics
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - min_confidence?: number - Minimum confidence score to flag (0-100)
+     * @returns Promise with fraud detection data
+     */
+    Fingerprinting.fraudDetectionReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.fraudDetectionReport, {}, undefined, params);
+    };
+    /**
+     * Get geolocation distribution of users
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - group_by?: 'country'|'region'|'city' - Grouping level
+     * @returns Promise with geolocation report data
+     */
+    Fingerprinting.geolocationReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.geolocationReport, {}, undefined, params);
+    };
+    return Fingerprinting;
 }());
 
 var TeamsRoute = /** @class */ (function () {
@@ -26993,7 +27223,8 @@ var Glitch = /** @class */ (function () {
         Scheduler: Scheduler,
         Funnel: Funnel,
         SocialStats: SocialStats,
-        WebsiteAnalytics: WebsiteAnalytics
+        WebsiteAnalytics: WebsiteAnalytics,
+        Fingerprinting: Fingerprinting
     };
     Glitch.util = {
         Requests: Requests,

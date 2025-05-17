@@ -251,5 +251,22 @@ declare class Ads {
      * GET /ads/reddit/targeting/third_party_audiences
      */
     static listRedditThirdPartyAudiences<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+   * Sync an Ad Campaign with the remote platform
+   *
+   * @param campaign_id The UUID of the campaign to sync
+   * @param params Optional query parameters
+   * @returns The synced AdCampaign resource
+   */
+    static syncCampaign<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Sync an Ad Group with the remote platform
+     *
+     * @param campaign_id The UUID of the parent campaign
+     * @param group_id The UUID of the ad group to sync
+     * @param params Optional query parameters
+     * @returns The synced AdGroup resource
+     */
+    static syncGroup<T>(campaign_id: string, group_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Ads;

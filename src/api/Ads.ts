@@ -480,86 +480,126 @@ class Ads {
    * Example usage:
    *   Ads.listRedditCarriers({ scheduler_id: 'uuid-of-scheduler', 'page.size': 50 })
    */
-  public static listRedditCarriers<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
-    return Requests.processRoute(
-      AdsRoute.routes.getRedditCarriers,
-      undefined,
-      undefined,
-      params
-    );
-  }
+    public static listRedditCarriers<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getRedditCarriers,
+            undefined,
+            undefined,
+            params
+        );
+    }
 
-  /**
-   * GET /ads/reddit/targeting/communities?names=sub1,sub2
-   */
-  public static listRedditCommunities<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
-    return Requests.processRoute(
-      AdsRoute.routes.getRedditCommunities,
-      undefined,
-      undefined,
-      params
-    );
-  }
+    /**
+     * GET /ads/reddit/targeting/communities?names=sub1,sub2
+     */
+    public static listRedditCommunities<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getRedditCommunities,
+            undefined,
+            undefined,
+            params
+        );
+    }
 
-  /**
-   * GET /ads/reddit/targeting/communities/search?query=xyz
-   */
-  public static searchRedditCommunities<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
-    return Requests.processRoute(
-      AdsRoute.routes.searchRedditCommunities,
-      undefined,
-      undefined,
-      params
-    );
-  }
+    /**
+     * GET /ads/reddit/targeting/communities/search?query=xyz
+     */
+    public static searchRedditCommunities<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.searchRedditCommunities,
+            undefined,
+            undefined,
+            params
+        );
+    }
 
-  /**
-   * GET /ads/reddit/targeting/devices
-   */
-  public static listRedditDevices<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
-    return Requests.processRoute(
-      AdsRoute.routes.getRedditDevices,
-      undefined,
-      undefined,
-      params
-    );
-  }
+    /**
+     * GET /ads/reddit/targeting/devices
+     */
+    public static listRedditDevices<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getRedditDevices,
+            undefined,
+            undefined,
+            params
+        );
+    }
 
-  /**
-   * GET /ads/reddit/targeting/geolocations
-   */
-  public static listRedditGeolocations<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
-    return Requests.processRoute(
-      AdsRoute.routes.getRedditGeolocations,
-      undefined,
-      undefined,
-      params
-    );
-  }
+    /**
+     * GET /ads/reddit/targeting/geolocations
+     */
+    public static listRedditGeolocations<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getRedditGeolocations,
+            undefined,
+            undefined,
+            params
+        );
+    }
 
-  /**
-   * GET /ads/reddit/targeting/interests
-   */
-  public static listRedditInterests<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
-    return Requests.processRoute(
-      AdsRoute.routes.getRedditInterests,
-      undefined,
-      undefined,
-      params
-    );
-  }
+    /**
+     * GET /ads/reddit/targeting/interests
+     */
+    public static listRedditInterests<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getRedditInterests,
+            undefined,
+            undefined,
+            params
+        );
+    }
 
-  /**
-   * GET /ads/reddit/targeting/third_party_audiences
+    /**
+     * GET /ads/reddit/targeting/third_party_audiences
+     */
+    public static listRedditThirdPartyAudiences<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getRedditThirdPartyAudiences,
+            undefined,
+            undefined,
+            params
+        );
+    }
+
+    /**
+   * Sync an Ad Campaign with the remote platform
+   * 
+   * @param campaign_id The UUID of the campaign to sync
+   * @param params Optional query parameters
+   * @returns The synced AdCampaign resource
    */
-  public static listRedditThirdPartyAudiences<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
-    return Requests.processRoute(
-      AdsRoute.routes.getRedditThirdPartyAudiences,
-      undefined,
-      undefined,
-      params
-    );
-  }
+    public static syncCampaign<T>(
+        campaign_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.syncCampaign,
+            undefined,
+            { campaign_id },
+            params
+        );
+    }
+
+    /**
+     * Sync an Ad Group with the remote platform
+     * 
+     * @param campaign_id The UUID of the parent campaign
+     * @param group_id The UUID of the ad group to sync
+     * @param params Optional query parameters
+     * @returns The synced AdGroup resource
+     */
+    public static syncGroup<T>(
+        campaign_id: string,
+        group_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.syncGroup,
+            undefined,
+            { campaign_id, group_id },
+            params
+        );
+    }
 
 }
 

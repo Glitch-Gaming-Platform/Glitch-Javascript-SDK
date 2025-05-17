@@ -166,6 +166,15 @@ class AdsRoute {
             url: "/ads/reddit/targeting/third_party_audiences",
             method: HTTP_METHODS.GET,
         },
+        syncCampaign: {
+            url: "/ads/campaigns/{campaign_id}/sync",
+            method: HTTP_METHODS.POST,
+        },
+        
+        syncGroup: {
+            url: "/ads/campaigns/{campaign_id}/groups/{group_id}/sync",
+            method: HTTP_METHODS.POST,
+        },
     };
 }
 
