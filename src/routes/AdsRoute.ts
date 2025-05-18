@@ -175,6 +175,22 @@ class AdsRoute {
             url: "/ads/campaigns/{campaign_id}/groups/{group_id}/sync",
             method: HTTP_METHODS.POST,
         },
+        getRedditAdPosts: {
+            url: "/ads/posts/reddit",
+            method: HTTP_METHODS.GET,
+        },
+        createRedditAdPost: {
+            url: "/ads/posts/reddit",
+            method: HTTP_METHODS.POST,
+        },
+        retrieveRedditAdPost: {
+            url: "/ads/posts/reddit/{post_id}",
+            method: HTTP_METHODS.GET,
+        },
+        updateRedditAdPost: {
+            url: "/ads/posts/reddit/{post_id}",
+            method: HTTP_METHODS.PUT,
+        },
     };
 }
 

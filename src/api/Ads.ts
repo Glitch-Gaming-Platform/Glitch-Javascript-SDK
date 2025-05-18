@@ -601,6 +601,58 @@ class Ads {
         );
     }
 
+    public static listRedditAdPosts<T>(
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getRedditAdPosts,
+            undefined,
+            undefined,
+            params
+        );
+    }
+    
+    /** Create a Reddit ad-style social-media post */
+    public static createRedditAdPost<T>(
+        data?: object,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.createRedditAdPost,
+            data,
+            {},
+            params
+        );
+    }
+    
+    /** Retrieve a single Reddit ad-style social-media post */
+    public static viewRedditAdPost<T>(
+        post_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.retrieveRedditAdPost,
+            {},
+            { post_id },
+            params
+        );
+    }
+    
+    /** Update a Reddit ad-style social-media post */
+    public static updateRedditAdPost<T>(
+        post_id: string,
+        data?: object,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.updateRedditAdPost,
+            data,
+            { post_id },
+            params
+        );
+    }
+    
+
 }
 
 export default Ads;

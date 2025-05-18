@@ -6730,6 +6730,22 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/campaigns/{campaign_id}/groups/{group_id}/sync",
             method: HTTP_METHODS.POST,
         },
+        getRedditAdPosts: {
+            url: "/ads/posts/reddit",
+            method: HTTP_METHODS.GET,
+        },
+        createRedditAdPost: {
+            url: "/ads/posts/reddit",
+            method: HTTP_METHODS.POST,
+        },
+        retrieveRedditAdPost: {
+            url: "/ads/posts/reddit/{post_id}",
+            method: HTTP_METHODS.GET,
+        },
+        updateRedditAdPost: {
+            url: "/ads/posts/reddit/{post_id}",
+            method: HTTP_METHODS.PUT,
+        },
     };
     return AdsRoute;
 }());
@@ -7082,6 +7098,21 @@ var Ads = /** @class */ (function () {
      */
     Ads.syncGroup = function (campaign_id, group_id, params) {
         return Requests.processRoute(AdsRoute.routes.syncGroup, undefined, { campaign_id: campaign_id, group_id: group_id }, params);
+    };
+    Ads.listRedditAdPosts = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getRedditAdPosts, undefined, undefined, params);
+    };
+    /** Create a Reddit ad-style social-media post */
+    Ads.createRedditAdPost = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.createRedditAdPost, data, {}, params);
+    };
+    /** Retrieve a single Reddit ad-style social-media post */
+    Ads.viewRedditAdPost = function (post_id, params) {
+        return Requests.processRoute(AdsRoute.routes.retrieveRedditAdPost, {}, { post_id: post_id }, params);
+    };
+    /** Update a Reddit ad-style social-media post */
+    Ads.updateRedditAdPost = function (post_id, data, params) {
+        return Requests.processRoute(AdsRoute.routes.updateRedditAdPost, data, { post_id: post_id }, params);
     };
     return Ads;
 }());

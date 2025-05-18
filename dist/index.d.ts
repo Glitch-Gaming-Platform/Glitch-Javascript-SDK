@@ -910,6 +910,13 @@ declare class Ads {
      * @returns The synced AdGroup resource
      */
     static syncGroup<T>(campaign_id: string, group_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static listRedditAdPosts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Create a Reddit ad-style social-media post */
+    static createRedditAdPost<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Retrieve a single Reddit ad-style social-media post */
+    static viewRedditAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Update a Reddit ad-style social-media post */
+    static updateRedditAdPost<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Communities {
