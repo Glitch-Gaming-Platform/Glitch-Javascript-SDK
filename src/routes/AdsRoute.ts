@@ -170,7 +170,7 @@ class AdsRoute {
             url: "/ads/campaigns/{campaign_id}/sync",
             method: HTTP_METHODS.POST,
         },
-        
+
         syncGroup: {
             url: "/ads/campaigns/{campaign_id}/groups/{group_id}/sync",
             method: HTTP_METHODS.POST,
@@ -190,6 +190,64 @@ class AdsRoute {
         updateRedditAdPost: {
             url: "/ads/posts/reddit/{post_id}",
             method: HTTP_METHODS.PUT,
+        },
+        getTwitterAdPosts: {
+            url: "/ads/posts/twitter",
+            method: HTTP_METHODS.GET,
+        },
+        createTwitterAdPost: {
+            url: "/ads/posts/twitter",
+            method: HTTP_METHODS.POST,
+        },
+        retrieveTwitterAdPost: {
+            url: "/ads/posts/twitter/{post_id}",
+            method: HTTP_METHODS.GET,
+        },
+        updateTwitterAdPost: {
+            url: "/ads/posts/twitter/{post_id}",
+            method: HTTP_METHODS.PUT,
+        },
+        deleteTwitterAdPost: {
+            url: "/ads/posts/twitter/{post_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+
+        getFacebookAdPosts: {
+            url: "/ads/posts/facebook",
+            method: HTTP_METHODS.GET,
+        },
+        createFacebookAdPost: {
+            url: "/ads/posts/facebook",
+            method: HTTP_METHODS.POST,
+        },
+        retrieveFacebookAdPost: {
+            url: "/ads/posts/facebook/{post_id}",
+            method: HTTP_METHODS.GET,
+        },
+        updateFacebookAdPost: {
+            url: "/ads/posts/facebook/{post_id}",
+            method: HTTP_METHODS.PUT,
+        },
+        deleteFacebookAdPost: {
+            url: "/ads/posts/facebook/{post_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+
+        tiktokUploadImage: {
+            url: "/ads/posts/tiktok/upload/image",
+            method: HTTP_METHODS.POST,
+        },
+        tiktokUploadVideo: {
+            url: "/ads/posts/tiktok/upload/video",
+            method: HTTP_METHODS.POST,
+        },
+        tiktokUploadMusic: {
+            url: "/ads/posts/tiktok/upload/music",
+            method: HTTP_METHODS.POST,
+        },
+        tiktokGetMediaInfo: {
+            url: "/ads/posts/tiktok/media/info",
+            method: HTTP_METHODS.GET,
         },
     };
 }

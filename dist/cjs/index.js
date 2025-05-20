@@ -19930,6 +19930,62 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/posts/reddit/{post_id}",
             method: HTTP_METHODS.PUT,
         },
+        getTwitterAdPosts: {
+            url: "/ads/posts/twitter",
+            method: HTTP_METHODS.GET,
+        },
+        createTwitterAdPost: {
+            url: "/ads/posts/twitter",
+            method: HTTP_METHODS.POST,
+        },
+        retrieveTwitterAdPost: {
+            url: "/ads/posts/twitter/{post_id}",
+            method: HTTP_METHODS.GET,
+        },
+        updateTwitterAdPost: {
+            url: "/ads/posts/twitter/{post_id}",
+            method: HTTP_METHODS.PUT,
+        },
+        deleteTwitterAdPost: {
+            url: "/ads/posts/twitter/{post_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+        getFacebookAdPosts: {
+            url: "/ads/posts/facebook",
+            method: HTTP_METHODS.GET,
+        },
+        createFacebookAdPost: {
+            url: "/ads/posts/facebook",
+            method: HTTP_METHODS.POST,
+        },
+        retrieveFacebookAdPost: {
+            url: "/ads/posts/facebook/{post_id}",
+            method: HTTP_METHODS.GET,
+        },
+        updateFacebookAdPost: {
+            url: "/ads/posts/facebook/{post_id}",
+            method: HTTP_METHODS.PUT,
+        },
+        deleteFacebookAdPost: {
+            url: "/ads/posts/facebook/{post_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+        tiktokUploadImage: {
+            url: "/ads/posts/tiktok/upload/image",
+            method: HTTP_METHODS.POST,
+        },
+        tiktokUploadVideo: {
+            url: "/ads/posts/tiktok/upload/video",
+            method: HTTP_METHODS.POST,
+        },
+        tiktokUploadMusic: {
+            url: "/ads/posts/tiktok/upload/music",
+            method: HTTP_METHODS.POST,
+        },
+        tiktokGetMediaInfo: {
+            url: "/ads/posts/tiktok/media/info",
+            method: HTTP_METHODS.GET,
+        },
     };
     return AdsRoute;
 }());
@@ -20297,6 +20353,48 @@ var Ads = /** @class */ (function () {
     /** Update a Reddit ad-style social-media post */
     Ads.updateRedditAdPost = function (post_id, data, params) {
         return Requests.processRoute(AdsRoute.routes.updateRedditAdPost, data, { post_id: post_id }, params);
+    };
+    Ads.listTwitterAdPosts = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getTwitterAdPosts, undefined, undefined, params);
+    };
+    Ads.createTwitterAdPost = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.createTwitterAdPost, data, {}, params);
+    };
+    Ads.viewTwitterAdPost = function (post_id, params) {
+        return Requests.processRoute(AdsRoute.routes.retrieveTwitterAdPost, {}, { post_id: post_id }, params);
+    };
+    Ads.updateTwitterAdPost = function (post_id, data, params) {
+        return Requests.processRoute(AdsRoute.routes.updateTwitterAdPost, data, { post_id: post_id }, params);
+    };
+    Ads.deleteTwitterAdPost = function (post_id, params) {
+        return Requests.processRoute(AdsRoute.routes.deleteTwitterAdPost, {}, { post_id: post_id }, params);
+    };
+    Ads.listFacebookAdPosts = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getFacebookAdPosts, undefined, undefined, params);
+    };
+    Ads.createFacebookAdPost = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.createFacebookAdPost, data, {}, params);
+    };
+    Ads.viewFacebookAdPost = function (post_id, params) {
+        return Requests.processRoute(AdsRoute.routes.retrieveFacebookAdPost, {}, { post_id: post_id }, params);
+    };
+    Ads.updateFacebookAdPost = function (post_id, data, params) {
+        return Requests.processRoute(AdsRoute.routes.updateFacebookAdPost, data, { post_id: post_id }, params);
+    };
+    Ads.deleteFacebookAdPost = function (post_id, params) {
+        return Requests.processRoute(AdsRoute.routes.deleteFacebookAdPost, {}, { post_id: post_id }, params);
+    };
+    Ads.tiktokUploadImage = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokUploadImage, data, {}, params);
+    };
+    Ads.tiktokUploadVideo = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokUploadVideo, data, {}, params);
+    };
+    Ads.tiktokUploadMusic = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokUploadMusic, data, {}, params);
+    };
+    Ads.tiktokGetMediaInfo = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokGetMediaInfo, undefined, undefined, params);
     };
     return Ads;
 }());

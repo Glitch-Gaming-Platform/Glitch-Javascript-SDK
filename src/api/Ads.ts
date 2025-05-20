@@ -611,7 +611,7 @@ class Ads {
             params
         );
     }
-    
+
     /** Create a Reddit ad-style social-media post */
     public static createRedditAdPost<T>(
         data?: object,
@@ -624,7 +624,7 @@ class Ads {
             params
         );
     }
-    
+
     /** Retrieve a single Reddit ad-style social-media post */
     public static viewRedditAdPost<T>(
         post_id: string,
@@ -637,7 +637,7 @@ class Ads {
             params
         );
     }
-    
+
     /** Update a Reddit ad-style social-media post */
     public static updateRedditAdPost<T>(
         post_id: string,
@@ -651,7 +651,142 @@ class Ads {
             params
         );
     }
-    
+
+    public static listTwitterAdPosts<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getTwitterAdPosts,
+            undefined,
+            undefined,
+            params
+        );
+    }
+
+    public static createTwitterAdPost<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.createTwitterAdPost,
+            data,
+            {},
+            params
+        );
+    }
+
+    public static viewTwitterAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.retrieveTwitterAdPost,
+            {},
+            { post_id },
+            params
+        );
+    }
+
+    public static updateTwitterAdPost<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.updateTwitterAdPost,
+            data,
+            { post_id },
+            params
+        );
+    }
+
+    public static deleteTwitterAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.deleteTwitterAdPost,
+            {},
+            { post_id },
+            params
+        );
+    }
+
+    public static listFacebookAdPosts<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getFacebookAdPosts,
+            undefined,
+            undefined,
+            params
+        );
+    }
+
+    public static createFacebookAdPost<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.createFacebookAdPost,
+            data,
+            {},
+            params
+        );
+    }
+
+    public static viewFacebookAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.retrieveFacebookAdPost,
+            {},
+            { post_id },
+            params
+        );
+    }
+
+    public static updateFacebookAdPost<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.updateFacebookAdPost,
+            data,
+            { post_id },
+            params
+        );
+    }
+
+    public static deleteFacebookAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.deleteFacebookAdPost,
+            {},
+            { post_id },
+            params
+        );
+    }
+
+    public static tiktokUploadImage<T>(
+        data: FormData,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.tiktokUploadImage,
+            data,
+            {},
+            params
+        );
+    }
+
+    public static tiktokUploadVideo<T>(
+        data: FormData,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.tiktokUploadVideo,
+            data,
+            {},
+            params
+        );
+    }
+
+    public static tiktokUploadMusic<T>(
+        data: FormData,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.tiktokUploadMusic,
+            data,
+            {},
+            params
+        );
+    }
+
+    public static tiktokGetMediaInfo<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.tiktokGetMediaInfo,
+            undefined,
+            undefined,
+            params
+        );
+    }
+
 
 }
 

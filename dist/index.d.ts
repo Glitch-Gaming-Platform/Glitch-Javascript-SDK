@@ -917,6 +917,20 @@ declare class Ads {
     static viewRedditAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** Update a Reddit ad-style social-media post */
     static updateRedditAdPost<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static listTwitterAdPosts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static createTwitterAdPost<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static viewTwitterAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static updateTwitterAdPost<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static deleteTwitterAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static listFacebookAdPosts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static createFacebookAdPost<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static viewFacebookAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static updateFacebookAdPost<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static deleteFacebookAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokUploadImage<T>(data: FormData, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokUploadVideo<T>(data: FormData, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokUploadMusic<T>(data: FormData, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokGetMediaInfo<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Communities {
