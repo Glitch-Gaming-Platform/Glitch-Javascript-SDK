@@ -249,6 +249,10 @@ class AdsRoute {
             url: "/ads/posts/tiktok/media/info",
             method: HTTP_METHODS.GET,
         },
+        syncAd: {
+            url: "/ads/creatives/{ad_id}/sync",
+            method: HTTP_METHODS.POST,
+        },
     };
 }
 

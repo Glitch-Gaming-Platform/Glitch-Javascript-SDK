@@ -787,6 +787,25 @@ class Ads {
         );
     }
 
+    /**
+ * Sync an Ad with the remote platform.
+ *
+ * @param ad_id  UUID of the ad to sync
+ * @param params Optional query parameters
+ * @returns      The synced Ad resource
+ */
+    public static syncAd<T>(
+        ad_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.syncAd,
+            undefined,
+            { ad_id },
+            params
+        );
+    }
+
 
 }
 

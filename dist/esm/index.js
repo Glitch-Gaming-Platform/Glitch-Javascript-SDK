@@ -6802,6 +6802,10 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/posts/tiktok/media/info",
             method: HTTP_METHODS.GET,
         },
+        syncAd: {
+            url: "/ads/creatives/{ad_id}/sync",
+            method: HTTP_METHODS.POST,
+        },
     };
     return AdsRoute;
 }());
@@ -7211,6 +7215,16 @@ var Ads = /** @class */ (function () {
     };
     Ads.tiktokGetMediaInfo = function (params) {
         return Requests.processRoute(AdsRoute.routes.tiktokGetMediaInfo, undefined, undefined, params);
+    };
+    /**
+ * Sync an Ad with the remote platform.
+ *
+ * @param ad_id  UUID of the ad to sync
+ * @param params Optional query parameters
+ * @returns      The synced Ad resource
+ */
+    Ads.syncAd = function (ad_id, params) {
+        return Requests.processRoute(AdsRoute.routes.syncAd, undefined, { ad_id: ad_id }, params);
     };
     return Ads;
 }());
