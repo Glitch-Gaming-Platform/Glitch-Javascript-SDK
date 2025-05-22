@@ -253,6 +253,95 @@ class AdsRoute {
             url: "/ads/creatives/{ad_id}/sync",
             method: HTTP_METHODS.POST,
         },
+        facebookTargetingSearch: {
+            url: "/ads/facebook/targeting/search",
+            method: HTTP_METHODS.POST,
+        },
+        facebookGeoSearch: {
+            url: "/ads/facebook/targeting/geo_search",
+            method: HTTP_METHODS.GET,
+        },
+        facebookTargetingOptionStatus: {
+            url: "/ads/facebook/targeting/option_status",
+            method: HTTP_METHODS.GET,
+        },
+        facebookTargetingSuggestions: {
+            url: "/ads/facebook/targeting/suggestions",
+            method: HTTP_METHODS.POST,
+        },
+        facebookTargetingBrowse: {
+            url: "/ads/facebook/targeting/browse",
+            method: HTTP_METHODS.GET,
+        },
+        facebookTargetingValidation: {
+            url: "/ads/facebook/targeting/validation",
+            method: HTTP_METHODS.POST,
+        },
+        facebookDeliveryEstimate: {
+            url: "/ads/facebook/targeting/delivery_estimate",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokTargetingSearch: {
+            url: "/ads/tiktok/targeting/search",
+            method: HTTP_METHODS.POST,
+        },
+        tiktokContextualTags: {
+            url: "/ads/tiktok/targeting/contextual_tags",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokRecommendHashtags: {
+            url: "/ads/tiktok/targeting/hashtags",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokCarriers: {
+            url: "/ads/tiktok/targeting/carriers",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokInterestCategories: {
+            url: "/ads/tiktok/targeting/interest_categories",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokActionCategories: {
+            url: "/ads/tiktok/targeting/action_categories",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokContentExclusions: {
+            url: "/ads/tiktok/targeting/content_exclusions",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokRegions: {
+            url: "/ads/tiktok/targeting/regions",
+            method: HTTP_METHODS.GET,
+        },
+        twitterListTargetingCriteria: {
+            url: "/ads/twitter/targeting/criteria",
+            method: HTTP_METHODS.GET,
+        },
+        twitterGetTargetingCriterion: {
+            url: "/ads/twitter/targeting/criteria/{criterion_id}",
+            method: HTTP_METHODS.GET,
+        },
+        twitterCreateTargetingCriterion: {
+            url: "/ads/twitter/targeting/criteria",
+            method: HTTP_METHODS.POST,
+        },
+        twitterDeleteTargetingCriterion: {
+            url: "/ads/twitter/targeting/criteria/{criterion_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+        twitterBatchTargetingCriteria: {
+            url: "/ads/twitter/targeting/batch_criteria",
+            method: HTTP_METHODS.POST,
+        },
+        twitterTargetingDiscovery: {
+            url: "/ads/twitter/targeting/{resource}",
+            method: HTTP_METHODS.GET,
+        },
+        twitterTargetingSuggestions: {
+            url: "/ads/twitter/targeting/suggestions",
+            method: HTTP_METHODS.GET,
+        },
+        
     };
 }
 

@@ -939,6 +939,49 @@ declare class Ads {
  * @returns      The synced Ad resource
  */
     static syncAd<T>(ad_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+ * POST /ads/facebook/targeting/search
+ */
+    static facebookTargetingSearch<T>(data: Record<string, any>, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/facebook/targeting/geo_search
+     */
+    static facebookGeoSearch<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/facebook/targeting/option_status
+     */
+    static facebookTargetingOptionStatus<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * POST /ads/facebook/targeting/suggestions
+     */
+    static facebookTargetingSuggestions<T>(data: Record<string, any>, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/facebook/targeting/browse
+     */
+    static facebookTargetingBrowse<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * POST /ads/facebook/targeting/validation
+     */
+    static facebookTargetingValidation<T>(data: Record<string, any>, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/facebook/targeting/delivery_estimate
+     */
+    static facebookDeliveryEstimate<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokTargetingSearch<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokContextualTags<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokRecommendHashtags<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokListCarriers<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokListInterestCategories<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokListActionCategories<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokListContentExclusions<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokListRegions<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static listTwitterTargetingCriteria<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static getTwitterTargetingCriterion<T>(criterion_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static createTwitterTargetingCriterion<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static deleteTwitterTargetingCriterion<T>(criterion_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static twitterBatchTargetingCriteria<T>(data: object[], params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static lookupTwitterTargeting<T>(resource: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static twitterTargetingSuggestions<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Communities {

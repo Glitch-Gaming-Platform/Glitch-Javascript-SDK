@@ -19990,6 +19990,94 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/creatives/{ad_id}/sync",
             method: HTTP_METHODS.POST,
         },
+        facebookTargetingSearch: {
+            url: "/ads/facebook/targeting/search",
+            method: HTTP_METHODS.POST,
+        },
+        facebookGeoSearch: {
+            url: "/ads/facebook/targeting/geo_search",
+            method: HTTP_METHODS.GET,
+        },
+        facebookTargetingOptionStatus: {
+            url: "/ads/facebook/targeting/option_status",
+            method: HTTP_METHODS.GET,
+        },
+        facebookTargetingSuggestions: {
+            url: "/ads/facebook/targeting/suggestions",
+            method: HTTP_METHODS.POST,
+        },
+        facebookTargetingBrowse: {
+            url: "/ads/facebook/targeting/browse",
+            method: HTTP_METHODS.GET,
+        },
+        facebookTargetingValidation: {
+            url: "/ads/facebook/targeting/validation",
+            method: HTTP_METHODS.POST,
+        },
+        facebookDeliveryEstimate: {
+            url: "/ads/facebook/targeting/delivery_estimate",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokTargetingSearch: {
+            url: "/ads/tiktok/targeting/search",
+            method: HTTP_METHODS.POST,
+        },
+        tiktokContextualTags: {
+            url: "/ads/tiktok/targeting/contextual_tags",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokRecommendHashtags: {
+            url: "/ads/tiktok/targeting/hashtags",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokCarriers: {
+            url: "/ads/tiktok/targeting/carriers",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokInterestCategories: {
+            url: "/ads/tiktok/targeting/interest_categories",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokActionCategories: {
+            url: "/ads/tiktok/targeting/action_categories",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokContentExclusions: {
+            url: "/ads/tiktok/targeting/content_exclusions",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokRegions: {
+            url: "/ads/tiktok/targeting/regions",
+            method: HTTP_METHODS.GET,
+        },
+        twitterListTargetingCriteria: {
+            url: "/ads/twitter/targeting/criteria",
+            method: HTTP_METHODS.GET,
+        },
+        twitterGetTargetingCriterion: {
+            url: "/ads/twitter/targeting/criteria/{criterion_id}",
+            method: HTTP_METHODS.GET,
+        },
+        twitterCreateTargetingCriterion: {
+            url: "/ads/twitter/targeting/criteria",
+            method: HTTP_METHODS.POST,
+        },
+        twitterDeleteTargetingCriterion: {
+            url: "/ads/twitter/targeting/criteria/{criterion_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+        twitterBatchTargetingCriteria: {
+            url: "/ads/twitter/targeting/batch_criteria",
+            method: HTTP_METHODS.POST,
+        },
+        twitterTargetingDiscovery: {
+            url: "/ads/twitter/targeting/{resource}",
+            method: HTTP_METHODS.GET,
+        },
+        twitterTargetingSuggestions: {
+            url: "/ads/twitter/targeting/suggestions",
+            method: HTTP_METHODS.GET,
+        },
     };
     return AdsRoute;
 }());
@@ -20409,6 +20497,93 @@ var Ads = /** @class */ (function () {
  */
     Ads.syncAd = function (ad_id, params) {
         return Requests.processRoute(AdsRoute.routes.syncAd, undefined, { ad_id: ad_id }, params);
+    };
+    /**
+ * POST /ads/facebook/targeting/search
+ */
+    Ads.facebookTargetingSearch = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.facebookTargetingSearch, data, undefined, params);
+    };
+    /**
+     * GET /ads/facebook/targeting/geo_search
+     */
+    Ads.facebookGeoSearch = function (params) {
+        return Requests.processRoute(AdsRoute.routes.facebookGeoSearch, undefined, undefined, params);
+    };
+    /**
+     * GET /ads/facebook/targeting/option_status
+     */
+    Ads.facebookTargetingOptionStatus = function (params) {
+        return Requests.processRoute(AdsRoute.routes.facebookTargetingOptionStatus, undefined, undefined, params);
+    };
+    /**
+     * POST /ads/facebook/targeting/suggestions
+     */
+    Ads.facebookTargetingSuggestions = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.facebookTargetingSuggestions, data, undefined, params);
+    };
+    /**
+     * GET /ads/facebook/targeting/browse
+     */
+    Ads.facebookTargetingBrowse = function (params) {
+        return Requests.processRoute(AdsRoute.routes.facebookTargetingBrowse, undefined, undefined, params);
+    };
+    /**
+     * POST /ads/facebook/targeting/validation
+     */
+    Ads.facebookTargetingValidation = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.facebookTargetingValidation, data, undefined, params);
+    };
+    /**
+     * GET /ads/facebook/targeting/delivery_estimate
+     */
+    Ads.facebookDeliveryEstimate = function (params) {
+        return Requests.processRoute(AdsRoute.routes.facebookDeliveryEstimate, undefined, undefined, params);
+    };
+    Ads.tiktokTargetingSearch = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokTargetingSearch, data, {}, params);
+    };
+    Ads.tiktokContextualTags = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokContextualTags, undefined, undefined, params);
+    };
+    Ads.tiktokRecommendHashtags = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokRecommendHashtags, undefined, undefined, params);
+    };
+    Ads.tiktokListCarriers = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokCarriers, undefined, undefined, params);
+    };
+    Ads.tiktokListInterestCategories = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokInterestCategories, undefined, undefined, params);
+    };
+    Ads.tiktokListActionCategories = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokActionCategories, undefined, undefined, params);
+    };
+    Ads.tiktokListContentExclusions = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokContentExclusions, undefined, undefined, params);
+    };
+    Ads.tiktokListRegions = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokRegions, undefined, undefined, params);
+    };
+    Ads.listTwitterTargetingCriteria = function (params) {
+        return Requests.processRoute(AdsRoute.routes.twitterListTargetingCriteria, undefined, undefined, params);
+    };
+    Ads.getTwitterTargetingCriterion = function (criterion_id, params) {
+        return Requests.processRoute(AdsRoute.routes.twitterGetTargetingCriterion, undefined, { criterion_id: criterion_id }, params);
+    };
+    Ads.createTwitterTargetingCriterion = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.twitterCreateTargetingCriterion, data, {}, params);
+    };
+    Ads.deleteTwitterTargetingCriterion = function (criterion_id, params) {
+        return Requests.processRoute(AdsRoute.routes.twitterDeleteTargetingCriterion, undefined, { criterion_id: criterion_id }, params);
+    };
+    Ads.twitterBatchTargetingCriteria = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.twitterBatchTargetingCriteria, data, {}, params);
+    };
+    Ads.lookupTwitterTargeting = function (resource, params) {
+        return Requests.processRoute(AdsRoute.routes.twitterTargetingDiscovery, undefined, { resource: resource }, params);
+    };
+    Ads.twitterTargetingSuggestions = function (params) {
+        return Requests.processRoute(AdsRoute.routes.twitterTargetingSuggestions, undefined, undefined, params);
     };
     return Ads;
 }());
