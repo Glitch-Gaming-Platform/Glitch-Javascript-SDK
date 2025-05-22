@@ -6866,6 +6866,30 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/tiktok/targeting/regions",
             method: HTTP_METHODS.GET,
         },
+        tiktokTargetingInfo: {
+            url: "/ads/tiktok/targeting/info",
+            method: HTTP_METHODS.POST,
+        },
+        tiktokLanguages: {
+            url: "/ads/tiktok/targeting/languages",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokHashtagInfo: {
+            url: "/ads/tiktok/targeting/hashtag_info",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokContextualTagInfo: {
+            url: "/ads/tiktok/targeting/contextual_tag_info",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokContentExclusionInfo: {
+            url: "/ads/tiktok/targeting/content_exclusion_info",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokInterestKeywordRecommend: {
+            url: "/ads/tiktok/targeting/interest_keywords",
+            method: HTTP_METHODS.GET,
+        },
         twitterListTargetingCriteria: {
             url: "/ads/twitter/targeting/criteria",
             method: HTTP_METHODS.GET,
@@ -7379,6 +7403,34 @@ var Ads = /** @class */ (function () {
     };
     Ads.tiktokListRegions = function (params) {
         return Requests.processRoute(AdsRoute.routes.tiktokRegions, undefined, undefined, params);
+    };
+    Ads.tiktokGetTargetingInfo = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokTargetingInfo, data, {}, params);
+    };
+    Ads.tiktokListLanguages = function (advertiser_id, params) {
+        var mergedParams = __assign(__assign({}, params), { advertiser_id: advertiser_id });
+        return Requests.processRoute(AdsRoute.routes.tiktokLanguages, undefined, undefined, mergedParams);
+    };
+    Ads.tiktokRecommendInterestKeywords = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokInterestKeywordRecommend, undefined, undefined, params);
+    };
+    /**
+ * GET /ads/tiktok/targeting/hashtag_info
+ */
+    Ads.tiktokHashtagInfo = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokHashtagInfo, undefined, undefined, params);
+    };
+    /**
+     * GET /ads/tiktok/targeting/contextual_tag_info
+     */
+    Ads.tiktokContextualTagInfo = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokContextualTagInfo, undefined, undefined, params);
+    };
+    /**
+     * GET /ads/tiktok/targeting/content_exclusion_info
+     */
+    Ads.tiktokContentExclusionInfo = function (params) {
+        return Requests.processRoute(AdsRoute.routes.tiktokContentExclusionInfo, undefined, undefined, params);
     };
     Ads.listTwitterTargetingCriteria = function (params) {
         return Requests.processRoute(AdsRoute.routes.twitterListTargetingCriteria, undefined, undefined, params);

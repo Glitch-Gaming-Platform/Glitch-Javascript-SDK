@@ -867,64 +867,108 @@ class Ads {
     public static tiktokTargetingSearch<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.tiktokTargetingSearch, data, {}, params);
     }
-    
+
     public static tiktokContextualTags<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.tiktokContextualTags, undefined, undefined, params);
     }
-    
+
     public static tiktokRecommendHashtags<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.tiktokRecommendHashtags, undefined, undefined, params);
     }
-    
+
     public static tiktokListCarriers<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.tiktokCarriers, undefined, undefined, params);
     }
-    
+
     public static tiktokListInterestCategories<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.tiktokInterestCategories, undefined, undefined, params);
     }
-    
+
     public static tiktokListActionCategories<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.tiktokActionCategories, undefined, undefined, params);
     }
-    
+
     public static tiktokListContentExclusions<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.tiktokContentExclusions, undefined, undefined, params);
     }
-    
+
     public static tiktokListRegions<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.tiktokRegions, undefined, undefined, params);
     }
 
+    public static tiktokGetTargetingInfo<T>(
+        data: object,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AdsRoute.routes.tiktokTargetingInfo, data, {}, params);
+    }
+
+    public static tiktokListLanguages<T>(
+        advertiser_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        const mergedParams = { ...params, advertiser_id };
+        return Requests.processRoute(AdsRoute.routes.tiktokLanguages, undefined, undefined, mergedParams);
+    }
+
+    public static tiktokRecommendInterestKeywords<T>(
+        params: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AdsRoute.routes.tiktokInterestKeywordRecommend, undefined, undefined, params);
+    }
+
+    /**
+ * GET /ads/tiktok/targeting/hashtag_info
+ */
+    public static tiktokHashtagInfo<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AdsRoute.routes.tiktokHashtagInfo, undefined, undefined, params);
+    }
+
+    /**
+     * GET /ads/tiktok/targeting/contextual_tag_info
+     */
+    public static tiktokContextualTagInfo<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AdsRoute.routes.tiktokContextualTagInfo, undefined, undefined, params);
+    }
+
+    /**
+     * GET /ads/tiktok/targeting/content_exclusion_info
+     */
+    public static tiktokContentExclusionInfo<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AdsRoute.routes.tiktokContentExclusionInfo, undefined, undefined, params);
+    }
+
+
+
     public static listTwitterTargetingCriteria<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.twitterListTargetingCriteria, undefined, undefined, params);
     }
-    
+
     public static getTwitterTargetingCriterion<T>(criterion_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.twitterGetTargetingCriterion, undefined, { criterion_id }, params);
     }
-    
+
     public static createTwitterTargetingCriterion<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.twitterCreateTargetingCriterion, data, {}, params);
     }
-    
+
     public static deleteTwitterTargetingCriterion<T>(criterion_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.twitterDeleteTargetingCriterion, undefined, { criterion_id }, params);
     }
-    
+
     public static twitterBatchTargetingCriteria<T>(data: object[], params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.twitterBatchTargetingCriteria, data, {}, params);
     }
-    
+
     public static lookupTwitterTargeting<T>(resource: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.twitterTargetingDiscovery, undefined, { resource }, params);
     }
-    
+
     public static twitterTargetingSuggestions<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.twitterTargetingSuggestions, undefined, undefined, params);
     }
-    
-    
+
+
 
 }
 

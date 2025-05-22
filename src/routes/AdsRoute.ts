@@ -313,6 +313,30 @@ class AdsRoute {
             url: "/ads/tiktok/targeting/regions",
             method: HTTP_METHODS.GET,
         },
+        tiktokTargetingInfo: {
+            url: "/ads/tiktok/targeting/info",
+            method: HTTP_METHODS.POST,
+        },
+        tiktokLanguages: {
+            url: "/ads/tiktok/targeting/languages",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokHashtagInfo: {
+            url: "/ads/tiktok/targeting/hashtag_info",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokContextualTagInfo: {
+            url: "/ads/tiktok/targeting/contextual_tag_info",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokContentExclusionInfo: {
+            url: "/ads/tiktok/targeting/content_exclusion_info",
+            method: HTTP_METHODS.GET,
+        },
+        tiktokInterestKeywordRecommend: {
+            url: "/ads/tiktok/targeting/interest_keywords",
+            method: HTTP_METHODS.GET,
+        },
         twitterListTargetingCriteria: {
             url: "/ads/twitter/targeting/criteria",
             method: HTTP_METHODS.GET,

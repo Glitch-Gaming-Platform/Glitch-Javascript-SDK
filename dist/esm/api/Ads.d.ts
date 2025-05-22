@@ -333,6 +333,21 @@ declare class Ads {
     static tiktokListActionCategories<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     static tiktokListContentExclusions<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     static tiktokListRegions<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokGetTargetingInfo<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokListLanguages<T>(advertiser_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokRecommendInterestKeywords<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+ * GET /ads/tiktok/targeting/hashtag_info
+ */
+    static tiktokHashtagInfo<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/tiktok/targeting/contextual_tag_info
+     */
+    static tiktokContextualTagInfo<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/tiktok/targeting/content_exclusion_info
+     */
+    static tiktokContentExclusionInfo<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
     static listTwitterTargetingCriteria<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     static getTwitterTargetingCriterion<T>(criterion_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static createTwitterTargetingCriterion<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
