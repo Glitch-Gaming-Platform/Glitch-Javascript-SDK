@@ -7316,14 +7316,25 @@ var Ads = /** @class */ (function () {
     Ads.deleteFacebookAdPost = function (post_id, params) {
         return Requests.processRoute(AdsRoute.routes.deleteFacebookAdPost, {}, { post_id: post_id }, params);
     };
-    Ads.tiktokUploadImage = function (data, params) {
-        return Requests.processRoute(AdsRoute.routes.tiktokUploadImage, data, {}, params);
+    // TikTok Uploads: FILE
+    Ads.tiktokUploadImageFile = function (file, data, params, onUploadProgress) {
+        return Requests.uploadFile(AdsRoute.routes.tiktokUploadImage.url, 'image_file', file, data, params, onUploadProgress);
     };
-    Ads.tiktokUploadVideo = function (data, params) {
-        return Requests.processRoute(AdsRoute.routes.tiktokUploadVideo, data, {}, params);
+    Ads.tiktokUploadVideoFile = function (file, data, params, onUploadProgress) {
+        return Requests.uploadFile(AdsRoute.routes.tiktokUploadVideo.url, 'video_file', file, data, params, onUploadProgress);
     };
-    Ads.tiktokUploadMusic = function (data, params) {
-        return Requests.processRoute(AdsRoute.routes.tiktokUploadMusic, data, {}, params);
+    Ads.tiktokUploadMusicFile = function (file, data, params, onUploadProgress) {
+        return Requests.uploadFile(AdsRoute.routes.tiktokUploadMusic.url, 'music_file', file, data, params, onUploadProgress);
+    };
+    // TikTok Uploads: BLOB
+    Ads.tiktokUploadImageBlob = function (blob, data, params, onUploadProgress) {
+        return Requests.uploadBlob(AdsRoute.routes.tiktokUploadImage.url, 'image_file', blob, data, params, onUploadProgress);
+    };
+    Ads.tiktokUploadVideoBlob = function (blob, data, params, onUploadProgress) {
+        return Requests.uploadBlob(AdsRoute.routes.tiktokUploadVideo.url, 'video_file', blob, data, params, onUploadProgress);
+    };
+    Ads.tiktokUploadMusicBlob = function (blob, data, params, onUploadProgress) {
+        return Requests.uploadBlob(AdsRoute.routes.tiktokUploadMusic.url, 'music_file', blob, data, params, onUploadProgress);
     };
     Ads.tiktokGetMediaInfo = function (params) {
         return Requests.processRoute(AdsRoute.routes.tiktokGetMediaInfo, undefined, undefined, params);

@@ -927,9 +927,12 @@ declare class Ads {
     static viewFacebookAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static updateFacebookAdPost<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static deleteFacebookAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
-    static tiktokUploadImage<T>(data: FormData, params?: Record<string, any>): AxiosPromise<Response<T>>;
-    static tiktokUploadVideo<T>(data: FormData, params?: Record<string, any>): AxiosPromise<Response<T>>;
-    static tiktokUploadMusic<T>(data: FormData, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static tiktokUploadImageFile<T>(file: File, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    static tiktokUploadVideoFile<T>(file: File, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    static tiktokUploadMusicFile<T>(file: File, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    static tiktokUploadImageBlob<T>(blob: Blob, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    static tiktokUploadVideoBlob<T>(blob: Blob, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    static tiktokUploadMusicBlob<T>(blob: Blob, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     static tiktokGetMediaInfo<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
     /**
  * Sync an Ad with the remote platform.
