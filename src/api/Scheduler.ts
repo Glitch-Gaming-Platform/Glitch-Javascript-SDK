@@ -96,6 +96,32 @@ class Scheduler {
     }
 
     /**
+         * Rewrite / generate content for a promotion schedule.
+         *
+         * @see https://api.glitch.fun/api/documentation#/Scheduler/generateTitleContent
+         *
+         * @param scheduler_id UUID of the promotion schedule.
+         * @param data         Body payload. At minimum you must supply
+         *                     `{ platform: 'twitter' }` plus either `content`
+         *                     **or** a `media` array containing at least one
+         *                     `{ id: '<media-uuid>' }`.
+         * @returns Axios promise with `{ content, title? }`
+         */
+        public static generateTitleContent<T>(
+            scheduler_id: string,
+            data: object,
+            params?: Record<string, any>
+        ): AxiosPromise<Response<T>> {
+            return Requests.processRoute(
+                SchedulerRoute.routes.generateContent,
+                data,                     // request body
+                { scheduler_id },         // path params
+                params                    // query params
+            );
+        }
+
+
+    /**
      * List title updates for a promotion schedule.
      * 
      * @see https://api.glitch.fun/api/documentation#/Scheduler/getTitleUpdates

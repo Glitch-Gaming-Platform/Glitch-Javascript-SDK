@@ -26062,6 +26062,10 @@ var SchedulerRoute = /** @class */ (function () {
             url: "/schedulers/{scheduler_id}/funding_instruments",
             method: HTTP_METHODS.GET,
         },
+        generateContent: {
+            url: '/schedulers/{scheduler_id}/generateContent',
+            method: HTTP_METHODS.POST
+        },
     };
     return SchedulerRoute;
 }());
@@ -26152,6 +26156,24 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.getSchedulePosts = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.getSchedulePosts, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+         * Rewrite / generate content for a promotion schedule.
+         *
+         * @see https://api.glitch.fun/api/documentation#/Scheduler/generateTitleContent
+         *
+         * @param scheduler_id UUID of the promotion schedule.
+         * @param data         Body payload. At minimum you must supply
+         *                     `{ platform: 'twitter' }` plus either `content`
+         *                     **or** a `media` array containing at least one
+         *                     `{ id: '<media-uuid>' }`.
+         * @returns Axios promise with `{ content, title? }`
+         */
+    Scheduler.generateTitleContent = function (scheduler_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.generateContent, data, // request body
+        { scheduler_id: scheduler_id }, // path params
+        params // query params
+        );
     };
     /**
      * List title updates for a promotion schedule.

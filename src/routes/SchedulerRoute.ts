@@ -103,6 +103,10 @@ class SchedulerRoute {
             url: "/schedulers/{scheduler_id}/funding_instruments",
             method: HTTP_METHODS.GET,
         },
+        generateContent: {
+            url: '/schedulers/{scheduler_id}/generateContent',
+            method: HTTP_METHODS.POST
+        },
 
 
 
