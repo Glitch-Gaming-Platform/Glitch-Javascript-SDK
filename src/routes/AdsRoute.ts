@@ -365,6 +365,14 @@ class AdsRoute {
             url: "/ads/twitter/targeting/suggestions",
             method: HTTP_METHODS.GET,
         },
+        syncCampaignTree: {
+            url: "/ads/campaigns/{campaign_id}/sync_tree",
+            method: HTTP_METHODS.POST,
+        },
+        syncSchedulerCampaigns: {
+            url: "/ads/campaigns/scheduler/{scheduler_id}/syncAll",
+            method: HTTP_METHODS.POST,
+        },
         
     };
 }

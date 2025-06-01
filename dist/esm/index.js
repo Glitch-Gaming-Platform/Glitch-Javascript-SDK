@@ -6918,6 +6918,14 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/twitter/targeting/suggestions",
             method: HTTP_METHODS.GET,
         },
+        syncCampaignTree: {
+            url: "/ads/campaigns/{campaign_id}/sync_tree",
+            method: HTTP_METHODS.POST,
+        },
+        syncSchedulerCampaigns: {
+            url: "/ads/campaigns/scheduler/{scheduler_id}/syncAll",
+            method: HTTP_METHODS.POST,
+        },
     };
     return AdsRoute;
 }());
@@ -7463,6 +7471,26 @@ var Ads = /** @class */ (function () {
     };
     Ads.twitterTargetingSuggestions = function (params) {
         return Requests.processRoute(AdsRoute.routes.twitterTargetingSuggestions, undefined, undefined, params);
+    };
+    /**
+     * Deep-sync a campaign tree (campaign → groups → ads) with its remote platform.
+     *
+     * @param campaign_id UUID of the campaign to sync
+     * @param params      Optional query params
+     * @returns           Fully-hydrated AdCampaign resource
+     */
+    Ads.syncCampaignTree = function (campaign_id, params) {
+        return Requests.processRoute(AdsRoute.routes.syncCampaignTree, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+    * Deep-sync all the campaigns for a scheduler.
+    *
+    * @param scheduler_id UUID of the campaign to sync
+    * @param params      Optional query params
+    * @returns           Fully-hydrated AdCampaign resource
+    */
+    Ads.syncSchedulerCampaigns = function (scheduler_id, params) {
+        return Requests.processRoute(AdsRoute.routes.syncSchedulerCampaigns, undefined, { scheduler_id: scheduler_id }, params);
     };
     return Ads;
 }());
@@ -12820,6 +12848,8 @@ var SchedulerRoute = /** @class */ (function () {
         clearSteamAuth: { url: '/schedulers/{scheduler_id}/clearSteamAuth', method: HTTP_METHODS.DELETE },
         clearDiscordAuth: { url: '/schedulers/{scheduler_id}/clearDiscordAuth', method: HTTP_METHODS.DELETE },
         clearBlueskyAuth: { url: '/schedulers/{scheduler_id}/clearBlueskyAuth', method: HTTP_METHODS.DELETE },
+        clearTiktokAdsAuth: { url: '/schedulers/{scheduler_id}/clearTiktokAdsAuth', method: HTTP_METHODS.DELETE },
+        clearGoogleAdsAuth: { url: '/schedulers/{scheduler_id}/clearGoogleAdsAuth', method: HTTP_METHODS.DELETE },
         //Social Utility Routes
         getFacebookGroups: { url: '/schedulers/{scheduler_id}/facebook/groups', method: HTTP_METHODS.GET },
         getInstagramAccounts: { url: '/schedulers/{scheduler_id}/instagram/accounts', method: HTTP_METHODS.GET },
@@ -13262,6 +13292,30 @@ var Scheduler = /** @class */ (function () {
     */
     Scheduler.getDiscordChannels = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.getDiscordChannels, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Clear Google Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearGoogleAdsAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearGoogleAdsAuth, {}, // no body
+        { scheduler_id: scheduler_id }, // path params
+        params // optional query params
+        );
+    };
+    /**
+     * Clear Tiktok Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    Scheduler.clearTiktokAdsAuth = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.clearTiktokAdsAuth, {}, // no body
+        { scheduler_id: scheduler_id }, // path params
+        params // optional query params
+        );
     };
     /**
      * Get aggregated reports for a promotion schedule.

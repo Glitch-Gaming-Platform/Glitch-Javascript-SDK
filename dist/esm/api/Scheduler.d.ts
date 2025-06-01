@@ -303,6 +303,20 @@ declare class Scheduler {
     */
     static getDiscordChannels<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Clear Google Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    static clearGoogleAdsAuth<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Clear Tiktok Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    static clearTiktokAdsAuth<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Get aggregated reports for a promotion schedule.
      *
      * @param scheduler_id The ID of the promotion schedule.

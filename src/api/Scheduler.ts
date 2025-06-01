@@ -107,18 +107,18 @@ class Scheduler {
          *                     `{ id: '<media-uuid>' }`.
          * @returns Axios promise with `{ content, title? }`
          */
-        public static generateTitleContent<T>(
-            scheduler_id: string,
-            data: object,
-            params?: Record<string, any>
-        ): AxiosPromise<Response<T>> {
-            return Requests.processRoute(
-                SchedulerRoute.routes.generateContent,
-                data,                     // request body
-                { scheduler_id },         // path params
-                params                    // query params
-            );
-        }
+    public static generateTitleContent<T>(
+        scheduler_id: string,
+        data: object,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.generateContent,
+            data,                     // request body
+            { scheduler_id },         // path params
+            params                    // query params
+        );
+    }
 
 
     /**
@@ -418,6 +418,42 @@ class Scheduler {
     */
     public static getDiscordChannels<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(SchedulerRoute.routes.getDiscordChannels, {}, { scheduler_id }, params);
+    }
+
+    /**
+     * Clear Google Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    public static clearGoogleAdsAuth<T>(
+        scheduler_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.clearGoogleAdsAuth,
+            {},                       // no body
+            { scheduler_id },         // path params
+            params                    // optional query params
+        );
+    }
+
+    /**
+     * Clear Tiktok Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    public static clearTiktokAdsAuth<T>(
+        scheduler_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.clearTiktokAdsAuth,
+            {},                       // no body
+            { scheduler_id },         // path params
+            params                    // optional query params
+        );
     }
 
     /**

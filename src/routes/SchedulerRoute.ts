@@ -40,6 +40,8 @@ class SchedulerRoute {
         clearSteamAuth: { url: '/schedulers/{scheduler_id}/clearSteamAuth', method: HTTP_METHODS.DELETE },
         clearDiscordAuth: { url: '/schedulers/{scheduler_id}/clearDiscordAuth', method: HTTP_METHODS.DELETE },
         clearBlueskyAuth: { url: '/schedulers/{scheduler_id}/clearBlueskyAuth', method: HTTP_METHODS.DELETE },
+        clearTiktokAdsAuth:    { url: '/schedulers/{scheduler_id}/clearTiktokAdsAuth',    method: HTTP_METHODS.DELETE },
+        clearGoogleAdsAuth:    { url: '/schedulers/{scheduler_id}/clearGoogleAdsAuth',    method: HTTP_METHODS.DELETE },
 
         //Social Utility Routes
         getFacebookGroups: { url: '/schedulers/{scheduler_id}/facebook/groups', method: HTTP_METHODS.GET },

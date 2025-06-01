@@ -1000,6 +1000,22 @@ declare class Ads {
     static twitterBatchTargetingCriteria<T>(data: object[], params?: Record<string, any>): AxiosPromise<Response<T>>;
     static lookupTwitterTargeting<T>(resource: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static twitterTargetingSuggestions<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Deep-sync a campaign tree (campaign → groups → ads) with its remote platform.
+     *
+     * @param campaign_id UUID of the campaign to sync
+     * @param params      Optional query params
+     * @returns           Fully-hydrated AdCampaign resource
+     */
+    static syncCampaignTree<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Deep-sync all the campaigns for a scheduler.
+    *
+    * @param scheduler_id UUID of the campaign to sync
+    * @param params      Optional query params
+    * @returns           Fully-hydrated AdCampaign resource
+    */
+    static syncSchedulerCampaigns<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Communities {
@@ -4991,6 +5007,20 @@ declare class Scheduler {
     * @returns promise
     */
     static getDiscordChannels<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Clear Google Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    static clearGoogleAdsAuth<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Clear Tiktok Ads OAuth credentials from a promotion schedule.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @returns promise
+     */
+    static clearTiktokAdsAuth<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Get aggregated reports for a promotion schedule.
      *

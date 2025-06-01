@@ -744,60 +744,60 @@ class Ads {
     }
 
     // TikTok Uploads: FILE
-public static tiktokUploadImageFile<T>(
-    file: File,
-    data?: object,
-    params?: Record<string, any>,
-    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
-): AxiosPromise<Response<T>> {
-    return Requests.uploadFile(AdsRoute.routes.tiktokUploadImage.url, 'image_file', file, data, params, onUploadProgress);
-}
+    public static tiktokUploadImageFile<T>(
+        file: File,
+        data?: object,
+        params?: Record<string, any>,
+        onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+    ): AxiosPromise<Response<T>> {
+        return Requests.uploadFile(AdsRoute.routes.tiktokUploadImage.url, 'image_file', file, data, params, onUploadProgress);
+    }
 
-public static tiktokUploadVideoFile<T>(
-    file: File,
-    data?: object,
-    params?: Record<string, any>,
-    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
-): AxiosPromise<Response<T>> {
-    return Requests.uploadFile(AdsRoute.routes.tiktokUploadVideo.url, 'video_file', file, data, params, onUploadProgress);
-}
+    public static tiktokUploadVideoFile<T>(
+        file: File,
+        data?: object,
+        params?: Record<string, any>,
+        onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+    ): AxiosPromise<Response<T>> {
+        return Requests.uploadFile(AdsRoute.routes.tiktokUploadVideo.url, 'video_file', file, data, params, onUploadProgress);
+    }
 
-public static tiktokUploadMusicFile<T>(
-    file: File,
-    data?: object,
-    params?: Record<string, any>,
-    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
-): AxiosPromise<Response<T>> {
-    return Requests.uploadFile(AdsRoute.routes.tiktokUploadMusic.url, 'music_file', file, data, params, onUploadProgress);
-}
+    public static tiktokUploadMusicFile<T>(
+        file: File,
+        data?: object,
+        params?: Record<string, any>,
+        onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+    ): AxiosPromise<Response<T>> {
+        return Requests.uploadFile(AdsRoute.routes.tiktokUploadMusic.url, 'music_file', file, data, params, onUploadProgress);
+    }
 
-// TikTok Uploads: BLOB
-public static tiktokUploadImageBlob<T>(
-    blob: Blob,
-    data?: object,
-    params?: Record<string, any>,
-    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
-): AxiosPromise<Response<T>> {
-    return Requests.uploadBlob(AdsRoute.routes.tiktokUploadImage.url, 'image_file', blob, data, params, onUploadProgress);
-}
+    // TikTok Uploads: BLOB
+    public static tiktokUploadImageBlob<T>(
+        blob: Blob,
+        data?: object,
+        params?: Record<string, any>,
+        onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+    ): AxiosPromise<Response<T>> {
+        return Requests.uploadBlob(AdsRoute.routes.tiktokUploadImage.url, 'image_file', blob, data, params, onUploadProgress);
+    }
 
-public static tiktokUploadVideoBlob<T>(
-    blob: Blob,
-    data?: object,
-    params?: Record<string, any>,
-    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
-): AxiosPromise<Response<T>> {
-    return Requests.uploadBlob(AdsRoute.routes.tiktokUploadVideo.url, 'video_file', blob, data, params, onUploadProgress);
-}
+    public static tiktokUploadVideoBlob<T>(
+        blob: Blob,
+        data?: object,
+        params?: Record<string, any>,
+        onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+    ): AxiosPromise<Response<T>> {
+        return Requests.uploadBlob(AdsRoute.routes.tiktokUploadVideo.url, 'video_file', blob, data, params, onUploadProgress);
+    }
 
-public static tiktokUploadMusicBlob<T>(
-    blob: Blob,
-    data?: object,
-    params?: Record<string, any>,
-    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
-): AxiosPromise<Response<T>> {
-    return Requests.uploadBlob(AdsRoute.routes.tiktokUploadMusic.url, 'music_file', blob, data, params, onUploadProgress);
-}
+    public static tiktokUploadMusicBlob<T>(
+        blob: Blob,
+        data?: object,
+        params?: Record<string, any>,
+        onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+    ): AxiosPromise<Response<T>> {
+        return Requests.uploadBlob(AdsRoute.routes.tiktokUploadMusic.url, 'music_file', blob, data, params, onUploadProgress);
+    }
 
     public static tiktokGetMediaInfo<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(
@@ -989,6 +989,44 @@ public static tiktokUploadMusicBlob<T>(
         return Requests.processRoute(AdsRoute.routes.twitterTargetingSuggestions, undefined, undefined, params);
     }
 
+    /**
+     * Deep-sync a campaign tree (campaign → groups → ads) with its remote platform.
+     *
+     * @param campaign_id UUID of the campaign to sync
+     * @param params      Optional query params
+     * @returns           Fully-hydrated AdCampaign resource
+     */
+    public static syncCampaignTree<T>(
+        campaign_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.syncCampaignTree,
+            undefined,
+            { campaign_id },
+            params
+        );
+    }
+
+
+    /**
+    * Deep-sync all the campaigns for a scheduler.
+    *
+    * @param scheduler_id UUID of the campaign to sync
+    * @param params      Optional query params
+    * @returns           Fully-hydrated AdCampaign resource
+    */
+    public static syncSchedulerCampaigns<T>(
+        scheduler_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.syncSchedulerCampaigns,
+            undefined,
+            { scheduler_id },
+            params
+        );
+    }
 
 
 }
