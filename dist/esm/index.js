@@ -6926,6 +6926,29 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/campaigns/scheduler/{scheduler_id}/syncAll",
             method: HTTP_METHODS.POST,
         },
+        // ----------------------------------------------------------------
+        // AD REPORTS
+        // ----------------------------------------------------------------
+        getPerformanceSummary: {
+            url: "/ads/reports/summary",
+            method: HTTP_METHODS.GET,
+        },
+        getSpendDeliveryReport: {
+            url: "/ads/reports/spend-delivery",
+            method: HTTP_METHODS.GET,
+        },
+        getPlatformComparisonReport: {
+            url: "/ads/reports/platform-comparison",
+            method: HTTP_METHODS.GET,
+        },
+        getCreativePerformanceReport: {
+            url: "/ads/reports/creative-performance",
+            method: HTTP_METHODS.GET,
+        },
+        getTimePerformanceReport: {
+            url: "/ads/reports/time-performance",
+            method: HTTP_METHODS.GET,
+        },
     };
     return AdsRoute;
 }());
@@ -7491,6 +7514,39 @@ var Ads = /** @class */ (function () {
     */
     Ads.syncSchedulerCampaigns = function (scheduler_id, params) {
         return Requests.processRoute(AdsRoute.routes.syncSchedulerCampaigns, undefined, { scheduler_id: scheduler_id }, params);
+    };
+    // ----------------------------------------------------------------------
+    // AD REPORTS
+    // ----------------------------------------------------------------------
+    /**
+     * Get campaign performance summary.
+     */
+    Ads.getPerformanceSummary = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getPerformanceSummary, undefined, undefined, params);
+    };
+    /**
+     * Get spend and delivery metrics over time.
+     */
+    Ads.getSpendDeliveryReport = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getSpendDeliveryReport, undefined, undefined, params);
+    };
+    /**
+     * Compare performance across platforms.
+     */
+    Ads.getPlatformComparisonReport = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getPlatformComparisonReport, undefined, undefined, params);
+    };
+    /**
+     * Get performance metrics for individual ad creatives.
+     */
+    Ads.getCreativePerformanceReport = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getCreativePerformanceReport, undefined, undefined, params);
+    };
+    /**
+     * Get time-based performance metrics by hour and day of week.
+     */
+    Ads.getTimePerformanceReport = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getTimePerformanceReport, undefined, undefined, params);
     };
     return Ads;
 }());

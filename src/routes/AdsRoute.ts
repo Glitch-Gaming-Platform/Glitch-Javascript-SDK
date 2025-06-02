@@ -373,6 +373,34 @@ class AdsRoute {
             url: "/ads/campaigns/scheduler/{scheduler_id}/syncAll",
             method: HTTP_METHODS.POST,
         },
+
+        // ----------------------------------------------------------------
+        // AD REPORTS
+        // ----------------------------------------------------------------
+        getPerformanceSummary: {
+            url: "/ads/reports/summary",
+            method: HTTP_METHODS.GET,
+        },
+
+        getSpendDeliveryReport: {
+            url: "/ads/reports/spend-delivery",
+            method: HTTP_METHODS.GET,
+        },
+
+        getPlatformComparisonReport: {
+            url: "/ads/reports/platform-comparison",
+            method: HTTP_METHODS.GET,
+        },
+
+        getCreativePerformanceReport: {
+            url: "/ads/reports/creative-performance",
+            method: HTTP_METHODS.GET,
+        },
+
+        getTimePerformanceReport: {
+            url: "/ads/reports/time-performance",
+            method: HTTP_METHODS.GET,
+        },
         
     };
 }

@@ -1028,6 +1028,69 @@ class Ads {
         );
     }
 
+    // ----------------------------------------------------------------------
+    // AD REPORTS
+    // ----------------------------------------------------------------------
+
+    /**
+     * Get campaign performance summary.
+     */
+    public static getPerformanceSummary<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AdsRoute.routes.getPerformanceSummary, undefined, undefined, params);
+    }
+
+    /**
+     * Get spend and delivery metrics over time.
+     */
+    public static getSpendDeliveryReport<T>(params: {
+        start_date: string;
+        end_date: string;
+        group_by?: 'day' | 'week' | 'month';
+        community_id?: string;
+        platform?: string;
+    }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AdsRoute.routes.getSpendDeliveryReport, undefined, undefined, params);
+    }
+
+    /**
+     * Compare performance across platforms.
+     */
+    public static getPlatformComparisonReport<T>(params?: {
+        start_date?: string;
+        end_date?: string;
+        community_id?: string;
+    }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AdsRoute.routes.getPlatformComparisonReport, undefined, undefined, params);
+    }
+
+    /**
+     * Get performance metrics for individual ad creatives.
+     */
+    public static getCreativePerformanceReport<T>(params?: {
+        community_id?: string;
+        platform?: string;
+        start_date?: string;
+        end_date?: string;
+        limit?: number;
+        sort?: 'spend' | 'impressions' | 'clicks' | 'ctr' | 'cpm' | 'cpc';
+        order?: 'asc' | 'desc';
+    }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AdsRoute.routes.getCreativePerformanceReport, undefined, undefined, params);
+    }
+
+    /**
+     * Get time-based performance metrics by hour and day of week.
+     */
+    public static getTimePerformanceReport<T>(params: {
+        start_date: string;
+        end_date: string;
+        community_id?: string;
+        platform?: string;
+    }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AdsRoute.routes.getTimePerformanceReport, undefined, undefined, params);
+    }
+
+
 
 }
 

@@ -374,5 +374,48 @@ declare class Ads {
     * @returns           Fully-hydrated AdCampaign resource
     */
     static syncSchedulerCampaigns<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get campaign performance summary.
+     */
+    static getPerformanceSummary<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get spend and delivery metrics over time.
+     */
+    static getSpendDeliveryReport<T>(params: {
+        start_date: string;
+        end_date: string;
+        group_by?: 'day' | 'week' | 'month';
+        community_id?: string;
+        platform?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Compare performance across platforms.
+     */
+    static getPlatformComparisonReport<T>(params?: {
+        start_date?: string;
+        end_date?: string;
+        community_id?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get performance metrics for individual ad creatives.
+     */
+    static getCreativePerformanceReport<T>(params?: {
+        community_id?: string;
+        platform?: string;
+        start_date?: string;
+        end_date?: string;
+        limit?: number;
+        sort?: 'spend' | 'impressions' | 'clicks' | 'ctr' | 'cpm' | 'cpc';
+        order?: 'asc' | 'desc';
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get time-based performance metrics by hour and day of week.
+     */
+    static getTimePerformanceReport<T>(params: {
+        start_date: string;
+        end_date: string;
+        community_id?: string;
+        platform?: string;
+    }): AxiosPromise<Response<T>>;
 }
 export default Ads;
