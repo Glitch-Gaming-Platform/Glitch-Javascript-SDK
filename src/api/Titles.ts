@@ -409,15 +409,15 @@ class Titles {
         );
     }
 
-  /**
-   * Upload a CSV/Excel file containing daily UTM analytics for a specific title.
-   * 
-   * @param title_id The UUID of the title
-   * @param file The CSV or Excel file
-   * @param data Optional form fields (if needed)
-   * @param params Optional query parameters
-   * @returns AxiosPromise
-   */
+    /**
+     * Upload a CSV/Excel file containing daily UTM analytics for a specific title.
+     * 
+     * @param title_id The UUID of the title
+     * @param file The CSV or Excel file
+     * @param data Optional form fields (if needed)
+     * @param params Optional query parameters
+     * @returns AxiosPromise
+     */
     public static importUtmAnalytics<T>(
         title_id: string,
         file: File | Blob,
@@ -490,6 +490,68 @@ class Titles {
             params
         );
     }
+
+    /**
+     * List all chat sessions for a title.
+     */
+    public static chatListSessions<T>(
+        title_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.chatListSessions,
+            {},
+            { title_id },
+            params
+        );
+    }
+
+    /**
+     * Get a specific chat session and its messages.
+     */
+    public static chatShowSession<T>(
+        title_id: string,
+        session_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.chatShowSession,
+            {},
+            { title_id, session_id },
+            params
+        );
+    }
+
+    /**
+     * Search messages across all sessions of a title.
+     */
+    public static chatListMessages<T>(
+        title_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.chatListMessages,
+            {},
+            { title_id },
+            params
+        );
+    }
+
+    /**
+     * Update a specific chat message.
+     */
+    public static chatUpdateMessage<T>(
+        title_id: string,
+        message_id: string,
+        data: object
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.chatUpdateMessage,
+            data,
+            { title_id, message_id }
+        );
+    }
+
 
 
 }

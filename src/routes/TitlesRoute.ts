@@ -76,6 +76,23 @@ class TitlesRoute {
       method: HTTP_METHODS.GET,
     },
 
+    chatListSessions: {
+      url: '/titles/{title_id}/chat/sessions',
+      method: HTTP_METHODS.GET
+    },
+    chatShowSession: {
+      url: '/titles/{title_id}/chat/sessions/{session_id}',
+      method: HTTP_METHODS.GET
+    },
+    chatListMessages: {
+      url: '/titles/{title_id}/chat/messages',
+      method: HTTP_METHODS.GET
+    },
+    chatUpdateMessage: {
+      url: '/titles/{title_id}/chat/messages/{message_id}',
+      method: HTTP_METHODS.PUT
+    },
+
   };
 
 }

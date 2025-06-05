@@ -273,5 +273,21 @@ declare class Titles {
      * @returns AxiosPromise
      */
     static analyzeUtmAnalytics<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all chat sessions for a title.
+     */
+    static chatListSessions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a specific chat session and its messages.
+     */
+    static chatShowSession<T>(title_id: string, session_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Search messages across all sessions of a title.
+     */
+    static chatListMessages<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a specific chat message.
+     */
+    static chatUpdateMessage<T>(title_id: string, message_id: string, data: object): AxiosPromise<Response<T>>;
 }
 export default Titles;

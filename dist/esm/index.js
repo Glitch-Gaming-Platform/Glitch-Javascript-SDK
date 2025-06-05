@@ -10871,6 +10871,22 @@ var TitlesRoute = /** @class */ (function () {
             url: "/titles/{title_id}/utm/analysis",
             method: HTTP_METHODS.GET,
         },
+        chatListSessions: {
+            url: '/titles/{title_id}/chat/sessions',
+            method: HTTP_METHODS.GET
+        },
+        chatShowSession: {
+            url: '/titles/{title_id}/chat/sessions/{session_id}',
+            method: HTTP_METHODS.GET
+        },
+        chatListMessages: {
+            url: '/titles/{title_id}/chat/messages',
+            method: HTTP_METHODS.GET
+        },
+        chatUpdateMessage: {
+            url: '/titles/{title_id}/chat/messages/{message_id}',
+            method: HTTP_METHODS.PUT
+        },
     };
     return TitlesRoute;
 }());
@@ -11225,6 +11241,30 @@ var Titles = /** @class */ (function () {
      */
     Titles.analyzeUtmAnalytics = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.analyzeUtmAnalytics, {}, { title_id: title_id }, params);
+    };
+    /**
+     * List all chat sessions for a title.
+     */
+    Titles.chatListSessions = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.chatListSessions, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Get a specific chat session and its messages.
+     */
+    Titles.chatShowSession = function (title_id, session_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.chatShowSession, {}, { title_id: title_id, session_id: session_id }, params);
+    };
+    /**
+     * Search messages across all sessions of a title.
+     */
+    Titles.chatListMessages = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.chatListMessages, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Update a specific chat message.
+     */
+    Titles.chatUpdateMessage = function (title_id, message_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.chatUpdateMessage, data, { title_id: title_id, message_id: message_id });
     };
     return Titles;
 }());
@@ -14031,6 +14071,88 @@ var WebsiteAnalytics = /** @class */ (function () {
     return WebsiteAnalytics;
 }());
 
+var ShortLinksRoute = /** @class */ (function () {
+    function ShortLinksRoute() {
+    }
+    ShortLinksRoute.routes = {
+        listShortLinks: { url: '/shortlinks', method: HTTP_METHODS.GET },
+        createShortLink: { url: '/shortlinks', method: HTTP_METHODS.POST },
+        viewShortLink: { url: '/shortlinks/{id}', method: HTTP_METHODS.GET },
+        updateShortLink: { url: '/shortlinks/{id}', method: HTTP_METHODS.PUT },
+        // Delete can be added if supported
+        // deleteShortLink:   { url: '/shortlinks/{id}', method: HTTP_METHODS.DELETE }
+    };
+    return ShortLinksRoute;
+}());
+
+var ShortLinks = /** @class */ (function () {
+    function ShortLinks() {
+    }
+    /**
+     * List all short links with optional filters
+     */
+    ShortLinks.list = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.listShortLinks, undefined, undefined, params);
+    };
+    /**
+     * Create a new short link
+     */
+    ShortLinks.create = function (data, params) {
+        return Requests.processRoute(ShortLinksRoute.routes.createShortLink, data, {}, params);
+    };
+    /**
+     * Get a specific short link by ID
+     */
+    ShortLinks.view = function (id, params) {
+        return Requests.processRoute(ShortLinksRoute.routes.viewShortLink, {}, { id: id }, params);
+    };
+    /**
+     * Update a short link
+     */
+    ShortLinks.update = function (id, data, params) {
+        return Requests.processRoute(ShortLinksRoute.routes.updateShortLink, data, { id: id }, params);
+    };
+    return ShortLinks;
+}());
+
+var AIUsageRoute = /** @class */ (function () {
+    function AIUsageRoute() {
+    }
+    AIUsageRoute.routes = {
+        listUsage: { url: '/billing/ai-usage', method: HTTP_METHODS.GET },
+        summaryUsage: { url: '/billing/ai-usage/summary', method: HTTP_METHODS.GET }
+    };
+    return AIUsageRoute;
+}());
+
+var AIUsage = /** @class */ (function () {
+    function AIUsage() {
+    }
+    /**
+     * List all AI usage entries with optional filters (date range, service, model, etc.).
+     *
+     * @see https://api.glitch.fun/api/documentation#/AI%20Usage/getAIUsage
+     *
+     * @param params Query parameters for filtering and grouping
+     * @returns AxiosPromise
+     */
+    AIUsage.list = function (params) {
+        return Requests.processRoute(AIUsageRoute.routes.listUsage, undefined, undefined, params);
+    };
+    /**
+     * Get summarized AI usage statistics (token totals, cost, grouped by service/model).
+     *
+     * @see https://api.glitch.fun/api/documentation#/AI%20Usage/getAIUsageSummary
+     *
+     * @param params Query parameters for filtering by date range
+     * @returns AxiosPromise
+     */
+    AIUsage.summary = function (params) {
+        return Requests.processRoute(AIUsageRoute.routes.summaryUsage, undefined, undefined, params);
+    };
+    return AIUsage;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -14553,7 +14675,9 @@ var Glitch = /** @class */ (function () {
         Funnel: Funnel,
         SocialStats: SocialStats,
         WebsiteAnalytics: WebsiteAnalytics,
-        Fingerprinting: Fingerprinting
+        Fingerprinting: Fingerprinting,
+        ShortLinks: ShortLinks,
+        AIUsage: AIUsage
     };
     Glitch.util = {
         Requests: Requests,

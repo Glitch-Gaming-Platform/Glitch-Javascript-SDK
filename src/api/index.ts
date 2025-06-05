@@ -33,6 +33,8 @@ import Funnel from "./Funnel";
 import SocialStats from "./SocialStats";
 import Hashtags from "./Hashtags";
 import WebsiteAnalytics from "./WebsiteAnalytics";
+import ShortLinks from "./ShortLinks";
+import AIUsage from "./AIUsage";
 
 export {Ads};
 export {Auth};
@@ -69,3 +71,5 @@ export {SocialStats};
 export {Hashtags};
 export {WebsiteAnalytics};
 export {Fingerprinting};
+export {ShortLinks};
+export {AIUsage};

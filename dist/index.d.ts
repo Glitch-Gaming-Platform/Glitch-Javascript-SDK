@@ -3609,6 +3609,22 @@ declare class Titles {
      * @returns AxiosPromise
      */
     static analyzeUtmAnalytics<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all chat sessions for a title.
+     */
+    static chatListSessions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a specific chat session and its messages.
+     */
+    static chatShowSession<T>(title_id: string, session_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Search messages across all sessions of a title.
+     */
+    static chatListMessages<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a specific chat message.
+     */
+    static chatUpdateMessage<T>(title_id: string, message_id: string, data: object): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {
@@ -5492,6 +5508,46 @@ declare class WebsiteAnalytics {
     static utmPerformance<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class ShortLinks {
+    /**
+     * List all short links with optional filters
+     */
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new short link
+     */
+    static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a specific short link by ID
+     */
+    static view<T>(id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a short link
+     */
+    static update<T>(id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
+declare class AIUsage {
+    /**
+     * List all AI usage entries with optional filters (date range, service, model, etc.).
+     *
+     * @see https://api.glitch.fun/api/documentation#/AI%20Usage/getAIUsage
+     *
+     * @param params Query parameters for filtering and grouping
+     * @returns AxiosPromise
+     */
+    static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get summarized AI usage statistics (token totals, cost, grouped by service/model).
+     *
+     * @see https://api.glitch.fun/api/documentation#/AI%20Usage/getAIUsageSummary
+     *
+     * @param params Query parameters for filtering by date range
+     * @returns AxiosPromise
+     */
+    static summary<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -5834,6 +5890,8 @@ declare class Glitch {
         SocialStats: typeof SocialStats;
         WebsiteAnalytics: typeof WebsiteAnalytics;
         Fingerprinting: typeof Fingerprinting;
+        ShortLinks: typeof ShortLinks;
+        AIUsage: typeof AIUsage;
     };
     static util: {
         Requests: typeof Requests;

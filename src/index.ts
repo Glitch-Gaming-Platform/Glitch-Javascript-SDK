@@ -37,6 +37,8 @@ import {SocialStats} from "./api";
 import {Hashtags} from "./api";
 import {WebsiteAnalytics} from "./api";
 import {Fingerprinting} from "./api";
+import {ShortLinks} from "./api";
+import {AIUsage} from "./api";
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -102,7 +104,9 @@ class Glitch {
         Funnel: Funnel,
         SocialStats : SocialStats,
         WebsiteAnalytics: WebsiteAnalytics,
-        Fingerprinting : Fingerprinting
+        Fingerprinting : Fingerprinting,
+        ShortLinks : ShortLinks,
+        AIUsage : AIUsage
     }
 
     public static util = {
