@@ -1059,6 +1059,46 @@ declare class Ads {
         community_id?: string;
         platform?: string;
     }): AxiosPromise<Response<T>>;
+    /**
+ * GET /ads/google/targeting/geo/suggest
+ */
+    static listGoogleGeoSuggestions<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * POST /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations
+     */
+    static addGoogleLocationTargets<T>(customer_id: number, campaign_id: number, data: object): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations
+     */
+    static getGoogleLocationTargets<T>(customer_id: number, campaign_id: number, params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * DELETE /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations
+     */
+    static removeGoogleLocationTargets<T>(customer_id: number, campaign_id: number, data: object): AxiosPromise<Response<T>>;
+    /**
+     * POST /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/proximity
+     */
+    static addGoogleProximityTarget<T>(customer_id: number, campaign_id: number, data: object): AxiosPromise<Response<T>>;
+    /**
+     * PUT /ads/google/targeting/{resource_type}/{customer_id}/{resource_id}/settings
+     */
+    static updateGoogleTargetingSettings<T>(resource_type: 'campaign' | 'ad_group', customer_id: number, resource_id: number, data: object): AxiosPromise<Response<T>>;
+    /**
+     * GET /ads/google/targeting/{resource_type}/{customer_id}/{resource_id}/settings
+     */
+    static getGoogleTargetingSettings<T>(resource_type: 'campaign' | 'ad_group', customer_id: number, resource_id: number, params: Record<string, any>): AxiosPromise<Response<T>>;
+    /** GET /ads/posts/google */
+    static listGoogleAdPosts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** POST /ads/posts/google */
+    static createGoogleAdPost<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** PUT /ads/posts/google/{post_id} */
+    static updateGoogleAdPost<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** DELETE /ads/posts/google/{post_id} */
+    static deleteGoogleAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** POST /ads/posts/google/{post_id}/pause */
+    static pauseGoogleAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** POST /ads/posts/google/{post_id}/enable */
+    static enableGoogleAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Communities {

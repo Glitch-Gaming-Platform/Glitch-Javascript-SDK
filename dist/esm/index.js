@@ -6949,6 +6949,58 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/reports/time-performance",
             method: HTTP_METHODS.GET,
         },
+        getGoogleGeoSuggestions: {
+            url: "/ads/google/targeting/geo/suggest",
+            method: HTTP_METHODS.GET,
+        },
+        addGoogleLocationTargets: {
+            url: "/ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations",
+            method: HTTP_METHODS.POST,
+        },
+        getGoogleLocationTargets: {
+            url: "/ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations",
+            method: HTTP_METHODS.GET,
+        },
+        removeGoogleLocationTargets: {
+            url: "/ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations",
+            method: HTTP_METHODS.DELETE,
+        },
+        addGoogleProximityTarget: {
+            url: "/ads/google/targeting/campaigns/{customer_id}/{campaign_id}/proximity",
+            method: HTTP_METHODS.POST,
+        },
+        updateGoogleTargetingSettings: {
+            url: "/ads/google/targeting/{resource_type}/{customer_id}/{resource_id}/settings",
+            method: HTTP_METHODS.PUT,
+        },
+        getGoogleTargetingSettings: {
+            url: "/ads/google/targeting/{resource_type}/{customer_id}/{resource_id}/settings",
+            method: HTTP_METHODS.GET,
+        },
+        getGoogleAdPosts: {
+            url: "/ads/posts/google",
+            method: HTTP_METHODS.GET,
+        },
+        createGoogleAdPost: {
+            url: "/ads/posts/google",
+            method: HTTP_METHODS.POST,
+        },
+        updateGoogleAdPost: {
+            url: "/ads/posts/google/{post_id}",
+            method: HTTP_METHODS.PUT,
+        },
+        deleteGoogleAdPost: {
+            url: "/ads/posts/google/{post_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+        pauseGoogleAdPost: {
+            url: "/ads/posts/google/{post_id}/pause",
+            method: HTTP_METHODS.POST,
+        },
+        enableGoogleAdPost: {
+            url: "/ads/posts/google/{post_id}/enable",
+            method: HTTP_METHODS.POST,
+        },
     };
     return AdsRoute;
 }());
@@ -7547,6 +7599,72 @@ var Ads = /** @class */ (function () {
      */
     Ads.getTimePerformanceReport = function (params) {
         return Requests.processRoute(AdsRoute.routes.getTimePerformanceReport, undefined, undefined, params);
+    };
+    /**
+ * GET /ads/google/targeting/geo/suggest
+ */
+    Ads.listGoogleGeoSuggestions = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getGoogleGeoSuggestions, undefined, undefined, params);
+    };
+    /**
+     * POST /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations
+     */
+    Ads.addGoogleLocationTargets = function (customer_id, campaign_id, data) {
+        return Requests.processRoute(AdsRoute.routes.addGoogleLocationTargets, data, { customer_id: customer_id, campaign_id: campaign_id });
+    };
+    /**
+     * GET /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations
+     */
+    Ads.getGoogleLocationTargets = function (customer_id, campaign_id, params) {
+        return Requests.processRoute(AdsRoute.routes.getGoogleLocationTargets, undefined, { customer_id: customer_id, campaign_id: campaign_id }, params);
+    };
+    /**
+     * DELETE /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations
+     */
+    Ads.removeGoogleLocationTargets = function (customer_id, campaign_id, data) {
+        return Requests.processRoute(AdsRoute.routes.removeGoogleLocationTargets, data, { customer_id: customer_id, campaign_id: campaign_id });
+    };
+    /**
+     * POST /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/proximity
+     */
+    Ads.addGoogleProximityTarget = function (customer_id, campaign_id, data) {
+        return Requests.processRoute(AdsRoute.routes.addGoogleProximityTarget, data, { customer_id: customer_id, campaign_id: campaign_id });
+    };
+    /**
+     * PUT /ads/google/targeting/{resource_type}/{customer_id}/{resource_id}/settings
+     */
+    Ads.updateGoogleTargetingSettings = function (resource_type, customer_id, resource_id, data) {
+        return Requests.processRoute(AdsRoute.routes.updateGoogleTargetingSettings, data, { resource_type: resource_type, customer_id: customer_id, resource_id: resource_id });
+    };
+    /**
+     * GET /ads/google/targeting/{resource_type}/{customer_id}/{resource_id}/settings
+     */
+    Ads.getGoogleTargetingSettings = function (resource_type, customer_id, resource_id, params) {
+        return Requests.processRoute(AdsRoute.routes.getGoogleTargetingSettings, undefined, { resource_type: resource_type, customer_id: customer_id, resource_id: resource_id }, params);
+    };
+    /** GET /ads/posts/google */
+    Ads.listGoogleAdPosts = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getGoogleAdPosts, undefined, undefined, params);
+    };
+    /** POST /ads/posts/google */
+    Ads.createGoogleAdPost = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.createGoogleAdPost, data, {}, params);
+    };
+    /** PUT /ads/posts/google/{post_id} */
+    Ads.updateGoogleAdPost = function (post_id, data, params) {
+        return Requests.processRoute(AdsRoute.routes.updateGoogleAdPost, data, { post_id: post_id }, params);
+    };
+    /** DELETE /ads/posts/google/{post_id} */
+    Ads.deleteGoogleAdPost = function (post_id, params) {
+        return Requests.processRoute(AdsRoute.routes.deleteGoogleAdPost, {}, { post_id: post_id }, params);
+    };
+    /** POST /ads/posts/google/{post_id}/pause */
+    Ads.pauseGoogleAdPost = function (post_id, params) {
+        return Requests.processRoute(AdsRoute.routes.pauseGoogleAdPost, {}, { post_id: post_id }, params);
+    };
+    /** POST /ads/posts/google/{post_id}/enable */
+    Ads.enableGoogleAdPost = function (post_id, params) {
+        return Requests.processRoute(AdsRoute.routes.enableGoogleAdPost, {}, { post_id: post_id }, params);
     };
     return Ads;
 }());

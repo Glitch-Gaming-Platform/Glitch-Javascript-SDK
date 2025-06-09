@@ -1090,6 +1090,189 @@ class Ads {
         return Requests.processRoute(AdsRoute.routes.getTimePerformanceReport, undefined, undefined, params);
     }
 
+    /**
+ * GET /ads/google/targeting/geo/suggest
+ */
+    public static listGoogleGeoSuggestions<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getGoogleGeoSuggestions,
+            undefined,
+            undefined,
+            params
+        );
+    }
+
+    /**
+     * POST /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations
+     */
+    public static addGoogleLocationTargets<T>(
+        customer_id: number,
+        campaign_id: number,
+        data: object
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.addGoogleLocationTargets,
+            data,
+            { customer_id, campaign_id }
+        );
+    }
+
+    /**
+     * GET /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations
+     */
+    public static getGoogleLocationTargets<T>(
+        customer_id: number,
+        campaign_id: number,
+        params: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getGoogleLocationTargets,
+            undefined,
+            { customer_id, campaign_id },
+            params
+        );
+    }
+
+    /**
+     * DELETE /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations
+     */
+    public static removeGoogleLocationTargets<T>(
+        customer_id: number,
+        campaign_id: number,
+        data: object
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.removeGoogleLocationTargets,
+            data,
+            { customer_id, campaign_id }
+        );
+    }
+
+    /**
+     * POST /ads/google/targeting/campaigns/{customer_id}/{campaign_id}/proximity
+     */
+    public static addGoogleProximityTarget<T>(
+        customer_id: number,
+        campaign_id: number,
+        data: object
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.addGoogleProximityTarget,
+            data,
+            { customer_id, campaign_id }
+        );
+    }
+
+    /**
+     * PUT /ads/google/targeting/{resource_type}/{customer_id}/{resource_id}/settings
+     */
+    public static updateGoogleTargetingSettings<T>(
+        resource_type: 'campaign' | 'ad_group',
+        customer_id: number,
+        resource_id: number,
+        data: object
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.updateGoogleTargetingSettings,
+            data,
+            { resource_type, customer_id, resource_id }
+        );
+    }
+
+    /**
+     * GET /ads/google/targeting/{resource_type}/{customer_id}/{resource_id}/settings
+     */
+    public static getGoogleTargetingSettings<T>(
+        resource_type: 'campaign' | 'ad_group',
+        customer_id: number,
+        resource_id: number,
+        params: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getGoogleTargetingSettings,
+            undefined,
+            { resource_type, customer_id, resource_id },
+            params
+        );
+    }
+
+    /** GET /ads/posts/google */
+    public static listGoogleAdPosts<T>(
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.getGoogleAdPosts,
+            undefined,
+            undefined,
+            params
+        );
+    }
+
+    /** POST /ads/posts/google */
+    public static createGoogleAdPost<T>(
+        data?: object,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.createGoogleAdPost,
+            data,
+            {},
+            params
+        );
+    }
+
+    /** PUT /ads/posts/google/{post_id} */
+    public static updateGoogleAdPost<T>(
+        post_id: string,
+        data?: object,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.updateGoogleAdPost,
+            data,
+            { post_id },
+            params
+        );
+    }
+
+    /** DELETE /ads/posts/google/{post_id} */
+    public static deleteGoogleAdPost<T>(
+        post_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.deleteGoogleAdPost,
+            {},
+            { post_id },
+            params
+        );
+    }
+
+    /** POST /ads/posts/google/{post_id}/pause */
+    public static pauseGoogleAdPost<T>(
+        post_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.pauseGoogleAdPost,
+            {},
+            { post_id },
+            params
+        );
+    }
+
+    /** POST /ads/posts/google/{post_id}/enable */
+    public static enableGoogleAdPost<T>(
+        post_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            AdsRoute.routes.enableGoogleAdPost,
+            {},
+            { post_id },
+            params
+        );
+    }
 
 
 }

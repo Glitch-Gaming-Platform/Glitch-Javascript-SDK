@@ -401,7 +401,66 @@ class AdsRoute {
             url: "/ads/reports/time-performance",
             method: HTTP_METHODS.GET,
         },
-        
+
+        getGoogleGeoSuggestions: {
+            url: "/ads/google/targeting/geo/suggest",
+            method: HTTP_METHODS.GET,
+        },
+
+        addGoogleLocationTargets: {
+            url: "/ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations",
+            method: HTTP_METHODS.POST,
+        },
+
+        getGoogleLocationTargets: {
+            url: "/ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations",
+            method: HTTP_METHODS.GET,
+        },
+
+        removeGoogleLocationTargets: {
+            url: "/ads/google/targeting/campaigns/{customer_id}/{campaign_id}/locations",
+            method: HTTP_METHODS.DELETE,
+        },
+
+        addGoogleProximityTarget: {
+            url: "/ads/google/targeting/campaigns/{customer_id}/{campaign_id}/proximity",
+            method: HTTP_METHODS.POST,
+        },
+
+        updateGoogleTargetingSettings: {
+            url: "/ads/google/targeting/{resource_type}/{customer_id}/{resource_id}/settings",
+            method: HTTP_METHODS.PUT,
+        },
+
+        getGoogleTargetingSettings: {
+            url: "/ads/google/targeting/{resource_type}/{customer_id}/{resource_id}/settings",
+            method: HTTP_METHODS.GET,
+        },
+        getGoogleAdPosts: {
+            url: "/ads/posts/google",
+            method: HTTP_METHODS.GET,
+        },
+        createGoogleAdPost: {
+            url: "/ads/posts/google",
+            method: HTTP_METHODS.POST,
+        },
+        updateGoogleAdPost: {
+            url: "/ads/posts/google/{post_id}",
+            method: HTTP_METHODS.PUT,
+        },
+        deleteGoogleAdPost: {
+            url: "/ads/posts/google/{post_id}",
+            method: HTTP_METHODS.DELETE,
+        },
+        pauseGoogleAdPost: {
+            url: "/ads/posts/google/{post_id}/pause",
+            method: HTTP_METHODS.POST,
+        },
+        enableGoogleAdPost: {
+            url: "/ads/posts/google/{post_id}/enable",
+            method: HTTP_METHODS.POST,
+        },
+
     };
 }
 
