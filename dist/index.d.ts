@@ -4205,6 +4205,63 @@ declare class Campaigns {
      * @returns promise
      */
     static sendCampaignContractWithDocusign<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Search IGDB for the campaign's game.
+     * @param campaign_id The UUID of the campaign.
+     * @param params Query parameters (e.g., search_query, limit).
+     * @returns promise
+     */
+    static sourcingSearchIgdbForCampaignGame<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Find popular similar games from IGDB.
+     * @param campaign_id The UUID of the campaign.
+     * @param params Query parameters (e.g., igdb_id, limit).
+     * @returns promise
+     */
+    static sourcingGetSimilarIgdbGames<T>(campaign_id: string, params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Find content creators for selected games. This does not save them to the database.
+     * @param campaign_id The UUID of the campaign.
+     * @param data The search criteria (source, igdb_ids, etc.).
+     * @returns promise
+     */
+    static sourcingFindCreators<T>(campaign_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Update campaign sourcing settings.
+     * @param campaign_id The UUID of the campaign.
+     * @param data The settings to update (igdb_id, similar_game_igdb_ids, etc.).
+     * @returns promise
+     */
+    static updateSourcingSettings<T>(campaign_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Find and save content creators for selected games to the database.
+     * @param campaign_id The UUID of the campaign.
+     * @param data The search criteria (source, igdb_ids, etc.).
+     * @returns promise
+     */
+    static sourcingFindAndSaveCreators<T>(campaign_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Get sourced creators for a campaign from the database.
+     * @param campaign_id The UUID of the campaign.
+     * @param params Query parameters for filtering, sorting, and pagination.
+     * @returns promise
+     */
+    static getSourcedCreators<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a single sourced creator.
+     * @param campaign_id The UUID of the campaign.
+     * @param sourced_creator_id The UUID of the sourced creator.
+     * @returns promise
+     */
+    static getSourcedCreator<T>(campaign_id: string, sourced_creator_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Update a sourced creator (e.g., approve or reject).
+     * @param campaign_id The UUID of the campaign.
+     * @param sourced_creator_id The UUID of the sourced creator to update.
+     * @param data The update data (e.g., is_approved, is_rejected).
+     * @returns promise
+     */
+    static updateSourcedCreator<T>(campaign_id: string, sourced_creator_id: string, data: object): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {

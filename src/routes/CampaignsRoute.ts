@@ -61,6 +61,14 @@ class CampaignsRoute {
       listPayouts  :{ url: '/campaigns/{campaign_id}/payouts', method: HTTP_METHODS.GET },
       generateCampaignContract : { url: '/campaigns/{campaign_id}/influencers/{user_id}/contract', method: HTTP_METHODS.POST }, 
       sendCampaignContractWithDocusign : { url: '/campaigns/{campaign_id}/influencers/{user_id}/docusign', method: HTTP_METHODS.POST },
+      sourcingSearchIgdbForCampaignGame: { url: '/campaigns/{campaign_id}/sourcing/search-game', method: HTTP_METHODS.GET },
+      sourcingGetSimilarIgdbGames: { url: '/campaigns/{campaign_id}/sourcing/similar-games', method: HTTP_METHODS.GET },
+      sourcingFindCreators: { url: '/campaigns/{campaign_id}/sourcing/find-creators', method: HTTP_METHODS.POST },
+      updateSourcingSettings: { url: '/campaigns/{campaign_id}/sourcing/settings', method: HTTP_METHODS.PUT },
+      sourcingFindAndSaveCreators: { url: '/campaigns/{campaign_id}/sourcing/find-save-creators', method: HTTP_METHODS.POST },
+      getSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/creators', method: HTTP_METHODS.GET },
+      getSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}', method: HTTP_METHODS.GET },
+      updateSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}', method: HTTP_METHODS.PUT },
  
 
     };

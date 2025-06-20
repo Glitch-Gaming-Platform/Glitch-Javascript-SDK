@@ -24632,6 +24632,14 @@ var CampaignsRoute = /** @class */ (function () {
         listPayouts: { url: '/campaigns/{campaign_id}/payouts', method: HTTP_METHODS.GET },
         generateCampaignContract: { url: '/campaigns/{campaign_id}/influencers/{user_id}/contract', method: HTTP_METHODS.POST },
         sendCampaignContractWithDocusign: { url: '/campaigns/{campaign_id}/influencers/{user_id}/docusign', method: HTTP_METHODS.POST },
+        sourcingSearchIgdbForCampaignGame: { url: '/campaigns/{campaign_id}/sourcing/search-game', method: HTTP_METHODS.GET },
+        sourcingGetSimilarIgdbGames: { url: '/campaigns/{campaign_id}/sourcing/similar-games', method: HTTP_METHODS.GET },
+        sourcingFindCreators: { url: '/campaigns/{campaign_id}/sourcing/find-creators', method: HTTP_METHODS.POST },
+        updateSourcingSettings: { url: '/campaigns/{campaign_id}/sourcing/settings', method: HTTP_METHODS.PUT },
+        sourcingFindAndSaveCreators: { url: '/campaigns/{campaign_id}/sourcing/find-save-creators', method: HTTP_METHODS.POST },
+        getSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/creators', method: HTTP_METHODS.GET },
+        getSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}', method: HTTP_METHODS.GET },
+        updateSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}', method: HTTP_METHODS.PUT },
     };
     return CampaignsRoute;
 }());
@@ -25289,6 +25297,79 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.sendCampaignContractWithDocusign = function (campaign_id, user_id, data, params) {
         return Requests.processRoute(CampaignsRoute.routes.sendCampaignContractWithDocusign, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Search IGDB for the campaign's game.
+     * @param campaign_id The UUID of the campaign.
+     * @param params Query parameters (e.g., search_query, limit).
+     * @returns promise
+     */
+    Campaigns.sourcingSearchIgdbForCampaignGame = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingSearchIgdbForCampaignGame, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Find popular similar games from IGDB.
+     * @param campaign_id The UUID of the campaign.
+     * @param params Query parameters (e.g., igdb_id, limit).
+     * @returns promise
+     */
+    Campaigns.sourcingGetSimilarIgdbGames = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingGetSimilarIgdbGames, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Find content creators for selected games. This does not save them to the database.
+     * @param campaign_id The UUID of the campaign.
+     * @param data The search criteria (source, igdb_ids, etc.).
+     * @returns promise
+     */
+    Campaigns.sourcingFindCreators = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingFindCreators, data, { campaign_id: campaign_id });
+    };
+    /**
+     * Update campaign sourcing settings.
+     * @param campaign_id The UUID of the campaign.
+     * @param data The settings to update (igdb_id, similar_game_igdb_ids, etc.).
+     * @returns promise
+     */
+    Campaigns.updateSourcingSettings = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.updateSourcingSettings, data, { campaign_id: campaign_id });
+    };
+    /**
+     * Find and save content creators for selected games to the database.
+     * @param campaign_id The UUID of the campaign.
+     * @param data The search criteria (source, igdb_ids, etc.).
+     * @returns promise
+     */
+    Campaigns.sourcingFindAndSaveCreators = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingFindAndSaveCreators, data, { campaign_id: campaign_id });
+    };
+    /**
+     * Get sourced creators for a campaign from the database.
+     * @param campaign_id The UUID of the campaign.
+     * @param params Query parameters for filtering, sorting, and pagination.
+     * @returns promise
+     */
+    Campaigns.getSourcedCreators = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.getSourcedCreators, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Get a single sourced creator.
+     * @param campaign_id The UUID of the campaign.
+     * @param sourced_creator_id The UUID of the sourced creator.
+     * @returns promise
+     */
+    Campaigns.getSourcedCreator = function (campaign_id, sourced_creator_id) {
+        return Requests.processRoute(CampaignsRoute.routes.getSourcedCreator, undefined, { campaign_id: campaign_id, sourced_creator_id: sourced_creator_id });
+    };
+    /**
+     * Update a sourced creator (e.g., approve or reject).
+     * @param campaign_id The UUID of the campaign.
+     * @param sourced_creator_id The UUID of the sourced creator to update.
+     * @param data The update data (e.g., is_approved, is_rejected).
+     * @returns promise
+     */
+    Campaigns.updateSourcedCreator = function (campaign_id, sourced_creator_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.updateSourcedCreator, data, { campaign_id: campaign_id, sourced_creator_id: sourced_creator_id });
     };
     return Campaigns;
 }());
