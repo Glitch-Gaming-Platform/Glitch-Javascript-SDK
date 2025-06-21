@@ -1099,6 +1099,25 @@ declare class Ads {
     static pauseGoogleAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** POST /ads/posts/google/{post_id}/enable */
     static enableGoogleAdPost<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Creates a new Google Ads client account under a specified manager account.
+     * Corresponds to POST /ads/google/accounts/create
+     *
+     * @param data The creation payload.
+     * @param data.scheduler_id The UUID of the scheduler with auth tokens.
+     * @param data.manager_customer_id The 10-digit MCC ID.
+     * @param data.descriptive_name The name for the new account.
+     * @param data.currency_code ISO 4217 currency code.
+     * @param data.time_zone Time zone identifier (e.g., 'America/New_York').
+     * @returns The newly created Google Ads account details.
+     */
+    static createGoogleAccount<T>(data: {
+        scheduler_id: string;
+        manager_customer_id: string;
+        descriptive_name: string;
+        currency_code: string;
+        time_zone: string;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Communities {

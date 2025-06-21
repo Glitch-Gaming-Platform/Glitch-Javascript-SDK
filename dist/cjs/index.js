@@ -20185,6 +20185,10 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/posts/google/{post_id}/enable",
             method: HTTP_METHODS.POST,
         },
+        createGoogleAccount: {
+            url: "/ads/google/accounts/create",
+            method: HTTP_METHODS.POST,
+        },
     };
     return AdsRoute;
 }());
@@ -20849,6 +20853,21 @@ var Ads = /** @class */ (function () {
     /** POST /ads/posts/google/{post_id}/enable */
     Ads.enableGoogleAdPost = function (post_id, params) {
         return Requests.processRoute(AdsRoute.routes.enableGoogleAdPost, {}, { post_id: post_id }, params);
+    };
+    /**
+     * Creates a new Google Ads client account under a specified manager account.
+     * Corresponds to POST /ads/google/accounts/create
+     *
+     * @param data The creation payload.
+     * @param data.scheduler_id The UUID of the scheduler with auth tokens.
+     * @param data.manager_customer_id The 10-digit MCC ID.
+     * @param data.descriptive_name The name for the new account.
+     * @param data.currency_code ISO 4217 currency code.
+     * @param data.time_zone Time zone identifier (e.g., 'America/New_York').
+     * @returns The newly created Google Ads account details.
+     */
+    Ads.createGoogleAccount = function (data) {
+        return Requests.processRoute(AdsRoute.routes.createGoogleAccount, data, undefined, undefined);
     };
     return Ads;
 }());

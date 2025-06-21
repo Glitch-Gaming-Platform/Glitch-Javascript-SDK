@@ -460,6 +460,10 @@ class AdsRoute {
             url: "/ads/posts/google/{post_id}/enable",
             method: HTTP_METHODS.POST,
         },
+        createGoogleAccount: {
+            url: "/ads/google/accounts/create",
+            method: HTTP_METHODS.POST,
+        },
 
     };
 }
