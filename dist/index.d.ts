@@ -1706,6 +1706,30 @@ declare class Communities {
     static importGameInstalls<T>(community_id: string, newsletter_id: string, data: {
         format: 'csv' | 'xlsx';
     }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve the current user's pending community invitations across all communities.
+     *
+     * @returns promise
+     */
+    static myInvites<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Resends an invitation to a user.
+     *
+     * @param community_id The id of the community.
+     * @param invite_id The id of the invite to resend.
+     *
+     * @returns promise
+     */
+    static resendInvite<T>(community_id: string, invite_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Revokes/deletes a community invitation.
+     *
+     * @param community_id The id of the community.
+     * @param invite_id The id of the invite to delete.
+     *
+     * @returns promise
+     */
+    static deleteInvite<T>(community_id: string, invite_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Users {

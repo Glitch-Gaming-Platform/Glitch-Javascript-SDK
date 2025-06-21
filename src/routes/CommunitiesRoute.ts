@@ -17,6 +17,9 @@ class CommunitiesRoute {
     acceptInvite: { url: '/communities/{community_id}/acceptInvite', method: HTTP_METHODS.POST },
     retrieveInvite: { url: '/communities/{community_id}/invites/{token}', method: HTTP_METHODS.GET },
     listUsers: { url: '/communities/{community_id}/users', method: HTTP_METHODS.GET },
+    myInvites: { url: '/communities/invites/mine', method: HTTP_METHODS.GET },
+    resendInvite: { url: '/communities/{community_id}/invites/{invite_id}/resend', method: HTTP_METHODS.POST },
+    deleteInvite: { url: '/communities/{community_id}/invites/{invite_id}', method: HTTP_METHODS.DELETE },
     addUser: { url: '/communities/{community_id}/users', method: HTTP_METHODS.POST },
     showUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.GET },
     updateUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.PUT },
@@ -59,13 +62,13 @@ class CommunitiesRoute {
       method: HTTP_METHODS.GET
     },
 
-    exportNewsletterSubscribers: { 
-      url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers/export', 
-      method: HTTP_METHODS.POST 
+    exportNewsletterSubscribers: {
+      url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers/export',
+      method: HTTP_METHODS.POST
     },
-    importGameInstalls: { 
-      url: '/communities/{community_id}/newsletters/{newsletter_id}/import_game_installs', 
-      method: HTTP_METHODS.POST 
+    importGameInstalls: {
+      url: '/communities/{community_id}/newsletters/{newsletter_id}/import_game_installs',
+      method: HTTP_METHODS.POST
     },
 
     // Campaigns
@@ -91,6 +94,8 @@ class CommunitiesRoute {
     // Subscriber registration (open route)
     registerNewsletterSubscriber: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers', method: HTTP_METHODS.POST },
   };
+
+
 
 }
 

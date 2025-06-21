@@ -20870,6 +20870,9 @@ var CommunitiesRoute = /** @class */ (function () {
         acceptInvite: { url: '/communities/{community_id}/acceptInvite', method: HTTP_METHODS.POST },
         retrieveInvite: { url: '/communities/{community_id}/invites/{token}', method: HTTP_METHODS.GET },
         listUsers: { url: '/communities/{community_id}/users', method: HTTP_METHODS.GET },
+        myInvites: { url: '/communities/invites/mine', method: HTTP_METHODS.GET },
+        resendInvite: { url: '/communities/{community_id}/invites/{invite_id}/resend', method: HTTP_METHODS.POST },
+        deleteInvite: { url: '/communities/{community_id}/invites/{invite_id}', method: HTTP_METHODS.DELETE },
         addUser: { url: '/communities/{community_id}/users', method: HTTP_METHODS.POST },
         showUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.GET },
         updateUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.PUT },
@@ -21685,6 +21688,36 @@ var Communities = /** @class */ (function () {
      */
     Communities.importGameInstalls = function (community_id, newsletter_id, data, params) {
         return Requests.processRoute(CommunitiesRoute.routes.importGameInstalls, data, { community_id: community_id, newsletter_id: newsletter_id }, params);
+    };
+    /**
+     * Retrieve the current user's pending community invitations across all communities.
+     *
+     * @returns promise
+     */
+    Communities.myInvites = function (params) {
+        return Requests.processRoute(CommunitiesRoute.routes.myInvites, {}, undefined, params);
+    };
+    /**
+     * Resends an invitation to a user.
+     *
+     * @param community_id The id of the community.
+     * @param invite_id The id of the invite to resend.
+     *
+     * @returns promise
+     */
+    Communities.resendInvite = function (community_id, invite_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.resendInvite, {}, { community_id: community_id, invite_id: invite_id }, params);
+    };
+    /**
+     * Revokes/deletes a community invitation.
+     *
+     * @param community_id The id of the community.
+     * @param invite_id The id of the invite to delete.
+     *
+     * @returns promise
+     */
+    Communities.deleteInvite = function (community_id, invite_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.deleteInvite, {}, { community_id: community_id, invite_id: invite_id }, params);
     };
     return Communities;
 }());

@@ -896,6 +896,39 @@ class Communities {
         );
     }
 
+    /**
+     * Retrieve the current user's pending community invitations across all communities.
+     * 
+     * @returns promise
+     */
+    public static myInvites<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.myInvites, {}, undefined, params);
+    }
+
+    /**
+     * Resends an invitation to a user.
+     * 
+     * @param community_id The id of the community.
+     * @param invite_id The id of the invite to resend.
+     * 
+     * @returns promise
+     */
+    public static resendInvite<T>(community_id: string, invite_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.resendInvite, {}, { community_id: community_id, invite_id: invite_id }, params);
+    }
+
+    /**
+     * Revokes/deletes a community invitation.
+     * 
+     * @param community_id The id of the community.
+     * @param invite_id The id of the invite to delete.
+     * 
+     * @returns promise
+     */
+    public static deleteInvite<T>(community_id: string, invite_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.deleteInvite, {}, { community_id: community_id, invite_id: invite_id }, params);
+    }
+
 
 }
 
