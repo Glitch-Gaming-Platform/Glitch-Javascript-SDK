@@ -35,6 +35,7 @@ import Hashtags from "./Hashtags";
 import WebsiteAnalytics from "./WebsiteAnalytics";
 import ShortLinks from "./ShortLinks";
 import AIUsage from "./AIUsage";
+import MarketingAgencies from "./MarketingAgencies";
 
 export {Ads};
 export {Auth};
@@ -73,3 +74,4 @@ export {WebsiteAnalytics};
 export {Fingerprinting};
 export {ShortLinks};
 export {AIUsage};
+export {MarketingAgencies};

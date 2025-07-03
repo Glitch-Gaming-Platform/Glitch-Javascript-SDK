@@ -27588,6 +27588,226 @@ var AIUsage = /** @class */ (function () {
     return AIUsage;
 }());
 
+var MarketingAgenciesRoute = /** @class */ (function () {
+    function MarketingAgenciesRoute() {
+    }
+    MarketingAgenciesRoute.routes = {
+        // CRUD for agencies
+        list: { url: '/marketing-agencies', method: HTTP_METHODS.GET },
+        create: { url: '/marketing-agencies', method: HTTP_METHODS.POST },
+        view: { url: '/marketing-agencies/{id}', method: HTTP_METHODS.GET },
+        update: { url: '/marketing-agencies/{id}', method: HTTP_METHODS.PUT },
+        delete: { url: '/marketing-agencies/{id}', method: HTTP_METHODS.DELETE },
+        // Administrator management
+        addAdministrator: { url: '/marketing-agencies/{id}/administrators', method: HTTP_METHODS.POST },
+        removeAdministrator: { url: '/marketing-agencies/{id}/administrators/{user_id}', method: HTTP_METHODS.DELETE },
+        // Logo management
+        setLogo: { url: '/marketing-agencies/{id}/logo', method: HTTP_METHODS.POST },
+        // Case Study management
+        addCaseStudy: { url: '/marketing-agencies/{id}/case-studies', method: HTTP_METHODS.POST },
+        removeCaseStudy: { url: '/marketing-agencies/{id}/case-studies/{media_id}', method: HTTP_METHODS.DELETE },
+        updateCaseStudyOrder: { url: '/marketing-agencies/{id}/case-studies/order', method: HTTP_METHODS.POST },
+        // Invitation management
+        invite: { url: '/marketing-agencies/{id}/invites', method: HTTP_METHODS.POST },
+        listInvites: { url: '/marketing-agencies/{id}/invites', method: HTTP_METHODS.GET },
+        revokeInvite: { url: '/marketing-agencies/{id}/invites/{invite_id}', method: HTTP_METHODS.DELETE },
+        getInviteDetails: { url: '/marketing-agencies/invites/details', method: HTTP_METHODS.GET },
+        acceptInvite: { url: '/marketing-agencies/invites/accept', method: HTTP_METHODS.POST },
+    };
+    return MarketingAgenciesRoute;
+}());
+
+var MarketingAgencies = /** @class */ (function () {
+    function MarketingAgencies() {
+    }
+    /**
+     * List all marketing agencies.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/getMarketing-agencies
+     *
+     * @param params Optional query parameters (e.g., is_admin, sort_by, sort_order, page, per_page).
+     * @returns promise
+     */
+    MarketingAgencies.list = function (params) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.list, undefined, undefined, params);
+    };
+    /**
+     * Create a new marketing agency.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/postMarketing-agencies
+     *
+     * @param data The data for the new agency.
+     * @returns Promise
+     */
+    MarketingAgencies.create = function (data) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.create, data);
+    };
+    /**
+     * Retrieve a single marketing agency by its ID.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/getMarketing-agencies-id
+     *
+     * @param id The UUID of the agency to retrieve.
+     * @returns promise
+     */
+    MarketingAgencies.view = function (id) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.view, {}, { id: id });
+    };
+    /**
+     * Update a marketing agency.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/putMarketing-agencies-id
+     *
+     * @param id The UUID of the agency to update.
+     * @param data The data to update.
+     * @returns promise
+     */
+    MarketingAgencies.update = function (id, data) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.update, data, { id: id });
+    };
+    /**
+     * Deletes a marketing agency.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/deleteMarketing-agencies-id
+     *
+     * @param id The UUID of the agency to delete.
+     * @returns promise
+     */
+    MarketingAgencies.delete = function (id) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.delete, {}, { id: id });
+    };
+    /**
+     * Add a user as an administrator to an agency.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/postMarketing-agencies-id-administrators
+     *
+     * @param id The UUID of the agency.
+     * @param data The data containing the user_id to add.
+     * @returns Promise
+     */
+    MarketingAgencies.addAdministrator = function (id, data) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.addAdministrator, data, { id: id });
+    };
+    /**
+     * Remove a user as an administrator from an agency.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/deleteMarketing-agencies-id-administrators-user_id
+     *
+     * @param id The UUID of the agency.
+     * @param user_id The UUID of the user to remove.
+     * @returns Promise
+     */
+    MarketingAgencies.removeAdministrator = function (id, user_id) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.removeAdministrator, {}, { id: id, user_id: user_id });
+    };
+    /**
+     * Set the logo for an agency.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/postMarketing-agencies-id-logo
+     *
+     * @param id The UUID of the agency.
+     * @param data The data containing the media_id for the logo.
+     * @returns Promise
+     */
+    MarketingAgencies.setLogo = function (id, data) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.setLogo, data, { id: id });
+    };
+    /**
+     * Add a case study to an agency.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/postMarketing-agencies-id-case-studies
+     *
+     * @param id The UUID of the agency.
+     * @param data The data containing the media_id and optional order.
+     * @returns Promise
+     */
+    MarketingAgencies.addCaseStudy = function (id, data) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.addCaseStudy, data, { id: id });
+    };
+    /**
+     * Remove a case study from an agency.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/deleteMarketing-agencies-id-case-studies-media_id
+     *
+     * @param id The UUID of the agency.
+     * @param media_id The UUID of the media to remove.
+     * @returns Promise
+     */
+    MarketingAgencies.removeCaseStudy = function (id, media_id) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.removeCaseStudy, {}, { id: id, media_id: media_id });
+    };
+    /**
+     * Update the order of case studies for an agency.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/postMarketing-agencies-id-case-studies-order
+     *
+     * @param id The UUID of the agency.
+     * @param order_data An array of objects with media_id and new order.
+     * @returns Promise
+     */
+    MarketingAgencies.updateCaseStudyOrder = function (id, order_data) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.updateCaseStudyOrder, { order_data: order_data }, { id: id });
+    };
+    /**
+     * Invite a user to become an administrator of an agency.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/postMarketing-agencies-id-invites
+     *
+     * @param id The UUID of the agency.
+     * @param data The data containing the email of the user to invite.
+     * @returns Promise
+     */
+    MarketingAgencies.invite = function (id, data) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.invite, data, { id: id });
+    };
+    /**
+     * List all pending invitations for an agency.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/getMarketing-agencies-id-invites
+     *
+     * @param id The UUID of the agency.
+     * @returns Promise
+     */
+    MarketingAgencies.listInvites = function (id) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.listInvites, {}, { id: id });
+    };
+    /**
+     * Revoke a pending invitation.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/deleteMarketing-agencies-id-invites-invite_id
+     *
+     * @param id The UUID of the agency.
+     * @param invite_id The UUID of the invitation to revoke.
+     * @returns Promise
+     */
+    MarketingAgencies.revokeInvite = function (id, invite_id) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.revokeInvite, {}, { id: id, invite_id: invite_id });
+    };
+    /**
+     * Get the details of a pending invitation using its token.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/getMarketing-agencies-invites-details
+     *
+     * @param params An object containing the token.
+     * @returns Promise
+     */
+    MarketingAgencies.getInviteDetails = function (params) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.getInviteDetails, undefined, undefined, params);
+    };
+    /**
+     * Accept an invitation to become an administrator.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Marketing%20Agencies/postMarketing-agencies-invites-accept
+     *
+     * @param data The data containing the invitation token.
+     * @returns Promise
+     */
+    MarketingAgencies.acceptInvite = function (data) {
+        return Requests.processRoute(MarketingAgenciesRoute.routes.acceptInvite, data);
+    };
+    return MarketingAgencies;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -28112,7 +28332,8 @@ var Glitch = /** @class */ (function () {
         WebsiteAnalytics: WebsiteAnalytics,
         Fingerprinting: Fingerprinting,
         ShortLinks: ShortLinks,
-        AIUsage: AIUsage
+        AIUsage: AIUsage,
+        MarketingAgencies: MarketingAgencies
     };
     Glitch.util = {
         Requests: Requests,

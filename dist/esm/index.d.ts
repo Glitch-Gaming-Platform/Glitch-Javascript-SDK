@@ -35,6 +35,7 @@ import { WebsiteAnalytics } from "./api";
 import { Fingerprinting } from "./api";
 import { ShortLinks } from "./api";
 import { AIUsage } from "./api";
+import { MarketingAgencies } from "./api";
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -91,6 +92,7 @@ declare class Glitch {
         Fingerprinting: typeof Fingerprinting;
         ShortLinks: typeof ShortLinks;
         AIUsage: typeof AIUsage;
+        MarketingAgencies: typeof MarketingAgencies;
     };
     static util: {
         Requests: typeof Requests;

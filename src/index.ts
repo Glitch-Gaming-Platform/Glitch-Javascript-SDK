@@ -39,6 +39,7 @@ import {WebsiteAnalytics} from "./api";
 import {Fingerprinting} from "./api";
 import {ShortLinks} from "./api";
 import {AIUsage} from "./api";
+import {MarketingAgencies} from "./api"
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -106,7 +107,8 @@ class Glitch {
         WebsiteAnalytics: WebsiteAnalytics,
         Fingerprinting : Fingerprinting,
         ShortLinks : ShortLinks,
-        AIUsage : AIUsage
+        AIUsage : AIUsage,
+        MarketingAgencies : MarketingAgencies
     }
 
     public static util = {
