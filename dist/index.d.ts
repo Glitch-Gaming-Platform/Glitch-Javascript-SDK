@@ -5325,6 +5325,81 @@ declare class Scheduler {
      * @returns           A response object with data (funding instruments)
      */
     static listCampaignFundingInstruments<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all destinations for a title update.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/listTitleUpdateDestinations
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @returns promise
+     */
+    static listDestinations<T>(scheduler_id: string, update_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new destination for a title update.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/createTitleUpdateDestination
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param data The data for the new destination.
+     * @returns promise
+     */
+    static createDestination<T>(scheduler_id: string, update_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a specific title update destination.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/getTitleUpdateDestination
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param destination_id The ID of the destination.
+     * @returns promise
+     */
+    static getDestination<T>(scheduler_id: string, update_id: string, destination_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a title update destination.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitleUpdateDestination
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param destination_id The ID of the destination.
+     * @param data The data to update.
+     * @returns promise
+     */
+    static updateDestination<T>(scheduler_id: string, update_id: string, destination_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a title update destination.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/deleteTitleUpdateDestination
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param destination_id The ID of the destination.
+     * @returns promise
+     */
+    static deleteDestination<T>(scheduler_id: string, update_id: string, destination_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get AI-powered subreddit recommendations for a scheduler.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/getSchedulerRedditRecommendations
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The context for the post (title, content, media type).
+     * @returns promise
+     */
+    static getRedditRecommendations<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Generate tailored content for a specific subreddit.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/generateRedditContentForSubreddit
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The target subreddit and post context.
+     * @returns promise
+     */
+    static generateRedditContent<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Funnel {

@@ -13259,6 +13259,13 @@ var SchedulerRoute = /** @class */ (function () {
             url: '/schedulers/{scheduler_id}/generateContent',
             method: HTTP_METHODS.POST
         },
+        getRedditRecommendations: { url: '/schedulers/{scheduler_id}/reddit/recommendations', method: HTTP_METHODS.POST },
+        generateRedditContent: { url: '/schedulers/{scheduler_id}/reddit/generateContent', method: HTTP_METHODS.POST },
+        listDestinations: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations', method: HTTP_METHODS.GET },
+        createDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations', method: HTTP_METHODS.POST },
+        getDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations/{destination_id}', method: HTTP_METHODS.GET },
+        updateDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations/{destination_id}', method: HTTP_METHODS.PUT },
+        deleteDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations/{destination_id}', method: HTTP_METHODS.DELETE },
     };
     return SchedulerRoute;
 }());
@@ -13802,6 +13809,95 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.listCampaignFundingInstruments = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.getCampaignFundingInstruments, undefined, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * List all destinations for a title update.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/listTitleUpdateDestinations
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @returns promise
+     */
+    Scheduler.listDestinations = function (scheduler_id, update_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.listDestinations, {}, { scheduler_id: scheduler_id, update_id: update_id }, params);
+    };
+    /**
+     * Create a new destination for a title update.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/createTitleUpdateDestination
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param data The data for the new destination.
+     * @returns promise
+     */
+    Scheduler.createDestination = function (scheduler_id, update_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.createDestination, data, { scheduler_id: scheduler_id, update_id: update_id }, params);
+    };
+    /**
+     * Get a specific title update destination.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/getTitleUpdateDestination
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param destination_id The ID of the destination.
+     * @returns promise
+     */
+    Scheduler.getDestination = function (scheduler_id, update_id, destination_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getDestination, {}, { scheduler_id: scheduler_id, update_id: update_id, destination_id: destination_id }, params);
+    };
+    /**
+     * Update a title update destination.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitleUpdateDestination
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param destination_id The ID of the destination.
+     * @param data The data to update.
+     * @returns promise
+     */
+    Scheduler.updateDestination = function (scheduler_id, update_id, destination_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.updateDestination, data, { scheduler_id: scheduler_id, update_id: update_id, destination_id: destination_id }, params);
+    };
+    /**
+     * Delete a title update destination.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/deleteTitleUpdateDestination
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param destination_id The ID of the destination.
+     * @returns promise
+     */
+    Scheduler.deleteDestination = function (scheduler_id, update_id, destination_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.deleteDestination, {}, { scheduler_id: scheduler_id, update_id: update_id, destination_id: destination_id }, params);
+    };
+    /**
+     * Get AI-powered subreddit recommendations for a scheduler.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/getSchedulerRedditRecommendations
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The context for the post (title, content, media type).
+     * @returns promise
+     */
+    Scheduler.getRedditRecommendations = function (scheduler_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getRedditRecommendations, data, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Generate tailored content for a specific subreddit.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/generateRedditContentForSubreddit
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The target subreddit and post context.
+     * @returns promise
+     */
+    Scheduler.generateRedditContent = function (scheduler_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.generateRedditContent, data, { scheduler_id: scheduler_id }, params);
     };
     return Scheduler;
 }());

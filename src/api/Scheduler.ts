@@ -681,6 +681,102 @@ class Scheduler {
         );
     }
 
+    /**
+     * List all destinations for a title update.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/listTitleUpdateDestinations
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @returns promise
+     */
+    public static listDestinations<T>(scheduler_id: string, update_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.listDestinations, {}, { scheduler_id, update_id }, params);
+    }
+
+    /**
+     * Create a new destination for a title update.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/createTitleUpdateDestination
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param data The data for the new destination.
+     * @returns promise
+     */
+    public static createDestination<T>(scheduler_id: string, update_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.createDestination, data, { scheduler_id, update_id }, params);
+    }
+
+    /**
+     * Get a specific title update destination.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/getTitleUpdateDestination
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param destination_id The ID of the destination.
+     * @returns promise
+     */
+    public static getDestination<T>(scheduler_id: string, update_id: string, destination_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getDestination, {}, { scheduler_id, update_id, destination_id }, params);
+    }
+
+    /**
+     * Update a title update destination.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/updateTitleUpdateDestination
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param destination_id The ID of the destination.
+     * @param data The data to update.
+     * @returns promise
+     */
+    public static updateDestination<T>(scheduler_id: string, update_id: string, destination_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.updateDestination, data, { scheduler_id, update_id, destination_id }, params);
+    }
+
+    /**
+     * Delete a title update destination.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/deleteTitleUpdateDestination
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param update_id The ID of the title update.
+     * @param destination_id The ID of the destination.
+     * @returns promise
+     */
+    public static deleteDestination<T>(scheduler_id: string, update_id: string, destination_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.deleteDestination, {}, { scheduler_id, update_id, destination_id }, params);
+    }
+
+    /**
+     * Get AI-powered subreddit recommendations for a scheduler.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/getSchedulerRedditRecommendations
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The context for the post (title, content, media type).
+     * @returns promise
+     */
+    public static getRedditRecommendations<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getRedditRecommendations, data, { scheduler_id }, params);
+    }
+
+    /**
+     * Generate tailored content for a specific subreddit.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/generateRedditContentForSubreddit
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The target subreddit and post context.
+     * @returns promise
+     */
+    public static generateRedditContent<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.generateRedditContent, data, { scheduler_id }, params);
+    }
+
 }
 
 export default Scheduler;
