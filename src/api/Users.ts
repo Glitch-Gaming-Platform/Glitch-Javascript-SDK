@@ -529,6 +529,40 @@ class Users {
     }
 
 
+    /**
+     * Resends the verification email to the authenticated user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/resendVerificationEmail
+     * 
+     * @returns Promise
+     */
+    public static resendVerificationEmail<T>(): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.resendVerificationEmail, {});
+    }
+
+    /**
+     * Clear Instagram authentication information from the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/clearInstagramAuth
+     * 
+     * @returns promise
+     */
+    public static clearInstagramAuth<T>(): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.clearInstagramAuth, {});
+    }
+
+    /**
+     * Gets the rules for a specific subreddit.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getSubredditRules
+     *
+     * @param subreddit The name of the subreddit to get rules for.
+     * @returns Promise resolving to the list of rules
+     */
+    public static getSubredditRules<T>(subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.getSubredditRules, undefined, { subreddit: subreddit }, params);
+    }
+
 
 
 

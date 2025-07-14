@@ -36,7 +36,7 @@ class UserRoutes {
     addType: { url: '/users/addType', method: HTTP_METHODS.POST },
     removeType: { url: '/users/removeType/{type_id}', method: HTTP_METHODS.DELETE },
     getCampaignInvites: { url: '/users/getCampaignInvites', method: HTTP_METHODS.GET },
-    getPayouts: { url: '/users/payouts', method: HTTP_METHODS.GET },
+    getPayouts: { url: '/users/getCampaignPayouts', method: HTTP_METHODS.GET },
     verifyAccount: { url: '/users/verify', method: HTTP_METHODS.POST },
     getInstagramAccounts: { url: '/users/instagramAccounts', method: HTTP_METHODS.GET },
 
@@ -45,6 +45,11 @@ class UserRoutes {
     getSubredditFlairs: { url: "/users/reddit/redditflairs/{subreddit}", method: HTTP_METHODS.GET },
 
     search: { url: '/users/search', method: HTTP_METHODS.GET },
+
+    resendVerificationEmail: { url: '/users/resendVerificationEmail', method: HTTP_METHODS.POST },
+    clearInstagramAuth: { url: '/users/clearInstagramAuth', method: HTTP_METHODS.DELETE },
+    getSubredditRules: { url: "/users/reddit/redditrules/{subreddit}", method: HTTP_METHODS.GET },
+
 
   };
 

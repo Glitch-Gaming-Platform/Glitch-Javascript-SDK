@@ -2117,6 +2117,31 @@ declare class Users {
      * @returns promise
      */
     static search<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Resends the verification email to the authenticated user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/resendVerificationEmail
+     *
+     * @returns Promise
+     */
+    static resendVerificationEmail<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Clear Instagram authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/clearInstagramAuth
+     *
+     * @returns promise
+     */
+    static clearInstagramAuth<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Gets the rules for a specific subreddit.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getSubredditRules
+     *
+     * @param subreddit The name of the subreddit to get rules for.
+     * @returns Promise resolving to the list of rules
+     */
+    static getSubredditRules<T>(subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Events {

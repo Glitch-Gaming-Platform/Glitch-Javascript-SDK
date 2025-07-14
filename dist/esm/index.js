@@ -8593,13 +8593,16 @@ var UserRoutes = /** @class */ (function () {
         addType: { url: '/users/addType', method: HTTP_METHODS.POST },
         removeType: { url: '/users/removeType/{type_id}', method: HTTP_METHODS.DELETE },
         getCampaignInvites: { url: '/users/getCampaignInvites', method: HTTP_METHODS.GET },
-        getPayouts: { url: '/users/payouts', method: HTTP_METHODS.GET },
+        getPayouts: { url: '/users/getCampaignPayouts', method: HTTP_METHODS.GET },
         verifyAccount: { url: '/users/verify', method: HTTP_METHODS.POST },
         getInstagramAccounts: { url: '/users/instagramAccounts', method: HTTP_METHODS.GET },
         getFacebookPages: { url: "/users/facebookPages", method: HTTP_METHODS.GET },
         getSubreddits: { url: "/users/reddit/subreddits", method: HTTP_METHODS.GET },
         getSubredditFlairs: { url: "/users/reddit/redditflairs/{subreddit}", method: HTTP_METHODS.GET },
         search: { url: '/users/search', method: HTTP_METHODS.GET },
+        resendVerificationEmail: { url: '/users/resendVerificationEmail', method: HTTP_METHODS.POST },
+        clearInstagramAuth: { url: '/users/clearInstagramAuth', method: HTTP_METHODS.DELETE },
+        getSubredditRules: { url: "/users/reddit/redditrules/{subreddit}", method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -9051,6 +9054,37 @@ var Users = /** @class */ (function () {
      */
     Users.search = function (params) {
         return Requests.processRoute(UserRoutes.routes.search, undefined, undefined, params);
+    };
+    /**
+     * Resends the verification email to the authenticated user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/resendVerificationEmail
+     *
+     * @returns Promise
+     */
+    Users.resendVerificationEmail = function () {
+        return Requests.processRoute(UserRoutes.routes.resendVerificationEmail, {});
+    };
+    /**
+     * Clear Instagram authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/clearInstagramAuth
+     *
+     * @returns promise
+     */
+    Users.clearInstagramAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearInstagramAuth, {});
+    };
+    /**
+     * Gets the rules for a specific subreddit.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/getSubredditRules
+     *
+     * @param subreddit The name of the subreddit to get rules for.
+     * @returns Promise resolving to the list of rules
+     */
+    Users.getSubredditRules = function (subreddit, params) {
+        return Requests.processRoute(UserRoutes.routes.getSubredditRules, undefined, { subreddit: subreddit }, params);
     };
     return Users;
 }());
