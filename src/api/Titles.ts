@@ -552,6 +552,152 @@ class Titles {
         );
     }
 
+     /**  
+   * List all purchase events for a specific title.  
+   * Matches GET /titles/{title_id}/purchases  
+   */  
+  public static listPurchases<T>(  
+    title_id: string,  
+    params?: Record<string, any>  
+  ): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      TitlesRoute.routes.purchasesList,  
+      {},  
+      { title_id },  
+      params  
+    );  
+  }  
+  
+  /**  
+   * Retrieve a single purchase record by ID.  
+   * Matches GET /titles/{title_id}/purchases/{purchase_id}  
+   */  
+  public static viewPurchase<T>(  
+    title_id: string,  
+    purchase_id: string,  
+    params?: Record<string, any>  
+  ): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      TitlesRoute.routes.purchasesShow,  
+      {},  
+      { title_id, purchase_id },  
+      params  
+    );  
+  }  
+  
+  /**  
+   * Create a new purchase record.  
+   * Matches POST /titles/{title_id}/purchases  
+   */  
+  public static createPurchase<T>(  
+    title_id: string,  
+    data: object,  
+    params?: Record<string, any>  
+  ): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      TitlesRoute.routes.purchasesCreate,  
+      data,  
+      { title_id },  
+      params  
+    );  
+  }  
+  
+  /**  
+   * Get a summary of total revenue, grouped by day or purchase_type.  
+   * Matches GET /titles/{title_id}/purchases/summary  
+   */  
+  public static purchaseSummary<T>(  
+    title_id: string,  
+    params?: Record<string, any>  
+  ): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      TitlesRoute.routes.purchasesSummary,  
+      {},  
+      { title_id },  
+      params  
+    );  
+  }  
+  
+  /**  
+   * Revenue by time (daily, weekly, or monthly).  
+   * Matches GET /titles/{title_id}/purchases/reports/time  
+   */  
+  public static purchaseRevenueByTime<T>(  
+    title_id: string,  
+    params?: Record<string, any>  
+  ): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      TitlesRoute.routes.purchasesTimeReport,  
+      {},  
+      { title_id },  
+      params  
+    );  
+  }  
+  
+  /**  
+   * 30-day LTV (Lifetime Value) per install.  
+   * Matches GET /titles/{title_id}/purchases/reports/ltv30  
+   */  
+  public static purchaseLtv30<T>(  
+    title_id: string,  
+    params?: Record<string, any>  
+  ): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      TitlesRoute.routes.purchasesLtv30Report,  
+      {},  
+      { title_id },  
+      params  
+    );  
+  }  
+  
+  /**  
+   * Show breakdown of revenue per currency, with optional USD conversion.  
+   * Matches GET /titles/{title_id}/purchases/reports/currency  
+   */  
+  public static purchaseCurrencyBreakdown<T>(  
+    title_id: string,  
+    params?: Record<string, any>  
+  ): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      TitlesRoute.routes.purchasesCurrencyBreakdown,  
+      {},  
+      { title_id },  
+      params  
+    );  
+  }  
+  
+  /**  
+   * Distribution of installs by total revenue, plus a histogram array.  
+   * Matches GET /titles/{title_id}/purchases/reports/install-distribution  
+   */  
+  public static installRevenueDistribution<T>(  
+    title_id: string,  
+    params?: Record<string, any>  
+  ): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      TitlesRoute.routes.purchasesInstallDistribution,  
+      {},  
+      { title_id },  
+      params  
+    );  
+  }  
+  
+  /**  
+   * Stats by item SKU, purchase type, and repeat purchase analysis.  
+   * Matches GET /titles/{title_id}/purchases/reports/item-type-stats  
+   */  
+  public static itemAndPurchaseTypeStats<T>(  
+    title_id: string,  
+    params?: Record<string, any>  
+  ): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      TitlesRoute.routes.purchasesItemTypeStats,  
+      {},  
+      { title_id },  
+      params  
+    );  
+  }  
+
 
 
 }

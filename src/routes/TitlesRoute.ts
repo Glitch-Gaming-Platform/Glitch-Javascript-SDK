@@ -93,6 +93,49 @@ class TitlesRoute {
       method: HTTP_METHODS.PUT
     },
 
+    // ─────────────────────────────────────────────────────────────────  
+    // Purchase/Revenue Endpoints  
+    // ─────────────────────────────────────────────────────────────────  
+    purchasesList: {  
+      url: "/titles/{title_id}/purchases",  
+      method: HTTP_METHODS.GET,  
+    },  
+    purchasesShow: {  
+      url: "/titles/{title_id}/purchases/{purchase_id}",  
+      method: HTTP_METHODS.GET,  
+    },  
+    purchasesCreate: {  
+      url: "/titles/{title_id}/purchases",  
+      method: HTTP_METHODS.POST,  
+    },  
+    purchasesSummary: {  
+      url: "/titles/{title_id}/purchases/summary",  
+      method: HTTP_METHODS.GET,  
+    },  
+  
+    // Advanced analytics sub-routes  
+    purchasesTimeReport: {  
+      url: "/titles/{title_id}/purchases/reports/time",  
+      method: HTTP_METHODS.GET,  
+    },  
+    purchasesLtv30Report: {  
+      url: "/titles/{title_id}/purchases/reports/ltv30",  
+      method: HTTP_METHODS.GET,  
+    },  
+    purchasesCurrencyBreakdown: {  
+      url: "/titles/{title_id}/purchases/reports/currency",  
+      method: HTTP_METHODS.GET,  
+    },  
+    purchasesInstallDistribution: {  
+      url: "/titles/{title_id}/purchases/reports/install-distribution",  
+      method: HTTP_METHODS.GET,  
+    },  
+    purchasesItemTypeStats: {  
+      url: "/titles/{title_id}/purchases/reports/item-type-stats",  
+      method: HTTP_METHODS.GET,  
+    },  
+  
+
   };
 
 }

@@ -36,6 +36,58 @@ class ShortLinks {
   // public static delete<T>(id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
   //   return Requests.processRoute(ShortLinksRoute.routes.deleteShortLink, {}, { id }, params);
   // }
+
+   /**  
+   * Get click-summary report  
+   *  - Example usage: ShortLinks.clickSummary({ short_link_id: 'uuid-here' })  
+   */  
+  public static clickSummary<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      ShortLinksRoute.routes.clickSummary,  
+      undefined,  
+      undefined,  
+      params  
+    );  
+  }  
+  
+  /**  
+   * Get geo & device breakdown report  
+   *  - Example usage: ShortLinks.geoDeviceBreakdown({ short_link_id: 'uuid-here' })  
+   */  
+  public static geoDeviceBreakdown<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      ShortLinksRoute.routes.geoDeviceBreakdown,  
+      undefined,  
+      undefined,  
+      params  
+    );  
+  }  
+  
+  /**  
+   * Get time-series report  
+   *  - Example usage: ShortLinks.timeSeries({ short_link_id: 'uuid-here', group_by: 'day' })  
+   */  
+  public static timeSeries<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      ShortLinksRoute.routes.timeSeries,  
+      undefined,  
+      undefined,  
+      params  
+    );  
+  }  
+  
+  /**  
+   * Get referrer & UTM report  
+   *  - Example usage: ShortLinks.referrerReport({ short_link_id: 'uuid-here' })  
+   */  
+  public static referrerReport<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {  
+    return Requests.processRoute(  
+      ShortLinksRoute.routes.referrerReport,  
+      undefined,  
+      undefined,  
+      params  
+    );  
+  }  
 }
 
 export default ShortLinks;

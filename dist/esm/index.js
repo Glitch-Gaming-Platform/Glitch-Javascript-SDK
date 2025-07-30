@@ -11091,6 +11091,46 @@ var TitlesRoute = /** @class */ (function () {
             url: '/titles/{title_id}/chat/messages/{message_id}',
             method: HTTP_METHODS.PUT
         },
+        // ─────────────────────────────────────────────────────────────────  
+        // Purchase/Revenue Endpoints  
+        // ─────────────────────────────────────────────────────────────────  
+        purchasesList: {
+            url: "/titles/{title_id}/purchases",
+            method: HTTP_METHODS.GET,
+        },
+        purchasesShow: {
+            url: "/titles/{title_id}/purchases/{purchase_id}",
+            method: HTTP_METHODS.GET,
+        },
+        purchasesCreate: {
+            url: "/titles/{title_id}/purchases",
+            method: HTTP_METHODS.POST,
+        },
+        purchasesSummary: {
+            url: "/titles/{title_id}/purchases/summary",
+            method: HTTP_METHODS.GET,
+        },
+        // Advanced analytics sub-routes  
+        purchasesTimeReport: {
+            url: "/titles/{title_id}/purchases/reports/time",
+            method: HTTP_METHODS.GET,
+        },
+        purchasesLtv30Report: {
+            url: "/titles/{title_id}/purchases/reports/ltv30",
+            method: HTTP_METHODS.GET,
+        },
+        purchasesCurrencyBreakdown: {
+            url: "/titles/{title_id}/purchases/reports/currency",
+            method: HTTP_METHODS.GET,
+        },
+        purchasesInstallDistribution: {
+            url: "/titles/{title_id}/purchases/reports/install-distribution",
+            method: HTTP_METHODS.GET,
+        },
+        purchasesItemTypeStats: {
+            url: "/titles/{title_id}/purchases/reports/item-type-stats",
+            method: HTTP_METHODS.GET,
+        },
     };
     return TitlesRoute;
 }());
@@ -11469,6 +11509,69 @@ var Titles = /** @class */ (function () {
      */
     Titles.chatUpdateMessage = function (title_id, message_id, data) {
         return Requests.processRoute(TitlesRoute.routes.chatUpdateMessage, data, { title_id: title_id, message_id: message_id });
+    };
+    /**
+  * List all purchase events for a specific title.
+  * Matches GET /titles/{title_id}/purchases
+  */
+    Titles.listPurchases = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.purchasesList, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Retrieve a single purchase record by ID.
+     * Matches GET /titles/{title_id}/purchases/{purchase_id}
+     */
+    Titles.viewPurchase = function (title_id, purchase_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.purchasesShow, {}, { title_id: title_id, purchase_id: purchase_id }, params);
+    };
+    /**
+     * Create a new purchase record.
+     * Matches POST /titles/{title_id}/purchases
+     */
+    Titles.createPurchase = function (title_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.purchasesCreate, data, { title_id: title_id }, params);
+    };
+    /**
+     * Get a summary of total revenue, grouped by day or purchase_type.
+     * Matches GET /titles/{title_id}/purchases/summary
+     */
+    Titles.purchaseSummary = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.purchasesSummary, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Revenue by time (daily, weekly, or monthly).
+     * Matches GET /titles/{title_id}/purchases/reports/time
+     */
+    Titles.purchaseRevenueByTime = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.purchasesTimeReport, {}, { title_id: title_id }, params);
+    };
+    /**
+     * 30-day LTV (Lifetime Value) per install.
+     * Matches GET /titles/{title_id}/purchases/reports/ltv30
+     */
+    Titles.purchaseLtv30 = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.purchasesLtv30Report, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Show breakdown of revenue per currency, with optional USD conversion.
+     * Matches GET /titles/{title_id}/purchases/reports/currency
+     */
+    Titles.purchaseCurrencyBreakdown = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.purchasesCurrencyBreakdown, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Distribution of installs by total revenue, plus a histogram array.
+     * Matches GET /titles/{title_id}/purchases/reports/install-distribution
+     */
+    Titles.installRevenueDistribution = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.purchasesInstallDistribution, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Stats by item SKU, purchase type, and repeat purchase analysis.
+     * Matches GET /titles/{title_id}/purchases/reports/item-type-stats
+     */
+    Titles.itemAndPurchaseTypeStats = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.purchasesItemTypeStats, {}, { title_id: title_id }, params);
     };
     return Titles;
 }());
@@ -14462,6 +14565,10 @@ var ShortLinksRoute = /** @class */ (function () {
         updateShortLink: { url: '/shortlinks/{id}', method: HTTP_METHODS.PUT },
         // Delete can be added if supported
         // deleteShortLink:   { url: '/shortlinks/{id}', method: HTTP_METHODS.DELETE }
+        clickSummary: { url: '/shortlinks/reports/click-summary', method: HTTP_METHODS.GET },
+        geoDeviceBreakdown: { url: '/shortlinks/reports/geo-device', method: HTTP_METHODS.GET },
+        timeSeries: { url: '/shortlinks/reports/time-series', method: HTTP_METHODS.GET },
+        referrerReport: { url: '/shortlinks/reports/referrer', method: HTTP_METHODS.GET },
     };
     return ShortLinksRoute;
 }());
@@ -14492,6 +14599,38 @@ var ShortLinks = /** @class */ (function () {
      */
     ShortLinks.update = function (id, data, params) {
         return Requests.processRoute(ShortLinksRoute.routes.updateShortLink, data, { id: id }, params);
+    };
+    // Uncomment when delete is supported
+    // public static delete<T>(id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    //   return Requests.processRoute(ShortLinksRoute.routes.deleteShortLink, {}, { id }, params);
+    // }
+    /**
+    * Get click-summary report
+    *  - Example usage: ShortLinks.clickSummary({ short_link_id: 'uuid-here' })
+    */
+    ShortLinks.clickSummary = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.clickSummary, undefined, undefined, params);
+    };
+    /**
+     * Get geo & device breakdown report
+     *  - Example usage: ShortLinks.geoDeviceBreakdown({ short_link_id: 'uuid-here' })
+     */
+    ShortLinks.geoDeviceBreakdown = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.geoDeviceBreakdown, undefined, undefined, params);
+    };
+    /**
+     * Get time-series report
+     *  - Example usage: ShortLinks.timeSeries({ short_link_id: 'uuid-here', group_by: 'day' })
+     */
+    ShortLinks.timeSeries = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.timeSeries, undefined, undefined, params);
+    };
+    /**
+     * Get referrer & UTM report
+     *  - Example usage: ShortLinks.referrerReport({ short_link_id: 'uuid-here' })
+     */
+    ShortLinks.referrerReport = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.referrerReport, undefined, undefined, params);
     };
     return ShortLinks;
 }());

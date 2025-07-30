@@ -17,5 +17,25 @@ declare class ShortLinks {
      * Update a short link
      */
     static update<T>(id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Get click-summary report
+    *  - Example usage: ShortLinks.clickSummary({ short_link_id: 'uuid-here' })
+    */
+    static clickSummary<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get geo & device breakdown report
+     *  - Example usage: ShortLinks.geoDeviceBreakdown({ short_link_id: 'uuid-here' })
+     */
+    static geoDeviceBreakdown<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get time-series report
+     *  - Example usage: ShortLinks.timeSeries({ short_link_id: 'uuid-here', group_by: 'day' })
+     */
+    static timeSeries<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get referrer & UTM report
+     *  - Example usage: ShortLinks.referrerReport({ short_link_id: 'uuid-here' })
+     */
+    static referrerReport<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default ShortLinks;

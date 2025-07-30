@@ -289,5 +289,50 @@ declare class Titles {
      * Update a specific chat message.
      */
     static chatUpdateMessage<T>(title_id: string, message_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+  * List all purchase events for a specific title.
+  * Matches GET /titles/{title_id}/purchases
+  */
+    static listPurchases<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve a single purchase record by ID.
+     * Matches GET /titles/{title_id}/purchases/{purchase_id}
+     */
+    static viewPurchase<T>(title_id: string, purchase_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new purchase record.
+     * Matches POST /titles/{title_id}/purchases
+     */
+    static createPurchase<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a summary of total revenue, grouped by day or purchase_type.
+     * Matches GET /titles/{title_id}/purchases/summary
+     */
+    static purchaseSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Revenue by time (daily, weekly, or monthly).
+     * Matches GET /titles/{title_id}/purchases/reports/time
+     */
+    static purchaseRevenueByTime<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * 30-day LTV (Lifetime Value) per install.
+     * Matches GET /titles/{title_id}/purchases/reports/ltv30
+     */
+    static purchaseLtv30<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Show breakdown of revenue per currency, with optional USD conversion.
+     * Matches GET /titles/{title_id}/purchases/reports/currency
+     */
+    static purchaseCurrencyBreakdown<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Distribution of installs by total revenue, plus a histogram array.
+     * Matches GET /titles/{title_id}/purchases/reports/install-distribution
+     */
+    static installRevenueDistribution<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Stats by item SKU, purchase type, and repeat purchase analysis.
+     * Matches GET /titles/{title_id}/purchases/reports/item-type-stats
+     */
+    static itemAndPurchaseTypeStats<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Titles;
