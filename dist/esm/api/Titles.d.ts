@@ -334,5 +334,18 @@ declare class Titles {
      * Matches GET /titles/{title_id}/purchases/reports/item-type-stats
      */
     static itemAndPurchaseTypeStats<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+       * Bulk import access keys for a title from a CSV or Excel file.
+       * The file must contain 'platform' and 'code' columns.
+       *
+       * @see https://api.glitch.fun/api/documentation#/Titles/importTitleKeys
+       *
+       * @param title_id The UUID of the title.
+       * @param file The CSV or Excel file to upload.
+       * @param data Optional additional form data.
+       * @param params Optional query parameters.
+       * @returns AxiosPromise
+       */
+    static importKeys<T>(title_id: string, file: File | Blob, data?: Record<string, any>, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Titles;

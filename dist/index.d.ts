@@ -129,6 +129,43 @@ declare class Auth {
     static resetPassword<T>(data: object): AxiosPromise<Response<T>>;
 }
 
+declare class AccessKeys {
+    /**
+     * List all access keys for a given title.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Access%20Keys/get_titles__title_id__keys
+     *
+     * @param title_id The UUID of the title.
+     * @param params Optional query parameters for pagination.
+     * @returns promise
+     */
+    static list<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Bulk create access keys from a string of codes.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Access%20Keys/post_titles__title_id__keys
+     *
+     * @param title_id The UUID of the title.
+     * @param data The platform and codes to upload.
+     * @param data.platform The platform for the keys (e.g., 'steam').
+     * @param data.codes A string of codes separated by newlines, commas, or spaces.
+     * @returns Promise
+     */
+    static store<T>(title_id: string, data: {
+        platform: string;
+        codes: string;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Deletes an unassigned access key.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Access%20Keys/delete_keys__key_id_
+     *
+     * @param key_id The UUID of the access key to delete.
+     * @returns promise
+     */
+    static delete<T>(key_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 declare class Competitions {
     /**
      * List all the competitions
@@ -3778,6 +3815,19 @@ declare class Titles {
      * Matches GET /titles/{title_id}/purchases/reports/item-type-stats
      */
     static itemAndPurchaseTypeStats<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+       * Bulk import access keys for a title from a CSV or Excel file.
+       * The file must contain 'platform' and 'code' columns.
+       *
+       * @see https://api.glitch.fun/api/documentation#/Titles/importTitleKeys
+       *
+       * @param title_id The UUID of the title.
+       * @param file The CSV or Excel file to upload.
+       * @param data Optional additional form data.
+       * @param params Optional query parameters.
+       * @returns AxiosPromise
+       */
+    static importKeys<T>(title_id: string, file: File | Blob, data?: Record<string, any>, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {
@@ -4375,6 +4425,21 @@ declare class Campaigns {
      * @returns promise
      */
     static updateSourcedCreator<T>(campaign_id: string, sourced_creator_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Assigns an available access key to an influencer for a specific campaign.
+     * This will find the next available key for the given platform and assign it.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/assignKey
+     *
+     * @param campaign_id The ID of the campaign.
+     * @param user_id The ID of the user (influencer).
+     * @param data The platform for which to assign a key.
+     * @param data.platform The platform of the key to assign (e.g., 'steam').
+     * @returns promise
+     */
+    static assignKeyToInfluencer<T>(campaign_id: string, user_id: string, data: {
+        platform: string;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {
@@ -6333,6 +6398,7 @@ declare class Glitch {
     };
     static api: {
         Ads: typeof Ads;
+        AccessKeys: typeof AccessKeys;
         Auth: typeof Auth;
         Campaigns: typeof Campaigns;
         Competitions: typeof Competitions;

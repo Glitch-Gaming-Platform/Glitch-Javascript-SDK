@@ -1,5 +1,6 @@
 import { Config } from "./config";
 import Auth from "./api/Auth";
+import AccessKeys from "./api/AccessKeys";
 import Competitions from "./api/Competitions";
 import { Communities, Social } from "./api";
 import { Ads } from "./api";
@@ -56,6 +57,7 @@ declare class Glitch {
     };
     static api: {
         Ads: typeof Ads;
+        AccessKeys: typeof AccessKeys;
         Auth: typeof Auth;
         Campaigns: typeof Campaigns;
         Competitions: typeof Competitions;

@@ -846,6 +846,22 @@ class Campaigns {
     public static updateSourcedCreator<T>(campaign_id: string, sourced_creator_id: string, data: object): AxiosPromise<Response<T>> {
         return Requests.processRoute(CampaignsRoute.routes.updateSourcedCreator, data, { campaign_id, sourced_creator_id });
     }
+
+    /**
+     * Assigns an available access key to an influencer for a specific campaign.
+     * This will find the next available key for the given platform and assign it.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/assignKey
+     *
+     * @param campaign_id The ID of the campaign.
+     * @param user_id The ID of the user (influencer).
+     * @param data The platform for which to assign a key.
+     * @param data.platform The platform of the key to assign (e.g., 'steam').
+     * @returns promise
+     */
+    public static assignKeyToInfluencer<T>(campaign_id: string, user_id: string, data: { platform: string }, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.assignKeyToInfluencer, data, { campaign_id, user_id }, params);
+    }
 }
 
 export default Campaigns;

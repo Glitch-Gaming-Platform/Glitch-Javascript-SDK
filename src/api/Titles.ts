@@ -696,7 +696,29 @@ class Titles {
       { title_id },  
       params  
     );  
-  }  
+  }
+  
+  /**
+     * Bulk import access keys for a title from a CSV or Excel file.
+     * The file must contain 'platform' and 'code' columns.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/importTitleKeys
+     *
+     * @param title_id The UUID of the title.
+     * @param file The CSV or Excel file to upload.
+     * @param data Optional additional form data.
+     * @param params Optional query parameters.
+     * @returns AxiosPromise
+     */
+    public static importKeys<T>(
+        title_id: string,
+        file: File | Blob,
+        data?: Record<string, any>,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        const url = TitlesRoute.routes.importKeys.url.replace("{title_id}", title_id);
+        return Requests.uploadFile<T>(url, "file", file, data, params);
+    }
 
 
 

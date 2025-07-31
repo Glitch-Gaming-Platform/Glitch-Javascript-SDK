@@ -4,6 +4,7 @@ import { Config } from "./config";
 
 //API
 import Auth  from "./api/Auth";
+import AccessKeys from "./api/AccessKeys"
 import Competitions  from "./api/Competitions";
 import {Communities, Social} from "./api";
 import { Ads } from "./api";
@@ -72,6 +73,7 @@ class Glitch {
 
     public static api = {
         Ads: Ads,
+        AccessKeys : AccessKeys,
         Auth: Auth,
         Campaigns : Campaigns,
         Competitions: Competitions,

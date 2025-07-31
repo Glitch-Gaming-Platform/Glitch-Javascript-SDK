@@ -93,6 +93,9 @@ class TitlesRoute {
       method: HTTP_METHODS.PUT
     },
 
+    importKeys: { url: '/titles/{title_id}/import-keys', method: HTTP_METHODS.POST },
+
+
     // ─────────────────────────────────────────────────────────────────  
     // Purchase/Revenue Endpoints  
     // ─────────────────────────────────────────────────────────────────  

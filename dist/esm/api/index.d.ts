@@ -1,5 +1,6 @@
 import Auth from "./Auth";
 import Ads from "./Ads";
+import AccessKeys from "./AccessKeys";
 import Competitions from "./Competitions";
 import Communities from "./Communities";
 import Users from "./Users";
@@ -37,6 +38,7 @@ import ShortLinks from "./ShortLinks";
 import AIUsage from "./AIUsage";
 import MarketingAgencies from "./MarketingAgencies";
 export { Ads };
+export { AccessKeys };
 export { Auth };
 export { Competitions };
 export { Communities };

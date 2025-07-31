@@ -5895,6 +5895,60 @@ var Auth = /** @class */ (function () {
     return Auth;
 }());
 
+var AccessKeysRoute = /** @class */ (function () {
+    function AccessKeysRoute() {
+    }
+    AccessKeysRoute.routes = {
+        list: { url: '/titles/{title_id}/keys', method: HTTP_METHODS.GET },
+        store: { url: '/titles/{title_id}/keys', method: HTTP_METHODS.POST },
+        delete: { url: '/keys/{key_id}', method: HTTP_METHODS.DELETE },
+    };
+    return AccessKeysRoute;
+}());
+
+var AccessKeys = /** @class */ (function () {
+    function AccessKeys() {
+    }
+    /**
+     * List all access keys for a given title.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Access%20Keys/get_titles__title_id__keys
+     *
+     * @param title_id The UUID of the title.
+     * @param params Optional query parameters for pagination.
+     * @returns promise
+     */
+    AccessKeys.list = function (title_id, params) {
+        return Requests.processRoute(AccessKeysRoute.routes.list, undefined, { title_id: title_id }, params);
+    };
+    /**
+     * Bulk create access keys from a string of codes.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Access%20Keys/post_titles__title_id__keys
+     *
+     * @param title_id The UUID of the title.
+     * @param data The platform and codes to upload.
+     * @param data.platform The platform for the keys (e.g., 'steam').
+     * @param data.codes A string of codes separated by newlines, commas, or spaces.
+     * @returns Promise
+     */
+    AccessKeys.store = function (title_id, data, params) {
+        return Requests.processRoute(AccessKeysRoute.routes.store, data, { title_id: title_id }, params);
+    };
+    /**
+     * Deletes an unassigned access key.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Access%20Keys/delete_keys__key_id_
+     *
+     * @param key_id The UUID of the access key to delete.
+     * @returns promise
+     */
+    AccessKeys.delete = function (key_id, params) {
+        return Requests.processRoute(AccessKeysRoute.routes.delete, {}, { key_id: key_id }, params);
+    };
+    return AccessKeys;
+}());
+
 var CompetitionRoutes = /** @class */ (function () {
     function CompetitionRoutes() {
     }
@@ -11091,6 +11145,7 @@ var TitlesRoute = /** @class */ (function () {
             url: '/titles/{title_id}/chat/messages/{message_id}',
             method: HTTP_METHODS.PUT
         },
+        importKeys: { url: '/titles/{title_id}/import-keys', method: HTTP_METHODS.POST },
         // ─────────────────────────────────────────────────────────────────  
         // Purchase/Revenue Endpoints  
         // ─────────────────────────────────────────────────────────────────  
@@ -11573,6 +11628,22 @@ var Titles = /** @class */ (function () {
     Titles.itemAndPurchaseTypeStats = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.purchasesItemTypeStats, {}, { title_id: title_id }, params);
     };
+    /**
+       * Bulk import access keys for a title from a CSV or Excel file.
+       * The file must contain 'platform' and 'code' columns.
+       *
+       * @see https://api.glitch.fun/api/documentation#/Titles/importTitleKeys
+       *
+       * @param title_id The UUID of the title.
+       * @param file The CSV or Excel file to upload.
+       * @param data Optional additional form data.
+       * @param params Optional query parameters.
+       * @returns AxiosPromise
+       */
+    Titles.importKeys = function (title_id, file, data, params) {
+        var url = TitlesRoute.routes.importKeys.url.replace("{title_id}", title_id);
+        return Requests.uploadFile(url, "file", file, data, params);
+    };
     return Titles;
 }());
 
@@ -11645,6 +11716,7 @@ var CampaignsRoute = /** @class */ (function () {
         getSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/creators', method: HTTP_METHODS.GET },
         getSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}', method: HTTP_METHODS.GET },
         updateSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}', method: HTTP_METHODS.PUT },
+        assignKeyToInfluencer: { url: '/campaigns/{campaign_id}/influencers/{user_id}/assign-key', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -12375,6 +12447,21 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.updateSourcedCreator = function (campaign_id, sourced_creator_id, data) {
         return Requests.processRoute(CampaignsRoute.routes.updateSourcedCreator, data, { campaign_id: campaign_id, sourced_creator_id: sourced_creator_id });
+    };
+    /**
+     * Assigns an available access key to an influencer for a specific campaign.
+     * This will find the next available key for the given platform and assign it.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/assignKey
+     *
+     * @param campaign_id The ID of the campaign.
+     * @param user_id The ID of the user (influencer).
+     * @param data The platform for which to assign a key.
+     * @param data.platform The platform of the key to assign (e.g., 'steam').
+     * @returns promise
+     */
+    Campaigns.assignKeyToInfluencer = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.assignKeyToInfluencer, data, { campaign_id: campaign_id, user_id: user_id }, params);
     };
     return Campaigns;
 }());
@@ -15382,6 +15469,7 @@ var Glitch = /** @class */ (function () {
     };
     Glitch.api = {
         Ads: Ads,
+        AccessKeys: AccessKeys,
         Auth: Auth,
         Campaigns: Campaigns,
         Competitions: Competitions,
