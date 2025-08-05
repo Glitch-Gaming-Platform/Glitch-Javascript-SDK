@@ -5856,6 +5856,23 @@ declare class WebsiteAnalytics {
      * @returns Promise with UTM performance data
      */
     static utmPerformance<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a combined user journey across short link clicks, web sessions, game installations, etc.
+     *
+     * @param params Filtering options. All are optional except `title_id`.
+     *   - title_id: string                   Required. The UUID of the title to unify user events.
+     *   - device_id?: string                Filter by device ID
+     *   - session_id?: string               Filter by session ID
+     *   - short_link_click_id?: string      Filter by short link click ID
+     *   - user_install_id?: string          Filter by game install user_install_id
+     *   - browser_fingerprint?: string      Filter by browser fingerprint hash
+     *   - hardware_fingerprint?: string     Filter by hardware fingerprint hash
+     *   - start_date?: string               Optional. Start date (YYYY-MM-DD) if your API supports time limiting
+     *   - end_date?: string                 Optional. End date (YYYY-MM-DD) if your API supports time limiting
+     *
+     * @returns Promise with a unified timeline of the user’s journey, in chronological order.
+     */
+    static userJourney<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class ShortLinks {

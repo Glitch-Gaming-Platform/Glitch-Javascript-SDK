@@ -62,7 +62,12 @@ class WebsiteAnalyticsRoute {
     utmPerformance: {
       url: '/analytics/utm-performance',
       method: HTTP_METHODS.GET
+    },
+    journey: {  
+      url: '/analytics/journey',  
+      method: HTTP_METHODS.GET  
     }
+    
   };
 }
 
