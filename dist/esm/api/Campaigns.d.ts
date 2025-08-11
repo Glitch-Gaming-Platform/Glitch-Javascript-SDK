@@ -610,5 +610,16 @@ declare class Campaigns {
     static assignKeyToInfluencer<T>(campaign_id: string, user_id: string, data: {
         platform: string;
     }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Manually trigger a real-time profile enrichment for a sourced creator.
+     * This synchronously scrapes and parses social media profiles to enrich the creator's data and returns the updated record.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns%20Sourcing/enrichSourcedCreator
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param sourced_creator_id The UUID of the sourced creator to enrich.
+     * @returns promise containing the fully enriched SourcedCreator object.
+     */
+    static enrichSourcedCreator<T>(campaign_id: string, sourced_creator_id: string): AxiosPromise<Response<T>>;
 }
 export default Campaigns;

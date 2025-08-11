@@ -11717,6 +11717,7 @@ var CampaignsRoute = /** @class */ (function () {
         getSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}', method: HTTP_METHODS.GET },
         updateSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}', method: HTTP_METHODS.PUT },
         assignKeyToInfluencer: { url: '/campaigns/{campaign_id}/influencers/{user_id}/assign-key', method: HTTP_METHODS.POST },
+        enrichSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}/enrich', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -12462,6 +12463,19 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.assignKeyToInfluencer = function (campaign_id, user_id, data, params) {
         return Requests.processRoute(CampaignsRoute.routes.assignKeyToInfluencer, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Manually trigger a real-time profile enrichment for a sourced creator.
+     * This synchronously scrapes and parses social media profiles to enrich the creator's data and returns the updated record.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns%20Sourcing/enrichSourcedCreator
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param sourced_creator_id The UUID of the sourced creator to enrich.
+     * @returns promise containing the fully enriched SourcedCreator object.
+     */
+    Campaigns.enrichSourcedCreator = function (campaign_id, sourced_creator_id) {
+        return Requests.processRoute(CampaignsRoute.routes.enrichSourcedCreator, {}, { campaign_id: campaign_id, sourced_creator_id: sourced_creator_id });
     };
     return Campaigns;
 }());
