@@ -71,6 +71,9 @@ class CampaignsRoute {
       updateSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}', method: HTTP_METHODS.PUT },
       assignKeyToInfluencer: { url: '/campaigns/{campaign_id}/influencers/{user_id}/assign-key', method: HTTP_METHODS.POST },
       enrichSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}/enrich', method: HTTP_METHODS.POST },
+      sourcingFindAndSaveTwitchCreators: { url: '/campaigns/{campaign_id}/sourcing/find-save-twitch-creators', method: HTTP_METHODS.POST },
+      sourcingFindAndSaveYouTubeCreators: { url: '/campaigns/{campaign_id}/sourcing/find-save-youtube-creators', method: HTTP_METHODS.POST },
+      exportSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/creators/export', method: HTTP_METHODS.GET },
  
 
     };

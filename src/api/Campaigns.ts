@@ -147,7 +147,7 @@ class Campaigns {
      * @returns promise
      */
     public static listInfluencerCampaignLinkClicks<T>(campaign_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinkClicks, undefined, { campaign_id: campaign_id, user_id : user_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaignLinkClicks, undefined, { campaign_id: campaign_id, user_id: user_id }, params);
     }
 
 
@@ -526,7 +526,7 @@ class Campaigns {
      * 
      * @returns promise
      */
-    public static updateInfluencerInvite<T>(campaign_id: string,influencer_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static updateInfluencerInvite<T>(campaign_id: string, influencer_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
 
         return Requests.processRoute(CampaignsRoute.routes.updateInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
@@ -541,7 +541,7 @@ class Campaigns {
      * 
      * @returns promise
      */
-    public static updateInfluencerCompensationInvite<T>(campaign_id: string,influencer_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static updateInfluencerCompensationInvite<T>(campaign_id: string, influencer_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
 
         return Requests.processRoute(CampaignsRoute.routes.updateInfluencerCompensationInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
@@ -598,21 +598,21 @@ class Campaigns {
     * 
     * @returns promise
     */
-     public static finishInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static finishInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(CampaignsRoute.routes.finishInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     }
 
-     /**
-    * The route to accept an influnecers request to join the campaign.
-    * 
-    * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencer
-    * 
-    * @param campaign_id The id fo the campaign to retrieve.
-    * 
-    * @returns promise
-    */
-     public static acceptInfluencerRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    /**
+   * The route to accept an influnecers request to join the campaign.
+   * 
+   * @see https://api.glitch.fun/api/documentation#/Campaigns/acceptInfluencer
+   * 
+   * @param campaign_id The id fo the campaign to retrieve.
+   * 
+   * @returns promise
+   */
+    public static acceptInfluencerRequest<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(CampaignsRoute.routes.acceptInfluencerRequest, data, { campaign_id: campaign_id, user_id: user_id }, params);
     }
@@ -709,7 +709,7 @@ class Campaigns {
      */
     public static resendAcceptanceEmail<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.resendAcceptanceEmail, data, { campaign_id: campaign_id, user_id : user_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.resendAcceptanceEmail, data, { campaign_id: campaign_id, user_id: user_id }, params);
     }
 
     /**
@@ -723,7 +723,7 @@ class Campaigns {
      */
     public static payInfluencer<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(CampaignsRoute.routes.payInfluencer, data, { campaign_id: campaign_id, user_id : user_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.payInfluencer, data, { campaign_id: campaign_id, user_id: user_id }, params);
     }
 
     /**
@@ -737,15 +737,15 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
     }
 
-     /**
-     * Generate a contract for the influencer based on the values in the campaign.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Campaigns/generateCampaignContract
-     * 
-     * @param campaign_id The id fo the campaign to retrieve.
-     * 
-     * @returns promise
-     */
+    /**
+    * Generate a contract for the influencer based on the values in the campaign.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Campaigns/generateCampaignContract
+    * 
+    * @param campaign_id The id fo the campaign to retrieve.
+    * 
+    * @returns promise
+    */
     public static generateCampaignContract<T>(campaign_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(CampaignsRoute.routes.generateCampaignContract, data, { campaign_id: campaign_id, user_id: user_id }, params);
@@ -875,6 +875,45 @@ class Campaigns {
      */
     public static enrichSourcedCreator<T>(campaign_id: string, sourced_creator_id: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(CampaignsRoute.routes.enrichSourcedCreator, {}, { campaign_id, sourced_creator_id });
+    }
+
+    /**
+    * Find and save Twitch creators for selected games to the database.
+    * @param campaign_id The UUID of the campaign.
+    * @param data The search criteria (source, igdb_ids, etc.).
+    * @returns promise
+    */
+    public static sourcingFindAndSaveTwitchCreators<T>(campaign_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingFindAndSaveTwitchCreators, data, { campaign_id });
+    }
+
+    /**
+     * Find and save YouTube creators for selected games to the database.
+     * @param campaign_id The UUID of the campaign.
+     * @param data The search criteria (igdb_ids, period).
+     * @returns promise
+     */
+    public static sourcingFindAndSaveYouTubeCreators<T>(campaign_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingFindAndSaveYouTubeCreators, data, { campaign_id });
+    }
+
+    /**
+     * Export sourced creators for a campaign to a CSV or XLSX file.
+     * This method applies the same filtering and sorting parameters as getSourcedCreators.
+     * The browser will automatically trigger a download for the returned file.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns%20Sourcing/exportSourcedCreators
+     * 
+     * @param campaign_id The UUID of the campaign.
+     * @param params Query parameters for the export, including the required 'format' and any filters.
+     * @param params.format The desired file format ('csv' or 'xlsx').
+     * @param params.search Optional search term.
+     * @param params.status Optional status filter ('pending', 'approved', 'rejected').
+     * @param params.has_email Optional filter for creators with an email address (true/false).
+     * @returns A promise that resolves with the file blob for download.
+     */
+    public static exportSourcedCreators<T>(campaign_id: string, params: { format: 'csv' | 'xlsx', [key: string]: any }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.exportSourcedCreators, undefined, { campaign_id }, params);
     }
 
 }

@@ -24902,6 +24902,9 @@ var CampaignsRoute = /** @class */ (function () {
         updateSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}', method: HTTP_METHODS.PUT },
         assignKeyToInfluencer: { url: '/campaigns/{campaign_id}/influencers/{user_id}/assign-key', method: HTTP_METHODS.POST },
         enrichSourcedCreator: { url: '/campaigns/{campaign_id}/sourcing/creators/{sourced_creator_id}/enrich', method: HTTP_METHODS.POST },
+        sourcingFindAndSaveTwitchCreators: { url: '/campaigns/{campaign_id}/sourcing/find-save-twitch-creators', method: HTTP_METHODS.POST },
+        sourcingFindAndSaveYouTubeCreators: { url: '/campaigns/{campaign_id}/sourcing/find-save-youtube-creators', method: HTTP_METHODS.POST },
+        exportSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/creators/export', method: HTTP_METHODS.GET },
     };
     return CampaignsRoute;
 }());
@@ -25660,6 +25663,42 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.enrichSourcedCreator = function (campaign_id, sourced_creator_id) {
         return Requests.processRoute(CampaignsRoute.routes.enrichSourcedCreator, {}, { campaign_id: campaign_id, sourced_creator_id: sourced_creator_id });
+    };
+    /**
+    * Find and save Twitch creators for selected games to the database.
+    * @param campaign_id The UUID of the campaign.
+    * @param data The search criteria (source, igdb_ids, etc.).
+    * @returns promise
+    */
+    Campaigns.sourcingFindAndSaveTwitchCreators = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingFindAndSaveTwitchCreators, data, { campaign_id: campaign_id });
+    };
+    /**
+     * Find and save YouTube creators for selected games to the database.
+     * @param campaign_id The UUID of the campaign.
+     * @param data The search criteria (igdb_ids, period).
+     * @returns promise
+     */
+    Campaigns.sourcingFindAndSaveYouTubeCreators = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingFindAndSaveYouTubeCreators, data, { campaign_id: campaign_id });
+    };
+    /**
+     * Export sourced creators for a campaign to a CSV or XLSX file.
+     * This method applies the same filtering and sorting parameters as getSourcedCreators.
+     * The browser will automatically trigger a download for the returned file.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns%20Sourcing/exportSourcedCreators
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param params Query parameters for the export, including the required 'format' and any filters.
+     * @param params.format The desired file format ('csv' or 'xlsx').
+     * @param params.search Optional search term.
+     * @param params.status Optional status filter ('pending', 'approved', 'rejected').
+     * @param params.has_email Optional filter for creators with an email address (true/false).
+     * @returns A promise that resolves with the file blob for download.
+     */
+    Campaigns.exportSourcedCreators = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.exportSourcedCreators, undefined, { campaign_id: campaign_id }, params);
     };
     return Campaigns;
 }());
