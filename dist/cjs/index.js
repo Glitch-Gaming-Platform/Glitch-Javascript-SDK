@@ -24905,6 +24905,8 @@ var CampaignsRoute = /** @class */ (function () {
         sourcingFindAndSaveTwitchCreators: { url: '/campaigns/{campaign_id}/sourcing/find-save-twitch-creators', method: HTTP_METHODS.POST },
         sourcingFindAndSaveYouTubeCreators: { url: '/campaigns/{campaign_id}/sourcing/find-save-youtube-creators', method: HTTP_METHODS.POST },
         exportSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/creators/export', method: HTTP_METHODS.GET },
+        sourcingSearchAnyIgdbGame: { url: '/campaigns/{campaign_id}/sourcing/search-any-game', method: HTTP_METHODS.GET },
+        sourcingGetGamesByIds: { url: '/campaigns/{campaign_id}/sourcing/games-by-ids', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -25699,6 +25701,25 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.exportSourcedCreators = function (campaign_id, params) {
         return Requests.processRoute(CampaignsRoute.routes.exportSourcedCreators, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+    * Search IGDB for any game by a query string.
+    * @param campaign_id The UUID of the campaign (for permission checking).
+    * @param params Query parameters including 'search_query' and optional 'limit'.
+    * @returns promise
+    */
+    Campaigns.sourcingSearchAnyIgdbGame = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingSearchAnyIgdbGame, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Get full game details from a list of IGDB IDs.
+     * @param campaign_id The UUID of the campaign.
+     * @param data An object containing the array of IGDB IDs.
+     * @param data.igdb_ids An array of IGDB game IDs.
+     * @returns promise
+     */
+    Campaigns.sourcingGetGamesByIds = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingGetGamesByIds, data, { campaign_id: campaign_id });
     };
     return Campaigns;
 }());

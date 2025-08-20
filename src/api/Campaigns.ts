@@ -916,6 +916,28 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.exportSourcedCreators, undefined, { campaign_id }, params);
     }
 
+     /**
+     * Search IGDB for any game by a query string.
+     * @param campaign_id The UUID of the campaign (for permission checking).
+     * @param params Query parameters including 'search_query' and optional 'limit'.
+     * @returns promise
+     */
+    public static sourcingSearchAnyIgdbGame<T>(campaign_id: string, params: { search_query: string, limit?: number }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingSearchAnyIgdbGame, undefined, { campaign_id }, params);
+    }
+
+    /**
+     * Get full game details from a list of IGDB IDs.
+     * @param campaign_id The UUID of the campaign.
+     * @param data An object containing the array of IGDB IDs.
+     * @param data.igdb_ids An array of IGDB game IDs.
+     * @returns promise
+     */
+    public static sourcingGetGamesByIds<T>(campaign_id: string, data: { igdb_ids: number[] }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingGetGamesByIds, data, { campaign_id });
+    }
+
+
 }
 
 export default Campaigns;

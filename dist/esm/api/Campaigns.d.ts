@@ -654,5 +654,25 @@ declare class Campaigns {
         format: 'csv' | 'xlsx';
         [key: string]: any;
     }): AxiosPromise<Response<T>>;
+    /**
+    * Search IGDB for any game by a query string.
+    * @param campaign_id The UUID of the campaign (for permission checking).
+    * @param params Query parameters including 'search_query' and optional 'limit'.
+    * @returns promise
+    */
+    static sourcingSearchAnyIgdbGame<T>(campaign_id: string, params: {
+        search_query: string;
+        limit?: number;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get full game details from a list of IGDB IDs.
+     * @param campaign_id The UUID of the campaign.
+     * @param data An object containing the array of IGDB IDs.
+     * @param data.igdb_ids An array of IGDB game IDs.
+     * @returns promise
+     */
+    static sourcingGetGamesByIds<T>(campaign_id: string, data: {
+        igdb_ids: number[];
+    }): AxiosPromise<Response<T>>;
 }
 export default Campaigns;
