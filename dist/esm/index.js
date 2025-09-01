@@ -9728,7 +9728,15 @@ var FingerprintingRoute = /** @class */ (function () {
         geolocationReport: {
             url: '/reports/fingerprinting/geolocation',
             method: HTTP_METHODS.GET
-        }
+        },
+        pixelAttributionReport: {
+            url: '/reports/fingerprinting/pixel-attribution',
+            method: HTTP_METHODS.GET
+        },
+        installJourneyReport: {
+            url: '/reports/fingerprinting/install-journey',
+            method: HTTP_METHODS.GET
+        },
     };
     return FingerprintingRoute;
 }());
@@ -9882,6 +9890,32 @@ var Fingerprinting = /** @class */ (function () {
      */
     Fingerprinting.geolocationReport = function (params) {
         return Requests.processRoute(FingerprintingRoute.routes.geolocationReport, {}, undefined, params);
+    };
+    /**
+     * Get pixel and utem reports
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - group_by?: 'country'|'region'|'city' - Grouping level
+     * @returns Promise with geolocation report data
+     */
+    Fingerprinting.pixelAttributionReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.pixelAttributionReport, {}, undefined, params);
+    };
+    /**
+     * Get an understanding of the path people take to install your game
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - group_by?: 'country'|'region'|'city' - Grouping level
+     * @returns Promise with geolocation report data
+     */
+    Fingerprinting.installJourneyReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.installJourneyReport, {}, undefined, params);
     };
     return Fingerprinting;
 }());

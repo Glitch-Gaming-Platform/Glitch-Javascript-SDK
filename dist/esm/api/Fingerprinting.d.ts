@@ -128,5 +128,27 @@ declare class Fingerprinting {
      * @returns Promise with geolocation report data
      */
     static geolocationReport<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get pixel and utem reports
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - group_by?: 'country'|'region'|'city' - Grouping level
+     * @returns Promise with geolocation report data
+     */
+    static pixelAttributionReport<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get an understanding of the path people take to install your game
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - group_by?: 'country'|'region'|'city' - Grouping level
+     * @returns Promise with geolocation report data
+     */
+    static installJourneyReport<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Fingerprinting;

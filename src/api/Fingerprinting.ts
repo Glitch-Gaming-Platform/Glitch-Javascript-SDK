@@ -210,6 +210,45 @@ class Fingerprinting {
       params
     );
   }
+
+  /**
+   * Get pixel and utem reports
+   * 
+   * @param params Report options:
+   *   - title_id: string - Required title ID
+   *   - start_date?: string - Start date (YYYY-MM-DD)
+   *   - end_date?: string - End date (YYYY-MM-DD)
+   *   - group_by?: 'country'|'region'|'city' - Grouping level
+   * @returns Promise with geolocation report data
+   */
+  public static pixelAttributionReport<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(
+      FingerprintingRoute.routes.pixelAttributionReport,
+      {},
+      undefined,
+      params
+    );
+  }
+
+
+  /**
+   * Get an understanding of the path people take to install your game
+   * 
+   * @param params Report options:
+   *   - title_id: string - Required title ID
+   *   - start_date?: string - Start date (YYYY-MM-DD)
+   *   - end_date?: string - End date (YYYY-MM-DD)
+   *   - group_by?: 'country'|'region'|'city' - Grouping level
+   * @returns Promise with geolocation report data
+   */
+  public static installJourneyReport<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(
+      FingerprintingRoute.routes.installJourneyReport,
+      {},
+      undefined,
+      params
+    );
+  }
 }
 
 export default Fingerprinting;

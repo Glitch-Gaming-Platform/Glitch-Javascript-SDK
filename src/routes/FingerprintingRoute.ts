@@ -42,7 +42,15 @@ class FingerprintingRoute {
     geolocationReport: {
       url: '/reports/fingerprinting/geolocation',
       method: HTTP_METHODS.GET
-    }
+    },
+     pixelAttributionReport: {
+      url: '/reports/fingerprinting/pixel-attribution',
+      method: HTTP_METHODS.GET
+    },
+     installJourneyReport: {
+      url: '/reports/fingerprinting/install-journey',
+      method: HTTP_METHODS.GET
+    },
   };
 }
 
