@@ -150,5 +150,16 @@ declare class Fingerprinting {
      * @returns Promise with geolocation report data
      */
     static installJourneyReport<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get how the ad campaigns are performing and turning into installs
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - group_by?: 'country'|'region'|'city' - Grouping level
+     * @returns Promise with geolocation report data
+     */
+    static adCampaignPerformanceReport<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Fingerprinting;

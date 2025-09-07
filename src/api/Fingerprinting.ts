@@ -249,6 +249,25 @@ class Fingerprinting {
       params
     );
   }
+
+  /**
+   * Get how the ad campaigns are performing and turning into installs
+   * 
+   * @param params Report options:
+   *   - title_id: string - Required title ID
+   *   - start_date?: string - Start date (YYYY-MM-DD)
+   *   - end_date?: string - End date (YYYY-MM-DD)
+   *   - group_by?: 'country'|'region'|'city' - Grouping level
+   * @returns Promise with geolocation report data
+   */
+  public static adCampaignPerformanceReport<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(
+      FingerprintingRoute.routes.adCampaignPerformanceReport,
+      {},
+      undefined,
+      params
+    );
+  }
 }
 
 export default Fingerprinting;

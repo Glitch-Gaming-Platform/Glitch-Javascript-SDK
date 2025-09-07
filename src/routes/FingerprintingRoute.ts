@@ -51,6 +51,10 @@ class FingerprintingRoute {
       url: '/reports/fingerprinting/install-journey',
       method: HTTP_METHODS.GET
     },
+     adCampaignPerformanceReport: {
+      url: '/reports/fingerprinting/ad-campaign-performance',
+      method: HTTP_METHODS.GET
+    },
   };
 }
 

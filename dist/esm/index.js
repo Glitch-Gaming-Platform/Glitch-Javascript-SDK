@@ -9737,6 +9737,10 @@ var FingerprintingRoute = /** @class */ (function () {
             url: '/reports/fingerprinting/install-journey',
             method: HTTP_METHODS.GET
         },
+        adCampaignPerformanceReport: {
+            url: '/reports/fingerprinting/ad-campaign-performance',
+            method: HTTP_METHODS.GET
+        },
     };
     return FingerprintingRoute;
 }());
@@ -9916,6 +9920,19 @@ var Fingerprinting = /** @class */ (function () {
      */
     Fingerprinting.installJourneyReport = function (params) {
         return Requests.processRoute(FingerprintingRoute.routes.installJourneyReport, {}, undefined, params);
+    };
+    /**
+     * Get how the ad campaigns are performing and turning into installs
+     *
+     * @param params Report options:
+     *   - title_id: string - Required title ID
+     *   - start_date?: string - Start date (YYYY-MM-DD)
+     *   - end_date?: string - End date (YYYY-MM-DD)
+     *   - group_by?: 'country'|'region'|'city' - Grouping level
+     * @returns Promise with geolocation report data
+     */
+    Fingerprinting.adCampaignPerformanceReport = function (params) {
+        return Requests.processRoute(FingerprintingRoute.routes.adCampaignPerformanceReport, {}, undefined, params);
     };
     return Fingerprinting;
 }());
