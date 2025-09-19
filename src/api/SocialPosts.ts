@@ -190,6 +190,102 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.shortLinkReports, undefined, undefined, params);
     }
 
+
+    /**
+     * List comments for a social media post.
+     * 
+     * @param post_id The ID of the social media post.
+     * @param params Optional query parameters for filtering and sorting.
+     * @returns A promise
+     */
+    public static listComments<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.listComments, undefined, { post_id }, params);
+    }
+
+    /**
+     * Sync comments from the social media platform for a specific post.
+     * 
+     * @param post_id The ID of the social media post.
+     * @param params Optional query parameters (e.g., limit).
+     * @returns A promise
+     */
+    public static syncComments<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.syncComments, undefined, { post_id }, params);
+    }
+
+    /**
+     * Get a list of all comments that are pending a response.
+     * 
+     * @param params Optional query parameters for filtering.
+     * @returns A promise
+     */
+    public static listPendingResponses<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.listPendingResponses, undefined, undefined, params);
+    }
+
+    /**
+     * Retrieve a single comment by its ID.
+     * 
+     * @param comment_id The ID of the comment.
+     * @param params Optional query parameters (e.g., include_thread).
+     * @returns A promise
+     */
+    public static viewComment<T>(comment_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.viewComment, undefined, { comment_id }, params);
+    }
+
+    /**
+     * Post a reply to a comment.
+     * 
+     * @param comment_id The ID of the comment to reply to.
+     * @param data The content of the reply.
+     * @returns A promise
+     */
+    public static replyToComment<T>(comment_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.replyToComment, data, { comment_id });
+    }
+
+    /**
+     * Moderate a comment (approve, reject, spam, hide, show).
+     * 
+     * @param comment_id The ID of the comment to moderate.
+     * @param data The moderation action and optional reason.
+     * @returns A promise
+     */
+    public static moderateComment<T>(comment_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.moderateComment, data, { comment_id });
+    }
+
+    /**
+     * Mark a comment as needing a response.
+     * 
+     * @param comment_id The ID of the comment.
+     * @returns A promise
+     */
+    public static markCommentForResponse<T>(comment_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.markCommentForResponse, undefined, { comment_id });
+    }
+
+    /**
+     * Get the full thread for a given comment.
+     * 
+     * @param comment_id The ID of a comment within the thread.
+     * @returns A promise
+     */
+    public static getCommentThread<T>(comment_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.getCommentThread, undefined, { comment_id });
+    }
+
+    /**
+     * Trigger a manual update of a comment's metrics from its platform.
+     * 
+     * @param comment_id The ID of the comment to update.
+     * @returns A promise
+     */
+    public static updateCommentMetrics<T>(comment_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.updateCommentMetrics, undefined, { comment_id });
+    }
+
 }
 
 export default SocialPosts;

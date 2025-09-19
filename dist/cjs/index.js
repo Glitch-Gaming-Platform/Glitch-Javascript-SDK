@@ -24120,6 +24120,16 @@ var SocialPostsRoute = /** @class */ (function () {
         reports: { url: '/socialposts/{post_id}/reports', method: HTTP_METHODS.GET },
         updatePostImpressions: { url: '/socialposts/{post_id}/impressions', method: HTTP_METHODS.PUT },
         shortLinkReports: { url: '/socialposts/shortlinks/reports', method: HTTP_METHODS.GET },
+        // New Comment Routes
+        listComments: { url: '/socialposts/{post_id}/comments', method: HTTP_METHODS.GET },
+        syncComments: { url: '/socialposts/{post_id}/sync-comments', method: HTTP_METHODS.POST },
+        listPendingResponses: { url: '/socialposts/comments/pending-responses', method: HTTP_METHODS.GET },
+        viewComment: { url: '/socialposts/comments/{comment_id}', method: HTTP_METHODS.GET },
+        replyToComment: { url: '/socialposts/comments/{comment_id}/reply', method: HTTP_METHODS.POST },
+        moderateComment: { url: '/socialposts/comments/{comment_id}/moderate', method: HTTP_METHODS.PUT },
+        markCommentForResponse: { url: '/socialposts/comments/{comment_id}/mark-for-response', method: HTTP_METHODS.PUT },
+        getCommentThread: { url: '/socialposts/comments/{comment_id}/thread', method: HTTP_METHODS.GET },
+        updateCommentMetrics: { url: '/socialposts/comments/{comment_id}/update-metrics', method: HTTP_METHODS.PUT },
     };
     return SocialPostsRoute;
 }());
@@ -24288,6 +24298,92 @@ var SocialPosts = /** @class */ (function () {
     */
     SocialPosts.shortLinkReports = function (params) {
         return Requests.processRoute(SocialPostsRoute.routes.shortLinkReports, undefined, undefined, params);
+    };
+    /**
+     * List comments for a social media post.
+     *
+     * @param post_id The ID of the social media post.
+     * @param params Optional query parameters for filtering and sorting.
+     * @returns A promise
+     */
+    SocialPosts.listComments = function (post_id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.listComments, undefined, { post_id: post_id }, params);
+    };
+    /**
+     * Sync comments from the social media platform for a specific post.
+     *
+     * @param post_id The ID of the social media post.
+     * @param params Optional query parameters (e.g., limit).
+     * @returns A promise
+     */
+    SocialPosts.syncComments = function (post_id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.syncComments, undefined, { post_id: post_id }, params);
+    };
+    /**
+     * Get a list of all comments that are pending a response.
+     *
+     * @param params Optional query parameters for filtering.
+     * @returns A promise
+     */
+    SocialPosts.listPendingResponses = function (params) {
+        return Requests.processRoute(SocialPostsRoute.routes.listPendingResponses, undefined, undefined, params);
+    };
+    /**
+     * Retrieve a single comment by its ID.
+     *
+     * @param comment_id The ID of the comment.
+     * @param params Optional query parameters (e.g., include_thread).
+     * @returns A promise
+     */
+    SocialPosts.viewComment = function (comment_id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.viewComment, undefined, { comment_id: comment_id }, params);
+    };
+    /**
+     * Post a reply to a comment.
+     *
+     * @param comment_id The ID of the comment to reply to.
+     * @param data The content of the reply.
+     * @returns A promise
+     */
+    SocialPosts.replyToComment = function (comment_id, data) {
+        return Requests.processRoute(SocialPostsRoute.routes.replyToComment, data, { comment_id: comment_id });
+    };
+    /**
+     * Moderate a comment (approve, reject, spam, hide, show).
+     *
+     * @param comment_id The ID of the comment to moderate.
+     * @param data The moderation action and optional reason.
+     * @returns A promise
+     */
+    SocialPosts.moderateComment = function (comment_id, data) {
+        return Requests.processRoute(SocialPostsRoute.routes.moderateComment, data, { comment_id: comment_id });
+    };
+    /**
+     * Mark a comment as needing a response.
+     *
+     * @param comment_id The ID of the comment.
+     * @returns A promise
+     */
+    SocialPosts.markCommentForResponse = function (comment_id) {
+        return Requests.processRoute(SocialPostsRoute.routes.markCommentForResponse, undefined, { comment_id: comment_id });
+    };
+    /**
+     * Get the full thread for a given comment.
+     *
+     * @param comment_id The ID of a comment within the thread.
+     * @returns A promise
+     */
+    SocialPosts.getCommentThread = function (comment_id) {
+        return Requests.processRoute(SocialPostsRoute.routes.getCommentThread, undefined, { comment_id: comment_id });
+    };
+    /**
+     * Trigger a manual update of a comment's metrics from its platform.
+     *
+     * @param comment_id The ID of the comment to update.
+     * @returns A promise
+     */
+    SocialPosts.updateCommentMetrics = function (comment_id) {
+        return Requests.processRoute(SocialPostsRoute.routes.updateCommentMetrics, undefined, { comment_id: comment_id });
     };
     return SocialPosts;
 }());
@@ -26642,6 +26738,8 @@ var MediaRoute = /** @class */ (function () {
     MediaRoute.routes = {
         upload: { url: '/media', method: HTTP_METHODS.POST },
         getMedia: { url: '/media/{media_id}', method: HTTP_METHODS.GET },
+        cropSteamCapsule: { url: '/media/crop-steam-capsule', method: HTTP_METHODS.POST },
+        analyzeSteamCapsule: { url: '/media/analyze-steam-capsule', method: HTTP_METHODS.POST },
     };
     return MediaRoute;
 }());
@@ -26686,6 +26784,108 @@ var Media = /** @class */ (function () {
      */
     Media.get = function (media_id, params) {
         return Requests.processRoute(MediaRoute.routes.getMedia, {}, { media_id: media_id }, params);
+    };
+    /**
+    * Crop and resize an image to Steam capsule dimensions.
+    *
+    * @param request The crop request parameters.
+    * @param params Additional query parameters.
+    *
+    * @returns promise
+    */
+    Media.cropSteamCapsule = function (request, params) {
+        return Requests.processRoute(MediaRoute.routes.cropSteamCapsule, request, {}, params);
+    };
+    /**
+     * Analyze a Steam capsule image using AI.
+     *
+     * @param request The analysis request parameters.
+     * @param params Additional query parameters.
+     *
+     * @returns promise
+     */
+    Media.analyzeSteamCapsule = function (request, params) {
+        return Requests.processRoute(MediaRoute.routes.analyzeSteamCapsule, request, {}, params);
+    };
+    /**
+     * Get Steam capsule dimensions for a specific type.
+     *
+     * @param capsuleType The type of Steam capsule.
+     *
+     * @returns The dimensions object or null if invalid type.
+     */
+    Media.getSteamCapsuleDimensions = function (capsuleType) {
+        var dimensions = {
+            'header': { width: 920, height: 430 },
+            'small': { width: 462, height: 174 },
+            'main': { width: 1232, height: 706 },
+            'vertical': { width: 748, height: 896 },
+            'library': { width: 600, height: 900 },
+            'library_header': { width: 920, height: 430 },
+            'library_hero': { width: 3840, height: 1240 },
+            'page_background': { width: 1438, height: 810 }
+        };
+        return dimensions[capsuleType] || null;
+    };
+    /**
+     * Get Steam capsule type information and requirements.
+     *
+     * @param capsuleType The type of Steam capsule.
+     *
+     * @returns Information about the capsule type.
+     */
+    Media.getSteamCapsuleInfo = function (capsuleType) {
+        var info = {
+            'header': {
+                name: 'Header Capsule',
+                purpose: 'Appears at the top of store page, in recommended sections, grid view in libraries',
+                textRequirement: 'Logo must be clearly legible',
+                designFocus: 'Focus on branding of your product'
+            },
+            'small': {
+                name: 'Small Capsule',
+                purpose: 'Used for all lists throughout Steam: search results, top-sellers, new releases',
+                textRequirement: 'Logo should nearly fill the small capsule for readability',
+                designFocus: 'Focus on making logo clearly legible at smallest size'
+            },
+            'main': {
+                name: 'Main Capsule',
+                purpose: 'Appears at top of front page in featured and recommended carousel',
+                textRequirement: 'Logo should be prominent and readable',
+                designFocus: 'Designed to market the product with key art and logo'
+            },
+            'vertical': {
+                name: 'Vertical Capsule',
+                purpose: 'Can appear at top of front page during seasonal sales',
+                textRequirement: 'Logo should be clearly visible',
+                designFocus: 'Vertical asset designed to market your game'
+            },
+            'library': {
+                name: 'Library Capsule',
+                purpose: 'Used in library overview and collection views',
+                textRequirement: 'Game name/logo should be easily legible against background',
+                designFocus: 'Graphically-centric to give user sense of experience'
+            },
+            'library_header': {
+                name: 'Library Header',
+                purpose: 'Appears in various places in Steam Client Library',
+                textRequirement: 'Logo must be clearly legible',
+                designFocus: 'Focus on branding, similar to Library Capsule'
+            },
+            'library_hero': {
+                name: 'Library Hero',
+                purpose: 'Appears at top of user\'s library details page',
+                textRequirement: 'Should NOT contain any text or logos',
+                designFocus: 'Visually rich, easily recognizable key art'
+            },
+            'page_background': {
+                name: 'Page Background',
+                purpose: 'Background image for store page',
+                textRequirement: 'Minimal or no text',
+                designFocus: 'Should be ambient, not compete with page content'
+            }
+        };
+        return info[capsuleType] || null;
     };
     return Media;
 }());

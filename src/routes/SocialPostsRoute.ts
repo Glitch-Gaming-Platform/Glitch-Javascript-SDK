@@ -19,6 +19,17 @@ class SocialPostsRoute {
         updatePostImpressions : { url: '/socialposts/{post_id}/impressions', method: HTTP_METHODS.PUT },
         shortLinkReports: { url: '/socialposts/shortlinks/reports', method: HTTP_METHODS.GET },
 
+        // New Comment Routes
+        listComments: { url: '/socialposts/{post_id}/comments', method: HTTP_METHODS.GET },
+        syncComments: { url: '/socialposts/{post_id}/sync-comments', method: HTTP_METHODS.POST },
+        listPendingResponses: { url: '/socialposts/comments/pending-responses', method: HTTP_METHODS.GET },
+        viewComment: { url: '/socialposts/comments/{comment_id}', method: HTTP_METHODS.GET },
+        replyToComment: { url: '/socialposts/comments/{comment_id}/reply', method: HTTP_METHODS.POST },
+        moderateComment: { url: '/socialposts/comments/{comment_id}/moderate', method: HTTP_METHODS.PUT },
+        markCommentForResponse: { url: '/socialposts/comments/{comment_id}/mark-for-response', method: HTTP_METHODS.PUT },
+        getCommentThread: { url: '/socialposts/comments/{comment_id}/thread', method: HTTP_METHODS.GET },
+        updateCommentMetrics: { url: '/socialposts/comments/{comment_id}/update-metrics', method: HTTP_METHODS.PUT },
+
     };
 
   }

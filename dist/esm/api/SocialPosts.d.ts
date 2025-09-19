@@ -135,5 +135,73 @@ declare class SocialPosts {
     * @returns promise
     */
     static shortLinkReports<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List comments for a social media post.
+     *
+     * @param post_id The ID of the social media post.
+     * @param params Optional query parameters for filtering and sorting.
+     * @returns A promise
+     */
+    static listComments<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Sync comments from the social media platform for a specific post.
+     *
+     * @param post_id The ID of the social media post.
+     * @param params Optional query parameters (e.g., limit).
+     * @returns A promise
+     */
+    static syncComments<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a list of all comments that are pending a response.
+     *
+     * @param params Optional query parameters for filtering.
+     * @returns A promise
+     */
+    static listPendingResponses<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve a single comment by its ID.
+     *
+     * @param comment_id The ID of the comment.
+     * @param params Optional query parameters (e.g., include_thread).
+     * @returns A promise
+     */
+    static viewComment<T>(comment_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Post a reply to a comment.
+     *
+     * @param comment_id The ID of the comment to reply to.
+     * @param data The content of the reply.
+     * @returns A promise
+     */
+    static replyToComment<T>(comment_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Moderate a comment (approve, reject, spam, hide, show).
+     *
+     * @param comment_id The ID of the comment to moderate.
+     * @param data The moderation action and optional reason.
+     * @returns A promise
+     */
+    static moderateComment<T>(comment_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Mark a comment as needing a response.
+     *
+     * @param comment_id The ID of the comment.
+     * @returns A promise
+     */
+    static markCommentForResponse<T>(comment_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Get the full thread for a given comment.
+     *
+     * @param comment_id The ID of a comment within the thread.
+     * @returns A promise
+     */
+    static getCommentThread<T>(comment_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Trigger a manual update of a comment's metrics from its platform.
+     *
+     * @param comment_id The ID of the comment to update.
+     * @returns A promise
+     */
+    static updateCommentMetrics<T>(comment_id: string): AxiosPromise<Response<T>>;
 }
 export default SocialPosts;
