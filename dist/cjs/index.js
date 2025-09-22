@@ -26999,6 +26999,8 @@ var SchedulerRoute = /** @class */ (function () {
         getDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations/{destination_id}', method: HTTP_METHODS.GET },
         updateDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations/{destination_id}', method: HTTP_METHODS.PUT },
         deleteDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations/{destination_id}', method: HTTP_METHODS.DELETE },
+        getSchedulerPostsWithComments: { url: '/schedulers/{scheduler_id}/posts-with-comments', method: HTTP_METHODS.GET },
+        syncAllSchedulerComments: { url: '/schedulers/{scheduler_id}/sync-all-comments', method: HTTP_METHODS.POST },
     };
     return SchedulerRoute;
 }());
@@ -27631,6 +27633,26 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.generateRedditContent = function (scheduler_id, data, params) {
         return Requests.processRoute(SchedulerRoute.routes.generateRedditContent, data, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+    * Get all posts and comments for a scheduler.
+    *
+    * @param scheduler_id The ID of the promotion schedule.
+    * @param params Optional query parameters for filtering and sorting.
+    * @returns promise
+    */
+    Scheduler.getSchedulerPostsWithComments = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getSchedulerPostsWithComments, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Sync all comments for all posts in a scheduler.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param params Optional query parameters (e.g., limit_per_post).
+     * @returns promise
+     */
+    Scheduler.syncAllSchedulerComments = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.syncAllSchedulerComments, {}, { scheduler_id: scheduler_id }, params);
     };
     return Scheduler;
 }());

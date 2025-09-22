@@ -777,6 +777,28 @@ class Scheduler {
         return Requests.processRoute(SchedulerRoute.routes.generateRedditContent, data, { scheduler_id }, params);
     }
 
+     /**
+     * Get all posts and comments for a scheduler.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param params Optional query parameters for filtering and sorting.
+     * @returns promise
+     */
+    public static getSchedulerPostsWithComments<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getSchedulerPostsWithComments, {}, { scheduler_id }, params);
+    }
+
+    /**
+     * Sync all comments for all posts in a scheduler.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param params Optional query parameters (e.g., limit_per_post).
+     * @returns promise
+     */
+    public static syncAllSchedulerComments<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.syncAllSchedulerComments, {}, { scheduler_id }, params);
+    }
+
 }
 
 export default Scheduler;

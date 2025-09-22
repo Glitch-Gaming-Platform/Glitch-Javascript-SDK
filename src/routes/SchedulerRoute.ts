@@ -119,6 +119,9 @@ class SchedulerRoute {
         updateDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations/{destination_id}', method: HTTP_METHODS.PUT },
         deleteDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations/{destination_id}', method: HTTP_METHODS.DELETE },
 
+        getSchedulerPostsWithComments: { url: '/schedulers/{scheduler_id}/posts-with-comments', method: HTTP_METHODS.GET },
+        syncAllSchedulerComments: { url: '/schedulers/{scheduler_id}/sync-all-comments', method: HTTP_METHODS.POST },
+
     };
 }
 

@@ -5780,6 +5780,22 @@ declare class Scheduler {
      * @returns promise
      */
     static generateRedditContent<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Get all posts and comments for a scheduler.
+    *
+    * @param scheduler_id The ID of the promotion schedule.
+    * @param params Optional query parameters for filtering and sorting.
+    * @returns promise
+    */
+    static getSchedulerPostsWithComments<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Sync all comments for all posts in a scheduler.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param params Optional query parameters (e.g., limit_per_post).
+     * @returns promise
+     */
+    static syncAllSchedulerComments<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Funnel {
