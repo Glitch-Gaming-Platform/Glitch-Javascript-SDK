@@ -29,6 +29,8 @@ class SocialPostsRoute {
         markCommentForResponse: { url: '/socialposts/comments/{comment_id}/mark-for-response', method: HTTP_METHODS.PUT },
         getCommentThread: { url: '/socialposts/comments/{comment_id}/thread', method: HTTP_METHODS.GET },
         updateCommentMetrics: { url: '/socialposts/comments/{comment_id}/update-metrics', method: HTTP_METHODS.PUT },
+        createComment: { url: '/socialposts/{post_id}/comments', method: HTTP_METHODS.POST },
+
 
     };
 

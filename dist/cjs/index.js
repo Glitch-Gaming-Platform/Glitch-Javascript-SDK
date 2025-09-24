@@ -24130,6 +24130,7 @@ var SocialPostsRoute = /** @class */ (function () {
         markCommentForResponse: { url: '/socialposts/comments/{comment_id}/mark-for-response', method: HTTP_METHODS.PUT },
         getCommentThread: { url: '/socialposts/comments/{comment_id}/thread', method: HTTP_METHODS.GET },
         updateCommentMetrics: { url: '/socialposts/comments/{comment_id}/update-metrics', method: HTTP_METHODS.PUT },
+        createComment: { url: '/socialposts/{post_id}/comments', method: HTTP_METHODS.POST },
     };
     return SocialPostsRoute;
 }());
@@ -24384,6 +24385,16 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.updateCommentMetrics = function (comment_id) {
         return Requests.processRoute(SocialPostsRoute.routes.updateCommentMetrics, undefined, { comment_id: comment_id });
+    };
+    /**
+     * Create a new top-level comment on a post.
+     *
+     * @param post_id The ID of the social media post to comment on.
+     * @param data The content of the comment.
+     * @returns A promise
+     */
+    SocialPosts.createComment = function (post_id, data) {
+        return Requests.processRoute(SocialPostsRoute.routes.createComment, data, { post_id: post_id });
     };
     return SocialPosts;
 }());

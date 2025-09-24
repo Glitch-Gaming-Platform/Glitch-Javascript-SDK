@@ -203,5 +203,13 @@ declare class SocialPosts {
      * @returns A promise
      */
     static updateCommentMetrics<T>(comment_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Create a new top-level comment on a post.
+     *
+     * @param post_id The ID of the social media post to comment on.
+     * @param data The content of the comment.
+     * @returns A promise
+     */
+    static createComment<T>(post_id: string, data: object): AxiosPromise<Response<T>>;
 }
 export default SocialPosts;
