@@ -109,7 +109,7 @@ class SocialPosts {
     */
     public static progression<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
 
-        return Requests.processRoute(SocialPostsRoute.routes.progression, {}, { }, params);
+        return Requests.processRoute(SocialPostsRoute.routes.progression, {}, {}, params);
     }
 
     /**
@@ -286,16 +286,16 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.updateCommentMetrics, undefined, { comment_id });
     }
 
-        /**
-         * Create a new top-level comment on a post.
-         * 
-         * @param post_id The ID of the social media post to comment on.
-         * @param data The content of the comment.
-         * @returns A promise
-         */
-        public static createComment<T>(post_id: string, data: object): AxiosPromise<Response<T>> {
-            return Requests.processRoute(SocialPostsRoute.routes.createComment, data, { post_id });
-        }
+    /**
+     * Create a new top-level comment on a post.
+     * 
+     * @param post_id The ID of the social media post to comment on.
+     * @param data The content of the comment.
+     * @returns A promise
+     */
+    public static createComment<T>(post_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.createComment, data, { post_id });
+    }
 
 }
 
