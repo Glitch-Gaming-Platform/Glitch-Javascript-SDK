@@ -7,6 +7,10 @@ class MediaRoute {
         getMedia: { url: '/media/{media_id}', method: HTTP_METHODS.GET },
         cropSteamCapsule: { url: '/media/crop-steam-capsule', method: HTTP_METHODS.POST },
         analyzeSteamCapsule: { url: '/media/analyze-steam-capsule', method: HTTP_METHODS.POST },
+        removeBackground: { url: '/media/remove-background', method: HTTP_METHODS.POST },
+        removeBackgroundAI: { url: '/media/remove-background-ai', method: HTTP_METHODS.POST },
+        createLibraryLogo: { url: '/media/create-library-logo', method: HTTP_METHODS.POST },
+        validateScreenshot: { url: '/media/validate-screenshot', method: HTTP_METHODS.POST },
     };
 }
 

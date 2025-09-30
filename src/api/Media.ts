@@ -19,6 +19,26 @@ export interface SteamCapsuleAnalysisRequest {
     game_genre?: string;
 }
 
+export interface RemoveBackgroundRequest {
+    media_id: string;
+    output_format?: 'png' | 'webp';
+}
+
+export interface RemoveBackgroundAIRequest {
+    media_id: string;
+    use_ai_analysis?: boolean;
+}
+
+export interface CreateLibraryLogoRequest {
+    media_id: string;
+    target_width?: number;
+    target_height?: number;
+}
+
+export interface ValidateScreenshotRequest {
+    media_id: string;
+}
+
 export interface SteamCapsuleDimensions {
     width: number;
     height: number;
@@ -55,6 +75,33 @@ export interface SteamCapsuleAnalysisResponse {
     guidelines: any;
 }
 
+export interface RemoveBackgroundResponse {
+    success: boolean;
+    message: string;
+    data: any;
+}
+
+export interface RemoveBackgroundAIResponse {
+    success: boolean;
+    message: string;
+    data: any;
+    ai_used: boolean;
+}
+
+export interface CreateLibraryLogoResponse {
+    success: boolean;
+    message: string;
+    data: any;
+}
+
+export interface ScreenshotValidationResponse {
+    success: boolean;
+    valid: boolean;
+    dimensions: SteamCapsuleDimensions;
+    aspect_ratio: number;
+    issues: string[];
+    recommendations: string[];
+}
 
 class Media {
     /**
@@ -98,7 +145,7 @@ class Media {
         return Requests.processRoute(MediaRoute.routes.getMedia, {}, { media_id: media_id }, params);
     }
 
-     /**
+    /**
      * Crop and resize an image to Steam capsule dimensions.
      * 
      * @param request The crop request parameters.
@@ -120,6 +167,54 @@ class Media {
      */
     public static analyzeSteamCapsule(request: SteamCapsuleAnalysisRequest, params?: Record<string, any>): AxiosPromise<Response<SteamCapsuleAnalysisResponse>> {
         return Requests.processRoute(MediaRoute.routes.analyzeSteamCapsule, request, {}, params);
+    }
+
+    /**
+     * Remove background from an image to create transparent PNG.
+     * 
+     * @param request The background removal request parameters.
+     * @param params Additional query parameters.
+     * 
+     * @returns promise
+     */
+    public static removeBackground(request: RemoveBackgroundRequest, params?: Record<string, any>): AxiosPromise<Response<RemoveBackgroundResponse>> {
+        return Requests.processRoute(MediaRoute.routes.removeBackground, request, {}, params);
+    }
+
+    /**
+     * Remove background from an image using AI analysis for better results.
+     * 
+     * @param request The AI-enhanced background removal request parameters.
+     * @param params Additional query parameters.
+     * 
+     * @returns promise
+     */
+    public static removeBackgroundAI(request: RemoveBackgroundAIRequest, params?: Record<string, any>): AxiosPromise<Response<RemoveBackgroundAIResponse>> {
+        return Requests.processRoute(MediaRoute.routes.removeBackgroundAI, request, {}, params);
+    }
+
+    /**
+     * Create a Steam Library Logo meeting Steam's requirements.
+     * 
+     * @param request The library logo creation request parameters.
+     * @param params Additional query parameters.
+     * 
+     * @returns promise
+     */
+    public static createLibraryLogo(request: CreateLibraryLogoRequest, params?: Record<string, any>): AxiosPromise<Response<CreateLibraryLogoResponse>> {
+        return Requests.processRoute(MediaRoute.routes.createLibraryLogo, request, {}, params);
+    }
+
+    /**
+     * Validate a screenshot against Steam's requirements.
+     * 
+     * @param request The screenshot validation request parameters.
+     * @param params Additional query parameters.
+     * 
+     * @returns promise
+     */
+    public static validateScreenshot(request: ValidateScreenshotRequest, params?: Record<string, any>): AxiosPromise<Response<ScreenshotValidationResponse>> {
+        return Requests.processRoute(MediaRoute.routes.validateScreenshot, request, {}, params);
     }
 
     /**
@@ -204,6 +299,37 @@ class Media {
         };
 
         return info[capsuleType] || null;
+    }
+
+    /**
+     * Get Steam screenshot requirements.
+     * 
+     * @returns Screenshot requirements object.
+     */
+    public static getSteamScreenshotRequirements() {
+        return {
+            minWidth: 1920,
+            minHeight: 1080,
+            aspectRatio: 16 / 9,
+            minCount: 5,
+            format: 'Should be high-res, widescreen format',
+            content: 'Should show gameplay, not menus or concept art'
+        };
+    }
+
+    /**
+     * Get Steam library logo requirements.
+     * 
+     * @returns Library logo requirements object.
+     */
+    public static getSteamLibraryLogoRequirements() {
+        return {
+            maxWidth: 1280,
+            maxHeight: 720,
+            format: 'PNG with transparent background',
+            requirement: 'Either 1280px wide and/or 720px tall',
+            content: 'Logo only, should be legible against any background'
+        };
     }
 }
 

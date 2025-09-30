@@ -5191,6 +5191,22 @@ interface SteamCapsuleAnalysisRequest {
     game_name?: string;
     game_genre?: string;
 }
+interface RemoveBackgroundRequest {
+    media_id: string;
+    output_format?: 'png' | 'webp';
+}
+interface RemoveBackgroundAIRequest {
+    media_id: string;
+    use_ai_analysis?: boolean;
+}
+interface CreateLibraryLogoRequest {
+    media_id: string;
+    target_width?: number;
+    target_height?: number;
+}
+interface ValidateScreenshotRequest {
+    media_id: string;
+}
 interface SteamCapsuleDimensions {
     width: number;
     height: number;
@@ -5222,6 +5238,30 @@ interface SteamCapsuleAnalysisResponse {
     recommendations: string[];
     ai_description: string;
     guidelines: any;
+}
+interface RemoveBackgroundResponse {
+    success: boolean;
+    message: string;
+    data: any;
+}
+interface RemoveBackgroundAIResponse {
+    success: boolean;
+    message: string;
+    data: any;
+    ai_used: boolean;
+}
+interface CreateLibraryLogoResponse {
+    success: boolean;
+    message: string;
+    data: any;
+}
+interface ScreenshotValidationResponse {
+    success: boolean;
+    valid: boolean;
+    dimensions: SteamCapsuleDimensions;
+    aspect_ratio: number;
+    issues: string[];
+    recommendations: string[];
 }
 declare class Media {
     /**
@@ -5257,13 +5297,13 @@ declare class Media {
      */
     static get<T>(media_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-    * Crop and resize an image to Steam capsule dimensions.
-    *
-    * @param request The crop request parameters.
-    * @param params Additional query parameters.
-    *
-    * @returns promise
-    */
+     * Crop and resize an image to Steam capsule dimensions.
+     *
+     * @param request The crop request parameters.
+     * @param params Additional query parameters.
+     *
+     * @returns promise
+     */
     static cropSteamCapsule(request: SteamCapsuleCropRequest, params?: Record<string, any>): AxiosPromise<Response<SteamCapsuleCropResponse>>;
     /**
      * Analyze a Steam capsule image using AI.
@@ -5274,6 +5314,42 @@ declare class Media {
      * @returns promise
      */
     static analyzeSteamCapsule(request: SteamCapsuleAnalysisRequest, params?: Record<string, any>): AxiosPromise<Response<SteamCapsuleAnalysisResponse>>;
+    /**
+     * Remove background from an image to create transparent PNG.
+     *
+     * @param request The background removal request parameters.
+     * @param params Additional query parameters.
+     *
+     * @returns promise
+     */
+    static removeBackground(request: RemoveBackgroundRequest, params?: Record<string, any>): AxiosPromise<Response<RemoveBackgroundResponse>>;
+    /**
+     * Remove background from an image using AI analysis for better results.
+     *
+     * @param request The AI-enhanced background removal request parameters.
+     * @param params Additional query parameters.
+     *
+     * @returns promise
+     */
+    static removeBackgroundAI(request: RemoveBackgroundAIRequest, params?: Record<string, any>): AxiosPromise<Response<RemoveBackgroundAIResponse>>;
+    /**
+     * Create a Steam Library Logo meeting Steam's requirements.
+     *
+     * @param request The library logo creation request parameters.
+     * @param params Additional query parameters.
+     *
+     * @returns promise
+     */
+    static createLibraryLogo(request: CreateLibraryLogoRequest, params?: Record<string, any>): AxiosPromise<Response<CreateLibraryLogoResponse>>;
+    /**
+     * Validate a screenshot against Steam's requirements.
+     *
+     * @param request The screenshot validation request parameters.
+     * @param params Additional query parameters.
+     *
+     * @returns promise
+     */
+    static validateScreenshot(request: ValidateScreenshotRequest, params?: Record<string, any>): AxiosPromise<Response<ScreenshotValidationResponse>>;
     /**
      * Get Steam capsule dimensions for a specific type.
      *
@@ -5290,6 +5366,31 @@ declare class Media {
      * @returns Information about the capsule type.
      */
     static getSteamCapsuleInfo(capsuleType: string): any;
+    /**
+     * Get Steam screenshot requirements.
+     *
+     * @returns Screenshot requirements object.
+     */
+    static getSteamScreenshotRequirements(): {
+        minWidth: number;
+        minHeight: number;
+        aspectRatio: number;
+        minCount: number;
+        format: string;
+        content: string;
+    };
+    /**
+     * Get Steam library logo requirements.
+     *
+     * @returns Library logo requirements object.
+     */
+    static getSteamLibraryLogoRequirements(): {
+        maxWidth: number;
+        maxHeight: number;
+        format: string;
+        requirement: string;
+        content: string;
+    };
 }
 
 declare class Scheduler {

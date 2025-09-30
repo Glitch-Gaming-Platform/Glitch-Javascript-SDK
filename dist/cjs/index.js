@@ -26751,6 +26751,10 @@ var MediaRoute = /** @class */ (function () {
         getMedia: { url: '/media/{media_id}', method: HTTP_METHODS.GET },
         cropSteamCapsule: { url: '/media/crop-steam-capsule', method: HTTP_METHODS.POST },
         analyzeSteamCapsule: { url: '/media/analyze-steam-capsule', method: HTTP_METHODS.POST },
+        removeBackground: { url: '/media/remove-background', method: HTTP_METHODS.POST },
+        removeBackgroundAI: { url: '/media/remove-background-ai', method: HTTP_METHODS.POST },
+        createLibraryLogo: { url: '/media/create-library-logo', method: HTTP_METHODS.POST },
+        validateScreenshot: { url: '/media/validate-screenshot', method: HTTP_METHODS.POST },
     };
     return MediaRoute;
 }());
@@ -26797,13 +26801,13 @@ var Media = /** @class */ (function () {
         return Requests.processRoute(MediaRoute.routes.getMedia, {}, { media_id: media_id }, params);
     };
     /**
-    * Crop and resize an image to Steam capsule dimensions.
-    *
-    * @param request The crop request parameters.
-    * @param params Additional query parameters.
-    *
-    * @returns promise
-    */
+     * Crop and resize an image to Steam capsule dimensions.
+     *
+     * @param request The crop request parameters.
+     * @param params Additional query parameters.
+     *
+     * @returns promise
+     */
     Media.cropSteamCapsule = function (request, params) {
         return Requests.processRoute(MediaRoute.routes.cropSteamCapsule, request, {}, params);
     };
@@ -26817,6 +26821,50 @@ var Media = /** @class */ (function () {
      */
     Media.analyzeSteamCapsule = function (request, params) {
         return Requests.processRoute(MediaRoute.routes.analyzeSteamCapsule, request, {}, params);
+    };
+    /**
+     * Remove background from an image to create transparent PNG.
+     *
+     * @param request The background removal request parameters.
+     * @param params Additional query parameters.
+     *
+     * @returns promise
+     */
+    Media.removeBackground = function (request, params) {
+        return Requests.processRoute(MediaRoute.routes.removeBackground, request, {}, params);
+    };
+    /**
+     * Remove background from an image using AI analysis for better results.
+     *
+     * @param request The AI-enhanced background removal request parameters.
+     * @param params Additional query parameters.
+     *
+     * @returns promise
+     */
+    Media.removeBackgroundAI = function (request, params) {
+        return Requests.processRoute(MediaRoute.routes.removeBackgroundAI, request, {}, params);
+    };
+    /**
+     * Create a Steam Library Logo meeting Steam's requirements.
+     *
+     * @param request The library logo creation request parameters.
+     * @param params Additional query parameters.
+     *
+     * @returns promise
+     */
+    Media.createLibraryLogo = function (request, params) {
+        return Requests.processRoute(MediaRoute.routes.createLibraryLogo, request, {}, params);
+    };
+    /**
+     * Validate a screenshot against Steam's requirements.
+     *
+     * @param request The screenshot validation request parameters.
+     * @param params Additional query parameters.
+     *
+     * @returns promise
+     */
+    Media.validateScreenshot = function (request, params) {
+        return Requests.processRoute(MediaRoute.routes.validateScreenshot, request, {}, params);
     };
     /**
      * Get Steam capsule dimensions for a specific type.
@@ -26897,6 +26945,35 @@ var Media = /** @class */ (function () {
             }
         };
         return info[capsuleType] || null;
+    };
+    /**
+     * Get Steam screenshot requirements.
+     *
+     * @returns Screenshot requirements object.
+     */
+    Media.getSteamScreenshotRequirements = function () {
+        return {
+            minWidth: 1920,
+            minHeight: 1080,
+            aspectRatio: 16 / 9,
+            minCount: 5,
+            format: 'Should be high-res, widescreen format',
+            content: 'Should show gameplay, not menus or concept art'
+        };
+    };
+    /**
+     * Get Steam library logo requirements.
+     *
+     * @returns Library logo requirements object.
+     */
+    Media.getSteamLibraryLogoRequirements = function () {
+        return {
+            maxWidth: 1280,
+            maxHeight: 720,
+            format: 'PNG with transparent background',
+            requirement: 'Either 1280px wide and/or 720px tall',
+            content: 'Logo only, should be legible against any background'
+        };
     };
     return Media;
 }());
