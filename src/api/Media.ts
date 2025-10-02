@@ -5,7 +5,7 @@ import { AxiosProgressEvent, AxiosPromise } from "axios";
 
 export interface SteamCapsuleCropRequest {
     media_id: string;
-    capsule_type: 'header' | 'small' | 'main' | 'vertical' | 'library' | 'library_header' | 'library_hero' | 'page_background';
+    capsule_type: 'header' | 'small' | 'main' | 'vertical' | 'library' | 'library_header' | 'library_hero' | 'page_background' | 'screenshot' | 'app_icon' | 'shortcut_icon';
     crop_x?: number;
     crop_y?: number;
     crop_width?: number;
