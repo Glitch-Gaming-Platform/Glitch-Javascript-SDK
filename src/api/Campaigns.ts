@@ -937,6 +937,17 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.sourcingGetGamesByIds, data, { campaign_id });
     }
 
+    /**
+     * Get full game details from a list of IGDB IDs.
+     * @param campaign_id The UUID of the campaign.
+     * @param data An object containing the array of IGDB IDs.
+     * @param data.igdb_ids An array of IGDB game IDs.
+     * @returns promise
+     */
+    public static updateAutoInviteCriteria<T>(campaign_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.updateAutoInviteCriteria, data, { campaign_id });
+    }
+
 
 }
 

@@ -359,5 +359,13 @@ declare class Titles {
      * @returns Promise
      */
     static updateAdministrator<T>(title_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+ * List ad conversion events for a title with filtering
+ */
+    static listAdConversionEvents<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retry a failed or pending ad conversion event
+     */
+    static retryAdConversionEvent<T>(title_id: string, event_id: string): AxiosPromise<Response<T>>;
 }
 export default Titles;

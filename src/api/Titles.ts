@@ -736,6 +736,35 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.updateAdministrator, data, { title_id: title_id, user_id: user_id }, params);
     }
 
+    /**
+ * List ad conversion events for a title with filtering
+ */
+    public static listAdConversionEvents<T>(
+        title_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.listAdConversionEvents,
+            {},
+            { title_id },
+            params
+        );
+    }
+
+    /**
+     * Retry a failed or pending ad conversion event
+     */
+    public static retryAdConversionEvent<T>(
+        title_id: string,
+        event_id: string
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.retryAdConversionEvent,
+            {},
+            { title_id, event_id }
+        );
+    }
+
 }
 
 export default Titles;

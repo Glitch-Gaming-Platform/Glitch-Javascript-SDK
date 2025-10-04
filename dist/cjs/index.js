@@ -24529,6 +24529,14 @@ var TitlesRoute = /** @class */ (function () {
             url: "/titles/{title_id}/purchases/reports/item-type-stats",
             method: HTTP_METHODS.GET,
         },
+        listAdConversionEvents: {
+            url: '/titles/{title_id}/ad-conversion-events',
+            method: HTTP_METHODS.GET
+        },
+        retryAdConversionEvent: {
+            url: '/titles/{title_id}/ad-conversion-events/{event_id}/retry',
+            method: HTTP_METHODS.POST
+        }
     };
     return TitlesRoute;
 }());
@@ -25001,6 +25009,18 @@ var Titles = /** @class */ (function () {
     Titles.updateAdministrator = function (title_id, user_id, data, params) {
         return Requests.processRoute(TitlesRoute.routes.updateAdministrator, data, { title_id: title_id, user_id: user_id }, params);
     };
+    /**
+ * List ad conversion events for a title with filtering
+ */
+    Titles.listAdConversionEvents = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.listAdConversionEvents, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Retry a failed or pending ad conversion event
+     */
+    Titles.retryAdConversionEvent = function (title_id, event_id) {
+        return Requests.processRoute(TitlesRoute.routes.retryAdConversionEvent, {}, { title_id: title_id, event_id: event_id });
+    };
     return Titles;
 }());
 
@@ -25080,6 +25100,7 @@ var CampaignsRoute = /** @class */ (function () {
         exportSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/creators/export', method: HTTP_METHODS.GET },
         sourcingSearchAnyIgdbGame: { url: '/campaigns/{campaign_id}/sourcing/search-any-game', method: HTTP_METHODS.GET },
         sourcingGetGamesByIds: { url: '/campaigns/{campaign_id}/sourcing/games-by-ids', method: HTTP_METHODS.POST },
+        updateAutoInviteCriteria: { url: '/campaigns/{campaign_id}/sourcing/auto-invite-criteria', method: HTTP_METHODS.PUT },
     };
     return CampaignsRoute;
 }());
@@ -25893,6 +25914,16 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.sourcingGetGamesByIds = function (campaign_id, data) {
         return Requests.processRoute(CampaignsRoute.routes.sourcingGetGamesByIds, data, { campaign_id: campaign_id });
+    };
+    /**
+     * Get full game details from a list of IGDB IDs.
+     * @param campaign_id The UUID of the campaign.
+     * @param data An object containing the array of IGDB IDs.
+     * @param data.igdb_ids An array of IGDB game IDs.
+     * @returns promise
+     */
+    Campaigns.updateAutoInviteCriteria = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.updateAutoInviteCriteria, data, { campaign_id: campaign_id });
     };
     return Campaigns;
 }());

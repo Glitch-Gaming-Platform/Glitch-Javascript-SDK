@@ -76,6 +76,8 @@ class CampaignsRoute {
       exportSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/creators/export', method: HTTP_METHODS.GET },
       sourcingSearchAnyIgdbGame: { url: '/campaigns/{campaign_id}/sourcing/search-any-game', method: HTTP_METHODS.GET },
       sourcingGetGamesByIds: { url: '/campaigns/{campaign_id}/sourcing/games-by-ids', method: HTTP_METHODS.POST },
+      updateAutoInviteCriteria: { url: '/campaigns/{campaign_id}/sourcing/auto-invite-criteria', method: HTTP_METHODS.PUT },
+
 
     };
 

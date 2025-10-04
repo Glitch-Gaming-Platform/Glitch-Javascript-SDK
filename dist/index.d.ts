@@ -3949,6 +3949,14 @@ declare class Titles {
      * @returns Promise
      */
     static updateAdministrator<T>(title_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+ * List ad conversion events for a title with filtering
+ */
+    static listAdConversionEvents<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retry a failed or pending ad conversion event
+     */
+    static retryAdConversionEvent<T>(title_id: string, event_id: string): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {
@@ -4625,6 +4633,14 @@ declare class Campaigns {
     static sourcingGetGamesByIds<T>(campaign_id: string, data: {
         igdb_ids: number[];
     }): AxiosPromise<Response<T>>;
+    /**
+     * Get full game details from a list of IGDB IDs.
+     * @param campaign_id The UUID of the campaign.
+     * @param data An object containing the array of IGDB IDs.
+     * @param data.igdb_ids An array of IGDB game IDs.
+     * @returns promise
+     */
+    static updateAutoInviteCriteria<T>(campaign_id: string, data: object): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {

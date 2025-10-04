@@ -674,5 +674,13 @@ declare class Campaigns {
     static sourcingGetGamesByIds<T>(campaign_id: string, data: {
         igdb_ids: number[];
     }): AxiosPromise<Response<T>>;
+    /**
+     * Get full game details from a list of IGDB IDs.
+     * @param campaign_id The UUID of the campaign.
+     * @param data An object containing the array of IGDB IDs.
+     * @param data.igdb_ids An array of IGDB game IDs.
+     * @returns promise
+     */
+    static updateAutoInviteCriteria<T>(campaign_id: string, data: object): AxiosPromise<Response<T>>;
 }
 export default Campaigns;
