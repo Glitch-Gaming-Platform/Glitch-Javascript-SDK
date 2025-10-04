@@ -3937,6 +3937,18 @@ declare class Titles {
        * @returns AxiosPromise
        */
     static importKeys<T>(title_id: string, file: File | Blob, data?: Record<string, any>, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update administrator email preferences for a title.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/updateTitleAdministrator
+     *
+     * @param title_id The id of the title.
+     * @param user_id The id of the user/administrator.
+     * @param data The preference data to update (notify_promotion_schedule_reminder_email, notify_weekly_promotion_performance_email).
+     *
+     * @returns Promise
+     */
+    static updateAdministrator<T>(title_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {

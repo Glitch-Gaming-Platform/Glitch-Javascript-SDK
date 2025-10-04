@@ -11247,6 +11247,7 @@ var TitlesRoute = /** @class */ (function () {
         activeRetentions: { url: '/titles/{title_id}/retentions/active', method: HTTP_METHODS.GET },
         retentionAnalysis: { url: '/titles/{title_id}/retentions/analysis', method: HTTP_METHODS.GET },
         distinctDimensions: { url: '/titles/{title_id}/installs/distinctDimensions', method: HTTP_METHODS.GET },
+        updateAdministrator: { url: '/titles/{title_id}/updateAdministrator/{user_id}', method: HTTP_METHODS.PUT },
         listSessions: {
             url: '/titles/{title_id}/installs/sessions',
             method: HTTP_METHODS.GET
@@ -11801,6 +11802,20 @@ var Titles = /** @class */ (function () {
     Titles.importKeys = function (title_id, file, data, params) {
         var url = TitlesRoute.routes.importKeys.url.replace("{title_id}", title_id);
         return Requests.uploadFile(url, "file", file, data, params);
+    };
+    /**
+     * Update administrator email preferences for a title.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Titles/updateTitleAdministrator
+     *
+     * @param title_id The id of the title.
+     * @param user_id The id of the user/administrator.
+     * @param data The preference data to update (notify_promotion_schedule_reminder_email, notify_weekly_promotion_performance_email).
+     *
+     * @returns Promise
+     */
+    Titles.updateAdministrator = function (title_id, user_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.updateAdministrator, data, { title_id: title_id, user_id: user_id }, params);
     };
     return Titles;
 }());
