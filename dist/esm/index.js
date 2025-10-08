@@ -11352,7 +11352,13 @@ var TitlesRoute = /** @class */ (function () {
         retryAdConversionEvent: {
             url: '/titles/{title_id}/ad-conversion-events/{event_id}/retry',
             method: HTTP_METHODS.POST
-        }
+        },
+        listLandingPages: { url: '/titles/{title_id}/landing-pages', method: HTTP_METHODS.GET },
+        createLandingPage: { url: '/titles/{title_id}/landing-pages', method: HTTP_METHODS.POST },
+        viewLandingPage: { url: '/landing-pages/{landing_page_id}', method: HTTP_METHODS.GET },
+        updateLandingPage: { url: '/landing-pages/{landing_page_id}', method: HTTP_METHODS.PUT },
+        deleteLandingPage: { url: '/landing-pages/{landing_page_id}', method: HTTP_METHODS.DELETE },
+        translateLandingPage: { url: '/landing-pages/{landing_page_id}/translate', method: HTTP_METHODS.POST },
     };
     return TitlesRoute;
 }());
@@ -11836,6 +11842,52 @@ var Titles = /** @class */ (function () {
      */
     Titles.retryAdConversionEvent = function (title_id, event_id) {
         return Requests.processRoute(TitlesRoute.routes.retryAdConversionEvent, {}, { title_id: title_id, event_id: event_id });
+    };
+    /**
+    * List all landing pages for a specific title.
+    * @param title_id The UUID of the title.
+    * @param params Optional query parameters for pagination.
+    */
+    Titles.listLandingPages = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.listLandingPages, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Create a new landing page for a title.
+     * @param title_id The UUID of the title.
+     * @param data The data for the new landing page.
+     */
+    Titles.createLandingPage = function (title_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.createLandingPage, data, { title_id: title_id }, params);
+    };
+    /**
+     * View a specific landing page by its ID.
+     * @param landing_page_id The UUID of the landing page.
+     */
+    Titles.viewLandingPage = function (landing_page_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.viewLandingPage, {}, { landing_page_id: landing_page_id }, params);
+    };
+    /**
+     * Update an existing landing page.
+     * @param landing_page_id The UUID of the landing page to update.
+     * @param data The new data for the landing page.
+     */
+    Titles.updateLandingPage = function (landing_page_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.updateLandingPage, data, { landing_page_id: landing_page_id }, params);
+    };
+    /**
+     * Delete a landing page.
+     * @param landing_page_id The UUID of the landing page to delete.
+     */
+    Titles.deleteLandingPage = function (landing_page_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.deleteLandingPage, {}, { landing_page_id: landing_page_id }, params);
+    };
+    /**
+     * Trigger an AI translation for a landing page.
+     * @param landing_page_id The UUID of the landing page.
+     * @param data An object containing the target language code, e.g., { language_code: 'es' }.
+     */
+    Titles.translateLandingPage = function (landing_page_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.translateLandingPage, data, { landing_page_id: landing_page_id }, params);
     };
     return Titles;
 }());

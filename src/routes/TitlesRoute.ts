@@ -146,8 +146,14 @@ class TitlesRoute {
     retryAdConversionEvent: {
       url: '/titles/{title_id}/ad-conversion-events/{event_id}/retry',
       method: HTTP_METHODS.POST
-    }
+    },
 
+    listLandingPages: { url: '/titles/{title_id}/landing-pages', method: HTTP_METHODS.GET },
+    createLandingPage: { url: '/titles/{title_id}/landing-pages', method: HTTP_METHODS.POST },
+    viewLandingPage: { url: '/landing-pages/{landing_page_id}', method: HTTP_METHODS.GET },
+    updateLandingPage: { url: '/landing-pages/{landing_page_id}', method: HTTP_METHODS.PUT },
+    deleteLandingPage: { url: '/landing-pages/{landing_page_id}', method: HTTP_METHODS.DELETE },
+    translateLandingPage: { url: '/landing-pages/{landing_page_id}/translate', method: HTTP_METHODS.POST },
 
   };
 

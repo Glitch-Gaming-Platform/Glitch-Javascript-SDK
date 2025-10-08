@@ -765,6 +765,58 @@ class Titles {
         );
     }
 
+    /**
+    * List all landing pages for a specific title.
+    * @param title_id The UUID of the title.
+    * @param params Optional query parameters for pagination.
+    */
+    public static listLandingPages<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.listLandingPages, {}, { title_id }, params);
+    }
+
+    /**
+     * Create a new landing page for a title.
+     * @param title_id The UUID of the title.
+     * @param data The data for the new landing page.
+     */
+    public static createLandingPage<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.createLandingPage, data, { title_id }, params);
+    }
+
+    /**
+     * View a specific landing page by its ID.
+     * @param landing_page_id The UUID of the landing page.
+     */
+    public static viewLandingPage<T>(landing_page_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.viewLandingPage, {}, { landing_page_id }, params);
+    }
+
+    /**
+     * Update an existing landing page.
+     * @param landing_page_id The UUID of the landing page to update.
+     * @param data The new data for the landing page.
+     */
+    public static updateLandingPage<T>(landing_page_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.updateLandingPage, data, { landing_page_id }, params);
+    }
+
+    /**
+     * Delete a landing page.
+     * @param landing_page_id The UUID of the landing page to delete.
+     */
+    public static deleteLandingPage<T>(landing_page_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.deleteLandingPage, {}, { landing_page_id }, params);
+    }
+
+    /**
+     * Trigger an AI translation for a landing page.
+     * @param landing_page_id The UUID of the landing page.
+     * @param data An object containing the target language code, e.g., { language_code: 'es' }.
+     */
+    public static translateLandingPage<T>(landing_page_id: string, data: { language_code: string }, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.translateLandingPage, data, { landing_page_id }, params);
+    }
+
 }
 
 export default Titles;

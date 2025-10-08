@@ -367,5 +367,41 @@ declare class Titles {
      * Retry a failed or pending ad conversion event
      */
     static retryAdConversionEvent<T>(title_id: string, event_id: string): AxiosPromise<Response<T>>;
+    /**
+    * List all landing pages for a specific title.
+    * @param title_id The UUID of the title.
+    * @param params Optional query parameters for pagination.
+    */
+    static listLandingPages<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a new landing page for a title.
+     * @param title_id The UUID of the title.
+     * @param data The data for the new landing page.
+     */
+    static createLandingPage<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * View a specific landing page by its ID.
+     * @param landing_page_id The UUID of the landing page.
+     */
+    static viewLandingPage<T>(landing_page_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update an existing landing page.
+     * @param landing_page_id The UUID of the landing page to update.
+     * @param data The new data for the landing page.
+     */
+    static updateLandingPage<T>(landing_page_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a landing page.
+     * @param landing_page_id The UUID of the landing page to delete.
+     */
+    static deleteLandingPage<T>(landing_page_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Trigger an AI translation for a landing page.
+     * @param landing_page_id The UUID of the landing page.
+     * @param data An object containing the target language code, e.g., { language_code: 'es' }.
+     */
+    static translateLandingPage<T>(landing_page_id: string, data: {
+        language_code: string;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Titles;
