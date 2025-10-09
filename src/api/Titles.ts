@@ -817,6 +817,23 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.translateLandingPage, data, { landing_page_id }, params);
     }
 
+     /**
+     * Generate or regenerate AI-powered HTML content for a landing page.
+     * @param landing_page_id The UUID of the landing page.
+     * @param data An object containing the prompt, language_code, and privacy_mode.
+     */
+    public static generateLandingPageAiContent<T>(landing_page_id: string, data: { prompt: string, language_code: string, privacy_mode: string }, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.generateLandingPageAiContent, data, { landing_page_id }, params);
+    }
+
+    /**
+     * Create or update a specific translation for a landing page.
+     * @param landing_page_id The UUID of the landing page.
+     * @param translationData The full translation object to be saved.
+     */
+    public static saveLandingPageTranslation<T>(landing_page_id: string, translationData: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.saveLandingPageTranslation, translationData, { landing_page_id }, params);
+    }
 }
 
 export default Titles;

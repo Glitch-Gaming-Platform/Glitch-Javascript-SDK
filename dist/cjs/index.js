@@ -24543,6 +24543,8 @@ var TitlesRoute = /** @class */ (function () {
         updateLandingPage: { url: '/landing-pages/{landing_page_id}', method: HTTP_METHODS.PUT },
         deleteLandingPage: { url: '/landing-pages/{landing_page_id}', method: HTTP_METHODS.DELETE },
         translateLandingPage: { url: '/landing-pages/{landing_page_id}/translate', method: HTTP_METHODS.POST },
+        generateLandingPageAiContent: { url: '/landing-pages/{landing_page_id}/generate-ai-content', method: HTTP_METHODS.POST },
+        saveLandingPageTranslation: { url: '/landing-pages/{landing_page_id}/translations', method: HTTP_METHODS.POST },
     };
     return TitlesRoute;
 }());
@@ -25072,6 +25074,22 @@ var Titles = /** @class */ (function () {
      */
     Titles.translateLandingPage = function (landing_page_id, data, params) {
         return Requests.processRoute(TitlesRoute.routes.translateLandingPage, data, { landing_page_id: landing_page_id }, params);
+    };
+    /**
+    * Generate or regenerate AI-powered HTML content for a landing page.
+    * @param landing_page_id The UUID of the landing page.
+    * @param data An object containing the prompt, language_code, and privacy_mode.
+    */
+    Titles.generateLandingPageAiContent = function (landing_page_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.generateLandingPageAiContent, data, { landing_page_id: landing_page_id }, params);
+    };
+    /**
+     * Create or update a specific translation for a landing page.
+     * @param landing_page_id The UUID of the landing page.
+     * @param translationData The full translation object to be saved.
+     */
+    Titles.saveLandingPageTranslation = function (landing_page_id, translationData, params) {
+        return Requests.processRoute(TitlesRoute.routes.saveLandingPageTranslation, translationData, { landing_page_id: landing_page_id }, params);
     };
     return Titles;
 }());

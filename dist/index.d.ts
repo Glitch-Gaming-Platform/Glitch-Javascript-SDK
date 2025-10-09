@@ -3993,6 +3993,22 @@ declare class Titles {
     static translateLandingPage<T>(landing_page_id: string, data: {
         language_code: string;
     }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Generate or regenerate AI-powered HTML content for a landing page.
+    * @param landing_page_id The UUID of the landing page.
+    * @param data An object containing the prompt, language_code, and privacy_mode.
+    */
+    static generateLandingPageAiContent<T>(landing_page_id: string, data: {
+        prompt: string;
+        language_code: string;
+        privacy_mode: string;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create or update a specific translation for a landing page.
+     * @param landing_page_id The UUID of the landing page.
+     * @param translationData The full translation object to be saved.
+     */
+    static saveLandingPageTranslation<T>(landing_page_id: string, translationData: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {
