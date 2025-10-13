@@ -24537,6 +24537,10 @@ var TitlesRoute = /** @class */ (function () {
             url: '/titles/{title_id}/ad-conversion-events/{event_id}/retry',
             method: HTTP_METHODS.POST
         },
+        getAdConversionEventsReport: {
+            url: '/titles/{title_id}/ad-conversion-events/report',
+            method: HTTP_METHODS.GET
+        },
         listLandingPages: { url: '/titles/{title_id}/landing-pages', method: HTTP_METHODS.GET },
         createLandingPage: { url: '/titles/{title_id}/landing-pages', method: HTTP_METHODS.POST },
         viewLandingPage: { url: '/landing-pages/{landing_page_id}', method: HTTP_METHODS.GET },
@@ -25090,6 +25094,12 @@ var Titles = /** @class */ (function () {
      */
     Titles.saveLandingPageTranslation = function (landing_page_id, translationData, params) {
         return Requests.processRoute(TitlesRoute.routes.saveLandingPageTranslation, translationData, { landing_page_id: landing_page_id }, params);
+    };
+    /**
+ * Get an aggregated report of ad conversion events for charting.
+ */
+    Titles.getAdConversionEventsReport = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.getAdConversionEventsReport, {}, { title_id: title_id }, params);
     };
     return Titles;
 }());

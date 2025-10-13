@@ -817,11 +817,11 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.translateLandingPage, data, { landing_page_id }, params);
     }
 
-     /**
-     * Generate or regenerate AI-powered HTML content for a landing page.
-     * @param landing_page_id The UUID of the landing page.
-     * @param data An object containing the prompt, language_code, and privacy_mode.
-     */
+    /**
+    * Generate or regenerate AI-powered HTML content for a landing page.
+    * @param landing_page_id The UUID of the landing page.
+    * @param data An object containing the prompt, language_code, and privacy_mode.
+    */
     public static generateLandingPageAiContent<T>(landing_page_id: string, data: { prompt: string, language_code: string, privacy_mode: string }, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.generateLandingPageAiContent, data, { landing_page_id }, params);
     }
@@ -833,6 +833,26 @@ class Titles {
      */
     public static saveLandingPageTranslation<T>(landing_page_id: string, translationData: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.saveLandingPageTranslation, translationData, { landing_page_id }, params);
+    }
+
+    /**
+ * Get an aggregated report of ad conversion events for charting.
+ */
+    public static getAdConversionEventsReport<T>(
+        title_id: string,
+        params: {
+            start_date: string;
+            end_date: string;
+            group_by: 'platform' | 'status' | 'event_type';
+            unique_clicks?: boolean;
+        }
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.getAdConversionEventsReport,
+            {},
+            { title_id },
+            params
+        );
     }
 }
 

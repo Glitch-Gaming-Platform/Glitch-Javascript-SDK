@@ -148,6 +148,11 @@ class TitlesRoute {
       method: HTTP_METHODS.POST
     },
 
+    getAdConversionEventsReport: {
+      url: '/titles/{title_id}/ad-conversion-events/report',
+      method: HTTP_METHODS.GET
+    },
+
     listLandingPages: { url: '/titles/{title_id}/landing-pages', method: HTTP_METHODS.GET },
     createLandingPage: { url: '/titles/{title_id}/landing-pages', method: HTTP_METHODS.POST },
     viewLandingPage: { url: '/landing-pages/{landing_page_id}', method: HTTP_METHODS.GET },

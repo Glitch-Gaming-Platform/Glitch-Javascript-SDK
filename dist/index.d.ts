@@ -4009,6 +4009,15 @@ declare class Titles {
      * @param translationData The full translation object to be saved.
      */
     static saveLandingPageTranslation<T>(landing_page_id: string, translationData: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+ * Get an aggregated report of ad conversion events for charting.
+ */
+    static getAdConversionEventsReport<T>(title_id: string, params: {
+        start_date: string;
+        end_date: string;
+        group_by: 'platform' | 'status' | 'event_type';
+        unique_clicks?: boolean;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {
