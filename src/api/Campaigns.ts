@@ -916,12 +916,12 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.exportSourcedCreators, undefined, { campaign_id }, params);
     }
 
-     /**
-     * Search IGDB for any game by a query string.
-     * @param campaign_id The UUID of the campaign (for permission checking).
-     * @param params Query parameters including 'search_query' and optional 'limit'.
-     * @returns promise
-     */
+    /**
+    * Search IGDB for any game by a query string.
+    * @param campaign_id The UUID of the campaign (for permission checking).
+    * @param params Query parameters including 'search_query' and optional 'limit'.
+    * @returns promise
+    */
     public static sourcingSearchAnyIgdbGame<T>(campaign_id: string, params: { search_query: string, limit?: number }): AxiosPromise<Response<T>> {
         return Requests.processRoute(CampaignsRoute.routes.sourcingSearchAnyIgdbGame, undefined, { campaign_id }, params);
     }
@@ -946,6 +946,18 @@ class Campaigns {
      */
     public static updateAutoInviteCriteria<T>(campaign_id: string, data: object): AxiosPromise<Response<T>> {
         return Requests.processRoute(CampaignsRoute.routes.updateAutoInviteCriteria, data, { campaign_id });
+    }
+
+    public static updateCustomRanking<T>(campaign_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.updateCustomRanking, data, { campaign_id });
+    }
+
+    public static updateCreatorBucket<T>(campaign_id: string, creator_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.updateCreatorBucket, data, { campaign_id, creator_id });
+    }
+
+    public static reRankSourcedCreators<T>(campaign_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.reRankSourcedCreators, data, { campaign_id });
     }
 
 

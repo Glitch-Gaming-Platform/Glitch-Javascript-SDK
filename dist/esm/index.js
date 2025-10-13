@@ -11997,6 +11997,9 @@ var CampaignsRoute = /** @class */ (function () {
         sourcingSearchAnyIgdbGame: { url: '/campaigns/{campaign_id}/sourcing/search-any-game', method: HTTP_METHODS.GET },
         sourcingGetGamesByIds: { url: '/campaigns/{campaign_id}/sourcing/games-by-ids', method: HTTP_METHODS.POST },
         updateAutoInviteCriteria: { url: '/campaigns/{campaign_id}/sourcing/auto-invite-criteria', method: HTTP_METHODS.PUT },
+        updateCustomRanking: { url: '/campaigns/{campaign_id}/sourcing/custom-ranking', method: HTTP_METHODS.PUT },
+        updateCreatorBucket: { url: '/campaigns/{campaign_id}/sourcing/creators/{creator_id}/bucket', method: HTTP_METHODS.PUT },
+        reRankSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/re-rank', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -12820,6 +12823,15 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.updateAutoInviteCriteria = function (campaign_id, data) {
         return Requests.processRoute(CampaignsRoute.routes.updateAutoInviteCriteria, data, { campaign_id: campaign_id });
+    };
+    Campaigns.updateCustomRanking = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.updateCustomRanking, data, { campaign_id: campaign_id });
+    };
+    Campaigns.updateCreatorBucket = function (campaign_id, creator_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.updateCreatorBucket, data, { campaign_id: campaign_id, creator_id: creator_id });
+    };
+    Campaigns.reRankSourcedCreators = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.reRankSourcedCreators, data, { campaign_id: campaign_id });
     };
     return Campaigns;
 }());

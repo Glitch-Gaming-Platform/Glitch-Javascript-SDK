@@ -682,5 +682,8 @@ declare class Campaigns {
      * @returns promise
      */
     static updateAutoInviteCriteria<T>(campaign_id: string, data: object): AxiosPromise<Response<T>>;
+    static updateCustomRanking<T>(campaign_id: string, data: object): AxiosPromise<Response<T>>;
+    static updateCreatorBucket<T>(campaign_id: string, creator_id: string, data: object): AxiosPromise<Response<T>>;
+    static reRankSourcedCreators<T>(campaign_id: string, data: object): AxiosPromise<Response<T>>;
 }
 export default Campaigns;
