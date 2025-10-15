@@ -27227,6 +27227,7 @@ var SchedulerRoute = /** @class */ (function () {
         deleteDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations/{destination_id}', method: HTTP_METHODS.DELETE },
         getSchedulerPostsWithComments: { url: '/schedulers/{scheduler_id}/posts-with-comments', method: HTTP_METHODS.GET },
         syncAllSchedulerComments: { url: '/schedulers/{scheduler_id}/sync-all-comments', method: HTTP_METHODS.POST },
+        getConversionActions: { url: '/schedulers/{scheduler_id}/conversion-actions', method: HTTP_METHODS.GET },
     };
     return SchedulerRoute;
 }());
@@ -27879,6 +27880,19 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.syncAllSchedulerComments = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.syncAllSchedulerComments, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+    * Get ad conversion actions for a specific platform linked to the scheduler.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Scheduler/getSchedulerConversionActions
+    *
+    * @param scheduler_id The ID of the promotion schedule.
+    * @param params Query parameters, including 'platform' (required) and 'account_id' (optional).
+    *
+    * @returns promise
+    */
+    Scheduler.getConversionActions = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getConversionActions, {}, { scheduler_id: scheduler_id }, params);
     };
     return Scheduler;
 }());

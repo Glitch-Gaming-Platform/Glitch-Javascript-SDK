@@ -5997,6 +5997,20 @@ declare class Scheduler {
      * @returns promise
      */
     static syncAllSchedulerComments<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Get ad conversion actions for a specific platform linked to the scheduler.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Scheduler/getSchedulerConversionActions
+    *
+    * @param scheduler_id The ID of the promotion schedule.
+    * @param params Query parameters, including 'platform' (required) and 'account_id' (optional).
+    *
+    * @returns promise
+    */
+    static getConversionActions<T>(scheduler_id: string, params: {
+        platform: string;
+        account_id?: string;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Funnel {

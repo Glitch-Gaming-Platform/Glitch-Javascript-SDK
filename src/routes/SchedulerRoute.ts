@@ -122,6 +122,8 @@ class SchedulerRoute {
         getSchedulerPostsWithComments: { url: '/schedulers/{scheduler_id}/posts-with-comments', method: HTTP_METHODS.GET },
         syncAllSchedulerComments: { url: '/schedulers/{scheduler_id}/sync-all-comments', method: HTTP_METHODS.POST },
 
+        getConversionActions: { url: '/schedulers/{scheduler_id}/conversion-actions', method: HTTP_METHODS.GET },
+
     };
 }
 
