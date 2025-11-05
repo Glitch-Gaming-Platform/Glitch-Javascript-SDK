@@ -960,6 +960,19 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.reRankSourcedCreators, data, { campaign_id });
     }
 
+    /**
+     * Queue multiple sourced creators for profile enrichment.
+     * This dispatches a background job for each creator to find their social media profiles and contact information.
+     * 
+     * @param campaign_id The UUID of the campaign.
+     * @param data An object containing the array of SourcedCreator IDs to enrich.
+     * @param data.creator_ids An array of SourcedCreator UUIDs.
+     * @returns A promise that resolves with a confirmation message and the count of queued jobs.
+     */
+    public static bulkEnrichSourcedCreators<T>(campaign_id: string, data: { creator_ids: string[] }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.bulkEnrichSourcedCreators, data, { campaign_id });
+    }
+
 
 }
 

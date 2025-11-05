@@ -12000,6 +12000,7 @@ var CampaignsRoute = /** @class */ (function () {
         updateCustomRanking: { url: '/campaigns/{campaign_id}/sourcing/custom-ranking', method: HTTP_METHODS.PUT },
         updateCreatorBucket: { url: '/campaigns/{campaign_id}/sourcing/creators/{creator_id}/bucket', method: HTTP_METHODS.PUT },
         reRankSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/re-rank', method: HTTP_METHODS.POST },
+        bulkEnrichSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/creators/bulk-enrich', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -12832,6 +12833,18 @@ var Campaigns = /** @class */ (function () {
     };
     Campaigns.reRankSourcedCreators = function (campaign_id, data) {
         return Requests.processRoute(CampaignsRoute.routes.reRankSourcedCreators, data, { campaign_id: campaign_id });
+    };
+    /**
+     * Queue multiple sourced creators for profile enrichment.
+     * This dispatches a background job for each creator to find their social media profiles and contact information.
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param data An object containing the array of SourcedCreator IDs to enrich.
+     * @param data.creator_ids An array of SourcedCreator UUIDs.
+     * @returns A promise that resolves with a confirmation message and the count of queued jobs.
+     */
+    Campaigns.bulkEnrichSourcedCreators = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.bulkEnrichSourcedCreators, data, { campaign_id: campaign_id });
     };
     return Campaigns;
 }());

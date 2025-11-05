@@ -80,6 +80,8 @@ class CampaignsRoute {
       updateCustomRanking: { url: '/campaigns/{campaign_id}/sourcing/custom-ranking', method: HTTP_METHODS.PUT },
       updateCreatorBucket: { url: '/campaigns/{campaign_id}/sourcing/creators/{creator_id}/bucket', method: HTTP_METHODS.PUT },
       reRankSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/re-rank', method: HTTP_METHODS.POST },
+      bulkEnrichSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/creators/bulk-enrich', method: HTTP_METHODS.POST },
+
 
     };
 

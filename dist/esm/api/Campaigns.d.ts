@@ -685,5 +685,17 @@ declare class Campaigns {
     static updateCustomRanking<T>(campaign_id: string, data: object): AxiosPromise<Response<T>>;
     static updateCreatorBucket<T>(campaign_id: string, creator_id: string, data: object): AxiosPromise<Response<T>>;
     static reRankSourcedCreators<T>(campaign_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Queue multiple sourced creators for profile enrichment.
+     * This dispatches a background job for each creator to find their social media profiles and contact information.
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param data An object containing the array of SourcedCreator IDs to enrich.
+     * @param data.creator_ids An array of SourcedCreator UUIDs.
+     * @returns A promise that resolves with a confirmation message and the count of queued jobs.
+     */
+    static bulkEnrichSourcedCreators<T>(campaign_id: string, data: {
+        creator_ids: string[];
+    }): AxiosPromise<Response<T>>;
 }
 export default Campaigns;
