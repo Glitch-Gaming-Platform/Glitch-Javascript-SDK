@@ -37,6 +37,7 @@ import WebsiteAnalytics from "./WebsiteAnalytics";
 import ShortLinks from "./ShortLinks";
 import AIUsage from "./AIUsage";
 import MarketingAgencies from "./MarketingAgencies";
+import TwitchReporting from "./TwitchReporting";
 
 export {Ads};
 export {AccessKeys};
@@ -77,3 +78,4 @@ export {Fingerprinting};
 export {ShortLinks};
 export {AIUsage};
 export {MarketingAgencies};
+export {TwitchReporting};
