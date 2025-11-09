@@ -28,6 +28,14 @@ class TwitchReportingRoute {
             url: '/reporting/twitch/streamers/{twitch_streamer_id}/streaming-schedule',
             method: HTTP_METHODS.GET
         },
+        getStreamerGameHistory: {
+            url: '/reporting/twitch/streamers/{twitch_streamer_id}/games',
+            method: HTTP_METHODS.GET
+        },
+        getStreamersForGame: {
+            url: '/reporting/twitch/games/{game_name}/streamers',
+            method: HTTP_METHODS.GET
+        },
     };
 
 }

@@ -84,6 +84,27 @@ class TwitchReporting {
         return Requests.processRoute(TwitchReportingRoute.routes.getCreatorStreamingSchedule, undefined, { twitch_streamer_id });
     }
 
+     /**
+     * Get a list of games played by a specific streamer.
+     * 
+     * @param twitch_streamer_id The ID of the Twitch streamer.
+     * @returns promise
+     */
+    public static getStreamerGameHistory<T>(twitch_streamer_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TwitchReportingRoute.routes.getStreamerGameHistory, undefined, { twitch_streamer_id });
+    }
+
+    /**
+     * Get a paginated list of streamers who played a specific game.
+     * 
+     * @param game_name The URL-encoded name of the game.
+     * @param params Optional query parameters for pagination (e.g., page, per_page).
+     * @returns promise
+     */
+    public static getStreamersForGame<T>(game_name: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TwitchReportingRoute.routes.getStreamersForGame, undefined, { game_name: encodeURIComponent(game_name) }, params);
+    }
+
 }
 
 export default TwitchReporting;
