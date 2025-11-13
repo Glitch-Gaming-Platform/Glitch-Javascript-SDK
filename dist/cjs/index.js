@@ -28465,6 +28465,13 @@ var ShortLinksRoute = /** @class */ (function () {
         geoDeviceBreakdown: { url: '/shortlinks/reports/geo-device', method: HTTP_METHODS.GET },
         timeSeries: { url: '/shortlinks/reports/time-series', method: HTTP_METHODS.GET },
         referrerReport: { url: '/shortlinks/reports/referrer', method: HTTP_METHODS.GET },
+        campaignPerformance: { url: '/shortlinks/reports/campaign-performance', method: HTTP_METHODS.GET },
+        influencerPerformance: { url: '/shortlinks/reports/influencer-performance', method: HTTP_METHODS.GET },
+        socialPostPerformance: { url: '/shortlinks/reports/social-post-performance', method: HTTP_METHODS.GET },
+        conversionFunnel: { url: '/shortlinks/reports/conversion-funnel', method: HTTP_METHODS.GET },
+        clickHeatmap: { url: '/shortlinks/reports/click-heatmap', method: HTTP_METHODS.GET },
+        botAnalysis: { url: '/shortlinks/reports/bot-analysis', method: HTTP_METHODS.GET },
+        attributionReport: { url: '/shortlinks/reports/attribution', method: HTTP_METHODS.GET },
     };
     return ShortLinksRoute;
 }());
@@ -28527,6 +28534,27 @@ var ShortLinks = /** @class */ (function () {
      */
     ShortLinks.referrerReport = function (params) {
         return Requests.processRoute(ShortLinksRoute.routes.referrerReport, undefined, undefined, params);
+    };
+    ShortLinks.campaignPerformance = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.campaignPerformance, undefined, undefined, params);
+    };
+    ShortLinks.influencerPerformance = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.influencerPerformance, undefined, undefined, params);
+    };
+    ShortLinks.socialPostPerformance = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.socialPostPerformance, undefined, undefined, params);
+    };
+    ShortLinks.conversionFunnel = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.conversionFunnel, undefined, undefined, params);
+    };
+    ShortLinks.clickHeatmap = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.clickHeatmap, undefined, undefined, params);
+    };
+    ShortLinks.botAnalysis = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.botAnalysis, undefined, undefined, params);
+    };
+    ShortLinks.attributionReport = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.attributionReport, undefined, undefined, params);
     };
     return ShortLinks;
 }());

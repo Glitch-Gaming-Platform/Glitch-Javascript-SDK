@@ -6400,6 +6400,13 @@ declare class ShortLinks {
      *  - Example usage: ShortLinks.referrerReport({ short_link_id: 'uuid-here' })
      */
     static referrerReport<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static campaignPerformance<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static influencerPerformance<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static socialPostPerformance<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static conversionFunnel<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static clickHeatmap<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static botAnalysis<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static attributionReport<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class AIUsage {
