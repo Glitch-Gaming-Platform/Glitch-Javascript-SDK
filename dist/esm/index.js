@@ -10949,6 +10949,7 @@ var SocialPostsRoute = /** @class */ (function () {
         createComment: { url: '/socialposts/{post_id}/comments', method: HTTP_METHODS.POST },
         getPostAttribution: { url: '/socialposts/{post_id}/attribution', method: HTTP_METHODS.GET },
         getSocialPostAttributionReport: { url: '/reports/fingerprinting/social-post-attribution', method: HTTP_METHODS.GET },
+        getLinkSummary: { url: '/socialposts/{post_id}/link-summary', method: HTTP_METHODS.GET },
     };
     return SocialPostsRoute;
 }());

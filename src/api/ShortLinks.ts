@@ -132,6 +132,7 @@ class ShortLinks {
   public static socialPostTrackingEffectiveness<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(ShortLinksRoute.routes.socialPostTrackingEffectiveness, undefined, undefined, params);
   }
+  
 }
 
 export default ShortLinks;
