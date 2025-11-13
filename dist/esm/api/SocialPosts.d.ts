@@ -226,5 +226,12 @@ declare class SocialPosts {
     * @returns A promise
     */
     static getSocialPostAttributionReport<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+   * Get a summary of clicks for each short link in a post.
+   *
+   * @param post_id The ID of the social media post.
+   * @returns A promise
+   */
+    static getLinkSummary<T>(post_id: string): AxiosPromise<Response<T>>;
 }
 export default SocialPosts;

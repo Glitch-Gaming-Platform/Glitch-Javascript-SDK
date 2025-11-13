@@ -22,6 +22,7 @@ class ShortLinksRoute {
     clickHeatmap: { url: '/shortlinks/reports/click-heatmap', method: HTTP_METHODS.GET },
     botAnalysis: { url: '/shortlinks/reports/bot-analysis', method: HTTP_METHODS.GET },
     attributionReport: { url: '/shortlinks/reports/attribution', method: HTTP_METHODS.GET },
+    getLinkSummary: { url: '/socialposts/{post_id}/link-summary', method: HTTP_METHODS.GET },
 
     // Social Media Post Reports
     socialPostDeepDive: { url: '/shortlinks/reports/social-post-deep-dive', method: HTTP_METHODS.GET },

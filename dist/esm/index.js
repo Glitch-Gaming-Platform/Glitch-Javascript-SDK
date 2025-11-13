@@ -11233,6 +11233,15 @@ var SocialPosts = /** @class */ (function () {
     SocialPosts.getSocialPostAttributionReport = function (params) {
         return Requests.processRoute(SocialPostsRoute.routes.getSocialPostAttributionReport, undefined, undefined, params);
     };
+    /**
+   * Get a summary of clicks for each short link in a post.
+   *
+   * @param post_id The ID of the social media post.
+   * @returns A promise
+   */
+    SocialPosts.getLinkSummary = function (post_id) {
+        return Requests.processRoute(SocialPostsRoute.routes.getLinkSummary, undefined, { post_id: post_id });
+    };
     return SocialPosts;
 }());
 
@@ -15309,6 +15318,7 @@ var ShortLinksRoute = /** @class */ (function () {
         clickHeatmap: { url: '/shortlinks/reports/click-heatmap', method: HTTP_METHODS.GET },
         botAnalysis: { url: '/shortlinks/reports/bot-analysis', method: HTTP_METHODS.GET },
         attributionReport: { url: '/shortlinks/reports/attribution', method: HTTP_METHODS.GET },
+        getLinkSummary: { url: '/socialposts/{post_id}/link-summary', method: HTTP_METHODS.GET },
         // Social Media Post Reports
         socialPostDeepDive: { url: '/shortlinks/reports/social-post-deep-dive', method: HTTP_METHODS.GET },
         socialPostContentAnalysis: { url: '/shortlinks/reports/social-post-content-analysis', method: HTTP_METHODS.GET },

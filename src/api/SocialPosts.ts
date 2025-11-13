@@ -318,6 +318,16 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.getSocialPostAttributionReport, undefined, undefined, params);
     }
 
+     /**
+    * Get a summary of clicks for each short link in a post.
+    * 
+    * @param post_id The ID of the social media post.
+    * @returns A promise
+    */
+    public static getLinkSummary<T>(post_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.getLinkSummary, undefined, { post_id });
+    }
+
 }
 
 export default SocialPosts;
