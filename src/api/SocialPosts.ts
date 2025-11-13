@@ -297,6 +297,27 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.createComment, data, { post_id });
     }
 
+    /**
+   * Get game install attribution data for a specific social media post.
+   * 
+   * @param post_id The ID of the social media post.
+   * @param params Optional query parameters (start_date, end_date, confidence_threshold).
+   * @returns A promise
+   */
+    public static getPostAttribution<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.getPostAttribution, undefined, { post_id }, params);
+    }
+
+    /**
+    * Get a report of all social media posts for a title that are converting to game installs.
+    * 
+    * @param params Query parameters (title_id, start_date, end_date, confidence_threshold).
+    * @returns A promise
+    */
+    public static getSocialPostAttributionReport<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.getSocialPostAttributionReport, undefined, undefined, params);
+    }
+
 }
 
 export default SocialPosts;

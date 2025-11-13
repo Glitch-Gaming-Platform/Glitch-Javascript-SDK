@@ -10947,6 +10947,8 @@ var SocialPostsRoute = /** @class */ (function () {
         getCommentThread: { url: '/socialposts/comments/{comment_id}/thread', method: HTTP_METHODS.GET },
         updateCommentMetrics: { url: '/socialposts/comments/{comment_id}/update-metrics', method: HTTP_METHODS.PUT },
         createComment: { url: '/socialposts/{post_id}/comments', method: HTTP_METHODS.POST },
+        getPostAttribution: { url: '/socialposts/{post_id}/attribution', method: HTTP_METHODS.GET },
+        getSocialPostAttributionReport: { url: '/reports/fingerprinting/social-post-attribution', method: HTTP_METHODS.GET },
     };
     return SocialPostsRoute;
 }());
@@ -11211,6 +11213,25 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.createComment = function (post_id, data) {
         return Requests.processRoute(SocialPostsRoute.routes.createComment, data, { post_id: post_id });
+    };
+    /**
+   * Get game install attribution data for a specific social media post.
+   *
+   * @param post_id The ID of the social media post.
+   * @param params Optional query parameters (start_date, end_date, confidence_threshold).
+   * @returns A promise
+   */
+    SocialPosts.getPostAttribution = function (post_id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.getPostAttribution, undefined, { post_id: post_id }, params);
+    };
+    /**
+    * Get a report of all social media posts for a title that are converting to game installs.
+    *
+    * @param params Query parameters (title_id, start_date, end_date, confidence_threshold).
+    * @returns A promise
+    */
+    SocialPosts.getSocialPostAttributionReport = function (params) {
+        return Requests.processRoute(SocialPostsRoute.routes.getSocialPostAttributionReport, undefined, undefined, params);
     };
     return SocialPosts;
 }());

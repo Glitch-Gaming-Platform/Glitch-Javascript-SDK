@@ -3588,6 +3588,21 @@ declare class SocialPosts {
      * @returns A promise
      */
     static createComment<T>(post_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+   * Get game install attribution data for a specific social media post.
+   *
+   * @param post_id The ID of the social media post.
+   * @param params Optional query parameters (start_date, end_date, confidence_threshold).
+   * @returns A promise
+   */
+    static getPostAttribution<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Get a report of all social media posts for a title that are converting to game installs.
+    *
+    * @param params Query parameters (title_id, start_date, end_date, confidence_threshold).
+    * @returns A promise
+    */
+    static getSocialPostAttributionReport<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Titles {
