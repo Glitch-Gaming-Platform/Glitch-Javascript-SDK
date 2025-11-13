@@ -116,6 +116,22 @@ class ShortLinks {
   public static attributionReport<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(ShortLinksRoute.routes.attributionReport, undefined, undefined, params);
   }
+
+  public static socialPostDeepDive<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(ShortLinksRoute.routes.socialPostDeepDive, undefined, undefined, params);
+  }
+
+  public static socialPostContentAnalysis<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(ShortLinksRoute.routes.socialPostContentAnalysis, undefined, undefined, params);
+  }
+
+  public static socialPostEngagementBreakdown<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(ShortLinksRoute.routes.socialPostEngagementBreakdown, undefined, undefined, params);
+  }
+
+  public static socialPostTrackingEffectiveness<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(ShortLinksRoute.routes.socialPostTrackingEffectiveness, undefined, undefined, params);
+  }
 }
 
 export default ShortLinks;

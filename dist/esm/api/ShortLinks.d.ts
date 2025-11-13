@@ -44,5 +44,9 @@ declare class ShortLinks {
     static clickHeatmap<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     static botAnalysis<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     static attributionReport<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static socialPostDeepDive<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static socialPostContentAnalysis<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static socialPostEngagementBreakdown<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static socialPostTrackingEffectiveness<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default ShortLinks;

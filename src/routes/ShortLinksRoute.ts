@@ -3,17 +3,17 @@ import HTTP_METHODS from "../constants/HttpMethods";
 
 class ShortLinksRoute {
   public static routes: { [key: string]: Route } = {
-    listShortLinks:    { url: '/shortlinks', method: HTTP_METHODS.GET },
-    createShortLink:   { url: '/shortlinks', method: HTTP_METHODS.POST },
-    viewShortLink:     { url: '/shortlinks/{id}', method: HTTP_METHODS.GET },
-    updateShortLink:   { url: '/shortlinks/{id}', method: HTTP_METHODS.PUT },
+    listShortLinks: { url: '/shortlinks', method: HTTP_METHODS.GET },
+    createShortLink: { url: '/shortlinks', method: HTTP_METHODS.POST },
+    viewShortLink: { url: '/shortlinks/{id}', method: HTTP_METHODS.GET },
+    updateShortLink: { url: '/shortlinks/{id}', method: HTTP_METHODS.PUT },
     // Delete can be added if supported
     // deleteShortLink:   { url: '/shortlinks/{id}', method: HTTP_METHODS.DELETE }
 
-    clickSummary:      { url: '/shortlinks/reports/click-summary', method: HTTP_METHODS.GET },  
-    geoDeviceBreakdown:{ url: '/shortlinks/reports/geo-device',    method: HTTP_METHODS.GET },  
-    timeSeries:        { url: '/shortlinks/reports/time-series',   method: HTTP_METHODS.GET },  
-    referrerReport:    { url: '/shortlinks/reports/referrer',      method: HTTP_METHODS.GET }, 
+    clickSummary: { url: '/shortlinks/reports/click-summary', method: HTTP_METHODS.GET },
+    geoDeviceBreakdown: { url: '/shortlinks/reports/geo-device', method: HTTP_METHODS.GET },
+    timeSeries: { url: '/shortlinks/reports/time-series', method: HTTP_METHODS.GET },
+    referrerReport: { url: '/shortlinks/reports/referrer', method: HTTP_METHODS.GET },
 
     campaignPerformance: { url: '/shortlinks/reports/campaign-performance', method: HTTP_METHODS.GET },
     influencerPerformance: { url: '/shortlinks/reports/influencer-performance', method: HTTP_METHODS.GET },
@@ -22,6 +22,12 @@ class ShortLinksRoute {
     clickHeatmap: { url: '/shortlinks/reports/click-heatmap', method: HTTP_METHODS.GET },
     botAnalysis: { url: '/shortlinks/reports/bot-analysis', method: HTTP_METHODS.GET },
     attributionReport: { url: '/shortlinks/reports/attribution', method: HTTP_METHODS.GET },
+
+    // Social Media Post Reports
+    socialPostDeepDive: { url: '/shortlinks/reports/social-post-deep-dive', method: HTTP_METHODS.GET },
+    socialPostContentAnalysis: { url: '/shortlinks/reports/social-post-content-analysis', method: HTTP_METHODS.GET },
+    socialPostEngagementBreakdown: { url: '/shortlinks/reports/social-post-engagement-breakdown', method: HTTP_METHODS.GET },
+    socialPostTrackingEffectiveness: { url: '/shortlinks/reports/social-post-tracking-effectiveness', method: HTTP_METHODS.GET },
   };
 }
 

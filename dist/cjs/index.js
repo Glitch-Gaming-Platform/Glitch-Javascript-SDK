@@ -28472,6 +28472,11 @@ var ShortLinksRoute = /** @class */ (function () {
         clickHeatmap: { url: '/shortlinks/reports/click-heatmap', method: HTTP_METHODS.GET },
         botAnalysis: { url: '/shortlinks/reports/bot-analysis', method: HTTP_METHODS.GET },
         attributionReport: { url: '/shortlinks/reports/attribution', method: HTTP_METHODS.GET },
+        // Social Media Post Reports
+        socialPostDeepDive: { url: '/shortlinks/reports/social-post-deep-dive', method: HTTP_METHODS.GET },
+        socialPostContentAnalysis: { url: '/shortlinks/reports/social-post-content-analysis', method: HTTP_METHODS.GET },
+        socialPostEngagementBreakdown: { url: '/shortlinks/reports/social-post-engagement-breakdown', method: HTTP_METHODS.GET },
+        socialPostTrackingEffectiveness: { url: '/shortlinks/reports/social-post-tracking-effectiveness', method: HTTP_METHODS.GET },
     };
     return ShortLinksRoute;
 }());
@@ -28555,6 +28560,18 @@ var ShortLinks = /** @class */ (function () {
     };
     ShortLinks.attributionReport = function (params) {
         return Requests.processRoute(ShortLinksRoute.routes.attributionReport, undefined, undefined, params);
+    };
+    ShortLinks.socialPostDeepDive = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.socialPostDeepDive, undefined, undefined, params);
+    };
+    ShortLinks.socialPostContentAnalysis = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.socialPostContentAnalysis, undefined, undefined, params);
+    };
+    ShortLinks.socialPostEngagementBreakdown = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.socialPostEngagementBreakdown, undefined, undefined, params);
+    };
+    ShortLinks.socialPostTrackingEffectiveness = function (params) {
+        return Requests.processRoute(ShortLinksRoute.routes.socialPostTrackingEffectiveness, undefined, undefined, params);
     };
     return ShortLinks;
 }());
