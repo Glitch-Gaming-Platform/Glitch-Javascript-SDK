@@ -813,6 +813,20 @@ class Scheduler {
         return Requests.processRoute(SchedulerRoute.routes.getConversionActions, {}, { scheduler_id }, params);
     }
 
+    /**
+     * Trigger a historical sync for a specific platform on a scheduler.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/syncHistory
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param platform The platform to sync (e.g., 'twitter', 'youtube', 'bluesky').
+     * 
+     * @returns promise
+     */
+    public static syncHistory<T>(scheduler_id: string, platform: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.syncHistory, {}, { scheduler_id, platform }, params);
+    }
+
 }
 
 export default Scheduler;

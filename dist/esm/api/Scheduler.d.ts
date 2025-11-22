@@ -526,5 +526,16 @@ declare class Scheduler {
         platform: string;
         account_id?: string;
     }): AxiosPromise<Response<T>>;
+    /**
+     * Trigger a historical sync for a specific platform on a scheduler.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/syncHistory
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param platform The platform to sync (e.g., 'twitter', 'youtube', 'bluesky').
+     *
+     * @returns promise
+     */
+    static syncHistory<T>(scheduler_id: string, platform: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Scheduler;

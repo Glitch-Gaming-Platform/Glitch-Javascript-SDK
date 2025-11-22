@@ -34,6 +34,7 @@ class SocialPostsRoute {
         getPostAttribution: { url: '/socialposts/{post_id}/attribution', method: HTTP_METHODS.GET },
         getSocialPostAttributionReport: { url: '/reports/fingerprinting/social-post-attribution', method: HTTP_METHODS.GET },
         getLinkSummary: { url: '/socialposts/{post_id}/link-summary', method: HTTP_METHODS.GET },
+        syncHistory: { url: '/social/sync-history/{platform}', method: HTTP_METHODS.POST },
 
     };
 

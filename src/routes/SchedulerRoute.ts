@@ -124,6 +124,8 @@ class SchedulerRoute {
 
         getConversionActions: { url: '/schedulers/{scheduler_id}/conversion-actions', method: HTTP_METHODS.GET },
 
+        syncHistory: { url: '/schedulers/{scheduler_id}/sync-history/{platform}', method: HTTP_METHODS.POST },
+
     };
 }
 

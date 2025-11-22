@@ -3610,6 +3610,16 @@ declare class SocialPosts {
    * @returns A promise
    */
     static getLinkSummary<T>(post_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Trigger a historical sync for a specific platform for the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/syncHistory
+     *
+     * @param platform The platform to sync (e.g., 'twitter', 'youtube', 'bluesky').
+     *
+     * @returns promise
+     */
+    static syncHistory<T>(platform: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Titles {
@@ -6045,6 +6055,17 @@ declare class Scheduler {
         platform: string;
         account_id?: string;
     }): AxiosPromise<Response<T>>;
+    /**
+     * Trigger a historical sync for a specific platform on a scheduler.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/syncHistory
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param platform The platform to sync (e.g., 'twitter', 'youtube', 'bluesky').
+     *
+     * @returns promise
+     */
+    static syncHistory<T>(scheduler_id: string, platform: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Funnel {

@@ -328,6 +328,19 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.getLinkSummary, undefined, { post_id });
     }
 
+    /**
+     * Trigger a historical sync for a specific platform for the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/syncHistory
+     * 
+     * @param platform The platform to sync (e.g., 'twitter', 'youtube', 'bluesky').
+     * 
+     * @returns promise
+     */
+    public static syncHistory<T>(platform: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.syncHistory, {}, { platform }, params);
+    }
+
 }
 
 export default SocialPosts;

@@ -24134,6 +24134,7 @@ var SocialPostsRoute = /** @class */ (function () {
         getPostAttribution: { url: '/socialposts/{post_id}/attribution', method: HTTP_METHODS.GET },
         getSocialPostAttributionReport: { url: '/reports/fingerprinting/social-post-attribution', method: HTTP_METHODS.GET },
         getLinkSummary: { url: '/socialposts/{post_id}/link-summary', method: HTTP_METHODS.GET },
+        syncHistory: { url: '/social/sync-history/{platform}', method: HTTP_METHODS.POST },
     };
     return SocialPostsRoute;
 }());
@@ -24426,6 +24427,18 @@ var SocialPosts = /** @class */ (function () {
    */
     SocialPosts.getLinkSummary = function (post_id) {
         return Requests.processRoute(SocialPostsRoute.routes.getLinkSummary, undefined, { post_id: post_id });
+    };
+    /**
+     * Trigger a historical sync for a specific platform for the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Media%20Posts/syncHistory
+     *
+     * @param platform The platform to sync (e.g., 'twitter', 'youtube', 'bluesky').
+     *
+     * @returns promise
+     */
+    SocialPosts.syncHistory = function (platform, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.syncHistory, {}, { platform: platform }, params);
     };
     return SocialPosts;
 }());
@@ -27272,6 +27285,7 @@ var SchedulerRoute = /** @class */ (function () {
         getSchedulerPostsWithComments: { url: '/schedulers/{scheduler_id}/posts-with-comments', method: HTTP_METHODS.GET },
         syncAllSchedulerComments: { url: '/schedulers/{scheduler_id}/sync-all-comments', method: HTTP_METHODS.POST },
         getConversionActions: { url: '/schedulers/{scheduler_id}/conversion-actions', method: HTTP_METHODS.GET },
+        syncHistory: { url: '/schedulers/{scheduler_id}/sync-history/{platform}', method: HTTP_METHODS.POST },
     };
     return SchedulerRoute;
 }());
@@ -27937,6 +27951,19 @@ var Scheduler = /** @class */ (function () {
     */
     Scheduler.getConversionActions = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.getConversionActions, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Trigger a historical sync for a specific platform on a scheduler.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Scheduler/syncHistory
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param platform The platform to sync (e.g., 'twitter', 'youtube', 'bluesky').
+     *
+     * @returns promise
+     */
+    Scheduler.syncHistory = function (scheduler_id, platform, params) {
+        return Requests.processRoute(SchedulerRoute.routes.syncHistory, {}, { scheduler_id: scheduler_id, platform: platform }, params);
     };
     return Scheduler;
 }());
