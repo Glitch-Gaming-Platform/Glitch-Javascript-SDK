@@ -3620,6 +3620,14 @@ declare class SocialPosts {
      * @returns promise
      */
     static syncHistory<T>(platform: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Perform a social action (Like, Repost, Vote) on a post.
+     *
+     * @param post_id The ID of the social media post.
+     * @param action The action to perform.
+     * @returns promise
+     */
+    static performAction<T>(post_id: string, action: 'like' | 'unlike' | 'repost' | 'unrepost' | 'vote_up' | 'vote_down' | 'unvote'): AxiosPromise<Response<T>>;
 }
 
 declare class Titles {

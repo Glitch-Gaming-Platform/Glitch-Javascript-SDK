@@ -341,6 +341,17 @@ class SocialPosts {
         return Requests.processRoute(SocialPostsRoute.routes.syncHistory, {}, { platform }, params);
     }
 
+    /**
+     * Perform a social action (Like, Repost, Vote) on a post.
+     * 
+     * @param post_id The ID of the social media post.
+     * @param action The action to perform.
+     * @returns promise
+     */
+    public static performAction<T>(post_id: string, action: 'like' | 'unlike' | 'repost' | 'unrepost' | 'vote_up' | 'vote_down' | 'unvote'): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.performAction, { action }, { post_id });
+    }
+    
 }
 
 export default SocialPosts;

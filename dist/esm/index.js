@@ -10951,6 +10951,7 @@ var SocialPostsRoute = /** @class */ (function () {
         getSocialPostAttributionReport: { url: '/reports/fingerprinting/social-post-attribution', method: HTTP_METHODS.GET },
         getLinkSummary: { url: '/socialposts/{post_id}/link-summary', method: HTTP_METHODS.GET },
         syncHistory: { url: '/social/sync-history/{platform}', method: HTTP_METHODS.POST },
+        performAction: { url: '/socialposts/{post_id}/action', method: HTTP_METHODS.POST },
     };
     return SocialPostsRoute;
 }());
@@ -11255,6 +11256,16 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.syncHistory = function (platform, params) {
         return Requests.processRoute(SocialPostsRoute.routes.syncHistory, {}, { platform: platform }, params);
+    };
+    /**
+     * Perform a social action (Like, Repost, Vote) on a post.
+     *
+     * @param post_id The ID of the social media post.
+     * @param action The action to perform.
+     * @returns promise
+     */
+    SocialPosts.performAction = function (post_id, action) {
+        return Requests.processRoute(SocialPostsRoute.routes.performAction, { action: action }, { post_id: post_id });
     };
     return SocialPosts;
 }());

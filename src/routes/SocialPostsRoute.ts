@@ -36,6 +36,8 @@ class SocialPostsRoute {
         getLinkSummary: { url: '/socialposts/{post_id}/link-summary', method: HTTP_METHODS.GET },
         syncHistory: { url: '/social/sync-history/{platform}', method: HTTP_METHODS.POST },
 
+        performAction: { url: '/socialposts/{post_id}/action', method: HTTP_METHODS.POST },
+
     };
 
 }
