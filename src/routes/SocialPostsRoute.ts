@@ -37,7 +37,7 @@ class SocialPostsRoute {
         syncHistory: { url: '/social/sync-history/{platform}', method: HTTP_METHODS.POST },
 
         performAction: { url: '/socialposts/{post_id}/action', method: HTTP_METHODS.POST },
-
+        performCommentAction: { url: '/socialposts/comments/{comment_id}/action', method: HTTP_METHODS.POST },
     };
 
 }
