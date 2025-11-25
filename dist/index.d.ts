@@ -3628,6 +3628,14 @@ declare class SocialPosts {
      * @returns promise
      */
     static performAction<T>(post_id: string, action: 'like' | 'unlike' | 'repost' | 'unrepost' | 'vote_up' | 'vote_down' | 'unvote'): AxiosPromise<Response<T>>;
+    /**
+     * Perform a social action (Like, Repost, Vote) on a comment.
+     *
+     * @param comment_id The ID of the comment.
+     * @param action The action to perform.
+     * @returns promise
+     */
+    static performCommentAction<T>(comment_id: string, action: 'like' | 'unlike' | 'repost' | 'unrepost' | 'vote_up' | 'vote_down' | 'unvote'): AxiosPromise<Response<T>>;
 }
 
 declare class Titles {

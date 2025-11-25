@@ -24136,6 +24136,7 @@ var SocialPostsRoute = /** @class */ (function () {
         getLinkSummary: { url: '/socialposts/{post_id}/link-summary', method: HTTP_METHODS.GET },
         syncHistory: { url: '/social/sync-history/{platform}', method: HTTP_METHODS.POST },
         performAction: { url: '/socialposts/{post_id}/action', method: HTTP_METHODS.POST },
+        performCommentAction: { url: '/socialposts/comments/{comment_id}/action', method: HTTP_METHODS.POST },
     };
     return SocialPostsRoute;
 }());
@@ -24450,6 +24451,16 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.performAction = function (post_id, action) {
         return Requests.processRoute(SocialPostsRoute.routes.performAction, { action: action }, { post_id: post_id });
+    };
+    /**
+     * Perform a social action (Like, Repost, Vote) on a comment.
+     *
+     * @param comment_id The ID of the comment.
+     * @param action The action to perform.
+     * @returns promise
+     */
+    SocialPosts.performCommentAction = function (comment_id, action) {
+        return Requests.processRoute(SocialPostsRoute.routes.performCommentAction, { action: action }, { comment_id: comment_id });
     };
     return SocialPosts;
 }());
