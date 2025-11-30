@@ -5226,6 +5226,13 @@ declare class Newsletters {
      * @returns Promise
      */
     static downloadMarketingChecklist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Join the marketing course waitlist.
+     *
+     * @param data { name, email, game, topics[] }
+     * @returns Promise
+     */
+    static joinCourseWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class PlayTests {

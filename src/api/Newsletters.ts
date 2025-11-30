@@ -21,6 +21,15 @@ class Newsletters {
     }
 
    
+    /**
+     * Join the marketing course waitlist.
+     * 
+     * @param data { name, email, game, topics[] }
+     * @returns Promise
+     */
+    public static joinCourseWaitlist<T>(data : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(NewslettersRoutes.routes.joinCourseWaitlist, data, undefined, params);
+    }
 
 
 }

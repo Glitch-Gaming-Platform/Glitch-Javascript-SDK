@@ -13606,6 +13606,7 @@ var NewslettersRoutes = /** @class */ (function () {
     }
     NewslettersRoutes.routes = {
         downloadMarketingChecklist: { url: '/newsletters/downloadMarketingChecklist', method: HTTP_METHODS.POST },
+        joinCourseWaitlist: { url: '/newsletters/joinCourseWaitlist', method: HTTP_METHODS.POST },
     };
     return NewslettersRoutes;
 }());
@@ -13624,6 +13625,15 @@ var Newsletters = /** @class */ (function () {
      */
     Newsletters.downloadMarketingChecklist = function (data, params) {
         return Requests.processRoute(NewslettersRoutes.routes.downloadMarketingChecklist, data, undefined, params);
+    };
+    /**
+     * Join the marketing course waitlist.
+     *
+     * @param data { name, email, game, topics[] }
+     * @returns Promise
+     */
+    Newsletters.joinCourseWaitlist = function (data, params) {
+        return Requests.processRoute(NewslettersRoutes.routes.joinCourseWaitlist, data, undefined, params);
     };
     return Newsletters;
 }());
