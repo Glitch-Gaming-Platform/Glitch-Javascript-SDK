@@ -537,5 +537,14 @@ declare class Scheduler {
      * @returns promise
      */
     static syncHistory<T>(scheduler_id: string, platform: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Generate hashtags for content based on scheduler settings.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data { content: string, platform?: string }
+     *
+     * @returns promise
+     */
+    static generateHashtags<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Scheduler;

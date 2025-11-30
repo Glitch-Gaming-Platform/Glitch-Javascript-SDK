@@ -14124,6 +14124,10 @@ var SchedulerRoute = /** @class */ (function () {
         syncAllSchedulerComments: { url: '/schedulers/{scheduler_id}/sync-all-comments', method: HTTP_METHODS.POST },
         getConversionActions: { url: '/schedulers/{scheduler_id}/conversion-actions', method: HTTP_METHODS.GET },
         syncHistory: { url: '/schedulers/{scheduler_id}/sync-history/{platform}', method: HTTP_METHODS.POST },
+        generateHashtags: {
+            url: '/schedulers/{scheduler_id}/generateHashtags',
+            method: HTTP_METHODS.POST
+        },
     };
     return SchedulerRoute;
 }());
@@ -14802,6 +14806,17 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.syncHistory = function (scheduler_id, platform, params) {
         return Requests.processRoute(SchedulerRoute.routes.syncHistory, {}, { scheduler_id: scheduler_id, platform: platform }, params);
+    };
+    /**
+     * Generate hashtags for content based on scheduler settings.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data { content: string, platform?: string }
+     *
+     * @returns promise
+     */
+    Scheduler.generateHashtags = function (scheduler_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.generateHashtags, data, { scheduler_id: scheduler_id }, params);
     };
     return Scheduler;
 }());

@@ -777,13 +777,13 @@ class Scheduler {
         return Requests.processRoute(SchedulerRoute.routes.generateRedditContent, data, { scheduler_id }, params);
     }
 
-     /**
-     * Get all posts and comments for a scheduler.
-     *
-     * @param scheduler_id The ID of the promotion schedule.
-     * @param params Optional query parameters for filtering and sorting.
-     * @returns promise
-     */
+    /**
+    * Get all posts and comments for a scheduler.
+    *
+    * @param scheduler_id The ID of the promotion schedule.
+    * @param params Optional query parameters for filtering and sorting.
+    * @returns promise
+    */
     public static getSchedulerPostsWithComments<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(SchedulerRoute.routes.getSchedulerPostsWithComments, {}, { scheduler_id }, params);
     }
@@ -799,16 +799,16 @@ class Scheduler {
         return Requests.processRoute(SchedulerRoute.routes.syncAllSchedulerComments, {}, { scheduler_id }, params);
     }
 
-     /**
-     * Get ad conversion actions for a specific platform linked to the scheduler.
-     * 
-     * @see https://api.glitch.fun/api/documentation#/Scheduler/getSchedulerConversionActions
-     * 
-     * @param scheduler_id The ID of the promotion schedule.
-     * @param params Query parameters, including 'platform' (required) and 'account_id' (optional).
-     * 
-     * @returns promise
-     */
+    /**
+    * Get ad conversion actions for a specific platform linked to the scheduler.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Scheduler/getSchedulerConversionActions
+    * 
+    * @param scheduler_id The ID of the promotion schedule.
+    * @param params Query parameters, including 'platform' (required) and 'account_id' (optional).
+    * 
+    * @returns promise
+    */
     public static getConversionActions<T>(scheduler_id: string, params: { platform: string; account_id?: string }): AxiosPromise<Response<T>> {
         return Requests.processRoute(SchedulerRoute.routes.getConversionActions, {}, { scheduler_id }, params);
     }
@@ -825,6 +825,18 @@ class Scheduler {
      */
     public static syncHistory<T>(scheduler_id: string, platform: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(SchedulerRoute.routes.syncHistory, {}, { scheduler_id, platform }, params);
+    }
+
+    /**
+     * Generate hashtags for content based on scheduler settings.
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data { content: string, platform?: string }
+     * 
+     * @returns promise
+     */
+    public static generateHashtags<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.generateHashtags, data, { scheduler_id }, params);
     }
 
 }
