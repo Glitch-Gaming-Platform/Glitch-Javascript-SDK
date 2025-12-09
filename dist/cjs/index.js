@@ -25251,6 +25251,19 @@ var CampaignsRoute = /** @class */ (function () {
         updateCreatorBucket: { url: '/campaigns/{campaign_id}/sourcing/creators/{creator_id}/bucket', method: HTTP_METHODS.PUT },
         reRankSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/re-rank', method: HTTP_METHODS.POST },
         bulkEnrichSourcedCreators: { url: '/campaigns/{campaign_id}/sourcing/creators/bulk-enrich', method: HTTP_METHODS.POST },
+        getInfluencerInstallReport: { url: '/campaigns/{campaign_id}/reports/influencer-installs', method: HTTP_METHODS.GET },
+        getSpecificInfluencerInstallReport: {
+            url: '/campaigns/{campaign_id}/reports/influencer-installs/{influencer_id}',
+            method: HTTP_METHODS.GET
+        },
+        generateInfluencerLandingPage: {
+            url: '/campaigns/{campaign_id}/influencers/{user_id}/landing-page/generate',
+            method: HTTP_METHODS.POST
+        },
+        updateInfluencerLandingPage: {
+            url: '/campaigns/{campaign_id}/influencers/{user_id}/landing-page',
+            method: HTTP_METHODS.PUT
+        },
     };
     return CampaignsRoute;
 }());
@@ -26095,6 +26108,42 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.bulkEnrichSourcedCreators = function (campaign_id, data) {
         return Requests.processRoute(CampaignsRoute.routes.bulkEnrichSourcedCreators, data, { campaign_id: campaign_id });
+    };
+    /**
+     * Get install attribution breakdown by influencer.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInstallReport
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param params Optional query parameters (start_date, end_date).
+     * @returns promise
+     */
+    Campaigns.getInfluencerInstallReport = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.getInfluencerInstallReport, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Get detailed install report for a specific influencer.
+     * Accessible by Campaign Owners and the specific Influencer.
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param influencer_id The UUID of the influencer.
+     * @param params Optional query parameters (start_date, end_date).
+     * @returns promise
+     */
+    Campaigns.getSpecificInfluencerInstallReport = function (campaign_id, influencer_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.getSpecificInfluencerInstallReport, undefined, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
+    };
+    /**
+     * Generate AI Landing Page for an Influencer Campaign.
+     */
+    Campaigns.generateInfluencerLandingPage = function (campaign_id, user_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.generateInfluencerLandingPage, data, { campaign_id: campaign_id, user_id: user_id });
+    };
+    /**
+     * Update settings for the Influencer Landing Page.
+     */
+    Campaigns.updateInfluencerLandingPage = function (campaign_id, user_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.updateInfluencerLandingPage, data, { campaign_id: campaign_id, user_id: user_id });
     };
     return Campaigns;
 }());

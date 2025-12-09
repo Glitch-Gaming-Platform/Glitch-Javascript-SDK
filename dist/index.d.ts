@@ -4765,6 +4765,40 @@ declare class Campaigns {
     static bulkEnrichSourcedCreators<T>(campaign_id: string, data: {
         creator_ids: string[];
     }): AxiosPromise<Response<T>>;
+    /**
+     * Get install attribution breakdown by influencer.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInstallReport
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param params Optional query parameters (start_date, end_date).
+     * @returns promise
+     */
+    static getInfluencerInstallReport<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get detailed install report for a specific influencer.
+     * Accessible by Campaign Owners and the specific Influencer.
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param influencer_id The UUID of the influencer.
+     * @param params Optional query parameters (start_date, end_date).
+     * @returns promise
+     */
+    static getSpecificInfluencerInstallReport<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Generate AI Landing Page for an Influencer Campaign.
+     */
+    static generateInfluencerLandingPage<T>(campaign_id: string, user_id: string, data: {
+        prompt: string;
+        privacy_mode: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Update settings for the Influencer Landing Page.
+     */
+    static updateInfluencerLandingPage<T>(campaign_id: string, user_id: string, data: {
+        is_landing_page_active?: boolean;
+        landing_page_slug?: string;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {

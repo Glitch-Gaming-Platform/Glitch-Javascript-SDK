@@ -974,6 +974,67 @@ class Campaigns {
     }
 
 
+    /**
+     * Get install attribution breakdown by influencer.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInstallReport
+     * 
+     * @param campaign_id The UUID of the campaign.
+     * @param params Optional query parameters (start_date, end_date).
+     * @returns promise
+     */
+    public static getInfluencerInstallReport<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.getInfluencerInstallReport, undefined, { campaign_id }, params);
+    }
+
+    /**
+     * Get detailed install report for a specific influencer.
+     * Accessible by Campaign Owners and the specific Influencer.
+     * 
+     * @param campaign_id The UUID of the campaign.
+     * @param influencer_id The UUID of the influencer.
+     * @param params Optional query parameters (start_date, end_date).
+     * @returns promise
+     */
+    public static getSpecificInfluencerInstallReport<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            CampaignsRoute.routes.getSpecificInfluencerInstallReport, 
+            undefined, 
+            { campaign_id, influencer_id }, 
+            params
+        );
+    }
+
+    /**
+     * Generate AI Landing Page for an Influencer Campaign.
+     */
+    public static generateInfluencerLandingPage<T>(
+        campaign_id: string, 
+        user_id: string, 
+        data: { prompt: string, privacy_mode: string }
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            CampaignsRoute.routes.generateInfluencerLandingPage, 
+            data, 
+            { campaign_id, user_id }
+        );
+    }
+
+    /**
+     * Update settings for the Influencer Landing Page.
+     */
+    public static updateInfluencerLandingPage<T>(
+        campaign_id: string, 
+        user_id: string, 
+        data: { is_landing_page_active?: boolean, landing_page_slug?: string }
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            CampaignsRoute.routes.updateInfluencerLandingPage, 
+            data, 
+            { campaign_id, user_id }
+        );
+    }
+
 }
 
 export default Campaigns;
