@@ -71,5 +71,19 @@ declare class Funnel {
      * @returns Promise with the gamified funnel data
      */
     static gamify<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Get comprehensive funnel diagnostic report.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels_diagnostic
+    *
+    * @param params Query parameters:
+    *  - title_id (string): Required
+    *  - start_date (string): Required (YYYY-MM-DD)
+    *  - end_date (string): Required (YYYY-MM-DD)
+    *  - group_by (string): Optional ('none', 'platform', 'utm_source')
+    *
+    * @returns Promise with diagnostic data including conversion rates, costs, and health indicators
+    */
+    static diagnostic<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Funnel;

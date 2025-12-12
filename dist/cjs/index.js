@@ -28077,6 +28077,7 @@ var FunnelRoutes = /** @class */ (function () {
         monthly: { url: '/funnels/monthly', method: HTTP_METHODS.GET },
         yearly: { url: '/funnels/yearly', method: HTTP_METHODS.GET },
         gamify: { url: '/funnels/gamify', method: HTTP_METHODS.GET },
+        diagnostic: { url: '/funnels/diagnostic', method: HTTP_METHODS.GET },
     };
     return FunnelRoutes;
 }());
@@ -28170,6 +28171,22 @@ var Funnel = /** @class */ (function () {
      */
     Funnel.gamify = function (params) {
         return Requests.processRoute(FunnelRoutes.routes.gamify, undefined, undefined, params);
+    };
+    /**
+    * Get comprehensive funnel diagnostic report.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Funnel%20Metrics/get_funnels_diagnostic
+    *
+    * @param params Query parameters:
+    *  - title_id (string): Required
+    *  - start_date (string): Required (YYYY-MM-DD)
+    *  - end_date (string): Required (YYYY-MM-DD)
+    *  - group_by (string): Optional ('none', 'platform', 'utm_source')
+    *
+    * @returns Promise with diagnostic data including conversion rates, costs, and health indicators
+    */
+    Funnel.diagnostic = function (params) {
+        return Requests.processRoute(FunnelRoutes.routes.diagnostic, undefined, undefined, params);
     };
     return Funnel;
 }());
