@@ -94,6 +94,10 @@ class CampaignsRoute {
       url: '/campaigns/{campaign_id}/influencers/{user_id}/landing-page',
       method: HTTP_METHODS.PUT
     },
+    exportInfluencerInvites: {
+      url: '/campaigns/{campaign_id}/influencers/invites/export',
+      method: HTTP_METHODS.POST
+    },
 
 
   };

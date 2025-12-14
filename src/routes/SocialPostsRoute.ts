@@ -38,6 +38,9 @@ class SocialPostsRoute {
 
         performAction: { url: '/socialposts/{post_id}/action', method: HTTP_METHODS.POST },
         performCommentAction: { url: '/socialposts/comments/{comment_id}/action', method: HTTP_METHODS.POST },
+
+        creativePerformance: { url: '/socialposts/creative-performance', method: HTTP_METHODS.GET },
+
     };
 
 }

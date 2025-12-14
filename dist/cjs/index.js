@@ -24137,6 +24137,7 @@ var SocialPostsRoute = /** @class */ (function () {
         syncHistory: { url: '/social/sync-history/{platform}', method: HTTP_METHODS.POST },
         performAction: { url: '/socialposts/{post_id}/action', method: HTTP_METHODS.POST },
         performCommentAction: { url: '/socialposts/comments/{comment_id}/action', method: HTTP_METHODS.POST },
+        creativePerformance: { url: '/socialposts/creative-performance', method: HTTP_METHODS.GET },
     };
     return SocialPostsRoute;
 }());
@@ -24462,6 +24463,12 @@ var SocialPosts = /** @class */ (function () {
     SocialPosts.performCommentAction = function (comment_id, action) {
         return Requests.processRoute(SocialPostsRoute.routes.performCommentAction, { action: action }, { comment_id: comment_id });
     };
+    /**
+     * Get ad creative performance matrix.
+     */
+    SocialPosts.creativePerformance = function (params) {
+        return Requests.processRoute(SocialPostsRoute.routes.creativePerformance, {}, {}, params);
+    };
     return SocialPosts;
 }());
 
@@ -24615,6 +24622,7 @@ var TitlesRoute = /** @class */ (function () {
         translateLandingPage: { url: '/landing-pages/{landing_page_id}/translate', method: HTTP_METHODS.POST },
         generateLandingPageAiContent: { url: '/landing-pages/{landing_page_id}/generate-ai-content', method: HTTP_METHODS.POST },
         saveLandingPageTranslation: { url: '/landing-pages/{landing_page_id}/translations', method: HTTP_METHODS.POST },
+        cohorts: { url: '/titles/{title_id}/installs/cohorts', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());
@@ -25161,6 +25169,9 @@ var Titles = /** @class */ (function () {
     Titles.saveLandingPageTranslation = function (landing_page_id, translationData, params) {
         return Requests.processRoute(TitlesRoute.routes.saveLandingPageTranslation, translationData, { landing_page_id: landing_page_id }, params);
     };
+    Titles.cohorts = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.cohorts, {}, { title_id: title_id }, params);
+    };
     /**
  * Get an aggregated report of ad conversion events for charting.
  */
@@ -25263,6 +25274,10 @@ var CampaignsRoute = /** @class */ (function () {
         updateInfluencerLandingPage: {
             url: '/campaigns/{campaign_id}/influencers/{user_id}/landing-page',
             method: HTTP_METHODS.PUT
+        },
+        exportInfluencerInvites: {
+            url: '/campaigns/{campaign_id}/influencers/invites/export',
+            method: HTTP_METHODS.POST
         },
     };
     return CampaignsRoute;
@@ -26144,6 +26159,15 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.updateInfluencerLandingPage = function (campaign_id, user_id, data) {
         return Requests.processRoute(CampaignsRoute.routes.updateInfluencerLandingPage, data, { campaign_id: campaign_id, user_id: user_id });
+    };
+    /**
+     * Export influencer invites to CSV.
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param data Filters for the export (stages, status).
+     */
+    Campaigns.exportInfluencerInvites = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.exportInfluencerInvites, data, { campaign_id: campaign_id });
     };
     return Campaigns;
 }());

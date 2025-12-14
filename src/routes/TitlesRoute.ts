@@ -163,6 +163,8 @@ class TitlesRoute {
     generateLandingPageAiContent: { url: '/landing-pages/{landing_page_id}/generate-ai-content', method: HTTP_METHODS.POST },
     saveLandingPageTranslation: { url: '/landing-pages/{landing_page_id}/translations', method: HTTP_METHODS.POST },
 
+    cohorts: { url: '/titles/{title_id}/installs/cohorts', method: HTTP_METHODS.GET },
+
   };
 
 }

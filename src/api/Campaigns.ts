@@ -1035,6 +1035,16 @@ class Campaigns {
         );
     }
 
+    /**
+     * Export influencer invites to CSV.
+     * 
+     * @param campaign_id The UUID of the campaign.
+     * @param data Filters for the export (stages, status).
+     */
+    public static exportInfluencerInvites<T>(campaign_id: string, data: { stages?: string[], status?: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.exportInfluencerInvites, data, { campaign_id: campaign_id });
+    }
+
 }
 
 export default Campaigns;

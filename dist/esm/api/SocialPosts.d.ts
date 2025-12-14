@@ -259,5 +259,9 @@ declare class SocialPosts {
      * @returns promise
      */
     static performCommentAction<T>(comment_id: string, action: 'like' | 'unlike' | 'repost' | 'unrepost' | 'vote_up' | 'vote_down' | 'unvote'): AxiosPromise<Response<T>>;
+    /**
+     * Get ad creative performance matrix.
+     */
+    static creativePerformance<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default SocialPosts;

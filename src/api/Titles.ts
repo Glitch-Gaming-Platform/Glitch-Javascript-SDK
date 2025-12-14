@@ -835,6 +835,10 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.saveLandingPageTranslation, translationData, { landing_page_id }, params);
     }
 
+    public static cohorts<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.cohorts, {}, { title_id }, params);
+    }
+
     /**
  * Get an aggregated report of ad conversion events for charting.
  */

@@ -419,6 +419,7 @@ declare class Titles {
      * @param translationData The full translation object to be saved.
      */
     static saveLandingPageTranslation<T>(landing_page_id: string, translationData: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static cohorts<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
  * Get an aggregated report of ad conversion events for charting.
  */

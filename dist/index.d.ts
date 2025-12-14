@@ -3636,6 +3636,10 @@ declare class SocialPosts {
      * @returns promise
      */
     static performCommentAction<T>(comment_id: string, action: 'like' | 'unlike' | 'repost' | 'unrepost' | 'vote_up' | 'vote_down' | 'unvote'): AxiosPromise<Response<T>>;
+    /**
+     * Get ad creative performance matrix.
+     */
+    static creativePerformance<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Titles {
@@ -4057,6 +4061,7 @@ declare class Titles {
      * @param translationData The full translation object to be saved.
      */
     static saveLandingPageTranslation<T>(landing_page_id: string, translationData: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static cohorts<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
  * Get an aggregated report of ad conversion events for charting.
  */
@@ -4798,6 +4803,16 @@ declare class Campaigns {
     static updateInfluencerLandingPage<T>(campaign_id: string, user_id: string, data: {
         is_landing_page_active?: boolean;
         landing_page_slug?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Export influencer invites to CSV.
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param data Filters for the export (stages, status).
+     */
+    static exportInfluencerInvites<T>(campaign_id: string, data: {
+        stages?: string[];
+        status?: string;
     }): AxiosPromise<Response<T>>;
 }
 

@@ -731,5 +731,15 @@ declare class Campaigns {
         is_landing_page_active?: boolean;
         landing_page_slug?: string;
     }): AxiosPromise<Response<T>>;
+    /**
+     * Export influencer invites to CSV.
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param data Filters for the export (stages, status).
+     */
+    static exportInfluencerInvites<T>(campaign_id: string, data: {
+        stages?: string[];
+        status?: string;
+    }): AxiosPromise<Response<T>>;
 }
 export default Campaigns;

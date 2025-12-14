@@ -362,6 +362,13 @@ class SocialPosts {
     public static performCommentAction<T>(comment_id: string, action: 'like' | 'unlike' | 'repost' | 'unrepost' | 'vote_up' | 'vote_down' | 'unvote'): AxiosPromise<Response<T>> {
         return Requests.processRoute(SocialPostsRoute.routes.performCommentAction, { action }, { comment_id });
     }
+
+    /**
+     * Get ad creative performance matrix.
+     */
+    public static creativePerformance<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.creativePerformance, {}, {}, params);
+    }
 }
 
 export default SocialPosts;
