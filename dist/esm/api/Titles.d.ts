@@ -429,5 +429,51 @@ declare class Titles {
         group_by: 'platform' | 'status' | 'event_type';
         unique_clicks?: boolean;
     }): AxiosPromise<Response<T>>;
+    /**
+     * Get a geographical distribution report for installs.
+     * @param params e.g., { group_by: 'country_code', start_date: '2025-01-01' }
+     */
+    static geoReport<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List and filter raw game events (telemetry).
+     */
+    static listEvents<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Record a single in-game action.
+     */
+    static createEvent<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Record multiple events in one request (Batching).
+     * @param data { events: Array<{game_install_id, step_key, action_key, metadata?}> }
+     */
+    static bulkCreateEvents<T>(title_id: string, data: {
+        events: object[];
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get a summary of actions per step.
+     */
+    static eventSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all unique step and action keys used in this title.
+     */
+    static eventDistinctKeys<T>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+     * List all saved behavioral funnel definitions.
+     */
+    static listBehavioralFunnels<T>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Create and save a new behavioral funnel definition.
+     * @param data { name: string, description?: string, steps: string[] }
+     */
+    static createBehavioralFunnel<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Generate the drop-off report for a specific behavioral funnel.
+     * @param params { start_date?: string, end_date?: string }
+     */
+    static behavioralFunnelReport<T>(title_id: string, funnel_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a saved behavioral funnel definition.
+     */
+    static deleteBehavioralFunnel<T>(title_id: string, funnel_id: string): AxiosPromise<Response<T>>;
 }
 export default Titles;

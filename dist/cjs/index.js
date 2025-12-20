@@ -24685,6 +24685,18 @@ var TitlesRoute = /** @class */ (function () {
         generateLandingPageAiContent: { url: '/landing-pages/{landing_page_id}/generate-ai-content', method: HTTP_METHODS.POST },
         saveLandingPageTranslation: { url: '/landing-pages/{landing_page_id}/translations', method: HTTP_METHODS.POST },
         cohorts: { url: '/titles/{title_id}/installs/cohorts', method: HTTP_METHODS.GET },
+        geoReport: { url: '/titles/{title_id}/installs/geo-report', method: HTTP_METHODS.GET },
+        // Game Events (Behavioral Telemetry)
+        listEvents: { url: '/titles/{title_id}/events', method: HTTP_METHODS.GET },
+        createEvent: { url: '/titles/{title_id}/events', method: HTTP_METHODS.POST },
+        bulkCreateEvents: { url: '/titles/{title_id}/events/bulk', method: HTTP_METHODS.POST },
+        eventSummary: { url: '/titles/{title_id}/events/summary', method: HTTP_METHODS.GET },
+        eventDistinctKeys: { url: '/titles/{title_id}/events/distinct-keys', method: HTTP_METHODS.GET },
+        // Behavioral Funnels
+        listBehavioralFunnels: { url: '/titles/{title_id}/behavioral-funnels', method: HTTP_METHODS.GET },
+        createBehavioralFunnel: { url: '/titles/{title_id}/behavioral-funnels', method: HTTP_METHODS.POST },
+        behavioralFunnelReport: { url: '/titles/{title_id}/behavioral-funnels/{funnel_id}/report', method: HTTP_METHODS.GET },
+        deleteBehavioralFunnel: { url: '/titles/{title_id}/behavioral-funnels/{funnel_id}', method: HTTP_METHODS.DELETE },
     };
     return TitlesRoute;
 }());
@@ -25239,6 +25251,70 @@ var Titles = /** @class */ (function () {
  */
     Titles.getAdConversionEventsReport = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.getAdConversionEventsReport, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Get a geographical distribution report for installs.
+     * @param params e.g., { group_by: 'country_code', start_date: '2025-01-01' }
+     */
+    Titles.geoReport = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.geoReport, {}, { title_id: title_id }, params);
+    };
+    /**
+     * List and filter raw game events (telemetry).
+     */
+    Titles.listEvents = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.listEvents, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Record a single in-game action.
+     */
+    Titles.createEvent = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.createEvent, data, { title_id: title_id });
+    };
+    /**
+     * Record multiple events in one request (Batching).
+     * @param data { events: Array<{game_install_id, step_key, action_key, metadata?}> }
+     */
+    Titles.bulkCreateEvents = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.bulkCreateEvents, data, { title_id: title_id });
+    };
+    /**
+     * Get a summary of actions per step.
+     */
+    Titles.eventSummary = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.eventSummary, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Get all unique step and action keys used in this title.
+     */
+    Titles.eventDistinctKeys = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.eventDistinctKeys, {}, { title_id: title_id });
+    };
+    /**
+     * List all saved behavioral funnel definitions.
+     */
+    Titles.listBehavioralFunnels = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.listBehavioralFunnels, {}, { title_id: title_id });
+    };
+    /**
+     * Create and save a new behavioral funnel definition.
+     * @param data { name: string, description?: string, steps: string[] }
+     */
+    Titles.createBehavioralFunnel = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.createBehavioralFunnel, data, { title_id: title_id });
+    };
+    /**
+     * Generate the drop-off report for a specific behavioral funnel.
+     * @param params { start_date?: string, end_date?: string }
+     */
+    Titles.behavioralFunnelReport = function (title_id, funnel_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.behavioralFunnelReport, {}, { title_id: title_id, funnel_id: funnel_id }, params);
+    };
+    /**
+     * Delete a saved behavioral funnel definition.
+     */
+    Titles.deleteBehavioralFunnel = function (title_id, funnel_id) {
+        return Requests.processRoute(TitlesRoute.routes.deleteBehavioralFunnel, {}, { title_id: title_id, funnel_id: funnel_id });
     };
     return Titles;
 }());

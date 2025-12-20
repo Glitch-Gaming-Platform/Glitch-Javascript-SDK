@@ -858,6 +858,80 @@ class Titles {
             params
         );
     }
+
+    /**
+     * Get a geographical distribution report for installs.
+     * @param params e.g., { group_by: 'country_code', start_date: '2025-01-01' }
+     */
+    public static geoReport<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.geoReport, {}, { title_id }, params);
+    }
+
+    /**
+     * List and filter raw game events (telemetry).
+     */
+    public static listEvents<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.listEvents, {}, { title_id }, params);
+    }
+
+    /**
+     * Record a single in-game action.
+     */
+    public static createEvent<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.createEvent, data, { title_id });
+    }
+
+    /**
+     * Record multiple events in one request (Batching).
+     * @param data { events: Array<{game_install_id, step_key, action_key, metadata?}> }
+     */
+    public static bulkCreateEvents<T>(title_id: string, data: { events: object[] }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.bulkCreateEvents, data, { title_id });
+    }
+
+    /**
+     * Get a summary of actions per step.
+     */
+    public static eventSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.eventSummary, {}, { title_id }, params);
+    }
+
+    /**
+     * Get all unique step and action keys used in this title.
+     */
+    public static eventDistinctKeys<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.eventDistinctKeys, {}, { title_id });
+    }
+
+    /**
+     * List all saved behavioral funnel definitions.
+     */
+    public static listBehavioralFunnels<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.listBehavioralFunnels, {}, { title_id });
+    }
+
+    /**
+     * Create and save a new behavioral funnel definition.
+     * @param data { name: string, description?: string, steps: string[] }
+     */
+    public static createBehavioralFunnel<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.createBehavioralFunnel, data, { title_id });
+    }
+
+    /**
+     * Generate the drop-off report for a specific behavioral funnel.
+     * @param params { start_date?: string, end_date?: string }
+     */
+    public static behavioralFunnelReport<T>(title_id: string, funnel_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.behavioralFunnelReport, {}, { title_id, funnel_id }, params);
+    }
+
+    /**
+     * Delete a saved behavioral funnel definition.
+     */
+    public static deleteBehavioralFunnel<T>(title_id: string, funnel_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.deleteBehavioralFunnel, {}, { title_id, funnel_id });
+    }
 }
 
 export default Titles;

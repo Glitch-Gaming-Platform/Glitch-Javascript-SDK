@@ -165,6 +165,21 @@ class TitlesRoute {
 
     cohorts: { url: '/titles/{title_id}/installs/cohorts', method: HTTP_METHODS.GET },
 
+    geoReport: { url: '/titles/{title_id}/installs/geo-report', method: HTTP_METHODS.GET },
+
+    // Game Events (Behavioral Telemetry)
+    listEvents: { url: '/titles/{title_id}/events', method: HTTP_METHODS.GET },
+    createEvent: { url: '/titles/{title_id}/events', method: HTTP_METHODS.POST },
+    bulkCreateEvents: { url: '/titles/{title_id}/events/bulk', method: HTTP_METHODS.POST },
+    eventSummary: { url: '/titles/{title_id}/events/summary', method: HTTP_METHODS.GET },
+    eventDistinctKeys: { url: '/titles/{title_id}/events/distinct-keys', method: HTTP_METHODS.GET },
+
+    // Behavioral Funnels
+    listBehavioralFunnels: { url: '/titles/{title_id}/behavioral-funnels', method: HTTP_METHODS.GET },
+    createBehavioralFunnel: { url: '/titles/{title_id}/behavioral-funnels', method: HTTP_METHODS.POST },
+    behavioralFunnelReport: { url: '/titles/{title_id}/behavioral-funnels/{funnel_id}/report', method: HTTP_METHODS.GET },
+    deleteBehavioralFunnel: { url: '/titles/{title_id}/behavioral-funnels/{funnel_id}', method: HTTP_METHODS.DELETE },
+
   };
 
 }
