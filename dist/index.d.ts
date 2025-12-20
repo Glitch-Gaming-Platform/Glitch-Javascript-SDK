@@ -3640,6 +3640,52 @@ declare class SocialPosts {
      * Get ad creative performance matrix.
      */
     static creativePerformance<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * List social media conversations.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/listSocialConversations
+    *
+    * @param params Query parameters (scheduler_id, platform, page, per_page).
+    * @returns promise
+    */
+    static listConversations<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Sync conversations from external platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/syncSocialConversations
+     *
+     * @param data Body parameters (platform, scheduler_id).
+     * @returns promise
+     */
+    static syncConversations<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Get a specific conversation.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/getSocialConversation
+     *
+     * @param conversation_id The ID of the conversation.
+     * @returns promise
+     */
+    static getConversation<T>(conversation_id: string): AxiosPromise<Response<T>>;
+    /**
+     * List messages in a conversation.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/listSocialMessages
+     *
+     * @param conversation_id The ID of the conversation.
+     * @param params Query parameters (sync, page, per_page).
+     * @returns promise
+     */
+    static getConversationMessages<T>(conversation_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send a Direct Message.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/sendSocialMessage
+     *
+     * @param data Body parameters (message, conversation_id, recipient_id, platform, scheduler_id, media_ids).
+     * @returns promise
+     */
+    static sendSocialMessage<T>(data: object): AxiosPromise<Response<T>>;
 }
 
 declare class Titles {

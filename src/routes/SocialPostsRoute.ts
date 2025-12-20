@@ -41,6 +41,13 @@ class SocialPostsRoute {
 
         creativePerformance: { url: '/socialposts/creative-performance', method: HTTP_METHODS.GET },
 
+         // Social Messaging (DM) Routes
+        listConversations: { url: '/social/conversations', method: HTTP_METHODS.GET },
+        syncConversations: { url: '/social/conversations/sync', method: HTTP_METHODS.POST },
+        getConversation: { url: '/social/conversations/{conversation_id}', method: HTTP_METHODS.GET },
+        getConversationMessages: { url: '/social/conversations/{conversation_id}/messages', method: HTTP_METHODS.GET },
+        sendSocialMessage: { url: '/social/messages', method: HTTP_METHODS.POST },
+
     };
 
 }

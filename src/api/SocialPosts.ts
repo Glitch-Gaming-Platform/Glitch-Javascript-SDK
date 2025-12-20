@@ -369,6 +369,67 @@ class SocialPosts {
     public static creativePerformance<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(SocialPostsRoute.routes.creativePerformance, {}, {}, params);
     }
+
+     /**
+     * List social media conversations.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/listSocialConversations
+     * 
+     * @param params Query parameters (scheduler_id, platform, page, per_page).
+     * @returns promise
+     */
+    public static listConversations<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.listConversations, undefined, undefined, params);
+    }
+
+    /**
+     * Sync conversations from external platform.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/syncSocialConversations
+     * 
+     * @param data Body parameters (platform, scheduler_id).
+     * @returns promise
+     */
+    public static syncConversations<T>(data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.syncConversations, data);
+    }
+
+    /**
+     * Get a specific conversation.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/getSocialConversation
+     * 
+     * @param conversation_id The ID of the conversation.
+     * @returns promise
+     */
+    public static getConversation<T>(conversation_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.getConversation, undefined, { conversation_id });
+    }
+
+    /**
+     * List messages in a conversation.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/listSocialMessages
+     * 
+     * @param conversation_id The ID of the conversation.
+     * @param params Query parameters (sync, page, per_page).
+     * @returns promise
+     */
+    public static getConversationMessages<T>(conversation_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.getConversationMessages, undefined, { conversation_id }, params);
+    }
+
+    /**
+     * Send a Direct Message.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/sendSocialMessage
+     * 
+     * @param data Body parameters (message, conversation_id, recipient_id, platform, scheduler_id, media_ids).
+     * @returns promise
+     */
+    public static sendSocialMessage<T>(data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.sendSocialMessage, data);
+    }
 }
 
 export default SocialPosts;

@@ -24138,6 +24138,12 @@ var SocialPostsRoute = /** @class */ (function () {
         performAction: { url: '/socialposts/{post_id}/action', method: HTTP_METHODS.POST },
         performCommentAction: { url: '/socialposts/comments/{comment_id}/action', method: HTTP_METHODS.POST },
         creativePerformance: { url: '/socialposts/creative-performance', method: HTTP_METHODS.GET },
+        // Social Messaging (DM) Routes
+        listConversations: { url: '/social/conversations', method: HTTP_METHODS.GET },
+        syncConversations: { url: '/social/conversations/sync', method: HTTP_METHODS.POST },
+        getConversation: { url: '/social/conversations/{conversation_id}', method: HTTP_METHODS.GET },
+        getConversationMessages: { url: '/social/conversations/{conversation_id}/messages', method: HTTP_METHODS.GET },
+        sendSocialMessage: { url: '/social/messages', method: HTTP_METHODS.POST },
     };
     return SocialPostsRoute;
 }());
@@ -24468,6 +24474,62 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.creativePerformance = function (params) {
         return Requests.processRoute(SocialPostsRoute.routes.creativePerformance, {}, {}, params);
+    };
+    /**
+    * List social media conversations.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/listSocialConversations
+    *
+    * @param params Query parameters (scheduler_id, platform, page, per_page).
+    * @returns promise
+    */
+    SocialPosts.listConversations = function (params) {
+        return Requests.processRoute(SocialPostsRoute.routes.listConversations, undefined, undefined, params);
+    };
+    /**
+     * Sync conversations from external platform.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/syncSocialConversations
+     *
+     * @param data Body parameters (platform, scheduler_id).
+     * @returns promise
+     */
+    SocialPosts.syncConversations = function (data) {
+        return Requests.processRoute(SocialPostsRoute.routes.syncConversations, data);
+    };
+    /**
+     * Get a specific conversation.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/getSocialConversation
+     *
+     * @param conversation_id The ID of the conversation.
+     * @returns promise
+     */
+    SocialPosts.getConversation = function (conversation_id) {
+        return Requests.processRoute(SocialPostsRoute.routes.getConversation, undefined, { conversation_id: conversation_id });
+    };
+    /**
+     * List messages in a conversation.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/listSocialMessages
+     *
+     * @param conversation_id The ID of the conversation.
+     * @param params Query parameters (sync, page, per_page).
+     * @returns promise
+     */
+    SocialPosts.getConversationMessages = function (conversation_id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.getConversationMessages, undefined, { conversation_id: conversation_id }, params);
+    };
+    /**
+     * Send a Direct Message.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Social%20Messaging/sendSocialMessage
+     *
+     * @param data Body parameters (message, conversation_id, recipient_id, platform, scheduler_id, media_ids).
+     * @returns promise
+     */
+    SocialPosts.sendSocialMessage = function (data) {
+        return Requests.processRoute(SocialPostsRoute.routes.sendSocialMessage, data);
     };
     return SocialPosts;
 }());
