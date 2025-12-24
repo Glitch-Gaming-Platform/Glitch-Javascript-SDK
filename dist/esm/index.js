@@ -10960,6 +10960,7 @@ var SocialPostsRoute = /** @class */ (function () {
         getConversation: { url: '/social/conversations/{conversation_id}', method: HTTP_METHODS.GET },
         getConversationMessages: { url: '/social/conversations/{conversation_id}/messages', method: HTTP_METHODS.GET },
         sendSocialMessage: { url: '/social/messages', method: HTTP_METHODS.POST },
+        replyViaDm: { url: '/socialposts/comments/{comment_id}/reply-via-dm', method: HTTP_METHODS.POST },
     };
     return SocialPostsRoute;
 }());
@@ -11346,6 +11347,15 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.sendSocialMessage = function (data) {
         return Requests.processRoute(SocialPostsRoute.routes.sendSocialMessage, data);
+    };
+    /**
+     * Reply to a high-intent TikTok comment via Direct Message.
+     *
+     * @param comment_id The ID of the comment.
+     * @param data { message: string }
+     */
+    SocialPosts.replyViaDm = function (comment_id, data) {
+        return Requests.processRoute(SocialPostsRoute.routes.replyViaDm, data, { comment_id: comment_id });
     };
     return SocialPosts;
 }());
@@ -14009,6 +14019,7 @@ var MediaRoute = /** @class */ (function () {
         removeBackgroundAI: { url: '/media/remove-background-ai', method: HTTP_METHODS.POST },
         createLibraryLogo: { url: '/media/create-library-logo', method: HTTP_METHODS.POST },
         validateScreenshot: { url: '/media/validate-screenshot', method: HTTP_METHODS.POST },
+        uploadTikTokMusic: { url: '/media/tiktok/music', method: HTTP_METHODS.POST },
     };
     return MediaRoute;
 }());
@@ -14229,6 +14240,16 @@ var Media = /** @class */ (function () {
             content: 'Logo only, should be legible against any background'
         };
     };
+    /**
+     * Upload an audio file to TikTok's asset library via our Media controller.
+     *
+     * @param file The audio file (mp3).
+     * @param scheduler_id The ID of the scheduler to provide OAuth context.
+     */
+    Media.uploadTikTokMusic = function (file, scheduler_id) {
+        // We use the raw URL here as it's a specialized upload path
+        return Requests.uploadFile('/media/tiktok/music', 'audio', file, { scheduler_id: scheduler_id });
+    };
     return Media;
 }());
 
@@ -14349,6 +14370,8 @@ var SchedulerRoute = /** @class */ (function () {
             url: '/schedulers/{scheduler_id}/generateHashtags',
             method: HTTP_METHODS.POST
         },
+        getTikTokHashtags: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags', method: HTTP_METHODS.GET },
+        getTikTokMusic: { url: '/schedulers/{scheduler_id}/tiktok/discovery/music', method: HTTP_METHODS.GET },
     };
     return SchedulerRoute;
 }());
@@ -15038,6 +15061,23 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.generateHashtags = function (scheduler_id, data, params) {
         return Requests.processRoute(SchedulerRoute.routes.generateHashtags, data, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+ * Get TikTok hashtag suggestions based on a keyword.
+ *
+ * @param scheduler_id The ID of the promotion schedule.
+ * @param params { keyword: string }
+ */
+    Scheduler.getTikTokHashtags = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokHashtags, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Get trending commercial music from TikTok's library.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     */
+    Scheduler.getTikTokMusic = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokMusic, {}, { scheduler_id: scheduler_id }, params);
     };
     return Scheduler;
 }());

@@ -331,6 +331,17 @@ class Media {
             content: 'Logo only, should be legible against any background'
         };
     }
+
+    /**
+     * Upload an audio file to TikTok's asset library via our Media controller.
+     * 
+     * @param file The audio file (mp3).
+     * @param scheduler_id The ID of the scheduler to provide OAuth context.
+     */
+    public static uploadTikTokMusic<T>(file: File, scheduler_id: string): AxiosPromise<Response<T>> {
+        // We use the raw URL here as it's a specialized upload path
+        return Requests.uploadFile('/media/tiktok/music', 'audio', file, { scheduler_id });
+    }
 }
 
 export default Media;

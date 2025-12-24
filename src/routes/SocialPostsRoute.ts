@@ -47,6 +47,7 @@ class SocialPostsRoute {
         getConversation: { url: '/social/conversations/{conversation_id}', method: HTTP_METHODS.GET },
         getConversationMessages: { url: '/social/conversations/{conversation_id}/messages', method: HTTP_METHODS.GET },
         sendSocialMessage: { url: '/social/messages', method: HTTP_METHODS.POST },
+        replyViaDm: { url: '/socialposts/comments/{comment_id}/reply-via-dm', method: HTTP_METHODS.POST },
 
     };
 

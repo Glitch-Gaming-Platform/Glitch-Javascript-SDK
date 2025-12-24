@@ -214,5 +214,12 @@ declare class Media {
         requirement: string;
         content: string;
     };
+    /**
+     * Upload an audio file to TikTok's asset library via our Media controller.
+     *
+     * @param file The audio file (mp3).
+     * @param scheduler_id The ID of the scheduler to provide OAuth context.
+     */
+    static uploadTikTokMusic<T>(file: File, scheduler_id: string): AxiosPromise<Response<T>>;
 }
 export default Media;

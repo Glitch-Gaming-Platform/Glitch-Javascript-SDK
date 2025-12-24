@@ -309,5 +309,14 @@ declare class SocialPosts {
      * @returns promise
      */
     static sendSocialMessage<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Reply to a high-intent TikTok comment via Direct Message.
+     *
+     * @param comment_id The ID of the comment.
+     * @param data { message: string }
+     */
+    static replyViaDm<T>(comment_id: string, data: {
+        message: string;
+    }): AxiosPromise<Response<T>>;
 }
 export default SocialPosts;

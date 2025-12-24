@@ -131,6 +131,9 @@ class SchedulerRoute {
             method: HTTP_METHODS.POST
         },
 
+        getTikTokHashtags: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags', method: HTTP_METHODS.GET },
+        getTikTokMusic: { url: '/schedulers/{scheduler_id}/tiktok/discovery/music', method: HTTP_METHODS.GET },
+
     };
 }
 

@@ -11,6 +11,7 @@ class MediaRoute {
         removeBackgroundAI: { url: '/media/remove-background-ai', method: HTTP_METHODS.POST },
         createLibraryLogo: { url: '/media/create-library-logo', method: HTTP_METHODS.POST },
         validateScreenshot: { url: '/media/validate-screenshot', method: HTTP_METHODS.POST },
+        uploadTikTokMusic: { url: '/media/tiktok/music', method: HTTP_METHODS.POST },
     };
 }
 

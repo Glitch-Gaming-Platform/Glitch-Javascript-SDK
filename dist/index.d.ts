@@ -3686,6 +3686,15 @@ declare class SocialPosts {
      * @returns promise
      */
     static sendSocialMessage<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Reply to a high-intent TikTok comment via Direct Message.
+     *
+     * @param comment_id The ID of the comment.
+     * @param data { message: string }
+     */
+    static replyViaDm<T>(comment_id: string, data: {
+        message: string;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Titles {
@@ -5691,6 +5700,13 @@ declare class Media {
         requirement: string;
         content: string;
     };
+    /**
+     * Upload an audio file to TikTok's asset library via our Media controller.
+     *
+     * @param file The audio file (mp3).
+     * @param scheduler_id The ID of the scheduler to provide OAuth context.
+     */
+    static uploadTikTokMusic<T>(file: File, scheduler_id: string): AxiosPromise<Response<T>>;
 }
 
 declare class Scheduler {
@@ -6239,6 +6255,21 @@ declare class Scheduler {
      * @returns promise
      */
     static generateHashtags<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+ * Get TikTok hashtag suggestions based on a keyword.
+ *
+ * @param scheduler_id The ID of the promotion schedule.
+ * @param params { keyword: string }
+ */
+    static getTikTokHashtags<T>(scheduler_id: string, params: {
+        keyword: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get trending commercial music from TikTok's library.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     */
+    static getTikTokMusic<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Funnel {

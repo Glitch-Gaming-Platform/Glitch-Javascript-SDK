@@ -430,6 +430,16 @@ class SocialPosts {
     public static sendSocialMessage<T>(data: object): AxiosPromise<Response<T>> {
         return Requests.processRoute(SocialPostsRoute.routes.sendSocialMessage, data);
     }
+
+    /**
+     * Reply to a high-intent TikTok comment via Direct Message.
+     * 
+     * @param comment_id The ID of the comment.
+     * @param data { message: string }
+     */
+    public static replyViaDm<T>(comment_id: string, data: { message: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.replyViaDm, data, { comment_id });
+    }
 }
 
 export default SocialPosts;

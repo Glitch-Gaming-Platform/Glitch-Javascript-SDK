@@ -546,5 +546,20 @@ declare class Scheduler {
      * @returns promise
      */
     static generateHashtags<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+ * Get TikTok hashtag suggestions based on a keyword.
+ *
+ * @param scheduler_id The ID of the promotion schedule.
+ * @param params { keyword: string }
+ */
+    static getTikTokHashtags<T>(scheduler_id: string, params: {
+        keyword: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get trending commercial music from TikTok's library.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     */
+    static getTikTokMusic<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Scheduler;

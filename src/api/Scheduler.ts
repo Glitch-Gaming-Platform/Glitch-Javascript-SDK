@@ -839,6 +839,25 @@ class Scheduler {
         return Requests.processRoute(SchedulerRoute.routes.generateHashtags, data, { scheduler_id }, params);
     }
 
+    /**
+ * Get TikTok hashtag suggestions based on a keyword.
+ * 
+ * @param scheduler_id The ID of the promotion schedule.
+ * @param params { keyword: string }
+ */
+    public static getTikTokHashtags<T>(scheduler_id: string, params: { keyword: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokHashtags, {}, { scheduler_id }, params);
+    }
+
+    /**
+     * Get trending commercial music from TikTok's library.
+     * 
+     * @param scheduler_id The ID of the promotion schedule.
+     */
+    public static getTikTokMusic<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokMusic, {}, { scheduler_id }, params);
+    }
+
 }
 
 export default Scheduler;
