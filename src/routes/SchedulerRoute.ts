@@ -133,6 +133,10 @@ class SchedulerRoute {
 
         getTikTokHashtags: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags', method: HTTP_METHODS.GET },
         getTikTokMusic: { url: '/schedulers/{scheduler_id}/tiktok/discovery/music', method: HTTP_METHODS.GET },
+        getTikTokMusicList: { url: '/schedulers/{scheduler_id}/tiktok/music', method: HTTP_METHODS.GET },
+        getTikTokTrendingHashtags: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags/trending', method: HTTP_METHODS.GET },
+        getTikTokHashtagDetail: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags/detail', method: HTTP_METHODS.GET },
+        getTikTokTrendingKeywords: { url: '/schedulers/{scheduler_id}/tiktok/discovery/search-keywords', method: HTTP_METHODS.GET },
 
     };
 }

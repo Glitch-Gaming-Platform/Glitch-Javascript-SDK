@@ -6270,6 +6270,21 @@ declare class Scheduler {
      * @param scheduler_id The ID of the promotion schedule.
      */
     static getTikTokMusic<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+ * Get TikTok Music List with advanced filtering (Keyword, Recommendations, Liked).
+ * @param params { music_scene: 'CREATIVE_ASSET'|'CAROUSEL_ADS', search_type: string, filtering: object }
+ */
+    static getTikTokMusicList<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get the top 200 trending hashtags on TikTok.
+     * @param params { country_code: string, category_name: string, date_range: string }
+     */
+    static getTikTokTrendingHashtags<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get trending search keywords on TikTok.
+     * @param params { is_personalized: boolean }
+     */
+    static getTikTokTrendingKeywords<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Funnel {

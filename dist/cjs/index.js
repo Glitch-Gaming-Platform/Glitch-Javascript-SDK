@@ -27556,6 +27556,10 @@ var SchedulerRoute = /** @class */ (function () {
         },
         getTikTokHashtags: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags', method: HTTP_METHODS.GET },
         getTikTokMusic: { url: '/schedulers/{scheduler_id}/tiktok/discovery/music', method: HTTP_METHODS.GET },
+        getTikTokMusicList: { url: '/schedulers/{scheduler_id}/tiktok/music', method: HTTP_METHODS.GET },
+        getTikTokTrendingHashtags: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags/trending', method: HTTP_METHODS.GET },
+        getTikTokHashtagDetail: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags/detail', method: HTTP_METHODS.GET },
+        getTikTokTrendingKeywords: { url: '/schedulers/{scheduler_id}/tiktok/discovery/search-keywords', method: HTTP_METHODS.GET },
     };
     return SchedulerRoute;
 }());
@@ -28262,6 +28266,27 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.getTikTokMusic = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.getTikTokMusic, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+ * Get TikTok Music List with advanced filtering (Keyword, Recommendations, Liked).
+ * @param params { music_scene: 'CREATIVE_ASSET'|'CAROUSEL_ADS', search_type: string, filtering: object }
+ */
+    Scheduler.getTikTokMusicList = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokMusicList, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Get the top 200 trending hashtags on TikTok.
+     * @param params { country_code: string, category_name: string, date_range: string }
+     */
+    Scheduler.getTikTokTrendingHashtags = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokTrendingHashtags, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Get trending search keywords on TikTok.
+     * @param params { is_personalized: boolean }
+     */
+    Scheduler.getTikTokTrendingKeywords = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokTrendingKeywords, {}, { scheduler_id: scheduler_id }, params);
     };
     return Scheduler;
 }());

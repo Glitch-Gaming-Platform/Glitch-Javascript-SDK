@@ -858,6 +858,30 @@ class Scheduler {
         return Requests.processRoute(SchedulerRoute.routes.getTikTokMusic, {}, { scheduler_id }, params);
     }
 
+    /**
+ * Get TikTok Music List with advanced filtering (Keyword, Recommendations, Liked).
+ * @param params { music_scene: 'CREATIVE_ASSET'|'CAROUSEL_ADS', search_type: string, filtering: object }
+ */
+    public static getTikTokMusicList<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokMusicList, {}, { scheduler_id }, params);
+    }
+
+    /**
+     * Get the top 200 trending hashtags on TikTok.
+     * @param params { country_code: string, category_name: string, date_range: string }
+     */
+    public static getTikTokTrendingHashtags<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokTrendingHashtags, {}, { scheduler_id }, params);
+    }
+
+    /**
+     * Get trending search keywords on TikTok.
+     * @param params { is_personalized: boolean }
+     */
+    public static getTikTokTrendingKeywords<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokTrendingKeywords, {}, { scheduler_id }, params);
+    }
+
 }
 
 export default Scheduler;
