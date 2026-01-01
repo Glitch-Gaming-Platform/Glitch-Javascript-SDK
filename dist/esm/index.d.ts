@@ -38,6 +38,7 @@ import { ShortLinks } from "./api";
 import { AIUsage } from "./api";
 import { MarketingAgencies } from "./api";
 import { TwitchReporting } from './api';
+import { Raffles } from './api';
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -97,6 +98,7 @@ declare class Glitch {
         AIUsage: typeof AIUsage;
         MarketingAgencies: typeof MarketingAgencies;
         TwitchReporting: typeof TwitchReporting;
+        Raffles: typeof Raffles;
     };
     static util: {
         Requests: typeof Requests;

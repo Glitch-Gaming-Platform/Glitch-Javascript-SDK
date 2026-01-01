@@ -42,6 +42,7 @@ import {ShortLinks} from "./api";
 import {AIUsage} from "./api";
 import {MarketingAgencies} from "./api"
 import {TwitchReporting} from './api'
+import {Raffles} from './api'
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -113,6 +114,7 @@ class Glitch {
         AIUsage : AIUsage,
         MarketingAgencies : MarketingAgencies,
         TwitchReporting: TwitchReporting,
+        Raffles : Raffles,
     }
 
     public static util = {
