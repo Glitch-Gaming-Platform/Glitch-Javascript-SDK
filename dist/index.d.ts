@@ -6963,92 +6963,98 @@ declare class TwitchReporting {
 
 declare class Raffles {
     /**
-     * List all raffles.
-     * @param params Filter by title_id, community_id, or status.
+     * List all raffles with optional filters.
      */
     static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-     * Create a new raffle for a specific title.
+     * Create a new raffle (Game Owner).
      */
     static create<T>(data: object): AxiosPromise<Response<T>>;
     /**
-     * Get full details of a raffle.
+     * Retrieve details for a specific raffle.
      */
-    static view<T>(raffle_id: string): AxiosPromise<Response<T>>;
+    static view<T>(id: string): AxiosPromise<Response<T>>;
     /**
-     * Update raffle settings (Draft/Active status, dates, etc).
+     * Enter a raffle (User/Player). Requires Steam ID.
      */
-    static update<T>(raffle_id: string, data: object): AxiosPromise<Response<T>>;
+    static enter<T>(id: string, data: {
+        referral_code?: string;
+        device_fingerprint?: string;
+        opt_in_playtesting?: boolean;
+    }): AxiosPromise<Response<T>>;
     /**
-     * Delete a raffle.
+     * Get the authenticated user's entry status for a specific raffle.
      */
-    static delete<T>(raffle_id: string): AxiosPromise<Response<T>>;
+    static me<T>(id: string): AxiosPromise<Response<T>>;
     /**
-     * Enter the authenticated user into the raffle.
-     * @param data { referral_code?, device_fingerprint? }
+     * Record a viral action (e.g., Steam Wishlist, Social Share).
      */
-    static enter<T>(raffle_id: string, data?: object): AxiosPromise<Response<T>>;
+    static performAction<T>(id: string, data: {
+        action_type: string;
+        platform?: string;
+        reference_id?: string;
+    }): AxiosPromise<Response<T>>;
     /**
-     * Record a viral action (Steam Wishlist, Social Share) to earn more tickets.
-     * @param data { action_type: 'steam_wishlist'|'social_share', platform?, reference_id? }
+     * Post raffle content to social media via Glitch API.
      */
-    static performAction<T>(raffle_id: string, data: object): AxiosPromise<Response<T>>;
+    static shareSocially<T>(id: string, data: {
+        platform: string;
+        content: string;
+    }): AxiosPromise<Response<T>>;
     /**
-     * Get the authenticated user's specific entry status for this raffle.
+     * Send an invitation email to a friend.
      */
-    static me<T>(raffle_id: string): AxiosPromise<Response<T>>;
-    /**
-     * Submit shipping address for a winning entry.
-     * @param entry_id The UUID of the RaffleEntry.
-     */
-    static updateAddress<T>(entry_id: string, data: object): AxiosPromise<Response<T>>;
-    /**
-     * Invite a friend via email to join the raffle.
-     */
-    static inviteFriend<T>(raffle_id: string, data: {
+    static inviteFriend<T>(id: string, data: {
         email: string;
     }): AxiosPromise<Response<T>>;
     /**
-     * Get the public list of winners (only available if raffle is completed).
+     * Add a prize tier to a raffle (Game Owner).
      */
-    static winners<T>(raffle_id: string): AxiosPromise<Response<T>>;
+    static addPrize<T>(id: string, data: object): AxiosPromise<Response<T>>;
     /**
-     * Add a prize tier (quantity, value, description) to the raffle.
+     * Trigger the automated drawing process (Game Owner).
      */
-    static addPrize<T>(raffle_id: string, data: object): AxiosPromise<Response<T>>;
+    static drawWinners<T>(id: string): AxiosPromise<Response<T>>;
     /**
-     * Randomly draw winners for all prize tiers based on ticket weights.
+     * Manually select a winner for a specific prize (Live Event Mode).
      */
-    static drawWinners<T>(raffle_id: string): AxiosPromise<Response<T>>;
+    static pickWinner<T>(id: string, data: {
+        entry_id: string;
+        prize_id: string;
+    }): AxiosPromise<Response<T>>;
     /**
-     * Manually assign a specific user to a specific prize (Live Event Mode).
-     * @param data { entry_id, prize_id }
+     * Get the public list of winners for a completed raffle.
      */
-    static pickWinner<T>(raffle_id: string, data: object): AxiosPromise<Response<T>>;
+    static winners<T>(id: string): AxiosPromise<Response<T>>;
     /**
-     * Provide shipping/tracking info for a prize fulfillment.
-     * @param entry_id The UUID of the RaffleEntry.
+     * List all participants/entries for a raffle (Game Owner).
      */
-    static fulfillPrize<T>(entry_id: string, data: object): AxiosPromise<Response<T>>;
+    static participants<T>(id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-     * Disqualify an entry for fraud or rule violations.
+     * Update shipping/tracking info for a prize (Game Owner).
      */
-    static disqualify<T>(raffle_id: string, entry_id: string, data: {
+    static fulfillPrize<T>(entry_id: string, data: {
+        tracking_number: string;
+        shipping_carrier: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Submit shipping address for a won prize (User/Winner).
+     */
+    static updateAddress<T>(entry_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Disqualify a specific entry (Game Owner).
+     */
+    static disqualify<T>(id: string, entry_id: string, data: {
         reason: string;
     }): AxiosPromise<Response<T>>;
     /**
-     * List all participants/entries for management.
-     * @param params { opt_in_playtesting?, page?, per_page? }
-     */
-    static listParticipants<T>(raffle_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
-    /**
      * Check if the raffle is fully funded in the community ledger.
      */
-    static escrowStatus<T>(raffle_id: string): AxiosPromise<Response<T>>;
+    static escrowStatus<T>(id: string): AxiosPromise<Response<T>>;
     /**
-     * Get viral loop analytics (K-factor, Cost Per Entry).
+     * Get viral loop analytics (K-Factor, Cost Per Entry).
      */
-    static analytics<T>(raffle_id: string): AxiosPromise<Response<T>>;
+    static analytics<T>(id: string): AxiosPromise<Response<T>>;
 }
 
 interface Route {

@@ -16191,28 +16191,28 @@ var RafflesRoute = /** @class */ (function () {
     function RafflesRoute() {
     }
     RafflesRoute.routes = {
-        // CRUD
         list: { url: '/raffles', method: HTTP_METHODS.GET },
         create: { url: '/raffles', method: HTTP_METHODS.POST },
-        view: { url: '/raffles/{raffle_id}', method: HTTP_METHODS.GET },
-        update: { url: '/raffles/{raffle_id}', method: HTTP_METHODS.PUT },
-        delete: { url: '/raffles/{raffle_id}', method: HTTP_METHODS.DELETE },
-        // User/Player Actions
-        enter: { url: '/raffles/{raffle_id}/enter', method: HTTP_METHODS.POST },
-        performAction: { url: '/raffles/{raffle_id}/actions', method: HTTP_METHODS.POST },
-        me: { url: '/raffles/{raffle_id}/me', method: HTTP_METHODS.GET },
-        updateAddress: { url: '/raffles/entries/{entry_id}/address', method: HTTP_METHODS.PUT },
-        inviteFriend: { url: '/raffles/{raffle_id}/invite-friend', method: HTTP_METHODS.POST },
-        winners: { url: '/raffles/{raffle_id}/winners', method: HTTP_METHODS.GET },
-        // Admin/Developer Actions
-        addPrize: { url: '/raffles/{raffle_id}/prizes', method: HTTP_METHODS.POST },
-        drawWinners: { url: '/raffles/{raffle_id}/draw', method: HTTP_METHODS.POST },
-        pickWinner: { url: '/raffles/{raffle_id}/pick-winner', method: HTTP_METHODS.POST },
+        view: { url: '/raffles/{id}', method: HTTP_METHODS.GET },
+        enter: { url: '/raffles/{id}/enter', method: HTTP_METHODS.POST },
+        me: { url: '/raffles/{id}/me', method: HTTP_METHODS.GET },
+        performAction: { url: '/raffles/{id}/actions', method: HTTP_METHODS.POST },
+        shareSocially: { url: '/raffles/{id}/share', method: HTTP_METHODS.POST },
+        inviteFriend: { url: '/raffles/{id}/invite-friend', method: HTTP_METHODS.POST },
+        // Prize Management
+        addPrize: { url: '/raffles/{id}/prizes', method: HTTP_METHODS.POST },
+        // Drawing & Winners
+        drawWinners: { url: '/raffles/{id}/draw', method: HTTP_METHODS.POST },
+        pickWinner: { url: '/raffles/{id}/pick-winner', method: HTTP_METHODS.POST },
+        winners: { url: '/raffles/{id}/winners', method: HTTP_METHODS.GET },
+        // Participant & Fulfillment Management
+        participants: { url: '/raffles/{id}/participants', method: HTTP_METHODS.GET },
         fulfillPrize: { url: '/raffles/entries/{entry_id}/fulfill', method: HTTP_METHODS.PUT },
-        disqualify: { url: '/raffles/{raffle_id}/disqualify/{entry_id}', method: HTTP_METHODS.POST },
-        participants: { url: '/raffles/{raffle_id}/participants', method: HTTP_METHODS.GET },
-        escrowStatus: { url: '/raffles/{raffle_id}/escrow', method: HTTP_METHODS.GET },
-        analytics: { url: '/raffles/{raffle_id}/analytics', method: HTTP_METHODS.GET },
+        updateAddress: { url: '/raffles/entries/{entry_id}/address', method: HTTP_METHODS.PUT },
+        disqualify: { url: '/raffles/{id}/disqualify/{entry_id}', method: HTTP_METHODS.POST },
+        // Analytics & Finance
+        escrowStatus: { url: '/raffles/{id}/escrow', method: HTTP_METHODS.GET },
+        analytics: { url: '/raffles/{id}/analytics', method: HTTP_METHODS.GET },
     };
     return RafflesRoute;
 }());
@@ -16221,125 +16221,112 @@ var Raffles = /** @class */ (function () {
     function Raffles() {
     }
     /**
-     * List all raffles.
-     * @param params Filter by title_id, community_id, or status.
+     * List all raffles with optional filters.
      */
     Raffles.list = function (params) {
         return Requests.processRoute(RafflesRoute.routes.list, undefined, undefined, params);
     };
     /**
-     * Create a new raffle for a specific title.
+     * Create a new raffle (Game Owner).
      */
     Raffles.create = function (data) {
         return Requests.processRoute(RafflesRoute.routes.create, data);
     };
     /**
-     * Get full details of a raffle.
+     * Retrieve details for a specific raffle.
      */
-    Raffles.view = function (raffle_id) {
-        return Requests.processRoute(RafflesRoute.routes.view, {}, { raffle_id: raffle_id });
+    Raffles.view = function (id) {
+        return Requests.processRoute(RafflesRoute.routes.view, {}, { id: id });
     };
     /**
-     * Update raffle settings (Draft/Active status, dates, etc).
+     * Enter a raffle (User/Player). Requires Steam ID.
      */
-    Raffles.update = function (raffle_id, data) {
-        return Requests.processRoute(RafflesRoute.routes.update, data, { raffle_id: raffle_id });
+    Raffles.enter = function (id, data) {
+        return Requests.processRoute(RafflesRoute.routes.enter, data, { id: id });
     };
     /**
-     * Delete a raffle.
+     * Get the authenticated user's entry status for a specific raffle.
      */
-    Raffles.delete = function (raffle_id) {
-        return Requests.processRoute(RafflesRoute.routes.delete, {}, { raffle_id: raffle_id });
+    Raffles.me = function (id) {
+        return Requests.processRoute(RafflesRoute.routes.me, {}, { id: id });
     };
     /**
-     * Enter the authenticated user into the raffle.
-     * @param data { referral_code?, device_fingerprint? }
+     * Record a viral action (e.g., Steam Wishlist, Social Share).
      */
-    Raffles.enter = function (raffle_id, data) {
-        return Requests.processRoute(RafflesRoute.routes.enter, data, { raffle_id: raffle_id });
+    Raffles.performAction = function (id, data) {
+        return Requests.processRoute(RafflesRoute.routes.performAction, data, { id: id });
     };
     /**
-     * Record a viral action (Steam Wishlist, Social Share) to earn more tickets.
-     * @param data { action_type: 'steam_wishlist'|'social_share', platform?, reference_id? }
+     * Post raffle content to social media via Glitch API.
      */
-    Raffles.performAction = function (raffle_id, data) {
-        return Requests.processRoute(RafflesRoute.routes.performAction, data, { raffle_id: raffle_id });
+    Raffles.shareSocially = function (id, data) {
+        return Requests.processRoute(RafflesRoute.routes.shareSocially, data, { id: id });
     };
     /**
-     * Get the authenticated user's specific entry status for this raffle.
+     * Send an invitation email to a friend.
      */
-    Raffles.me = function (raffle_id) {
-        return Requests.processRoute(RafflesRoute.routes.me, {}, { raffle_id: raffle_id });
+    Raffles.inviteFriend = function (id, data) {
+        return Requests.processRoute(RafflesRoute.routes.inviteFriend, data, { id: id });
     };
     /**
-     * Submit shipping address for a winning entry.
-     * @param entry_id The UUID of the RaffleEntry.
+     * Add a prize tier to a raffle (Game Owner).
      */
-    Raffles.updateAddress = function (entry_id, data) {
-        return Requests.processRoute(RafflesRoute.routes.updateAddress, data, { entry_id: entry_id });
+    Raffles.addPrize = function (id, data) {
+        return Requests.processRoute(RafflesRoute.routes.addPrize, data, { id: id });
     };
     /**
-     * Invite a friend via email to join the raffle.
+     * Trigger the automated drawing process (Game Owner).
      */
-    Raffles.inviteFriend = function (raffle_id, data) {
-        return Requests.processRoute(RafflesRoute.routes.inviteFriend, data, { raffle_id: raffle_id });
+    Raffles.drawWinners = function (id) {
+        return Requests.processRoute(RafflesRoute.routes.drawWinners, {}, { id: id });
     };
     /**
-     * Get the public list of winners (only available if raffle is completed).
+     * Manually select a winner for a specific prize (Live Event Mode).
      */
-    Raffles.winners = function (raffle_id) {
-        return Requests.processRoute(RafflesRoute.routes.winners, {}, { raffle_id: raffle_id });
+    Raffles.pickWinner = function (id, data) {
+        return Requests.processRoute(RafflesRoute.routes.pickWinner, data, { id: id });
     };
     /**
-     * Add a prize tier (quantity, value, description) to the raffle.
+     * Get the public list of winners for a completed raffle.
      */
-    Raffles.addPrize = function (raffle_id, data) {
-        return Requests.processRoute(RafflesRoute.routes.addPrize, data, { raffle_id: raffle_id });
+    Raffles.winners = function (id) {
+        return Requests.processRoute(RafflesRoute.routes.winners, {}, { id: id });
     };
     /**
-     * Randomly draw winners for all prize tiers based on ticket weights.
+     * List all participants/entries for a raffle (Game Owner).
      */
-    Raffles.drawWinners = function (raffle_id) {
-        return Requests.processRoute(RafflesRoute.routes.drawWinners, {}, { raffle_id: raffle_id });
+    Raffles.participants = function (id, params) {
+        return Requests.processRoute(RafflesRoute.routes.participants, {}, { id: id }, params);
     };
     /**
-     * Manually assign a specific user to a specific prize (Live Event Mode).
-     * @param data { entry_id, prize_id }
-     */
-    Raffles.pickWinner = function (raffle_id, data) {
-        return Requests.processRoute(RafflesRoute.routes.pickWinner, data, { raffle_id: raffle_id });
-    };
-    /**
-     * Provide shipping/tracking info for a prize fulfillment.
-     * @param entry_id The UUID of the RaffleEntry.
+     * Update shipping/tracking info for a prize (Game Owner).
      */
     Raffles.fulfillPrize = function (entry_id, data) {
         return Requests.processRoute(RafflesRoute.routes.fulfillPrize, data, { entry_id: entry_id });
     };
     /**
-     * Disqualify an entry for fraud or rule violations.
+     * Submit shipping address for a won prize (User/Winner).
      */
-    Raffles.disqualify = function (raffle_id, entry_id, data) {
-        return Requests.processRoute(RafflesRoute.routes.disqualify, data, { raffle_id: raffle_id, entry_id: entry_id });
+    Raffles.updateAddress = function (entry_id, data) {
+        return Requests.processRoute(RafflesRoute.routes.updateAddress, data, { entry_id: entry_id });
     };
     /**
-     * List all participants/entries for management.
-     * @param params { opt_in_playtesting?, page?, per_page? }
+     * Disqualify a specific entry (Game Owner).
      */
-    Raffles.listParticipants = function (raffle_id, params) {
-        return Requests.processRoute(RafflesRoute.routes.participants, {}, { raffle_id: raffle_id }, params);
+    Raffles.disqualify = function (id, entry_id, data) {
+        return Requests.processRoute(RafflesRoute.routes.disqualify, data, { id: id, entry_id: entry_id });
     };
     /**
      * Check if the raffle is fully funded in the community ledger.
      */
-    Raffles.escrowStatus = function (raffle_id) {
-        return Requests.processRoute(RafflesRoute.routes.escrowStatus, {}, { raffle_id: raffle_id });
+    Raffles.escrowStatus = function (id) {
+        return Requests.processRoute(RafflesRoute.routes.escrowStatus, {}, { id: id });
     };
     /**
-     * Get viral loop analytics (K-factor, Cost Per Entry).
+     * Get viral loop analytics (K-Factor, Cost Per Entry).
      */
-    Raffles.analytics = function (raffle_id) {
-        return Requests.processRoute(RafflesRoute.routes.analytics, {}, { raffle_id: raffle_id });
+    Raffles.analytics = function (id) {
+        return Requests.processRoute(RafflesRoute.routes.analytics, {}, { id: id });
     };
     return Raffles;
 }());
