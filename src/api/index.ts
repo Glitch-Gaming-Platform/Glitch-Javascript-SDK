@@ -39,6 +39,7 @@ import AIUsage from "./AIUsage";
 import MarketingAgencies from "./MarketingAgencies";
 import TwitchReporting from "./TwitchReporting";
 import Raffles from "./Raffles";
+import DiscordMarketplace from "./DiscordMarketplace";
 
 export {Ads};
 export {AccessKeys};
@@ -81,3 +82,4 @@ export {AIUsage};
 export {MarketingAgencies};
 export {TwitchReporting};
 export {Raffles};
+export {DiscordMarketplace};

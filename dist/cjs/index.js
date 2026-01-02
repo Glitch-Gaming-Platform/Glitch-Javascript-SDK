@@ -29378,6 +29378,7 @@ var RafflesRoute = /** @class */ (function () {
         list: { url: '/raffles', method: HTTP_METHODS.GET },
         create: { url: '/raffles', method: HTTP_METHODS.POST },
         view: { url: '/raffles/{id}', method: HTTP_METHODS.GET },
+        update: { url: '/raffles/{id}', method: HTTP_METHODS.PUT },
         enter: { url: '/raffles/{id}/enter', method: HTTP_METHODS.POST },
         me: { url: '/raffles/{id}/me', method: HTTP_METHODS.GET },
         performAction: { url: '/raffles/{id}/actions', method: HTTP_METHODS.POST },
@@ -29512,7 +29513,114 @@ var Raffles = /** @class */ (function () {
     Raffles.analytics = function (id) {
         return Requests.processRoute(RafflesRoute.routes.analytics, {}, { id: id });
     };
+    /**
+     * Update a raffle (Game Owner).
+     * Handles status transitions (e.g., moving from draft to active).
+     */
+    Raffles.update = function (id, data) {
+        return Requests.processRoute(RafflesRoute.routes.update, data, { id: id });
+    };
     return Raffles;
+}());
+
+var DiscordMarketplaceRoute = /** @class */ (function () {
+    function DiscordMarketplaceRoute() {
+    }
+    DiscordMarketplaceRoute.routes = {
+        // Listings
+        listListings: { url: '/discord-marketplace/listings', method: HTTP_METHODS.GET },
+        createListing: { url: '/discord-marketplace/listings', method: HTTP_METHODS.POST },
+        viewListing: { url: '/discord-marketplace/listings/{id}', method: HTTP_METHODS.GET },
+        updateListing: { url: '/discord-marketplace/listings/{id}', method: HTTP_METHODS.PUT },
+        deleteListing: { url: '/discord-marketplace/listings/{id}', method: HTTP_METHODS.DELETE },
+        // Orders
+        listOrders: { url: '/discord-marketplace/orders', method: HTTP_METHODS.GET },
+        createOrder: { url: '/discord-marketplace/orders', method: HTTP_METHODS.POST },
+        viewOrder: { url: '/discord-marketplace/orders/{id}', method: HTTP_METHODS.GET },
+        approveOrder: { url: '/discord-marketplace/orders/{id}/approve', method: HTTP_METHODS.POST },
+        rejectOrder: { url: '/discord-marketplace/orders/{id}/reject', method: HTTP_METHODS.POST },
+        requestChanges: { url: '/discord-marketplace/orders/{id}/request-changes', method: HTTP_METHODS.POST },
+        resubmitOrder: { url: '/discord-marketplace/orders/{id}/resubmit', method: HTTP_METHODS.POST },
+    };
+    return DiscordMarketplaceRoute;
+}());
+
+var DiscordMarketplace = /** @class */ (function () {
+    function DiscordMarketplace() {
+    }
+    /**
+     * Search for Discord servers available for sponsorship.
+     */
+    DiscordMarketplace.listListings = function (params) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.listListings, undefined, undefined, params);
+    };
+    /**
+     * List a Discord server in the marketplace (Owner).
+     */
+    DiscordMarketplace.createListing = function (data) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.createListing, data);
+    };
+    /**
+     * Get details for a specific server listing.
+     */
+    DiscordMarketplace.viewListing = function (id) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.viewListing, {}, { id: id });
+    };
+    /**
+     * Update listing settings like price or auto-approve (Owner).
+     */
+    DiscordMarketplace.updateListing = function (id, data) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.updateListing, data, { id: id });
+    };
+    /**
+     * Remove a server from the marketplace (Owner).
+     */
+    DiscordMarketplace.deleteListing = function (id) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.deleteListing, {}, { id: id });
+    };
+    /**
+     * List sponsored post orders. Use params { mode: 'buyer' | 'seller' }.
+     */
+    DiscordMarketplace.listOrders = function (params) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.listOrders, undefined, undefined, params);
+    };
+    /**
+     * Submit a post to a Discord server for sponsorship (Game Developer).
+     */
+    DiscordMarketplace.createOrder = function (data) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.createOrder, data);
+    };
+    /**
+     * Get details for a specific order.
+     */
+    DiscordMarketplace.viewOrder = function (id) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.viewOrder, {}, { id: id });
+    };
+    /**
+     * Approve and publish a sponsored post (Owner).
+     */
+    DiscordMarketplace.approveOrder = function (id) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.approveOrder, {}, { id: id });
+    };
+    /**
+     * Reject a sponsored post (Owner).
+     */
+    DiscordMarketplace.rejectOrder = function (id, data) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.rejectOrder, data, { id: id });
+    };
+    /**
+     * Request changes to the post content (Owner).
+     */
+    DiscordMarketplace.requestChanges = function (id, data) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.requestChanges, data, { id: id });
+    };
+    /**
+     * Resubmit a post after making requested changes (Game Developer).
+     */
+    DiscordMarketplace.resubmitOrder = function (id) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.resubmitOrder, {}, { id: id });
+    };
+    return DiscordMarketplace;
 }());
 
 var Parser = /** @class */ (function () {
@@ -30044,6 +30152,7 @@ var Glitch = /** @class */ (function () {
         MarketingAgencies: MarketingAgencies,
         TwitchReporting: TwitchReporting,
         Raffles: Raffles,
+        DiscordMarketplace: DiscordMarketplace,
     };
     Glitch.util = {
         Requests: Requests,

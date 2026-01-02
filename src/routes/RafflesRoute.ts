@@ -6,6 +6,7 @@ class RafflesRoute {
         list: { url: '/raffles', method: HTTP_METHODS.GET },
         create: { url: '/raffles', method: HTTP_METHODS.POST },
         view: { url: '/raffles/{id}', method: HTTP_METHODS.GET },
+        update: { url: '/raffles/{id}', method: HTTP_METHODS.PUT },
         enter: { url: '/raffles/{id}/enter', method: HTTP_METHODS.POST },
         me: { url: '/raffles/{id}/me', method: HTTP_METHODS.GET },
         performAction: { url: '/raffles/{id}/actions', method: HTTP_METHODS.POST },

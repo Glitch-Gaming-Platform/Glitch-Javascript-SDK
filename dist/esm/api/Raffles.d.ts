@@ -94,5 +94,10 @@ declare class Raffles {
      * Get viral loop analytics (K-Factor, Cost Per Entry).
      */
     static analytics<T>(id: string): AxiosPromise<Response<T>>;
+    /**
+     * Update a raffle (Game Owner).
+     * Handles status transitions (e.g., moving from draft to active).
+     */
+    static update<T>(id: string, data: object): AxiosPromise<Response<T>>;
 }
 export default Raffles;

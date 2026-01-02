@@ -43,6 +43,7 @@ import {AIUsage} from "./api";
 import {MarketingAgencies} from "./api"
 import {TwitchReporting} from './api'
 import {Raffles} from './api'
+import {DiscordMarketplace} from './api';
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -115,6 +116,7 @@ class Glitch {
         MarketingAgencies : MarketingAgencies,
         TwitchReporting: TwitchReporting,
         Raffles : Raffles,
+        DiscordMarketplace : DiscordMarketplace,
     }
 
     public static util = {

@@ -129,6 +129,14 @@ class Raffles {
     public static analytics<T>(id: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(RafflesRoute.routes.analytics, {}, { id });
     }
+
+    /**
+     * Update a raffle (Game Owner).
+     * Handles status transitions (e.g., moving from draft to active).
+     */
+    public static update<T>(id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(RafflesRoute.routes.update, data, { id });
+    }
 }
 
 export default Raffles;
