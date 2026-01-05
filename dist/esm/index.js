@@ -13828,6 +13828,8 @@ var NewslettersRoutes = /** @class */ (function () {
     NewslettersRoutes.routes = {
         downloadMarketingChecklist: { url: '/newsletters/downloadMarketingChecklist', method: HTTP_METHODS.POST },
         joinCourseWaitlist: { url: '/newsletters/joinCourseWaitlist', method: HTTP_METHODS.POST },
+        joinRaffleWaitlist: { url: '/newsletters/joinRaffleWaitlist', method: HTTP_METHODS.POST },
+        joinDiscordMarketplaceWaitlist: { url: '/newsletters/joinDiscordMarketplaceWaitlist', method: HTTP_METHODS.POST },
     };
     return NewslettersRoutes;
 }());
@@ -13855,6 +13857,22 @@ var Newsletters = /** @class */ (function () {
      */
     Newsletters.joinCourseWaitlist = function (data, params) {
         return Requests.processRoute(NewslettersRoutes.routes.joinCourseWaitlist, data, undefined, params);
+    };
+    /**
+ * Join the raffle feature waitlist.
+ *
+ * @param data { name, email, game, prizes[], interest_in_playtesters, launch_timeline, target_wishlist_count }
+ */
+    Newsletters.joinRaffleWaitlist = function (data, params) {
+        return Requests.processRoute(NewslettersRoutes.routes.joinRaffleWaitlist, data, undefined, params);
+    };
+    /**
+     * Join the Discord Marketplace waitlist.
+     *
+     * @param data { name, email, game, categories[] }
+     */
+    Newsletters.joinDiscordMarketplaceWaitlist = function (data, params) {
+        return Requests.processRoute(NewslettersRoutes.routes.joinDiscordMarketplaceWaitlist, data, undefined, params);
     };
     return Newsletters;
 }());
