@@ -29541,6 +29541,7 @@ var DiscordMarketplaceRoute = /** @class */ (function () {
         rejectOrder: { url: '/discord-marketplace/orders/{id}/reject', method: HTTP_METHODS.POST },
         requestChanges: { url: '/discord-marketplace/orders/{id}/request-changes', method: HTTP_METHODS.POST },
         resubmitOrder: { url: '/discord-marketplace/orders/{id}/resubmit', method: HTTP_METHODS.POST },
+        getChannels: { url: '/discord-marketplace/listings/{id}/channels', method: HTTP_METHODS.GET },
     };
     return DiscordMarketplaceRoute;
 }());
@@ -29619,6 +29620,12 @@ var DiscordMarketplace = /** @class */ (function () {
      */
     DiscordMarketplace.resubmitOrder = function (id) {
         return Requests.processRoute(DiscordMarketplaceRoute.routes.resubmitOrder, {}, { id: id });
+    };
+    /**
+     * Get available text channels for a specific Discord listing.
+     */
+    DiscordMarketplace.getChannels = function (id) {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.getChannels, {}, { id: id });
     };
     return DiscordMarketplace;
 }());

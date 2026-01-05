@@ -18,6 +18,7 @@ class DiscordMarketplaceRoute {
         rejectOrder: { url: '/discord-marketplace/orders/{id}/reject', method: HTTP_METHODS.POST },
         requestChanges: { url: '/discord-marketplace/orders/{id}/request-changes', method: HTTP_METHODS.POST },
         resubmitOrder: { url: '/discord-marketplace/orders/{id}/resubmit', method: HTTP_METHODS.POST },
+        getChannels: { url: '/discord-marketplace/listings/{id}/channels', method: HTTP_METHODS.GET },
     };
 }
 

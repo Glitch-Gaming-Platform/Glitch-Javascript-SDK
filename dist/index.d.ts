@@ -7115,6 +7115,10 @@ declare class DiscordMarketplace {
      * Resubmit a post after making requested changes (Game Developer).
      */
     static resubmitOrder<T>(id: string): AxiosPromise<Response<T>>;
+    /**
+     * Get available text channels for a specific Discord listing.
+     */
+    static getChannels<T>(id: string): AxiosPromise<Response<T>>;
 }
 
 interface Route {

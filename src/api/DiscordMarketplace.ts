@@ -87,6 +87,13 @@ class DiscordMarketplace {
     public static resubmitOrder<T>(id: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(DiscordMarketplaceRoute.routes.resubmitOrder, {}, { id });
     }
+
+    /**
+     * Get available text channels for a specific Discord listing.
+     */
+    public static getChannels<T>(id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(DiscordMarketplaceRoute.routes.getChannels, {}, { id });
+    }
 }
 
 export default DiscordMarketplace;
