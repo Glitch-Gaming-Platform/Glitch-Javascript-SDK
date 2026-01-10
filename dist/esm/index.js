@@ -16733,6 +16733,9 @@ var Education = /** @class */ (function () {
     Education.getQuestionPerformanceReport = function (params) {
         return Requests.processRoute(EducationRoute.routes.reportQuestionPerformance, undefined, undefined, params);
     };
+    Education.getRetentionReport = function () {
+        return Requests.processRoute(EducationRoute.routes.reportRetention);
+    };
     // --- 9. ACHIEVEMENTS (BADGES & CERTIFICATES) ---
     Education.myBadges = function () {
         return Requests.processRoute(EducationRoute.routes.myBadges);

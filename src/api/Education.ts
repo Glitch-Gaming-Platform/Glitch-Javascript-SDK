@@ -151,6 +151,9 @@ class Education {
     public static getQuestionPerformanceReport<T>(params?: object): AxiosPromise<Response<T>> {
         return Requests.processRoute(EducationRoute.routes.reportQuestionPerformance, undefined, undefined, params);
     }
+    public static getRetentionReport<T>(): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.reportRetention);
+    }
 
     // --- 9. ACHIEVEMENTS (BADGES & CERTIFICATES) ---
     public static myBadges<T>(): AxiosPromise<Response<T>> {

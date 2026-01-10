@@ -45,6 +45,7 @@ declare class Education {
     static getConversionReport<T>(): AxiosPromise<Response<T>>;
     static getAdoptionReport<T>(): AxiosPromise<Response<T>>;
     static getQuestionPerformanceReport<T>(params?: object): AxiosPromise<Response<T>>;
+    static getRetentionReport<T>(): AxiosPromise<Response<T>>;
     static myBadges<T>(): AxiosPromise<Response<T>>;
     static awardBadge<T>(data: object): AxiosPromise<Response<T>>;
     static myCertificates<T>(): AxiosPromise<Response<T>>;
