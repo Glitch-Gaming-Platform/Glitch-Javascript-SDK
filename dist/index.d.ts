@@ -7179,6 +7179,11 @@ declare class Education {
     static getAdoptionReport<T>(): AxiosPromise<Response<T>>;
     static getQuestionPerformanceReport<T>(params?: object): AxiosPromise<Response<T>>;
     static getRetentionReport<T>(): AxiosPromise<Response<T>>;
+    /**
+     * List raw engagement logs.
+     * @param params Filter by user_id, content_id, or is_paid
+     */
+    static listViews<T>(params?: object): AxiosPromise<Response<T>>;
     static myBadges<T>(): AxiosPromise<Response<T>>;
     static awardBadge<T>(data: object): AxiosPromise<Response<T>>;
     static myCertificates<T>(): AxiosPromise<Response<T>>;

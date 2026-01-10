@@ -155,6 +155,14 @@ class Education {
         return Requests.processRoute(EducationRoute.routes.reportRetention);
     }
 
+    /**
+     * List raw engagement logs.
+     * @param params Filter by user_id, content_id, or is_paid
+     */
+    public static listViews<T>(params?: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.listViews, undefined, undefined, params);
+    }
+
     // --- 9. ACHIEVEMENTS (BADGES & CERTIFICATES) ---
     public static myBadges<T>(): AxiosPromise<Response<T>> {
         return Requests.processRoute(EducationRoute.routes.myBadges);

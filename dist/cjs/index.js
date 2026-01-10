@@ -29920,6 +29920,13 @@ var Education = /** @class */ (function () {
     Education.getRetentionReport = function () {
         return Requests.processRoute(EducationRoute.routes.reportRetention);
     };
+    /**
+     * List raw engagement logs.
+     * @param params Filter by user_id, content_id, or is_paid
+     */
+    Education.listViews = function (params) {
+        return Requests.processRoute(EducationRoute.routes.listViews, undefined, undefined, params);
+    };
     // --- 9. ACHIEVEMENTS (BADGES & CERTIFICATES) ---
     Education.myBadges = function () {
         return Requests.processRoute(EducationRoute.routes.myBadges);
