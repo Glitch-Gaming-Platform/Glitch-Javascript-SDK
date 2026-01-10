@@ -29648,6 +29648,303 @@ var DiscordMarketplace = /** @class */ (function () {
     return DiscordMarketplace;
 }());
 
+var EducationRoute = /** @class */ (function () {
+    function EducationRoute() {
+    }
+    EducationRoute.routes = {
+        // 1. EducationCategoryController
+        listCategories: { url: '/education/categories', method: HTTP_METHODS.GET },
+        viewCategory: { url: '/education/categories/{uuid}', method: HTTP_METHODS.GET },
+        createCategory: { url: '/education/categories', method: HTTP_METHODS.POST },
+        updateCategory: { url: '/education/categories/{uuid}', method: HTTP_METHODS.PUT },
+        deleteCategory: { url: '/education/categories/{uuid}', method: HTTP_METHODS.DELETE },
+        // 2. EducationTrackController
+        listTracks: { url: '/education/tracks', method: HTTP_METHODS.GET },
+        viewTrack: { url: '/education/tracks/{uuid}', method: HTTP_METHODS.GET },
+        createTrack: { url: '/education/tracks', method: HTTP_METHODS.POST },
+        updateTrack: { url: '/education/tracks/{uuid}', method: HTTP_METHODS.PUT },
+        deleteTrack: { url: '/education/tracks/{uuid}', method: HTTP_METHODS.DELETE },
+        registerTrack: { url: '/education/tracks/{uuid}/register', method: HTTP_METHODS.POST },
+        myTracks: { url: '/education/my-tracks', method: HTTP_METHODS.GET },
+        trackAnalytics: { url: '/education/tracks/{uuid}/analytics', method: HTTP_METHODS.GET },
+        // 3. EducationContentController
+        listContent: { url: '/education/content', method: HTTP_METHODS.GET },
+        viewContent: { url: '/education/content/{uuid}', method: HTTP_METHODS.GET },
+        createContent: { url: '/education/content', method: HTTP_METHODS.POST },
+        updateContent: { url: '/education/content/{uuid}', method: HTTP_METHODS.PUT },
+        deleteContent: { url: '/education/content/{uuid}', method: HTTP_METHODS.DELETE },
+        contentHeartbeat: { url: '/education/content/{uuid}/heartbeat', method: HTTP_METHODS.POST },
+        saveContentModuleState: { url: '/education/content/{uuid}/module-state', method: HTTP_METHODS.POST },
+        getContentModuleState: { url: '/education/content/{uuid}/module-state', method: HTTP_METHODS.GET },
+        getSecureVideo: { url: '/education/content/{uuid}/secure-video', method: HTTP_METHODS.GET },
+        // 4. EducationContentTrackController (Pivot)
+        listTrackContent: { url: '/education/tracks/{track_id}/content', method: HTTP_METHODS.GET },
+        addContentToTrack: { url: '/education/tracks/{track_id}/content', method: HTTP_METHODS.POST },
+        updateContentInTrack: { url: '/education/tracks/{track_id}/content/{content_id}', method: HTTP_METHODS.PUT },
+        removeContentFromTrack: { url: '/education/tracks/{track_id}/content/{content_id}', method: HTTP_METHODS.DELETE },
+        reorderTrackContent: { url: '/education/tracks/{track_id}/reorder', method: HTTP_METHODS.POST },
+        // 5. QuizController
+        listQuizzes: { url: '/education/quizzes', method: HTTP_METHODS.GET },
+        viewQuiz: { url: '/education/quizzes/{uuid}', method: HTTP_METHODS.GET },
+        createQuiz: { url: '/education/quizzes', method: HTTP_METHODS.POST },
+        updateQuiz: { url: '/education/quizzes/{uuid}', method: HTTP_METHODS.PUT },
+        deleteQuiz: { url: '/education/quizzes/{uuid}', method: HTTP_METHODS.DELETE },
+        submitQuiz: { url: '/education/quizzes/{uuid}/submit', method: HTTP_METHODS.POST },
+        myQuizAttempts: { url: '/education/quizzes/{uuid}/attempts', method: HTTP_METHODS.GET },
+        viewQuizAttempt: { url: '/education/quizzes/attempts/{uuid}', method: HTTP_METHODS.GET },
+        // 6. QuizQuestionController
+        listQuizQuestions: { url: '/education/quizzes/{quiz_id}/questions', method: HTTP_METHODS.GET },
+        createQuizQuestion: { url: '/education/quizzes/{quiz_id}/questions', method: HTTP_METHODS.POST },
+        viewQuizQuestion: { url: '/education/questions/{uuid}', method: HTTP_METHODS.GET },
+        updateQuizQuestion: { url: '/education/questions/{uuid}', method: HTTP_METHODS.PUT },
+        deleteQuizQuestion: { url: '/education/questions/{uuid}', method: HTTP_METHODS.DELETE },
+        reorderQuizQuestions: { url: '/education/quizzes/{quiz_id}/questions/reorder', method: HTTP_METHODS.POST },
+        // 7. QuizOptionController
+        listQuizOptions: { url: '/education/questions/{question_id}/options', method: HTTP_METHODS.GET },
+        createQuizOption: { url: '/education/questions/{question_id}/options', method: HTTP_METHODS.POST },
+        viewQuizOption: { url: '/education/options/{uuid}', method: HTTP_METHODS.GET },
+        updateQuizOption: { url: '/education/options/{uuid}', method: HTTP_METHODS.PUT },
+        deleteQuizOption: { url: '/education/options/{uuid}', method: HTTP_METHODS.DELETE },
+        // 8. QuizAttemptController
+        listAllQuizAttempts: { url: '/education/quiz-attempts', method: HTTP_METHODS.GET },
+        viewSpecificQuizAttempt: { url: '/education/quiz-attempts/{uuid}', method: HTTP_METHODS.GET },
+        deleteQuizAttempt: { url: '/education/quiz-attempts/{uuid}', method: HTTP_METHODS.DELETE },
+        listUserQuizAttempts: { url: '/users/{user_id}/quiz-attempts', method: HTTP_METHODS.GET },
+        // 9. QuizAttemptAnswerController
+        listAttemptAnswers: { url: '/education/quiz-attempts/{attempt_id}/answers', method: HTTP_METHODS.GET },
+        viewSpecificAnswer: { url: '/education/quiz-attempt-answers/{uuid}', method: HTTP_METHODS.GET },
+        reportQuestionPerformance: { url: '/education/reports/question-performance', method: HTTP_METHODS.GET },
+        // 10. UserEducationProgressController
+        listAllProgress: { url: '/education/progress', method: HTTP_METHODS.GET },
+        syncProgress: { url: '/education/progress/sync', method: HTTP_METHODS.POST },
+        viewProgress: { url: '/education/progress/{uuid}', method: HTTP_METHODS.GET },
+        deleteProgress: { url: '/education/progress/{uuid}', method: HTTP_METHODS.DELETE },
+        myProgressByContent: { url: '/education/content/{content_id}/my-progress', method: HTTP_METHODS.GET },
+        // 11. UserTrackController
+        listUserTracks: { url: '/education/user-tracks', method: HTTP_METHODS.GET },
+        viewUserTrack: { url: '/education/user-tracks/{uuid}', method: HTTP_METHODS.GET },
+        updateUserTrack: { url: '/education/user-tracks/{uuid}', method: HTTP_METHODS.PUT },
+        deleteUserTrack: { url: '/education/user-tracks/{uuid}', method: HTTP_METHODS.DELETE },
+        refreshUserTrack: { url: '/education/user-tracks/{uuid}/refresh', method: HTTP_METHODS.POST },
+        // 12. UserTrackRegistrationController
+        listRegistrations: { url: '/education/registrations', method: HTTP_METHODS.GET },
+        createRegistration: { url: '/education/registrations', method: HTTP_METHODS.POST },
+        viewRegistration: { url: '/education/registrations/{uuid}', method: HTTP_METHODS.GET },
+        updateRegistration: { url: '/education/registrations/{uuid}', method: HTTP_METHODS.PUT },
+        deleteRegistration: { url: '/education/registrations/{uuid}', method: HTTP_METHODS.DELETE },
+        listTrackRegistrations: { url: '/education/tracks/{track_id}/registrations', method: HTTP_METHODS.GET },
+        // 13. EducationViewController
+        listViews: { url: '/education/views', method: HTTP_METHODS.GET },
+        logView: { url: '/education/views', method: HTTP_METHODS.POST },
+        viewLogDetails: { url: '/education/views/{uuid}', method: HTTP_METHODS.GET },
+        reportConversion: { url: '/education/reports/conversion-impact', method: HTTP_METHODS.GET },
+        reportAdoption: { url: '/education/reports/adoption-metrics', method: HTTP_METHODS.GET },
+        reportRetention: { url: '/education/reports/retention-impact', method: HTTP_METHODS.GET },
+        // 14. EducationModuleDataController
+        listModuleData: { url: '/education/module-data', method: HTTP_METHODS.GET },
+        saveModuleData: { url: '/education/module-data', method: HTTP_METHODS.POST },
+        viewModuleData: { url: '/education/module-data/{uuid}', method: HTTP_METHODS.GET },
+        updateModuleData: { url: '/education/module-data/{uuid}', method: HTTP_METHODS.PUT },
+        deleteModuleData: { url: '/education/module-data/{uuid}', method: HTTP_METHODS.DELETE },
+        // 15. EducationCertificateTemplateController
+        listTemplates: { url: '/education/certificate-templates', method: HTTP_METHODS.GET },
+        createTemplate: { url: '/education/certificate-templates', method: HTTP_METHODS.POST },
+        viewTemplate: { url: '/education/certificate-templates/{uuid}', method: HTTP_METHODS.GET },
+        updateTemplate: { url: '/education/certificate-templates/{uuid}', method: HTTP_METHODS.PUT },
+        deleteTemplate: { url: '/education/certificate-templates/{uuid}', method: HTTP_METHODS.DELETE },
+        uploadTemplateSignature: { url: '/education/certificate-templates/{uuid}/uploadSignature', method: HTTP_METHODS.POST },
+        uploadTemplateBackground: { url: '/education/certificate-templates/{uuid}/uploadBackground', method: HTTP_METHODS.POST },
+        // 16. CertificateController
+        listAllCertificates: { url: '/certificates', method: HTTP_METHODS.GET },
+        myCertificates: { url: '/certificates/mine', method: HTTP_METHODS.GET },
+        viewCertificate: { url: '/certificates/{uuid}', method: HTTP_METHODS.GET },
+        downloadCertificate: { url: '/certificates/{uuid}/download', method: HTTP_METHODS.GET },
+        issueCertificate: { url: '/certificates', method: HTTP_METHODS.POST },
+        revokeCertificate: { url: '/certificates/{uuid}', method: HTTP_METHODS.DELETE },
+        listUserCertificates: { url: '/users/{user_id}/certificates', method: HTTP_METHODS.GET },
+        // 17. BadgeController
+        listAllBadges: { url: '/badges', method: HTTP_METHODS.GET },
+        myBadges: { url: '/badges/mine', method: HTTP_METHODS.GET },
+        viewBadge: { url: '/badges/{uuid}', method: HTTP_METHODS.GET },
+        awardBadge: { url: '/badges', method: HTTP_METHODS.POST },
+        updateBadge: { url: '/badges/{uuid}', method: HTTP_METHODS.PUT },
+        revokeBadge: { url: '/badges/{uuid}', method: HTTP_METHODS.DELETE },
+        listUserBadges: { url: '/users/{user_id}/badges', method: HTTP_METHODS.GET },
+    };
+    return EducationRoute;
+}());
+
+var Education = /** @class */ (function () {
+    function Education() {
+    }
+    // --- 1. CATEGORIES ---
+    Education.listCategories = function (params) {
+        return Requests.processRoute(EducationRoute.routes.listCategories, undefined, undefined, params);
+    };
+    Education.viewCategory = function (uuid, params) {
+        return Requests.processRoute(EducationRoute.routes.viewCategory, undefined, { uuid: uuid }, params);
+    };
+    Education.createCategory = function (data) {
+        return Requests.processRoute(EducationRoute.routes.createCategory, data);
+    };
+    Education.updateCategory = function (uuid, data) {
+        return Requests.processRoute(EducationRoute.routes.updateCategory, data, { uuid: uuid });
+    };
+    Education.deleteCategory = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.deleteCategory, undefined, { uuid: uuid });
+    };
+    // --- 2. TRACKS ---
+    Education.listTracks = function (params) {
+        return Requests.processRoute(EducationRoute.routes.listTracks, undefined, undefined, params);
+    };
+    Education.viewTrack = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.viewTrack, undefined, { uuid: uuid });
+    };
+    Education.createTrack = function (data) {
+        return Requests.processRoute(EducationRoute.routes.createTrack, data);
+    };
+    Education.updateTrack = function (uuid, data) {
+        return Requests.processRoute(EducationRoute.routes.updateTrack, data, { uuid: uuid });
+    };
+    Education.deleteTrack = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.deleteTrack, undefined, { uuid: uuid });
+    };
+    Education.registerForTrack = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.registerTrack, {}, { uuid: uuid });
+    };
+    Education.myTracks = function () {
+        return Requests.processRoute(EducationRoute.routes.myTracks);
+    };
+    Education.getTrackAnalytics = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.trackAnalytics, undefined, { uuid: uuid });
+    };
+    // --- 3. CONTENT ---
+    Education.listContent = function (params) {
+        return Requests.processRoute(EducationRoute.routes.listContent, undefined, undefined, params);
+    };
+    Education.viewContent = function (uuid, params) {
+        return Requests.processRoute(EducationRoute.routes.viewContent, undefined, { uuid: uuid }, params);
+    };
+    Education.createContent = function (data) {
+        return Requests.processRoute(EducationRoute.routes.createContent, data);
+    };
+    Education.updateContent = function (uuid, data) {
+        return Requests.processRoute(EducationRoute.routes.updateContent, data, { uuid: uuid });
+    };
+    Education.deleteContent = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.deleteContent, undefined, { uuid: uuid });
+    };
+    Education.heartbeat = function (uuid, data) {
+        return Requests.processRoute(EducationRoute.routes.contentHeartbeat, data, { uuid: uuid });
+    };
+    Education.getSecureVideo = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.getSecureVideo, undefined, { uuid: uuid });
+    };
+    // --- 4. TRACK CONTENT (PIVOT) ---
+    Education.listTrackContent = function (track_id) {
+        return Requests.processRoute(EducationRoute.routes.listTrackContent, undefined, { track_id: track_id });
+    };
+    Education.addContentToTrack = function (track_id, data) {
+        return Requests.processRoute(EducationRoute.routes.addContentToTrack, data, { track_id: track_id });
+    };
+    Education.removeContentFromTrack = function (track_id, content_id) {
+        return Requests.processRoute(EducationRoute.routes.removeContentFromTrack, undefined, { track_id: track_id, content_id: content_id });
+    };
+    Education.reorderTrackContent = function (track_id, content_ids) {
+        return Requests.processRoute(EducationRoute.routes.reorderTrackContent, { content_ids: content_ids }, { track_id: track_id });
+    };
+    // --- 5. QUIZZES ---
+    Education.listQuizzes = function (params) {
+        return Requests.processRoute(EducationRoute.routes.listQuizzes, undefined, undefined, params);
+    };
+    Education.viewQuiz = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.viewQuiz, undefined, { uuid: uuid });
+    };
+    Education.submitQuiz = function (uuid, answers) {
+        return Requests.processRoute(EducationRoute.routes.submitQuiz, { answers: answers }, { uuid: uuid });
+    };
+    Education.myQuizAttempts = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.myQuizAttempts, undefined, { uuid: uuid });
+    };
+    Education.viewQuizAttempt = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.viewQuizAttempt, undefined, { uuid: uuid });
+    };
+    // --- 6. QUIZ QUESTIONS & OPTIONS ---
+    Education.listQuizQuestions = function (quiz_id) {
+        return Requests.processRoute(EducationRoute.routes.listQuizQuestions, undefined, { quiz_id: quiz_id });
+    };
+    Education.createQuizQuestion = function (quiz_id, data) {
+        return Requests.processRoute(EducationRoute.routes.createQuizQuestion, data, { quiz_id: quiz_id });
+    };
+    Education.reorderQuizQuestions = function (quiz_id, question_ids) {
+        return Requests.processRoute(EducationRoute.routes.reorderQuizQuestions, { question_ids: question_ids }, { quiz_id: quiz_id });
+    };
+    Education.listQuizOptions = function (question_id) {
+        return Requests.processRoute(EducationRoute.routes.listQuizOptions, undefined, { question_id: question_id });
+    };
+    Education.createQuizOption = function (question_id, data) {
+        return Requests.processRoute(EducationRoute.routes.createQuizOption, data, { question_id: question_id });
+    };
+    // --- 7. PROGRESS & REGISTRATIONS ---
+    Education.syncProgress = function (data) {
+        return Requests.processRoute(EducationRoute.routes.syncProgress, data);
+    };
+    Education.getMyProgressByContent = function (content_id) {
+        return Requests.processRoute(EducationRoute.routes.myProgressByContent, undefined, { content_id: content_id });
+    };
+    Education.listRegistrations = function (params) {
+        return Requests.processRoute(EducationRoute.routes.listRegistrations, undefined, undefined, params);
+    };
+    Education.refreshUserTrack = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.refreshUserTrack, {}, { uuid: uuid });
+    };
+    // --- 8. ANALYTICS & MODULE DATA ---
+    Education.logView = function (data) {
+        return Requests.processRoute(EducationRoute.routes.logView, data);
+    };
+    Education.saveModuleData = function (data) {
+        return Requests.processRoute(EducationRoute.routes.saveModuleData, data);
+    };
+    Education.getModuleData = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.viewModuleData, undefined, { uuid: uuid });
+    };
+    Education.getConversionReport = function () {
+        return Requests.processRoute(EducationRoute.routes.reportConversion);
+    };
+    Education.getAdoptionReport = function () {
+        return Requests.processRoute(EducationRoute.routes.reportAdoption);
+    };
+    Education.getQuestionPerformanceReport = function (params) {
+        return Requests.processRoute(EducationRoute.routes.reportQuestionPerformance, undefined, undefined, params);
+    };
+    // --- 9. ACHIEVEMENTS (BADGES & CERTIFICATES) ---
+    Education.myBadges = function () {
+        return Requests.processRoute(EducationRoute.routes.myBadges);
+    };
+    Education.awardBadge = function (data) {
+        return Requests.processRoute(EducationRoute.routes.awardBadge, data);
+    };
+    Education.myCertificates = function () {
+        return Requests.processRoute(EducationRoute.routes.myCertificates);
+    };
+    Education.downloadCertificate = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.downloadCertificate, undefined, { uuid: uuid });
+    };
+    // --- 10. TEMPLATES & UPLOADS ---
+    Education.listTemplates = function () {
+        return Requests.processRoute(EducationRoute.routes.listTemplates);
+    };
+    Education.uploadTemplateSignature = function (uuid, file) {
+        var url = EducationRoute.routes.uploadTemplateSignature.url.replace('{uuid}', uuid);
+        return Requests.uploadFile(url, 'image', file);
+    };
+    Education.uploadTemplateBackground = function (uuid, file) {
+        var url = EducationRoute.routes.uploadTemplateBackground.url.replace('{uuid}', uuid);
+        return Requests.uploadFile(url, 'image', file);
+    };
+    return Education;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -30178,6 +30475,7 @@ var Glitch = /** @class */ (function () {
         TwitchReporting: TwitchReporting,
         Raffles: Raffles,
         DiscordMarketplace: DiscordMarketplace,
+        Education: Education,
     };
     Glitch.util = {
         Requests: Requests,

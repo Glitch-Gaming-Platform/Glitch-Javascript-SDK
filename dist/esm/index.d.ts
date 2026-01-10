@@ -40,6 +40,7 @@ import { MarketingAgencies } from "./api";
 import { TwitchReporting } from './api';
 import { Raffles } from './api';
 import { DiscordMarketplace } from './api';
+import { Education } from './api';
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -101,6 +102,7 @@ declare class Glitch {
         TwitchReporting: typeof TwitchReporting;
         Raffles: typeof Raffles;
         DiscordMarketplace: typeof DiscordMarketplace;
+        Education: typeof Education;
     };
     static util: {
         Requests: typeof Requests;

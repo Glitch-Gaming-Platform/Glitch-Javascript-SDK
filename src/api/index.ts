@@ -40,6 +40,7 @@ import MarketingAgencies from "./MarketingAgencies";
 import TwitchReporting from "./TwitchReporting";
 import Raffles from "./Raffles";
 import DiscordMarketplace from "./DiscordMarketplace";
+import Education from "./Education";
 
 export {Ads};
 export {AccessKeys};
@@ -83,3 +84,4 @@ export {MarketingAgencies};
 export {TwitchReporting};
 export {Raffles};
 export {DiscordMarketplace};
+export {Education};
