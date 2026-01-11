@@ -12,6 +12,8 @@ class MediaRoute {
         createLibraryLogo: { url: '/media/create-library-logo', method: HTTP_METHODS.POST },
         validateScreenshot: { url: '/media/validate-screenshot', method: HTTP_METHODS.POST },
         uploadTikTokMusic: { url: '/media/tiktok/music', method: HTTP_METHODS.POST },
+        getPresignedUrl: { url: '/media/presigned-url', method: HTTP_METHODS.POST },
+        confirmS3Upload: { url: '/media/s3-confirm', method: HTTP_METHODS.POST },
     };
 }
 

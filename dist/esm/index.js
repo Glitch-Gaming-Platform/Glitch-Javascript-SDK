@@ -14038,6 +14038,8 @@ var MediaRoute = /** @class */ (function () {
         createLibraryLogo: { url: '/media/create-library-logo', method: HTTP_METHODS.POST },
         validateScreenshot: { url: '/media/validate-screenshot', method: HTTP_METHODS.POST },
         uploadTikTokMusic: { url: '/media/tiktok/music', method: HTTP_METHODS.POST },
+        getPresignedUrl: { url: '/media/presigned-url', method: HTTP_METHODS.POST },
+        confirmS3Upload: { url: '/media/s3-confirm', method: HTTP_METHODS.POST },
     };
     return MediaRoute;
 }());
@@ -14267,6 +14269,27 @@ var Media = /** @class */ (function () {
     Media.uploadTikTokMusic = function (file, scheduler_id) {
         // We use the raw URL here as it's a specialized upload path
         return Requests.uploadFile('/media/tiktok/music', 'audio', file, { scheduler_id: scheduler_id });
+    };
+    /**
+     * Generate an S3 Presigned URL for direct upload.
+     * Use this for large files (up to 2GB) to bypass the Laravel server.
+     *
+     * @param filename The original name of the file.
+     * @param extension The file extension (e.g., 'mp4').
+     * @returns AxiosPromise containing upload_url and file_path.
+     */
+    Media.getPresignedUrl = function (filename, extension) {
+        return Requests.processRoute(MediaRoute.routes.getPresignedUrl, { filename: filename, extension: extension });
+    };
+    /**
+     * Confirm a successful S3 upload and create the database record.
+     * Call this after the direct S3 upload is complete.
+     *
+     * @param data The file metadata (path, size, mime_type).
+     * @returns AxiosPromise containing the created Media resource.
+     */
+    Media.confirmS3Upload = function (data) {
+        return Requests.processRoute(MediaRoute.routes.confirmS3Upload, data);
     };
     return Media;
 }());

@@ -103,6 +103,19 @@ export interface ScreenshotValidationResponse {
     recommendations: string[];
 }
 
+export interface PresignedUrlResponse {
+    upload_url: string;
+    file_path: string;
+}
+
+export interface S3ConfirmRequest {
+    file_path: string;
+    size: number;
+    mime_type: string;
+    title?: string;
+    filename?: string;
+}
+
 class Media {
     /**
      * Upload media content using a File object.
@@ -341,6 +354,29 @@ class Media {
     public static uploadTikTokMusic<T>(file: File, scheduler_id: string): AxiosPromise<Response<T>> {
         // We use the raw URL here as it's a specialized upload path
         return Requests.uploadFile('/media/tiktok/music', 'audio', file, { scheduler_id });
+    }
+
+    /**
+     * Generate an S3 Presigned URL for direct upload.
+     * Use this for large files (up to 2GB) to bypass the Laravel server.
+     * 
+     * @param filename The original name of the file.
+     * @param extension The file extension (e.g., 'mp4').
+     * @returns AxiosPromise containing upload_url and file_path.
+     */
+    public static getPresignedUrl<T = PresignedUrlResponse>(filename: string, extension: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MediaRoute.routes.getPresignedUrl, { filename, extension });
+    }
+
+    /**
+     * Confirm a successful S3 upload and create the database record.
+     * Call this after the direct S3 upload is complete.
+     * 
+     * @param data The file metadata (path, size, mime_type).
+     * @returns AxiosPromise containing the created Media resource.
+     */
+    public static confirmS3Upload<T>(data: S3ConfirmRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MediaRoute.routes.confirmS3Upload, data);
     }
 }
 
