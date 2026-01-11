@@ -69,6 +69,9 @@ class Education {
     public static getSecureVideo<T>(uuid: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(EducationRoute.routes.getSecureVideo, undefined, { uuid });
     }
+    public static getPreviewSecureVideo<T>(uuid: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.getPreviewSecureVideo, undefined, { uuid });
+    }
 
     // --- 4. TRACK CONTENT (PIVOT) ---
     public static listTrackContent<T>(track_id: string): AxiosPromise<Response<T>> {

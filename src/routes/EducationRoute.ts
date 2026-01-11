@@ -30,6 +30,7 @@ class EducationRoute {
     saveContentModuleState: { url: '/education/content/{uuid}/module-state', method: HTTP_METHODS.POST },
     getContentModuleState: { url: '/education/content/{uuid}/module-state', method: HTTP_METHODS.GET },
     getSecureVideo: { url: '/education/content/{uuid}/secure-video', method: HTTP_METHODS.GET },
+    getPreviewSecureVideo: { url: '/education/content/{uuid}/preview-secure-video', method: HTTP_METHODS.GET },
 
     // 4. EducationContentTrackController (Pivot)
     listTrackContent: { url: '/education/tracks/{track_id}/content', method: HTTP_METHODS.GET },

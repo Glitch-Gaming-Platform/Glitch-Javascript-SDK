@@ -29700,6 +29700,7 @@ var EducationRoute = /** @class */ (function () {
         saveContentModuleState: { url: '/education/content/{uuid}/module-state', method: HTTP_METHODS.POST },
         getContentModuleState: { url: '/education/content/{uuid}/module-state', method: HTTP_METHODS.GET },
         getSecureVideo: { url: '/education/content/{uuid}/secure-video', method: HTTP_METHODS.GET },
+        getPreviewSecureVideo: { url: '/education/content/{uuid}/preview-secure-video', method: HTTP_METHODS.GET },
         // 4. EducationContentTrackController (Pivot)
         listTrackContent: { url: '/education/tracks/{track_id}/content', method: HTTP_METHODS.GET },
         addContentToTrack: { url: '/education/tracks/{track_id}/content', method: HTTP_METHODS.POST },
@@ -29862,6 +29863,9 @@ var Education = /** @class */ (function () {
     };
     Education.getSecureVideo = function (uuid) {
         return Requests.processRoute(EducationRoute.routes.getSecureVideo, undefined, { uuid: uuid });
+    };
+    Education.getPreviewSecureVideo = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.getPreviewSecureVideo, undefined, { uuid: uuid });
     };
     // --- 4. TRACK CONTENT (PIVOT) ---
     Education.listTrackContent = function (track_id) {
