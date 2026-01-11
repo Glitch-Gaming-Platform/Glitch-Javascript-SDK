@@ -16685,6 +16685,15 @@ var Education = /** @class */ (function () {
     Education.viewQuizAttempt = function (uuid) {
         return Requests.processRoute(EducationRoute.routes.viewQuizAttempt, undefined, { uuid: uuid });
     };
+    Education.createQuiz = function (data) {
+        return Requests.processRoute(EducationRoute.routes.createQuiz, data);
+    };
+    Education.updateQuiz = function (uuid, data) {
+        return Requests.processRoute(EducationRoute.routes.updateQuiz, data, { uuid: uuid });
+    };
+    Education.deleteQuiz = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.deleteQuiz, undefined, { uuid: uuid });
+    };
     // --- 6. QUIZ QUESTIONS & OPTIONS ---
     Education.listQuizQuestions = function (quiz_id) {
         return Requests.processRoute(EducationRoute.routes.listQuizQuestions, undefined, { quiz_id: quiz_id });
@@ -16700,6 +16709,25 @@ var Education = /** @class */ (function () {
     };
     Education.createQuizOption = function (question_id, data) {
         return Requests.processRoute(EducationRoute.routes.createQuizOption, data, { question_id: question_id });
+    };
+    Education.viewQuizQuestion = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.viewQuizQuestion, undefined, { uuid: uuid });
+    };
+    Education.updateQuizQuestion = function (uuid, data) {
+        return Requests.processRoute(EducationRoute.routes.updateQuizQuestion, data, { uuid: uuid });
+    };
+    Education.deleteQuizQuestion = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.deleteQuizQuestion, undefined, { uuid: uuid });
+    };
+    // --- QUIZ OPTIONS (CRUD) ---
+    Education.viewQuizOption = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.viewQuizOption, undefined, { uuid: uuid });
+    };
+    Education.updateQuizOption = function (uuid, data) {
+        return Requests.processRoute(EducationRoute.routes.updateQuizOption, data, { uuid: uuid });
+    };
+    Education.deleteQuizOption = function (uuid) {
+        return Requests.processRoute(EducationRoute.routes.deleteQuizOption, undefined, { uuid: uuid });
     };
     // --- 7. PROGRESS & REGISTRATIONS ---
     Education.syncProgress = function (data) {

@@ -100,6 +100,15 @@ class Education {
     public static viewQuizAttempt<T>(uuid: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(EducationRoute.routes.viewQuizAttempt, undefined, { uuid });
     }
+    public static createQuiz<T>(data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.createQuiz, data);
+    }
+    public static updateQuiz<T>(uuid: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.updateQuiz, data, { uuid });
+    }
+    public static deleteQuiz<T>(uuid: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.deleteQuiz, undefined, { uuid });
+    }
 
     // --- 6. QUIZ QUESTIONS & OPTIONS ---
     public static listQuizQuestions<T>(quiz_id: string): AxiosPromise<Response<T>> {
@@ -117,6 +126,27 @@ class Education {
     public static createQuizOption<T>(question_id: string, data: object): AxiosPromise<Response<T>> {
         return Requests.processRoute(EducationRoute.routes.createQuizOption, data, { question_id });
     }
+    public static viewQuizQuestion<T>(uuid: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.viewQuizQuestion, undefined, { uuid });
+    }
+    public static updateQuizQuestion<T>(uuid: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.updateQuizQuestion, data, { uuid });
+    }
+    public static deleteQuizQuestion<T>(uuid: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.deleteQuizQuestion, undefined, { uuid });
+    }
+
+     // --- QUIZ OPTIONS (CRUD) ---
+    public static viewQuizOption<T>(uuid: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.viewQuizOption, undefined, { uuid });
+    }
+    public static updateQuizOption<T>(uuid: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.updateQuizOption, data, { uuid });
+    }
+    public static deleteQuizOption<T>(uuid: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.deleteQuizOption, undefined, { uuid });
+    }
+
 
     // --- 7. PROGRESS & REGISTRATIONS ---
     public static syncProgress<T>(data: object): AxiosPromise<Response<T>> {

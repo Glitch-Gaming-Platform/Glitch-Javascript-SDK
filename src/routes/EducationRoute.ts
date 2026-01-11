@@ -137,6 +137,7 @@ class EducationRoute {
     updateBadge: { url: '/badges/{uuid}', method: HTTP_METHODS.PUT },
     revokeBadge: { url: '/badges/{uuid}', method: HTTP_METHODS.DELETE },
     listUserBadges: { url: '/users/{user_id}/badges', method: HTTP_METHODS.GET },
+    
   };
 }
 
