@@ -440,6 +440,52 @@ class SocialPosts {
     public static replyViaDm<T>(comment_id: string, data: { message: string }): AxiosPromise<Response<T>> {
         return Requests.processRoute(SocialPostsRoute.routes.replyViaDm, data, { comment_id });
     }
+
+    /**
+     * List all discovered Reddit questions (Admin Only).
+     * 
+     * @param params Query parameters: status, subreddit, is_question.
+     */
+    public static listRedditQuestions<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.listRedditQuestions, undefined, undefined, params);
+    }
+
+    /**
+     * Retrieve details for a specific discovered Reddit question (Admin Only).
+     * 
+     * @param id The UUID of the question.
+     */
+    public static viewRedditQuestion<T>(id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.viewRedditQuestion, {}, { id }, params);
+    }
+
+    /**
+     * Update a Reddit question's status or metadata (Admin Only).
+     * 
+     * @param id The UUID of the question.
+     * @param data { status: 'pending'|'answered'|'ignored', metadata?: object }
+     */
+    public static updateRedditQuestion<T>(id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.updateRedditQuestion, data, { id }, params);
+    }
+
+    /**
+     * Delete a discovered Reddit question (Admin Only).
+     * 
+     * @param id The UUID of the question.
+     */
+    public static deleteRedditQuestion<T>(id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.deleteRedditQuestion, {}, { id }, params);
+    }
+
+    /**
+     * Optimize a Reddit post for a specific subreddit using the AI engine (Admin Only).
+     * 
+     * @param data { subreddit: string, content: string, title_id: string }
+     */
+    public static optimizeRedditPost<T>(data: { subreddit: string, content: string, title_id: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.optimizeRedditPost, data);
+    }
 }
 
 export default SocialPosts;

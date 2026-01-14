@@ -49,6 +49,13 @@ class SocialPostsRoute {
         sendSocialMessage: { url: '/social/messages', method: HTTP_METHODS.POST },
         replyViaDm: { url: '/socialposts/comments/{comment_id}/reply-via-dm', method: HTTP_METHODS.POST },
 
+        // Reddit Sales Engine (Admin Only)
+        listRedditQuestions: { url: '/admin/reddit/questions', method: HTTP_METHODS.GET },
+        viewRedditQuestion: { url: '/admin/reddit/questions/{id}', method: HTTP_METHODS.GET },
+        updateRedditQuestion: { url: '/admin/reddit/questions/{id}', method: HTTP_METHODS.PUT },
+        deleteRedditQuestion: { url: '/admin/reddit/questions/{id}', method: HTTP_METHODS.DELETE },
+        optimizeRedditPost: { url: '/admin/reddit/optimize', method: HTTP_METHODS.POST },
+
     };
 
 }

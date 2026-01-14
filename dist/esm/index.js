@@ -10961,6 +10961,12 @@ var SocialPostsRoute = /** @class */ (function () {
         getConversationMessages: { url: '/social/conversations/{conversation_id}/messages', method: HTTP_METHODS.GET },
         sendSocialMessage: { url: '/social/messages', method: HTTP_METHODS.POST },
         replyViaDm: { url: '/socialposts/comments/{comment_id}/reply-via-dm', method: HTTP_METHODS.POST },
+        // Reddit Sales Engine (Admin Only)
+        listRedditQuestions: { url: '/admin/reddit/questions', method: HTTP_METHODS.GET },
+        viewRedditQuestion: { url: '/admin/reddit/questions/{id}', method: HTTP_METHODS.GET },
+        updateRedditQuestion: { url: '/admin/reddit/questions/{id}', method: HTTP_METHODS.PUT },
+        deleteRedditQuestion: { url: '/admin/reddit/questions/{id}', method: HTTP_METHODS.DELETE },
+        optimizeRedditPost: { url: '/admin/reddit/optimize', method: HTTP_METHODS.POST },
     };
     return SocialPostsRoute;
 }());
@@ -11356,6 +11362,47 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.replyViaDm = function (comment_id, data) {
         return Requests.processRoute(SocialPostsRoute.routes.replyViaDm, data, { comment_id: comment_id });
+    };
+    /**
+     * List all discovered Reddit questions (Admin Only).
+     *
+     * @param params Query parameters: status, subreddit, is_question.
+     */
+    SocialPosts.listRedditQuestions = function (params) {
+        return Requests.processRoute(SocialPostsRoute.routes.listRedditQuestions, undefined, undefined, params);
+    };
+    /**
+     * Retrieve details for a specific discovered Reddit question (Admin Only).
+     *
+     * @param id The UUID of the question.
+     */
+    SocialPosts.viewRedditQuestion = function (id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.viewRedditQuestion, {}, { id: id }, params);
+    };
+    /**
+     * Update a Reddit question's status or metadata (Admin Only).
+     *
+     * @param id The UUID of the question.
+     * @param data { status: 'pending'|'answered'|'ignored', metadata?: object }
+     */
+    SocialPosts.updateRedditQuestion = function (id, data, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.updateRedditQuestion, data, { id: id }, params);
+    };
+    /**
+     * Delete a discovered Reddit question (Admin Only).
+     *
+     * @param id The UUID of the question.
+     */
+    SocialPosts.deleteRedditQuestion = function (id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.deleteRedditQuestion, {}, { id: id }, params);
+    };
+    /**
+     * Optimize a Reddit post for a specific subreddit using the AI engine (Admin Only).
+     *
+     * @param data { subreddit: string, content: string, title_id: string }
+     */
+    SocialPosts.optimizeRedditPost = function (data) {
+        return Requests.processRoute(SocialPostsRoute.routes.optimizeRedditPost, data);
     };
     return SocialPosts;
 }());

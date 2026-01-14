@@ -3695,6 +3695,41 @@ declare class SocialPosts {
     static replyViaDm<T>(comment_id: string, data: {
         message: string;
     }): AxiosPromise<Response<T>>;
+    /**
+     * List all discovered Reddit questions (Admin Only).
+     *
+     * @param params Query parameters: status, subreddit, is_question.
+     */
+    static listRedditQuestions<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve details for a specific discovered Reddit question (Admin Only).
+     *
+     * @param id The UUID of the question.
+     */
+    static viewRedditQuestion<T>(id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a Reddit question's status or metadata (Admin Only).
+     *
+     * @param id The UUID of the question.
+     * @param data { status: 'pending'|'answered'|'ignored', metadata?: object }
+     */
+    static updateRedditQuestion<T>(id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a discovered Reddit question (Admin Only).
+     *
+     * @param id The UUID of the question.
+     */
+    static deleteRedditQuestion<T>(id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Optimize a Reddit post for a specific subreddit using the AI engine (Admin Only).
+     *
+     * @param data { subreddit: string, content: string, title_id: string }
+     */
+    static optimizeRedditPost<T>(data: {
+        subreddit: string;
+        content: string;
+        title_id: string;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Titles {
