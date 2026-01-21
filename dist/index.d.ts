@@ -7218,6 +7218,7 @@ declare class Education {
     static heartbeat<T>(uuid: string, data: object): AxiosPromise<Response<T>>;
     static getSecureVideo<T>(uuid: string): AxiosPromise<Response<T>>;
     static getPreviewSecureVideo<T>(uuid: string): AxiosPromise<Response<T>>;
+    static listAllProgress<T>(params?: object): AxiosPromise<Response<T>>;
     static listTrackContent<T>(track_id: string): AxiosPromise<Response<T>>;
     static addContentToTrack<T>(track_id: string, data: object): AxiosPromise<Response<T>>;
     static removeContentFromTrack<T>(track_id: string, content_id: string): AxiosPromise<Response<T>>;

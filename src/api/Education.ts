@@ -72,6 +72,9 @@ class Education {
     public static getPreviewSecureVideo<T>(uuid: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(EducationRoute.routes.getPreviewSecureVideo, undefined, { uuid });
     }
+    public static listAllProgress<T>(params?: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.listAllProgress, undefined, undefined, params);
+    }
 
     // --- 4. TRACK CONTENT (PIVOT) ---
     public static listTrackContent<T>(track_id: string): AxiosPromise<Response<T>> {
@@ -139,7 +142,7 @@ class Education {
         return Requests.processRoute(EducationRoute.routes.deleteQuizQuestion, undefined, { uuid });
     }
 
-     // --- QUIZ OPTIONS (CRUD) ---
+    // --- QUIZ OPTIONS (CRUD) ---
     public static viewQuizOption<T>(uuid: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(EducationRoute.routes.viewQuizOption, undefined, { uuid });
     }

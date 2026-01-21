@@ -16730,6 +16730,9 @@ var Education = /** @class */ (function () {
     Education.getPreviewSecureVideo = function (uuid) {
         return Requests.processRoute(EducationRoute.routes.getPreviewSecureVideo, undefined, { uuid: uuid });
     };
+    Education.listAllProgress = function (params) {
+        return Requests.processRoute(EducationRoute.routes.listAllProgress, undefined, undefined, params);
+    };
     // --- 4. TRACK CONTENT (PIVOT) ---
     Education.listTrackContent = function (track_id) {
         return Requests.processRoute(EducationRoute.routes.listTrackContent, undefined, { track_id: track_id });
