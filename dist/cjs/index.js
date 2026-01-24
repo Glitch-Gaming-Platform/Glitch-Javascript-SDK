@@ -27061,15 +27061,19 @@ var NewslettersRoutes = /** @class */ (function () {
         joinCourseWaitlist: { url: '/newsletters/joinCourseWaitlist', method: HTTP_METHODS.POST },
         joinRaffleWaitlist: { url: '/newsletters/joinRaffleWaitlist', method: HTTP_METHODS.POST },
         joinDiscordMarketplaceWaitlist: { url: '/newsletters/joinDiscordMarketplaceWaitlist', method: HTTP_METHODS.POST },
-        // --- New Admin Routes ---
+        // --- Admin Campaign Management ---
         listCampaigns: { url: '/admin/newsletters/campaigns', method: HTTP_METHODS.GET },
         createCampaign: { url: '/admin/newsletters/campaigns', method: HTTP_METHODS.POST },
         viewCampaign: { url: '/admin/newsletters/campaigns/{id}', method: HTTP_METHODS.GET },
         updateCampaign: { url: '/admin/newsletters/campaigns/{id}', method: HTTP_METHODS.PUT },
-        getStats: { url: '/admin/newsletters/campaigns/{id}/stats', method: HTTP_METHODS.GET },
+        deleteCampaign: { url: '/admin/newsletters/campaigns/{id}', method: HTTP_METHODS.DELETE },
+        // --- Admin Campaign Actions & Analytics ---
+        getCampaignStats: { url: '/admin/newsletters/campaigns/{id}/stats', method: HTTP_METHODS.GET },
+        getCampaignLogs: { url: '/admin/newsletters/campaigns/{id}/logs', method: HTTP_METHODS.GET },
         sendCampaign: { url: '/admin/newsletters/campaigns/{id}/send', method: HTTP_METHODS.POST },
+        sendTest: { url: '/admin/newsletters/campaigns/{id}/test', method: HTTP_METHODS.POST },
+        // --- Admin Subscriber Management ---
         listSubscribers: { url: '/admin/newsletters/subscribers', method: HTTP_METHODS.GET },
-        // --- Subscriber Management (Admin) ---
         createSubscriber: { url: '/admin/newsletters/subscribers', method: HTTP_METHODS.POST },
         viewSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.GET },
         updateSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.PUT },
@@ -27118,70 +27122,30 @@ var Newsletters = /** @class */ (function () {
     Newsletters.joinDiscordMarketplaceWaitlist = function (data, params) {
         return Requests.processRoute(NewslettersRoutes.routes.joinDiscordMarketplaceWaitlist, data, undefined, params);
     };
+    // --- ADMINISTRATIVE CAMPAIGN METHODS ---
     /**
      * List all newsletter campaigns (Admin only).
-     *
-     * @param params Query parameters for pagination and filtering.
-     * @returns Promise
      */
     Newsletters.listCampaigns = function (params) {
         return Requests.processRoute(NewslettersRoutes.routes.listCampaigns, undefined, undefined, params);
     };
     /**
      * Create a new newsletter campaign draft (Admin only).
-     *
-     * @param data { subject, content_html, content_json }
-     * @returns Promise
      */
     Newsletters.createCampaign = function (data) {
         return Requests.processRoute(NewslettersRoutes.routes.createCampaign, data);
     };
     /**
      * Retrieve a specific newsletter campaign (Admin only).
-     *
-     * @param id The UUID of the campaign.
-     * @returns Promise
      */
     Newsletters.viewCampaign = function (id) {
         return Requests.processRoute(NewslettersRoutes.routes.viewCampaign, undefined, { id: id });
     };
     /**
      * Update a newsletter campaign draft (Admin only).
-     *
-     * @param id The UUID of the campaign.
-     * @param data The updated campaign data.
-     * @returns Promise
      */
     Newsletters.updateCampaign = function (id, data) {
         return Requests.processRoute(NewslettersRoutes.routes.updateCampaign, data, { id: id });
-    };
-    /**
-     * Get analytics for a specific campaign (Admin only).
-     * Returns open rates, click rates, and human vs proxy metrics.
-     *
-     * @param id The UUID of the campaign.
-     * @returns Promise
-     */
-    Newsletters.getCampaignStats = function (id) {
-        return Requests.processRoute(NewslettersRoutes.routes.getStats, undefined, { id: id });
-    };
-    /**
-     * Trigger the delivery of a newsletter campaign to all active subscribers (Admin only).
-     *
-     * @param id The UUID of the campaign.
-     * @returns Promise
-     */
-    Newsletters.sendCampaign = function (id) {
-        return Requests.processRoute(NewslettersRoutes.routes.sendCampaign, undefined, { id: id });
-    };
-    /**
-     * List all newsletter subscribers (Admin only).
-     *
-     * @param params Query parameters for pagination and filtering.
-     * @returns Promise
-     */
-    Newsletters.listSubscribers = function (params) {
-        return Requests.processRoute(NewslettersRoutes.routes.listSubscribers, undefined, undefined, params);
     };
     /**
      * Delete a newsletter campaign (Admin only).
@@ -27190,45 +27154,59 @@ var Newsletters = /** @class */ (function () {
         return Requests.processRoute(NewslettersRoutes.routes.deleteCampaign, undefined, { id: id });
     };
     /**
+     * Get high-level analytics for a specific campaign (Admin only).
+     */
+    Newsletters.getCampaignStats = function (id) {
+        return Requests.processRoute(NewslettersRoutes.routes.getCampaignStats, undefined, { id: id });
+    };
+    /**
+     * Get detailed delivery and open logs for a campaign (Admin only).
+     */
+    Newsletters.getCampaignLogs = function (id, params) {
+        return Requests.processRoute(NewslettersRoutes.routes.getCampaignLogs, undefined, { id: id }, params);
+    };
+    /**
+     * Trigger the delivery of a newsletter campaign to all active subscribers (Admin only).
+     */
+    Newsletters.sendCampaign = function (id) {
+        return Requests.processRoute(NewslettersRoutes.routes.sendCampaign, undefined, { id: id });
+    };
+    /**
      * Send a test email of a campaign to a specific address (Admin only).
      */
     Newsletters.sendTestEmail = function (id, email) {
         return Requests.processRoute(NewslettersRoutes.routes.sendTest, { email: email }, { id: id });
     };
+    // --- ADMINISTRATIVE SUBSCRIBER METHODS ---
     /**
-     * Get detailed delivery and open logs for a campaign (Admin only).
+     * List all newsletter subscribers (Admin only).
      */
-    Newsletters.getDetailedLogs = function (id, params) {
-        return Requests.processRoute(NewslettersRoutes.routes.getLogs, undefined, { id: id }, params);
+    Newsletters.listSubscribers = function (params) {
+        return Requests.processRoute(NewslettersRoutes.routes.listSubscribers, undefined, undefined, params);
     };
     /**
-     * Manually create a new subscriber (Admin only).
+     * Manually create a new newsletter subscriber (Admin only).
      */
     Newsletters.createSubscriber = function (data) {
         return Requests.processRoute(NewslettersRoutes.routes.createSubscriber, data);
     };
     /**
-     * Update a subscriber's details or status (Admin only).
+     * Retrieve a specific subscriber's details (Admin only).
+     */
+    Newsletters.viewSubscriber = function (id) {
+        return Requests.processRoute(NewslettersRoutes.routes.viewSubscriber, undefined, { id: id });
+    };
+    /**
+     * Update a subscriber's information or status (Admin only).
      */
     Newsletters.updateSubscriber = function (id, data) {
         return Requests.processRoute(NewslettersRoutes.routes.updateSubscriber, data, { id: id });
     };
     /**
-     * Delete a subscriber (Admin only).
+     * Permanently delete a subscriber from the system (Admin only).
      */
     Newsletters.deleteSubscriber = function (id) {
         return Requests.processRoute(NewslettersRoutes.routes.deleteSubscriber, undefined, { id: id });
-    };
-    /**
-     * Retrieve a specific subscriber's details (Admin only).
-     *
-     * @see https://api.glitch.fun/api/documentation#/Newsletter%20Admin/showNewsletterSubscriber
-     *
-     * @param id The UUID of the subscriber.
-     * @returns Promise
-     */
-    Newsletters.viewSubscriber = function (id) {
-        return Requests.processRoute(NewslettersRoutes.routes.viewSubscriber, undefined, { id: id });
     };
     return Newsletters;
 }());
