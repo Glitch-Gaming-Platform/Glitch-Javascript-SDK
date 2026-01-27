@@ -98,6 +98,10 @@ class CampaignsRoute {
       url: '/campaigns/{campaign_id}/influencers/invites/export',
       method: HTTP_METHODS.POST
     },
+    sourcingFindAndSaveFanslyCreators: { 
+        url: '/campaigns/{campaign_id}/sourcing/find-save-fansly-creators', 
+        method: HTTP_METHODS.POST 
+    },
 
 
   };

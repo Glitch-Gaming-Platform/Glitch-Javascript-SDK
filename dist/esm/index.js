@@ -12290,6 +12290,10 @@ var CampaignsRoute = /** @class */ (function () {
             url: '/campaigns/{campaign_id}/influencers/invites/export',
             method: HTTP_METHODS.POST
         },
+        sourcingFindAndSaveFanslyCreators: {
+            url: '/campaigns/{campaign_id}/sourcing/find-save-fansly-creators',
+            method: HTTP_METHODS.POST
+        },
     };
     return CampaignsRoute;
 }());
@@ -13179,6 +13183,20 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.exportInfluencerInvites = function (campaign_id, data) {
         return Requests.processRoute(CampaignsRoute.routes.exportInfluencerInvites, data, { campaign_id: campaign_id });
+    };
+    /**
+     * Find and save Fansly creators for a specific campaign.
+     *
+     * @see CampaignCreatorSourcingController@findAndSaveFanslyCreators
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param data Parameters for sourcing.
+     * @param data.query The search term (e.g., 'gaming', 'cosplay'). Defaults to 'gaming'.
+     * @param data.pages Number of pages to crawl (25 results per page). Defaults to 10.
+     * @returns promise
+     */
+    Campaigns.sourcingFindAndSaveFanslyCreators = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingFindAndSaveFanslyCreators, data, { campaign_id: campaign_id });
     };
     return Campaigns;
 }());

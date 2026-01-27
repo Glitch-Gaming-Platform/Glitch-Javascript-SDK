@@ -4950,6 +4950,21 @@ declare class Campaigns {
         stages?: string[];
         status?: string;
     }): AxiosPromise<Response<T>>;
+    /**
+     * Find and save Fansly creators for a specific campaign.
+     *
+     * @see CampaignCreatorSourcingController@findAndSaveFanslyCreators
+     *
+     * @param campaign_id The UUID of the campaign.
+     * @param data Parameters for sourcing.
+     * @param data.query The search term (e.g., 'gaming', 'cosplay'). Defaults to 'gaming'.
+     * @param data.pages Number of pages to crawl (25 results per page). Defaults to 10.
+     * @returns promise
+     */
+    static sourcingFindAndSaveFanslyCreators<T>(campaign_id: string, data: {
+        query?: string;
+        pages?: number;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {
