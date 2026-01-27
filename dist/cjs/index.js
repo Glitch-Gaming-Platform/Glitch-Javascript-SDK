@@ -27079,6 +27079,7 @@ var NewslettersRoutes = /** @class */ (function () {
         joinCourseWaitlist: { url: '/newsletters/joinCourseWaitlist', method: HTTP_METHODS.POST },
         joinRaffleWaitlist: { url: '/newsletters/joinRaffleWaitlist', method: HTTP_METHODS.POST },
         joinDiscordMarketplaceWaitlist: { url: '/newsletters/joinDiscordMarketplaceWaitlist', method: HTTP_METHODS.POST },
+        joinNsfwWaitlist: { url: '/newsletters/joinNsfwWaitlist', method: HTTP_METHODS.POST },
         // --- Admin Campaign Management ---
         listCampaigns: { url: '/admin/newsletters/campaigns', method: HTTP_METHODS.GET },
         createCampaign: { url: '/admin/newsletters/campaigns', method: HTTP_METHODS.POST },
@@ -27139,6 +27140,14 @@ var Newsletters = /** @class */ (function () {
      */
     Newsletters.joinDiscordMarketplaceWaitlist = function (data, params) {
         return Requests.processRoute(NewslettersRoutes.routes.joinDiscordMarketplaceWaitlist, data, undefined, params);
+    };
+    /**
+     * Join the NSFW/Lewd game marketing waitlist.
+     *
+     * @param data { name, email, game }
+     */
+    Newsletters.joinNsfwWaitlist = function (data, params) {
+        return Requests.processRoute(NewslettersRoutes.routes.joinNsfwWaitlist, data, undefined, params);
     };
     // --- ADMINISTRATIVE CAMPAIGN METHODS ---
     /**

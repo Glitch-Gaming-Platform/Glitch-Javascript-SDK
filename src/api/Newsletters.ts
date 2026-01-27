@@ -49,6 +49,15 @@ class Newsletters {
         return Requests.processRoute(NewslettersRoutes.routes.joinDiscordMarketplaceWaitlist, data, undefined, params);
     }
 
+    /**
+     * Join the NSFW/Lewd game marketing waitlist.
+     * 
+     * @param data { name, email, game }
+     */
+    public static joinNsfwWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(NewslettersRoutes.routes.joinNsfwWaitlist, data, undefined, params);
+    }
+
     // --- ADMINISTRATIVE CAMPAIGN METHODS ---
 
     /**

@@ -5446,6 +5446,12 @@ declare class Newsletters {
      */
     static joinDiscordMarketplaceWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Join the NSFW/Lewd game marketing waitlist.
+     *
+     * @param data { name, email, game }
+     */
+    static joinNsfwWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List all newsletter campaigns (Admin only).
      */
     static listCampaigns<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
