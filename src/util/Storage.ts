@@ -65,11 +65,28 @@ class Storage {
   }
 
   public static setAuthToken(token: string | null) {
+    // Always set the cookie if we have a root domain to ensure cross-subdomain sync
+    if (Storage.rootDomain) {
+        if (token) {
+            this.setCookie('glitch_auth_token', token, 31);
+        } else {
+            this.eraseCookie('glitch_auth_token');
+        }
+    }
+    // Still set localStorage for the current domain
     Storage.set('glitch_auth_token', token);
   }
 
   public static getAuthToken(): string | null {
-    return Storage.get('glitch_auth_token');
+    // 1. Try Cookie first (best for cross-subdomain)
+    let token = Storage.getCookie('glitch_auth_token');
+    
+    // 2. Fallback to LocalStorage
+    if (!token || token === 'null') {
+        token = Storage.get('glitch_auth_token');
+    }
+    
+    return (token === 'null' || !token) ? null : token;
   }
 
   public static eraseCookie(name: string) {
@@ -89,7 +106,8 @@ class Storage {
       expires = '; expires=' + date.toUTCString();
     }
 
-    if(document){
+    if (typeof document !== 'undefined') {
+      // If rootDomain is .glitch.fun, this works for all subdomains
       document.cookie =
         name +
         '=' +
@@ -97,7 +115,7 @@ class Storage {
         expires +
         '; path=/; domain=' +
         Storage.rootDomain +
-        '; HttpOnly=false; SameSite=none; Secure';
+        '; SameSite=Lax; Secure'; 
     }
   }
 

@@ -929,6 +929,16 @@ class Communities {
         return Requests.processRoute(CommunitiesRoute.routes.deleteInvite, {}, { community_id: community_id, invite_id: invite_id }, params);
     }
 
+     /**
+     * Create a one-time immediate invoice for a business account.
+     * 
+     * @param community_id The ID of the community.
+     * @param data { amount: number, description: string }
+     */
+    public static createOneTimeInvoice<T>(community_id: string, data: { amount: number, description: string }, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.createOneTimeInvoice, data, { community_id }, params);
+    }
+
 
 }
 

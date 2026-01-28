@@ -18827,10 +18827,26 @@ var Storage = /** @class */ (function () {
         }
     };
     Storage.setAuthToken = function (token) {
+        // Always set the cookie if we have a root domain to ensure cross-subdomain sync
+        if (Storage.rootDomain) {
+            if (token) {
+                this.setCookie('glitch_auth_token', token, 31);
+            }
+            else {
+                this.eraseCookie('glitch_auth_token');
+            }
+        }
+        // Still set localStorage for the current domain
         Storage.set('glitch_auth_token', token);
     };
     Storage.getAuthToken = function () {
-        return Storage.get('glitch_auth_token');
+        // 1. Try Cookie first (best for cross-subdomain)
+        var token = Storage.getCookie('glitch_auth_token');
+        // 2. Fallback to LocalStorage
+        if (!token || token === 'null') {
+            token = Storage.get('glitch_auth_token');
+        }
+        return (token === 'null' || !token) ? null : token;
     };
     Storage.eraseCookie = function (name) {
         if (document) {
@@ -18846,7 +18862,8 @@ var Storage = /** @class */ (function () {
             date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
             expires = '; expires=' + date.toUTCString();
         }
-        if (document) {
+        if (typeof document !== 'undefined') {
+            // If rootDomain is .glitch.fun, this works for all subdomains
             document.cookie =
                 name +
                     '=' +
@@ -18854,7 +18871,7 @@ var Storage = /** @class */ (function () {
                     expires +
                     '; path=/; domain=' +
                     Storage.rootDomain +
-                    '; HttpOnly=false; SameSite=none; Secure';
+                    '; SameSite=Lax; Secure';
         }
     };
     Storage.getCookie = function (name) {
@@ -18942,12 +18959,11 @@ var Config = /** @class */ (function () {
             console.error("setRootDomain: domain is undefined or null");
             return;
         }
-        var parts = domain.split('.');
-        if (parts.length > 2) {
-            parts.shift();
-        }
-        var formattedDomain = parts.join('.');
-        formattedDomain = formattedDomain.replace(/^\./, '');
+        // If the domain already starts with a dot, keep it.
+        // If not, and it's a standard domain, we usually want the dot for subdomains.
+        var formattedDomain = domain;
+        // REMOVE THIS LINE: formattedDomain = formattedDomain.replace(/^\./, '');
+        // We WANT the dot.
         this._rootDomain = formattedDomain;
         Storage.setRootDomain(formattedDomain);
     };
@@ -21011,6 +21027,10 @@ var CommunitiesRoute = /** @class */ (function () {
         deleteNewsletterSubscriber: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers/{subscriber_id}', method: HTTP_METHODS.DELETE },
         // Subscriber registration (open route)
         registerNewsletterSubscriber: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers', method: HTTP_METHODS.POST },
+        createOneTimeInvoice: {
+            url: '/communities/{community_id}/invoice-once',
+            method: HTTP_METHODS.POST
+        },
     };
     return CommunitiesRoute;
 }());
@@ -21791,6 +21811,15 @@ var Communities = /** @class */ (function () {
      */
     Communities.deleteInvite = function (community_id, invite_id, params) {
         return Requests.processRoute(CommunitiesRoute.routes.deleteInvite, {}, { community_id: community_id, invite_id: invite_id }, params);
+    };
+    /**
+    * Create a one-time immediate invoice for a business account.
+    *
+    * @param community_id The ID of the community.
+    * @param data { amount: number, description: string }
+    */
+    Communities.createOneTimeInvoice = function (community_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.createOneTimeInvoice, data, { community_id: community_id }, params);
     };
     return Communities;
 }());
@@ -26398,6 +26427,10 @@ var SubscriptionsRoute = /** @class */ (function () {
         cancelCommunityInfluencerSubscription: { url: '/subscriptions/communities/influencers/{community_id}/{stripe_subscription_id}', method: HTTP_METHODS.DELETE },
         listCommunityInfluencerSubscriptions: { url: '/subscriptions/communities/influencers/{community_id}', method: HTTP_METHODS.GET },
         changeCommunityInfluencerSubscription: { url: '/subscriptions/communities/influencers/change/{community_id}', method: HTTP_METHODS.POST },
+        createCustomCommunitySubscription: {
+            url: '/subscriptions/communities/custom/{community_id}',
+            method: HTTP_METHODS.POST
+        },
     };
     return SubscriptionsRoute;
 }());
@@ -26494,6 +26527,16 @@ var Subscriptions = /** @class */ (function () {
      */
     Subscriptions.changeCommunityInfluencerSubscription = function (community_id, data, params) {
         return Requests.processRoute(SubscriptionsRoute.routes.changeCommunityInfluencerSubscription, data, { community_id: community_id }, params);
+    };
+    /**
+    * Create a custom tailored subscription for a business/community.
+    * Only accessible by Glitch administrators.
+    *
+    * @param community_id The ID of the community.
+    * @param data { priceId, paymentMethod, custom_name, limits: { posts, enrichments, invites, ads }, metered_prices: [] }
+    */
+    Subscriptions.createCustomCommunitySubscription = function (community_id, data, params) {
+        return Requests.processRoute(SubscriptionsRoute.routes.createCustomCommunitySubscription, data, { community_id: community_id }, params);
     };
     return Subscriptions;
 }());

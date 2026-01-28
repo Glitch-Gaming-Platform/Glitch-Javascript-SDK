@@ -93,6 +93,11 @@ class CommunitiesRoute {
 
     // Subscriber registration (open route)
     registerNewsletterSubscriber: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers', method: HTTP_METHODS.POST },
+
+    createOneTimeInvoice: { 
+        url: '/communities/{community_id}/invoice-once', 
+        method: HTTP_METHODS.POST 
+    },
     
   };
 

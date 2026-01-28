@@ -73,5 +73,13 @@ declare class Subscriptions {
      * @returns A promise
      */
     static changeCommunityInfluencerSubscription<T>(community_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Create a custom tailored subscription for a business/community.
+    * Only accessible by Glitch administrators.
+    *
+    * @param community_id The ID of the community.
+    * @param data { priceId, paymentMethod, custom_name, limits: { posts, enrichments, invites, ads }, metered_prices: [] }
+    */
+    static createCustomCommunitySubscription<T>(community_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Subscriptions;

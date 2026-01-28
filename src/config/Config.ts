@@ -89,16 +89,13 @@ class Config {
       return;
     }
 
-    const parts = domain.split('.');
+    // If the domain already starts with a dot, keep it.
+    // If not, and it's a standard domain, we usually want the dot for subdomains.
+    let formattedDomain = domain;
 
-    if (parts.length > 2) {
-      parts.shift();
-    }
-
-    let formattedDomain = parts.join('.');
-
-    formattedDomain = formattedDomain.replace(/^\./, '');
-
+    // REMOVE THIS LINE: formattedDomain = formattedDomain.replace(/^\./, '');
+    // We WANT the dot.
+    
     this._rootDomain = formattedDomain;
 
     Storage.setRootDomain(formattedDomain);

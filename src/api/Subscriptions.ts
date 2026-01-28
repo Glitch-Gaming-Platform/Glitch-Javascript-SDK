@@ -12,8 +12,8 @@ class Subscriptions {
      * 
      * @returns promise
      */
-    public static getCreatorSubscription<T>(stripe_subscription_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(SubscriptionsRoute.routes.getCreatorSubscription, undefined, {stripe_subscription_id : stripe_subscription_id}, params);
+    public static getCreatorSubscription<T>(stripe_subscription_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.getCreatorSubscription, undefined, { stripe_subscription_id: stripe_subscription_id }, params);
     }
 
     /**
@@ -23,8 +23,8 @@ class Subscriptions {
      * 
      * @returns promise
      */
-     public static getCommunityInfluencerSubscription<T>(community_id : string, stripe_subscription_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(SubscriptionsRoute.routes.getCommunityInfluencerSubscription, undefined, {community_id  : community_id, stripe_subscription_id : stripe_subscription_id}, params);
+    public static getCommunityInfluencerSubscription<T>(community_id: string, stripe_subscription_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.getCommunityInfluencerSubscription, undefined, { community_id: community_id, stripe_subscription_id: stripe_subscription_id }, params);
     }
 
     /**
@@ -34,7 +34,7 @@ class Subscriptions {
      * 
      * @returns promise
      */
-    public static listCreatorSubscriptions<T>( params?: Record<string, any>): AxiosPromise<Response<T>> {
+    public static listCreatorSubscriptions<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(SubscriptionsRoute.routes.listCreatorSubscriptions, undefined, undefined, params);
     }
 
@@ -45,8 +45,8 @@ class Subscriptions {
      * 
      * @returns promise
      */
-    public static listCommunityInfluencerSubscriptions<T>(community_id : string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(SubscriptionsRoute.routes.listCommunityInfluencerSubscriptions, undefined, {community_id  : community_id}, params);
+    public static listCommunityInfluencerSubscriptions<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.listCommunityInfluencerSubscriptions, undefined, { community_id: community_id }, params);
     }
 
     /**
@@ -56,7 +56,7 @@ class Subscriptions {
      * 
      * @returns A promise
      */
-    public static createCreatorSubscription<T>(data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+    public static createCreatorSubscription<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(SubscriptionsRoute.routes.createCreatorSubscription, data, {}, params);
     }
 
@@ -67,8 +67,8 @@ class Subscriptions {
      * 
      * @returns A promise
      */
-    public static createCommunityInfluencerSubscription<T>(community_id : string, data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(SubscriptionsRoute.routes.createCommunityInfluencerSubscription, data, {community_id: community_id}, params);
+    public static createCommunityInfluencerSubscription<T>(community_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.createCommunityInfluencerSubscription, data, { community_id: community_id }, params);
     }
 
     /**
@@ -78,8 +78,8 @@ class Subscriptions {
      * 
      * @returns A promise
      */
-    public static cancelCreatorSubscription<T>(stripe_subscription_id: string, data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(SubscriptionsRoute.routes.cancelCreatorSubscription, data, {stripe_subscription_id : stripe_subscription_id}, params);
+    public static cancelCreatorSubscription<T>(stripe_subscription_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.cancelCreatorSubscription, data, { stripe_subscription_id: stripe_subscription_id }, params);
     }
 
     /**
@@ -89,8 +89,8 @@ class Subscriptions {
      * 
      * @returns A promise
      */
-    public static cancelCommunityInfluencerSubscription<T>(community_id : string, stripe_subscription_id: string, data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(SubscriptionsRoute.routes.cancelCommunityInfluencerSubscription, data, {community_id: community_id, stripe_subscription_id : stripe_subscription_id}, params);
+    public static cancelCommunityInfluencerSubscription<T>(community_id: string, stripe_subscription_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.cancelCommunityInfluencerSubscription, data, { community_id: community_id, stripe_subscription_id: stripe_subscription_id }, params);
     }
 
     /**
@@ -100,10 +100,20 @@ class Subscriptions {
      * 
      * @returns A promise
      */
-    public static changeCommunityInfluencerSubscription<T>(community_id : string, data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
-        return Requests.processRoute(SubscriptionsRoute.routes.changeCommunityInfluencerSubscription, data, {community_id: community_id}, params);
+    public static changeCommunityInfluencerSubscription<T>(community_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.changeCommunityInfluencerSubscription, data, { community_id: community_id }, params);
     }
-   
+
+    /**
+    * Create a custom tailored subscription for a business/community.
+    * Only accessible by Glitch administrators.
+    * 
+    * @param community_id The ID of the community.
+    * @param data { priceId, paymentMethod, custom_name, limits: { posts, enrichments, invites, ads }, metered_prices: [] }
+    */
+    public static createCustomCommunitySubscription<T>(community_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.createCustomCommunitySubscription, data, { community_id }, params);
+    }
 
 }
 
