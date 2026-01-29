@@ -18766,12 +18766,6 @@ var Requests = /** @class */ (function () {
 var Storage = /** @class */ (function () {
     function Storage() {
     }
-    /**
-     * Sets a root level domain so the data can persist across
-     * subdomains
-     *
-     * @param rootDomain
-     */
     Storage.setRootDomain = function (rootDomain) {
         Storage.rootDomain = rootDomain;
     };
@@ -18779,55 +18773,58 @@ var Storage = /** @class */ (function () {
         return Storage.rootDomain ? "".concat(Storage.rootDomain, ":").concat(key) : key;
     };
     Storage.set = function (key, value) {
-        try {
-            var serializedValue = JSON.stringify(value);
-            window.localStorage.setItem(Storage.getStorageKey(key), serializedValue);
-        }
-        catch (e) {
+        // 1. Always update in-memory fallback for the current process
+        Storage.data[key] = value;
+        // 2. Only attempt browser storage if window exists
+        if (typeof window !== 'undefined') {
             try {
                 var serializedValue = JSON.stringify(value);
-                window.sessionStorage.setItem(Storage.getStorageKey(key), serializedValue);
+                window.localStorage.setItem(Storage.getStorageKey(key), serializedValue);
             }
             catch (e) {
                 try {
-                    this.setCookie(key, value, 31);
+                    var serializedValue = JSON.stringify(value);
+                    window.sessionStorage.setItem(Storage.getStorageKey(key), serializedValue);
                 }
                 catch (e) {
+                    try {
+                        this.setCookie(key, value, 31);
+                    }
+                    catch (e) { }
                 }
-                Storage.data[key] = value;
             }
         }
     };
     Storage.get = function (key) {
-        try {
-            var serializedValue = window.localStorage.getItem(Storage.getStorageKey(key));
-            if (serializedValue !== null) {
-                return JSON.parse(serializedValue);
-            }
-        }
-        catch (e) {
+        // 1. Try Browser Storage if available
+        if (typeof window !== 'undefined') {
             try {
-                var serializedValue = window.sessionStorage.getItem(Storage.getStorageKey(key));
-                if (serializedValue !== null) {
+                var serializedValue = window.localStorage.getItem(Storage.getStorageKey(key));
+                if (serializedValue !== null)
                     return JSON.parse(serializedValue);
-                }
             }
             catch (e) {
-                var value = null;
                 try {
-                    value = Storage.getCookie(key);
+                    var serializedValue = window.sessionStorage.getItem(Storage.getStorageKey(key));
+                    if (serializedValue !== null)
+                        return JSON.parse(serializedValue);
                 }
-                catch (e) {
-                }
-                if (!value) {
-                    value = Storage.data[key];
-                }
-                return value;
+                catch (e) { }
             }
         }
+        // 2. Try Cookie (getCookie is now SSR safe)
+        var value = null;
+        try {
+            value = Storage.getCookie(key);
+        }
+        catch (e) { }
+        // 3. Fallback to in-memory data
+        if (!value) {
+            value = Storage.data[key];
+        }
+        return value;
     };
     Storage.setAuthToken = function (token) {
-        // Always set the cookie if we have a root domain to ensure cross-subdomain sync
         if (Storage.rootDomain) {
             if (token) {
                 this.setCookie('glitch_auth_token', token, 31);
@@ -18836,20 +18833,18 @@ var Storage = /** @class */ (function () {
                 this.eraseCookie('glitch_auth_token');
             }
         }
-        // Still set localStorage for the current domain
         Storage.set('glitch_auth_token', token);
     };
     Storage.getAuthToken = function () {
-        // 1. Try Cookie first (best for cross-subdomain)
         var token = Storage.getCookie('glitch_auth_token');
-        // 2. Fallback to LocalStorage
         if (!token || token === 'null') {
             token = Storage.get('glitch_auth_token');
         }
         return (token === 'null' || !token) ? null : token;
     };
     Storage.eraseCookie = function (name) {
-        if (document) {
+        // Use typeof check to prevent ReferenceError
+        if (typeof document !== 'undefined') {
             document.cookie =
                 name +
                     '=; Secure; HttpOnly=false; SameSite=none; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -18863,7 +18858,6 @@ var Storage = /** @class */ (function () {
             expires = '; expires=' + date.toUTCString();
         }
         if (typeof document !== 'undefined') {
-            // If rootDomain is .glitch.fun, this works for all subdomains
             document.cookie =
                 name +
                     '=' +
@@ -18875,7 +18869,8 @@ var Storage = /** @class */ (function () {
         }
     };
     Storage.getCookie = function (name) {
-        if (document) {
+        // Use typeof check to prevent ReferenceError
+        if (typeof document !== 'undefined') {
             var nameEQ = name + '=';
             var ca = document.cookie.split(';');
             for (var i = 0; i < ca.length; i++) {
@@ -18891,7 +18886,6 @@ var Storage = /** @class */ (function () {
     Storage.setTokenExpiry = function (expiresInSeconds) {
         var expiryTime = Date.now() + (expiresInSeconds * 1000);
         Storage.set('glitch_token_expiry', expiryTime);
-        // Also set a cookie for cross-subdomain consistency if rootDomain exists
         if (Storage.rootDomain && typeof document !== 'undefined') {
             this.setCookie('glitch_token_expiry', expiryTime.toString(), 31);
         }
@@ -18906,7 +18900,7 @@ var Storage = /** @class */ (function () {
     Storage.isTokenExpired = function () {
         var expiry = this.getTokenExpiry();
         if (!expiry)
-            return false; // If no expiry set, assume valid or let API handle 401
+            return false;
         return Date.now() > expiry;
     };
     Storage.rootDomain = '';
