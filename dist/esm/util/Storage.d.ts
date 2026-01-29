@@ -16,5 +16,8 @@ declare class Storage {
     static eraseCookie(name: string): void;
     private static setCookie;
     private static getCookie;
+    static setTokenExpiry(expiresInSeconds: number): void;
+    static getTokenExpiry(): number | null;
+    static isTokenExpired(): boolean;
 }
 export default Storage;

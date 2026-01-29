@@ -15,6 +15,7 @@ declare class Session {
     static processAuthentication(data: {
         token: {
             access_token: string;
+            expires_in: number;
         };
         id: string;
         first_name: string;

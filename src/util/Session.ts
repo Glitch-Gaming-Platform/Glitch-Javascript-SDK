@@ -21,7 +21,7 @@ class BrowserCrypto implements CryptoInterface {
 
   createHmac(algorithm: string, secret: string): HmacInterface {
     let data = '';
-    
+
     const hmac: HmacInterface = {
       update: (updateData: string): HmacInterface => {
         data = updateData;
@@ -34,7 +34,7 @@ class BrowserCrypto implements CryptoInterface {
         return this.CryptoJS.HmacSHA256(data, secret).toString(this.CryptoJS.enc.Hex);
       }
     };
-    
+
     return hmac;
   }
 }
@@ -94,8 +94,16 @@ class Session {
 
   public static isLoggedIn(): boolean {
     const authToken = Storage.getAuthToken();
+    const expired = Storage.isTokenExpired();
+
+    if (expired) {
+      Session.end(); // Auto-clear if expired
+      return false;
+    }
+
     return authToken !== null && authToken !== 'null' && authToken !== undefined;
   }
+
 
   public static getAuthToken(): string | null {
     return Storage.getAuthToken();
@@ -124,6 +132,8 @@ class Session {
 
   public static end(): void {
     Storage.setAuthToken(null);
+    Storage.set('glitch_token_expiry', null); // Clear expiry
+    Storage.eraseCookie('glitch_token_expiry');
     Storage.set(Session._id_key, null);
     Storage.set(Session._first_name_key, null);
     Storage.set(Session._last_name_key, null);
@@ -131,15 +141,17 @@ class Session {
     Storage.set(Session._username_key, null);
   }
 
-  public static processAuthentication(data: { 
-    token: { access_token: string }, 
-    id: string, 
-    first_name: string, 
-    last_name: string, 
-    email: string, 
-    username: string 
+  public static processAuthentication(data: {
+    token: { access_token: string, expires_in: number }, // Added expires_in
+    id: string,
+    first_name: string,
+    last_name: string,
+    email: string,
+    username: string
   }): void {
     Storage.setAuthToken(data.token.access_token);
+    Storage.setTokenExpiry(data.token.expires_in); // Save the timeout
+
     Storage.set(Session._id_key, data.id);
     Storage.set(Session._first_name_key, data.first_name);
     Storage.set(Session._last_name_key, data.last_name);

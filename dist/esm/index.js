@@ -5704,6 +5704,27 @@ var Storage = /** @class */ (function () {
         }
         return null;
     };
+    Storage.setTokenExpiry = function (expiresInSeconds) {
+        var expiryTime = Date.now() + (expiresInSeconds * 1000);
+        Storage.set('glitch_token_expiry', expiryTime);
+        // Also set a cookie for cross-subdomain consistency if rootDomain exists
+        if (Storage.rootDomain && typeof document !== 'undefined') {
+            this.setCookie('glitch_token_expiry', expiryTime.toString(), 31);
+        }
+    };
+    Storage.getTokenExpiry = function () {
+        var expiry = Storage.getCookie('glitch_token_expiry');
+        if (!expiry) {
+            expiry = Storage.get('glitch_token_expiry');
+        }
+        return expiry ? parseInt(expiry) : null;
+    };
+    Storage.isTokenExpired = function () {
+        var expiry = this.getTokenExpiry();
+        if (!expiry)
+            return false; // If no expiry set, assume valid or let API handle 401
+        return Date.now() > expiry;
+    };
     Storage.rootDomain = '';
     Storage.data = {};
     return Storage;
@@ -17146,6 +17167,11 @@ var Session = /** @class */ (function () {
     }
     Session.isLoggedIn = function () {
         var authToken = Storage.getAuthToken();
+        var expired = Storage.isTokenExpired();
+        if (expired) {
+            Session.end(); // Auto-clear if expired
+            return false;
+        }
         return authToken !== null && authToken !== 'null' && authToken !== undefined;
     };
     Session.getAuthToken = function () {
@@ -17169,6 +17195,8 @@ var Session = /** @class */ (function () {
     };
     Session.end = function () {
         Storage.setAuthToken(null);
+        Storage.set('glitch_token_expiry', null); // Clear expiry
+        Storage.eraseCookie('glitch_token_expiry');
         Storage.set(Session._id_key, null);
         Storage.set(Session._first_name_key, null);
         Storage.set(Session._last_name_key, null);
@@ -17177,6 +17205,7 @@ var Session = /** @class */ (function () {
     };
     Session.processAuthentication = function (data) {
         Storage.setAuthToken(data.token.access_token);
+        Storage.setTokenExpiry(data.token.expires_in); // Save the timeout
         Storage.set(Session._id_key, data.id);
         Storage.set(Session._first_name_key, data.first_name);
         Storage.set(Session._last_name_key, data.last_name);

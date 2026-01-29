@@ -7417,6 +7417,7 @@ declare class Session {
     static processAuthentication(data: {
         token: {
             access_token: string;
+            expires_in: number;
         };
         id: string;
         first_name: string;
@@ -7452,6 +7453,9 @@ declare class Storage {
     static eraseCookie(name: string): void;
     private static setCookie;
     private static getCookie;
+    static setTokenExpiry(expiresInSeconds: number): void;
+    static getTokenExpiry(): number | null;
+    static isTokenExpired(): boolean;
 }
 
 declare class Data {
