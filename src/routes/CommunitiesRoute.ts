@@ -94,11 +94,24 @@ class CommunitiesRoute {
     // Subscriber registration (open route)
     registerNewsletterSubscriber: { url: '/communities/{community_id}/newsletters/{newsletter_id}/subscribers', method: HTTP_METHODS.POST },
 
-    createOneTimeInvoice: { 
-        url: '/communities/{community_id}/invoice-once', 
-        method: HTTP_METHODS.POST 
+    createOneTimeInvoice: {
+      url: '/communities/{community_id}/invoice-once',
+      method: HTTP_METHODS.POST
     },
-    
+    // New Invoicing and Statement Routes
+    listInvoices: { 
+      url: '/communities/{community_id}/payment/invoices', 
+      method: HTTP_METHODS.GET 
+    },
+    getInvoiceDetails: {
+      url: '/communities/{community_id}/payment/invoices/{invoice_id}',
+      method: HTTP_METHODS.GET
+    },
+    getCustomStatement: {
+      url: '/communities/{community_id}/payment/statement',
+      method: HTTP_METHODS.GET
+    },
+
   };
 
 

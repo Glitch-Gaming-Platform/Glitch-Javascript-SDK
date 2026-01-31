@@ -115,6 +115,7 @@ class Subscriptions {
         return Requests.processRoute(SubscriptionsRoute.routes.createCustomCommunitySubscription, data, { community_id }, params);
     }
 
+
 }
 
 export default Subscriptions;

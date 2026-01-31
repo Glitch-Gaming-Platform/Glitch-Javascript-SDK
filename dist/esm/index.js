@@ -7862,6 +7862,19 @@ var CommunitiesRoute = /** @class */ (function () {
             url: '/communities/{community_id}/invoice-once',
             method: HTTP_METHODS.POST
         },
+        // New Invoicing and Statement Routes
+        listInvoices: {
+            url: '/communities/{community_id}/payment/invoices',
+            method: HTTP_METHODS.GET
+        },
+        getInvoiceDetails: {
+            url: '/communities/{community_id}/payment/invoices/{invoice_id}',
+            method: HTTP_METHODS.GET
+        },
+        getCustomStatement: {
+            url: '/communities/{community_id}/payment/statement',
+            method: HTTP_METHODS.GET
+        },
     };
     return CommunitiesRoute;
 }());
@@ -8651,6 +8664,24 @@ var Communities = /** @class */ (function () {
     */
     Communities.createOneTimeInvoice = function (community_id, data, params) {
         return Requests.processRoute(CommunitiesRoute.routes.createOneTimeInvoice, data, { community_id: community_id }, params);
+    };
+    /**
+     * Get a detailed breakdown of a specific invoice including per-title usage.
+     *
+     * @param community_id The ID of the community.
+     * @param invoice_id The Stripe Invoice ID (e.g., in_123...).
+     */
+    Communities.getInvoiceDetails = function (community_id, invoice_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.getInvoiceDetails, undefined, { community_id: community_id, invoice_id: invoice_id }, params);
+    };
+    /**
+     * Generate a custom date-range statement for reimbursement.
+     *
+     * @param community_id The ID of the community.
+     * @param params Should include { start_date: 'YYYY-MM-DD', end_date: 'YYYY-MM-DD' }
+     */
+    Communities.getCustomStatement = function (community_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.getCustomStatement, undefined, { community_id: community_id }, params);
     };
     return Communities;
 }());

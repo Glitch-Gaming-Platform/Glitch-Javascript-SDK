@@ -929,16 +929,35 @@ class Communities {
         return Requests.processRoute(CommunitiesRoute.routes.deleteInvite, {}, { community_id: community_id, invite_id: invite_id }, params);
     }
 
-     /**
-     * Create a one-time immediate invoice for a business account.
-     * 
-     * @param community_id The ID of the community.
-     * @param data { amount: number, description: string }
-     */
+    /**
+    * Create a one-time immediate invoice for a business account.
+    * 
+    * @param community_id The ID of the community.
+    * @param data { amount: number, description: string }
+    */
     public static createOneTimeInvoice<T>(community_id: string, data: { amount: number, description: string }, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(CommunitiesRoute.routes.createOneTimeInvoice, data, { community_id }, params);
     }
 
+    /**
+     * Get a detailed breakdown of a specific invoice including per-title usage.
+     * 
+     * @param community_id The ID of the community.
+     * @param invoice_id The Stripe Invoice ID (e.g., in_123...).
+     */
+    public static getInvoiceDetails<T>(community_id: string, invoice_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.getInvoiceDetails, undefined, { community_id, invoice_id }, params);
+    }
+
+    /**
+     * Generate a custom date-range statement for reimbursement.
+     * 
+     * @param community_id The ID of the community.
+     * @param params Should include { start_date: 'YYYY-MM-DD', end_date: 'YYYY-MM-DD' }
+     */
+    public static getCustomStatement<T>(community_id: string, params: { start_date: string, end_date: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.getCustomStatement, undefined, { community_id }, params);
+    }
 
 }
 
