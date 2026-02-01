@@ -21867,6 +21867,12 @@ var Communities = /** @class */ (function () {
     Communities.getCustomStatement = function (community_id, params) {
         return Requests.processRoute(CommunitiesRoute.routes.getCustomStatement, undefined, { community_id: community_id }, params);
     };
+    /**
+ * List all Stripe invoices for the community.
+ */
+    Communities.listInvoices = function (community_id) {
+        return Requests.processRoute(CommunitiesRoute.routes.listInvoices, undefined, { community_id: community_id });
+    };
     return Communities;
 }());
 

@@ -1813,6 +1813,10 @@ declare class Communities {
         start_date: string;
         end_date: string;
     }): AxiosPromise<Response<T>>;
+    /**
+ * List all Stripe invoices for the community.
+ */
+    static listInvoices<T>(community_id: string): AxiosPromise<Response<T>>;
 }
 
 declare class Users {

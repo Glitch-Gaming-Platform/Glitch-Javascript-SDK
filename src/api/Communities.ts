@@ -959,6 +959,13 @@ class Communities {
         return Requests.processRoute(CommunitiesRoute.routes.getCustomStatement, undefined, { community_id }, params);
     }
 
+    /**
+ * List all Stripe invoices for the community.
+ */
+    public static listInvoices<T>(community_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.listInvoices, undefined, { community_id });
+    }
+
 }
 
 export default Communities;
