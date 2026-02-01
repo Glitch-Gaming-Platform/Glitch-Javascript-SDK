@@ -129,6 +129,13 @@ class Crm {
     public static getPerformanceStats<T>(): AxiosPromise<Response<T>> {
         return Requests.processRoute(CrmRoute.routes.performanceStats);
     }
+
+    /**
+     * Get the analytics on what users indcated they were interested in.
+     */
+    public static getInterestStats<T>(): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.getInterestStats);
+    }
 }
 
 export default Crm;

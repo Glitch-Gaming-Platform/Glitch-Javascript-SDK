@@ -28,6 +28,7 @@ class CrmRoute {
     // Analytics
     funnelStats: { url: '/admin/crm/analytics/funnel', method: HTTP_METHODS.GET },
     performanceStats: { url: '/admin/crm/analytics/performance', method: HTTP_METHODS.GET },
+    getInterestStats: { url: '/admin/crm/analytics/interests', method: HTTP_METHODS.GET },
   };
 }
 

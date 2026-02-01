@@ -7460,6 +7460,10 @@ declare class Crm {
      * Get win rates and response time analytics.
      */
     static getPerformanceStats<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Get the analytics on what users indcated they were interested in.
+     */
+    static getInterestStats<T>(): AxiosPromise<Response<T>>;
 }
 
 interface Route {

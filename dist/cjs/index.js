@@ -30323,6 +30323,7 @@ var CrmRoute = /** @class */ (function () {
         // Analytics
         funnelStats: { url: '/admin/crm/analytics/funnel', method: HTTP_METHODS.GET },
         performanceStats: { url: '/admin/crm/analytics/performance', method: HTTP_METHODS.GET },
+        getInterestStats: { url: '/admin/crm/analytics/interests', method: HTTP_METHODS.GET },
     };
     return CrmRoute;
 }());
@@ -30437,6 +30438,12 @@ var Crm = /** @class */ (function () {
      */
     Crm.getPerformanceStats = function () {
         return Requests.processRoute(CrmRoute.routes.performanceStats);
+    };
+    /**
+     * Get the analytics on what users indcated they were interested in.
+     */
+    Crm.getInterestStats = function () {
+        return Requests.processRoute(CrmRoute.routes.getInterestStats);
     };
     return Crm;
 }());
