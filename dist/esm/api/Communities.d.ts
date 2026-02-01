@@ -652,10 +652,14 @@ declare class Communities {
      * @param community_id The ID of the community.
      * @param params Should include { start_date: 'YYYY-MM-DD', end_date: 'YYYY-MM-DD' }
      */
-    static getCustomStatement<T>(community_id: string, params: {
-        start_date: string;
-        end_date: string;
-    }): AxiosPromise<Response<T>>;
+    /**
+ * Generate a custom date-range statement for reimbursement.
+ *
+ * @param community_id The ID of the community.
+ * @param startDate 'YYYY-MM-DD'
+ * @param endDate 'YYYY-MM-DD'
+ */
+    static getCustomStatement<T>(community_id: string, startDate: string, endDate: string): AxiosPromise<Response<T>>;
     /**
  * List all Stripe invoices for the community.
  */

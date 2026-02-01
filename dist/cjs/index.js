@@ -21864,7 +21864,19 @@ var Communities = /** @class */ (function () {
      * @param community_id The ID of the community.
      * @param params Should include { start_date: 'YYYY-MM-DD', end_date: 'YYYY-MM-DD' }
      */
-    Communities.getCustomStatement = function (community_id, params) {
+    /**
+ * Generate a custom date-range statement for reimbursement.
+ *
+ * @param community_id The ID of the community.
+ * @param startDate 'YYYY-MM-DD'
+ * @param endDate 'YYYY-MM-DD'
+ */
+    Communities.getCustomStatement = function (community_id, startDate, endDate) {
+        // Wrap the strings into a named object so Requests.get can serialize them correctly
+        var params = {
+            start_date: startDate,
+            end_date: endDate
+        };
         return Requests.processRoute(CommunitiesRoute.routes.getCustomStatement, undefined, { community_id: community_id }, params);
     };
     /**
@@ -30285,6 +30297,150 @@ var Education = /** @class */ (function () {
     return Education;
 }());
 
+var CrmRoute = /** @class */ (function () {
+    function CrmRoute() {
+    }
+    CrmRoute.routes = {
+        // Lead Management
+        listLeads: { url: '/admin/crm/leads', method: HTTP_METHODS.GET },
+        createLead: { url: '/admin/crm/leads', method: HTTP_METHODS.POST },
+        viewLead: { url: '/admin/crm/leads/{lead_id}', method: HTTP_METHODS.GET },
+        updateLead: { url: '/admin/crm/leads/{lead_id}', method: HTTP_METHODS.PUT },
+        deleteLead: { url: '/admin/crm/leads/{lead_id}', method: HTTP_METHODS.DELETE },
+        // Pipeline Actions
+        assignOwner: { url: '/admin/crm/leads/{lead_id}/assign', method: HTTP_METHODS.POST },
+        enrichLead: { url: '/admin/crm/leads/{lead_id}/enrich', method: HTTP_METHODS.POST },
+        approveContact: { url: '/admin/crm/contacts/{contact_id}/approve', method: HTTP_METHODS.POST },
+        updateStatus: { url: '/admin/crm/leads/{lead_id}/status', method: HTTP_METHODS.POST },
+        addNote: { url: '/admin/crm/leads/{lead_id}/notes', method: HTTP_METHODS.POST },
+        addContact: { url: '/admin/crm/leads/{lead_id}/contacts', method: HTTP_METHODS.POST },
+        markAsLost: { url: '/admin/crm/leads/{lead_id}/lost', method: HTTP_METHODS.POST },
+        recordStaffReply: { url: '/admin/crm/leads/{lead_id}/replied', method: HTTP_METHODS.POST },
+        bulkApprove: { url: '/admin/crm/contacts/bulk-approve', method: HTTP_METHODS.POST },
+        // Automation Triggers
+        triggerSourcing: { url: '/admin/crm/automation/source', method: HTTP_METHODS.POST },
+        triggerSync: { url: '/admin/crm/automation/sync', method: HTTP_METHODS.POST },
+        // Analytics
+        funnelStats: { url: '/admin/crm/analytics/funnel', method: HTTP_METHODS.GET },
+        performanceStats: { url: '/admin/crm/analytics/performance', method: HTTP_METHODS.GET },
+    };
+    return CrmRoute;
+}());
+
+var Crm = /** @class */ (function () {
+    function Crm() {
+    }
+    /**
+     * List and search CRM leads.
+     */
+    Crm.listLeads = function (params) {
+        return Requests.processRoute(CrmRoute.routes.listLeads, undefined, undefined, params);
+    };
+    /**
+     * Manually create a new lead.
+     */
+    Crm.createLead = function (data) {
+        return Requests.processRoute(CrmRoute.routes.createLead, data);
+    };
+    /**
+     * View a single lead with contacts and activity timeline.
+     */
+    Crm.viewLead = function (lead_id) {
+        return Requests.processRoute(CrmRoute.routes.viewLead, {}, { lead_id: lead_id });
+    };
+    /**
+     * Update lead information.
+     */
+    Crm.updateLead = function (lead_id, data) {
+        return Requests.processRoute(CrmRoute.routes.updateLead, data, { lead_id: lead_id });
+    };
+    /**
+     * Delete a lead (Soft Delete).
+     */
+    Crm.deleteLead = function (lead_id) {
+        return Requests.processRoute(CrmRoute.routes.deleteLead, {}, { lead_id: lead_id });
+    };
+    /**
+     * Assign a Super Admin as the owner of a lead.
+     */
+    Crm.assignOwner = function (lead_id, user_id) {
+        return Requests.processRoute(CrmRoute.routes.assignOwner, { user_id: user_id }, { lead_id: lead_id });
+    };
+    /**
+     * Manually trigger Apollo enrichment and website scraping for a lead.
+     */
+    Crm.enrichLead = function (lead_id) {
+        return Requests.processRoute(CrmRoute.routes.enrichLead, {}, { lead_id: lead_id });
+    };
+    /**
+     * Approve a specific contact to start the Apollo email sequence.
+     */
+    Crm.approveContact = function (contact_id) {
+        return Requests.processRoute(CrmRoute.routes.approveContact, {}, { contact_id: contact_id });
+    };
+    /**
+     * Manually update the pipeline status of a lead.
+     */
+    Crm.updateStatus = function (lead_id, status, note) {
+        return Requests.processRoute(CrmRoute.routes.updateStatus, { status: status, note: note }, { lead_id: lead_id });
+    };
+    /**
+     * Add a manual note to the lead's activity timeline.
+     */
+    Crm.addNote = function (lead_id, content) {
+        return Requests.processRoute(CrmRoute.routes.addNote, { content: content }, { lead_id: lead_id });
+    };
+    /**
+     * Manually add a contact person to a lead.
+     */
+    Crm.addContact = function (lead_id, data) {
+        return Requests.processRoute(CrmRoute.routes.addContact, data, { lead_id: lead_id });
+    };
+    /**
+     * Mark a lead as lost and record the reason.
+     */
+    Crm.markAsLost = function (lead_id, reason) {
+        return Requests.processRoute(CrmRoute.routes.markAsLost, { reason: reason }, { lead_id: lead_id });
+    };
+    /**
+     * Record that a staff member has manually replied to a prospect.
+     */
+    Crm.recordStaffReply = function (lead_id) {
+        return Requests.processRoute(CrmRoute.routes.recordStaffReply, {}, { lead_id: lead_id });
+    };
+    /**
+     * Approve a batch of contacts for outreach.
+     */
+    Crm.bulkApprove = function (contact_ids) {
+        return Requests.processRoute(CrmRoute.routes.bulkApprove, { contact_ids: contact_ids });
+    };
+    /**
+     * Manually trigger the bi-weekly sourcing automation.
+     */
+    Crm.triggerSourcing = function () {
+        return Requests.processRoute(CrmRoute.routes.triggerSourcing, {});
+    };
+    /**
+     * Manually trigger the Apollo status and conversion sync.
+     */
+    Crm.triggerSync = function () {
+        return Requests.processRoute(CrmRoute.routes.triggerSync, {});
+    };
+    /**
+     * Get funnel conversion percentages.
+     */
+    Crm.getFunnelStats = function () {
+        return Requests.processRoute(CrmRoute.routes.funnelStats);
+    };
+    /**
+     * Get win rates and response time analytics.
+     */
+    Crm.getPerformanceStats = function () {
+        return Requests.processRoute(CrmRoute.routes.performanceStats);
+    };
+    return Crm;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -30824,6 +30980,7 @@ var Glitch = /** @class */ (function () {
         Raffles: Raffles,
         DiscordMarketplace: DiscordMarketplace,
         Education: Education,
+        Crm: Crm,
     };
     Glitch.util = {
         Requests: Requests,

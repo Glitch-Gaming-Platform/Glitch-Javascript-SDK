@@ -41,6 +41,7 @@ import TwitchReporting from "./TwitchReporting";
 import Raffles from "./Raffles";
 import DiscordMarketplace from "./DiscordMarketplace";
 import Education from "./Education";
+import Crm from "./Crm";
 
 export {Ads};
 export {AccessKeys};
@@ -85,3 +86,4 @@ export {TwitchReporting};
 export {Raffles};
 export {DiscordMarketplace};
 export {Education};
+export {Crm};

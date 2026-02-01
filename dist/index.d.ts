@@ -1809,10 +1809,14 @@ declare class Communities {
      * @param community_id The ID of the community.
      * @param params Should include { start_date: 'YYYY-MM-DD', end_date: 'YYYY-MM-DD' }
      */
-    static getCustomStatement<T>(community_id: string, params: {
-        start_date: string;
-        end_date: string;
-    }): AxiosPromise<Response<T>>;
+    /**
+ * Generate a custom date-range statement for reimbursement.
+ *
+ * @param community_id The ID of the community.
+ * @param startDate 'YYYY-MM-DD'
+ * @param endDate 'YYYY-MM-DD'
+ */
+    static getCustomStatement<T>(community_id: string, startDate: string, endDate: string): AxiosPromise<Response<T>>;
     /**
  * List all Stripe invoices for the community.
  */
@@ -7383,6 +7387,81 @@ declare class Education {
     static uploadTemplateBackground<T>(uuid: string, file: File): AxiosPromise<Response<T>>;
 }
 
+declare class Crm {
+    /**
+     * List and search CRM leads.
+     */
+    static listLeads<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Manually create a new lead.
+     */
+    static createLead<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * View a single lead with contacts and activity timeline.
+     */
+    static viewLead<T>(lead_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Update lead information.
+     */
+    static updateLead<T>(lead_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Delete a lead (Soft Delete).
+     */
+    static deleteLead<T>(lead_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Assign a Super Admin as the owner of a lead.
+     */
+    static assignOwner<T>(lead_id: string, user_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Manually trigger Apollo enrichment and website scraping for a lead.
+     */
+    static enrichLead<T>(lead_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Approve a specific contact to start the Apollo email sequence.
+     */
+    static approveContact<T>(contact_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Manually update the pipeline status of a lead.
+     */
+    static updateStatus<T>(lead_id: string, status: string, note?: string): AxiosPromise<Response<T>>;
+    /**
+     * Add a manual note to the lead's activity timeline.
+     */
+    static addNote<T>(lead_id: string, content: string): AxiosPromise<Response<T>>;
+    /**
+     * Manually add a contact person to a lead.
+     */
+    static addContact<T>(lead_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Mark a lead as lost and record the reason.
+     */
+    static markAsLost<T>(lead_id: string, reason: string): AxiosPromise<Response<T>>;
+    /**
+     * Record that a staff member has manually replied to a prospect.
+     */
+    static recordStaffReply<T>(lead_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Approve a batch of contacts for outreach.
+     */
+    static bulkApprove<T>(contact_ids: string[]): AxiosPromise<Response<T>>;
+    /**
+     * Manually trigger the bi-weekly sourcing automation.
+     */
+    static triggerSourcing<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Manually trigger the Apollo status and conversion sync.
+     */
+    static triggerSync<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Get funnel conversion percentages.
+     */
+    static getFunnelStats<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Get win rates and response time analytics.
+     */
+    static getPerformanceStats<T>(): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -7731,6 +7810,7 @@ declare class Glitch {
         Raffles: typeof Raffles;
         DiscordMarketplace: typeof DiscordMarketplace;
         Education: typeof Education;
+        Crm: typeof Crm;
     };
     static util: {
         Requests: typeof Requests;

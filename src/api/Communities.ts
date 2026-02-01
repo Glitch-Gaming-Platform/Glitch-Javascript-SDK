@@ -955,8 +955,27 @@ class Communities {
      * @param community_id The ID of the community.
      * @param params Should include { start_date: 'YYYY-MM-DD', end_date: 'YYYY-MM-DD' }
      */
-    public static getCustomStatement<T>(community_id: string, params: { start_date: string, end_date: string }): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CommunitiesRoute.routes.getCustomStatement, undefined, { community_id }, params);
+
+    /**
+ * Generate a custom date-range statement for reimbursement.
+ * 
+ * @param community_id The ID of the community.
+ * @param startDate 'YYYY-MM-DD'
+ * @param endDate 'YYYY-MM-DD'
+ */
+    public static getCustomStatement<T>(community_id: string, startDate: string, endDate: string): AxiosPromise<Response<T>> {
+        // Wrap the strings into a named object so Requests.get can serialize them correctly
+        const params = {
+            start_date: startDate,
+            end_date: endDate
+        };
+
+        return Requests.processRoute(
+            CommunitiesRoute.routes.getCustomStatement,
+            undefined,
+            { community_id: community_id },
+            params
+        );
     }
 
     /**
