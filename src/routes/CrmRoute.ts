@@ -21,6 +21,9 @@ class CrmRoute {
     recordStaffReply: { url: '/admin/crm/leads/{lead_id}/replied', method: HTTP_METHODS.POST },
     bulkApprove: { url: '/admin/crm/contacts/bulk-approve', method: HTTP_METHODS.POST },
 
+    updateContact: { url: '/admin/crm/contacts/{contact_id}', method: HTTP_METHODS.PUT },
+    deleteContact: { url: '/admin/crm/contacts/{contact_id}', method: HTTP_METHODS.DELETE },
+
     // Automation Triggers
     triggerSourcing: { url: '/admin/crm/automation/source', method: HTTP_METHODS.POST },
     triggerSync: { url: '/admin/crm/automation/sync', method: HTTP_METHODS.POST },

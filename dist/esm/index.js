@@ -17133,6 +17133,8 @@ var CrmRoute = /** @class */ (function () {
         markAsLost: { url: '/admin/crm/leads/{lead_id}/lost', method: HTTP_METHODS.POST },
         recordStaffReply: { url: '/admin/crm/leads/{lead_id}/replied', method: HTTP_METHODS.POST },
         bulkApprove: { url: '/admin/crm/contacts/bulk-approve', method: HTTP_METHODS.POST },
+        updateContact: { url: '/admin/crm/contacts/{contact_id}', method: HTTP_METHODS.PUT },
+        deleteContact: { url: '/admin/crm/contacts/{contact_id}', method: HTTP_METHODS.DELETE },
         // Automation Triggers
         triggerSourcing: { url: '/admin/crm/automation/source', method: HTTP_METHODS.POST },
         triggerSync: { url: '/admin/crm/automation/sync', method: HTTP_METHODS.POST },
@@ -17260,6 +17262,18 @@ var Crm = /** @class */ (function () {
      */
     Crm.getInterestStats = function () {
         return Requests.processRoute(CrmRoute.routes.getInterestStats);
+    };
+    /**
+    * Update an existing contact's information.
+    */
+    Crm.updateContact = function (contact_id, data) {
+        return Requests.processRoute(CrmRoute.routes.updateContact, data, { contact_id: contact_id });
+    };
+    /**
+     * Remove a contact from a lead.
+     */
+    Crm.deleteContact = function (contact_id) {
+        return Requests.processRoute(CrmRoute.routes.deleteContact, {}, { contact_id: contact_id });
     };
     return Crm;
 }());

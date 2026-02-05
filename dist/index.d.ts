@@ -7464,6 +7464,14 @@ declare class Crm {
      * Get the analytics on what users indcated they were interested in.
      */
     static getInterestStats<T>(): AxiosPromise<Response<T>>;
+    /**
+    * Update an existing contact's information.
+    */
+    static updateContact<T>(contact_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Remove a contact from a lead.
+     */
+    static deleteContact<T>(contact_id: string): AxiosPromise<Response<T>>;
 }
 
 interface Route {

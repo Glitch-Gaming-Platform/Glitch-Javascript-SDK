@@ -136,6 +136,21 @@ class Crm {
     public static getInterestStats<T>(): AxiosPromise<Response<T>> {
         return Requests.processRoute(CrmRoute.routes.getInterestStats);
     }
+
+     /**
+     * Update an existing contact's information.
+     */
+    public static updateContact<T>(contact_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.updateContact, data, { contact_id });
+    }
+
+    /**
+     * Remove a contact from a lead.
+     */
+    public static deleteContact<T>(contact_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.deleteContact, {}, { contact_id });
+    }
+
 }
 
 export default Crm;
