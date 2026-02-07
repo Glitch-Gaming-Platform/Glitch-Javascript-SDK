@@ -35,5 +35,12 @@ declare class AccessKeys {
      * @returns promise
      */
     static delete<T>(key_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Emails the assigned key to the influencer.
+     *
+     * @param key_id The UUID of the access key.
+     * @returns promise
+     */
+    static sendEmail<T>(key_id: string): AxiosPromise<Response<T>>;
 }
 export default AccessKeys;

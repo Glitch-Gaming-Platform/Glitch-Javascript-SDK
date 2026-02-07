@@ -44,6 +44,16 @@ class AccessKeys {
     public static delete<T>(key_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AccessKeysRoute.routes.delete, {}, { key_id }, params);
     }
+
+    /**
+     * Emails the assigned key to the influencer.
+     * 
+     * @param key_id The UUID of the access key.
+     * @returns promise
+     */
+    public static sendEmail<T>(key_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AccessKeysRoute.routes.sendEmail, {}, { key_id });
+    }
 }
 
 export default AccessKeys;

@@ -5933,6 +5933,7 @@ var AccessKeysRoute = /** @class */ (function () {
         list: { url: '/titles/{title_id}/keys', method: HTTP_METHODS.GET },
         store: { url: '/titles/{title_id}/keys', method: HTTP_METHODS.POST },
         delete: { url: '/keys/{key_id}', method: HTTP_METHODS.DELETE },
+        sendEmail: { url: '/keys/{key_id}/send-email', method: HTTP_METHODS.POST },
     };
     return AccessKeysRoute;
 }());
@@ -5976,6 +5977,15 @@ var AccessKeys = /** @class */ (function () {
      */
     AccessKeys.delete = function (key_id, params) {
         return Requests.processRoute(AccessKeysRoute.routes.delete, {}, { key_id: key_id }, params);
+    };
+    /**
+     * Emails the assigned key to the influencer.
+     *
+     * @param key_id The UUID of the access key.
+     * @returns promise
+     */
+    AccessKeys.sendEmail = function (key_id) {
+        return Requests.processRoute(AccessKeysRoute.routes.sendEmail, {}, { key_id: key_id });
     };
     return AccessKeys;
 }());
