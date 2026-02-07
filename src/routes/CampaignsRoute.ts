@@ -102,7 +102,7 @@ class CampaignsRoute {
         url: '/campaigns/{campaign_id}/sourcing/find-save-fansly-creators', 
         method: HTTP_METHODS.POST 
     },
-
+    sendOnboarding: { url: '/campaigns/{campaign_id}/influencers/{user_id}/onboarding', method: HTTP_METHODS.POST },
 
   };
 

@@ -5007,6 +5007,9 @@ declare class Campaigns {
         query?: string;
         pages?: number;
     }): AxiosPromise<Response<T>>;
+    static sendOnboarding<T>(campaign_id: string, user_id: string, data?: {
+        template_id?: string;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Subscriptions {

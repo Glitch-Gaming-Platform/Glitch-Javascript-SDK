@@ -12397,6 +12397,7 @@ var CampaignsRoute = /** @class */ (function () {
             url: '/campaigns/{campaign_id}/sourcing/find-save-fansly-creators',
             method: HTTP_METHODS.POST
         },
+        sendOnboarding: { url: '/campaigns/{campaign_id}/influencers/{user_id}/onboarding', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -13300,6 +13301,9 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.sourcingFindAndSaveFanslyCreators = function (campaign_id, data) {
         return Requests.processRoute(CampaignsRoute.routes.sourcingFindAndSaveFanslyCreators, data, { campaign_id: campaign_id });
+    };
+    Campaigns.sendOnboarding = function (campaign_id, user_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.sendOnboarding, data, { campaign_id: campaign_id, user_id: user_id });
     };
     return Campaigns;
 }());

@@ -1060,6 +1060,10 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.sourcingFindAndSaveFanslyCreators, data, { campaign_id });
     }
 
+    public static sendOnboarding<T>(campaign_id: string, user_id: string, data?: { template_id?: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.sendOnboarding, data, { campaign_id, user_id });
+    }
+
 }
 
 export default Campaigns;
