@@ -1828,6 +1828,20 @@ declare class Communities {
  * List all Stripe invoices for the community.
  */
     static listInvoices<T>(community_id: string): AxiosPromise<Response<T>>;
+    /**
+     * List influencers saved to the community's private talent pool.
+     *
+     * @param community_id The UUID of the community.
+     * @param params Optional filters like 'list_name'.
+     */
+    static listSavedInfluencers<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Save an influencer to the community's talent pool (Shortlist).
+     *
+     * @param community_id The UUID of the community.
+     * @param data { influencer_id: string, list_name?: string, tags?: string[] }
+     */
+    static saveInfluencerToPool<T>(community_id: string, data: object): AxiosPromise<Response<T>>;
 }
 
 declare class Users {
@@ -5009,6 +5023,16 @@ declare class Campaigns {
     }): AxiosPromise<Response<T>>;
     static sendOnboarding<T>(campaign_id: string, user_id: string, data?: {
         template_id?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Bulk invite influencers from a previous campaign into the current one.
+     *
+     * @param campaign_id The UUID of the target campaign.
+     * @param data { source_campaign_id: string, only_successful: boolean }
+     */
+    static crossPromote<T>(campaign_id: string, data: {
+        source_campaign_id: string;
+        only_successful?: boolean;
     }): AxiosPromise<Response<T>>;
 }
 

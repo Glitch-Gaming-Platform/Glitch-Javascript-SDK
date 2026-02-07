@@ -7885,6 +7885,8 @@ var CommunitiesRoute = /** @class */ (function () {
             url: '/communities/{community_id}/payment/statement',
             method: HTTP_METHODS.GET
         },
+        listSavedInfluencers: { url: '/communities/{community_id}/influencers', method: HTTP_METHODS.GET },
+        saveInfluencerToPool: { url: '/communities/{community_id}/influencers', method: HTTP_METHODS.POST }
     };
     return CommunitiesRoute;
 }());
@@ -8710,6 +8712,24 @@ var Communities = /** @class */ (function () {
  */
     Communities.listInvoices = function (community_id) {
         return Requests.processRoute(CommunitiesRoute.routes.listInvoices, undefined, { community_id: community_id });
+    };
+    /**
+     * List influencers saved to the community's private talent pool.
+     *
+     * @param community_id The UUID of the community.
+     * @param params Optional filters like 'list_name'.
+     */
+    Communities.listSavedInfluencers = function (community_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.listSavedInfluencers, undefined, { community_id: community_id }, params);
+    };
+    /**
+     * Save an influencer to the community's talent pool (Shortlist).
+     *
+     * @param community_id The UUID of the community.
+     * @param data { influencer_id: string, list_name?: string, tags?: string[] }
+     */
+    Communities.saveInfluencerToPool = function (community_id, data) {
+        return Requests.processRoute(CommunitiesRoute.routes.saveInfluencerToPool, data, { community_id: community_id });
     };
     return Communities;
 }());
@@ -12398,6 +12418,7 @@ var CampaignsRoute = /** @class */ (function () {
             method: HTTP_METHODS.POST
         },
         sendOnboarding: { url: '/campaigns/{campaign_id}/influencers/{user_id}/onboarding', method: HTTP_METHODS.POST },
+        crossPromote: { url: '/campaigns/{campaign_id}/cross-promote', method: HTTP_METHODS.POST },
     };
     return CampaignsRoute;
 }());
@@ -13304,6 +13325,15 @@ var Campaigns = /** @class */ (function () {
     };
     Campaigns.sendOnboarding = function (campaign_id, user_id, data) {
         return Requests.processRoute(CampaignsRoute.routes.sendOnboarding, data, { campaign_id: campaign_id, user_id: user_id });
+    };
+    /**
+     * Bulk invite influencers from a previous campaign into the current one.
+     *
+     * @param campaign_id The UUID of the target campaign.
+     * @param data { source_campaign_id: string, only_successful: boolean }
+     */
+    Campaigns.crossPromote = function (campaign_id, data) {
+        return Requests.processRoute(CampaignsRoute.routes.crossPromote, data, { campaign_id: campaign_id });
     };
     return Campaigns;
 }());

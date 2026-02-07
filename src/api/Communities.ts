@@ -985,6 +985,26 @@ class Communities {
         return Requests.processRoute(CommunitiesRoute.routes.listInvoices, undefined, { community_id });
     }
 
+    /**
+     * List influencers saved to the community's private talent pool.
+     * 
+     * @param community_id The UUID of the community.
+     * @param params Optional filters like 'list_name'.
+     */
+    public static listSavedInfluencers<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.listSavedInfluencers, undefined, { community_id }, params);
+    }
+
+    /**
+     * Save an influencer to the community's talent pool (Shortlist).
+     * 
+     * @param community_id The UUID of the community.
+     * @param data { influencer_id: string, list_name?: string, tags?: string[] }
+     */
+    public static saveInfluencerToPool<T>(community_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.saveInfluencerToPool, data, { community_id });
+    }
+
 }
 
 export default Communities;

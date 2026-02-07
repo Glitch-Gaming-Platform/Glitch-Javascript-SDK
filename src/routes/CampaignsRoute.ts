@@ -104,6 +104,8 @@ class CampaignsRoute {
     },
     sendOnboarding: { url: '/campaigns/{campaign_id}/influencers/{user_id}/onboarding', method: HTTP_METHODS.POST },
 
+    crossPromote: { url: '/campaigns/{campaign_id}/cross-promote', method: HTTP_METHODS.POST },
+
   };
 
 }

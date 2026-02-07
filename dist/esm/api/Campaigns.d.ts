@@ -759,5 +759,15 @@ declare class Campaigns {
     static sendOnboarding<T>(campaign_id: string, user_id: string, data?: {
         template_id?: string;
     }): AxiosPromise<Response<T>>;
+    /**
+     * Bulk invite influencers from a previous campaign into the current one.
+     *
+     * @param campaign_id The UUID of the target campaign.
+     * @param data { source_campaign_id: string, only_successful: boolean }
+     */
+    static crossPromote<T>(campaign_id: string, data: {
+        source_campaign_id: string;
+        only_successful?: boolean;
+    }): AxiosPromise<Response<T>>;
 }
 export default Campaigns;

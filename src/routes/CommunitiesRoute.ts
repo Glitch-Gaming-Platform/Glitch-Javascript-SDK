@@ -99,9 +99,9 @@ class CommunitiesRoute {
       method: HTTP_METHODS.POST
     },
     // New Invoicing and Statement Routes
-    listInvoices: { 
-      url: '/communities/{community_id}/payment/invoices', 
-      method: HTTP_METHODS.GET 
+    listInvoices: {
+      url: '/communities/{community_id}/payment/invoices',
+      method: HTTP_METHODS.GET
     },
     getInvoiceDetails: {
       url: '/communities/{community_id}/payment/invoices/{invoice_id}',
@@ -111,6 +111,9 @@ class CommunitiesRoute {
       url: '/communities/{community_id}/payment/statement',
       method: HTTP_METHODS.GET
     },
+
+    listSavedInfluencers: { url: '/communities/{community_id}/influencers', method: HTTP_METHODS.GET },
+    saveInfluencerToPool: { url: '/communities/{community_id}/influencers', method: HTTP_METHODS.POST }
 
   };
 

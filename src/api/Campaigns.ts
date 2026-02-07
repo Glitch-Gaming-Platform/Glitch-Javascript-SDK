@@ -998,9 +998,9 @@ class Campaigns {
      */
     public static getSpecificInfluencerInstallReport<T>(campaign_id: string, influencer_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(
-            CampaignsRoute.routes.getSpecificInfluencerInstallReport, 
-            undefined, 
-            { campaign_id, influencer_id }, 
+            CampaignsRoute.routes.getSpecificInfluencerInstallReport,
+            undefined,
+            { campaign_id, influencer_id },
             params
         );
     }
@@ -1009,13 +1009,13 @@ class Campaigns {
      * Generate AI Landing Page for an Influencer Campaign.
      */
     public static generateInfluencerLandingPage<T>(
-        campaign_id: string, 
-        user_id: string, 
+        campaign_id: string,
+        user_id: string,
         data: { prompt: string, privacy_mode: string }
     ): AxiosPromise<Response<T>> {
         return Requests.processRoute(
-            CampaignsRoute.routes.generateInfluencerLandingPage, 
-            data, 
+            CampaignsRoute.routes.generateInfluencerLandingPage,
+            data,
             { campaign_id, user_id }
         );
     }
@@ -1024,13 +1024,13 @@ class Campaigns {
      * Update settings for the Influencer Landing Page.
      */
     public static updateInfluencerLandingPage<T>(
-        campaign_id: string, 
-        user_id: string, 
+        campaign_id: string,
+        user_id: string,
         data: { is_landing_page_active?: boolean, landing_page_slug?: string }
     ): AxiosPromise<Response<T>> {
         return Requests.processRoute(
-            CampaignsRoute.routes.updateInfluencerLandingPage, 
-            data, 
+            CampaignsRoute.routes.updateInfluencerLandingPage,
+            data,
             { campaign_id, user_id }
         );
     }
@@ -1064,6 +1064,15 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.sendOnboarding, data, { campaign_id, user_id });
     }
 
+    /**
+     * Bulk invite influencers from a previous campaign into the current one.
+     * 
+     * @param campaign_id The UUID of the target campaign.
+     * @param data { source_campaign_id: string, only_successful: boolean }
+     */
+    public static crossPromote<T>(campaign_id: string, data: { source_campaign_id: string, only_successful?: boolean }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.crossPromote, data, { campaign_id });
+    }
 }
 
 export default Campaigns;
