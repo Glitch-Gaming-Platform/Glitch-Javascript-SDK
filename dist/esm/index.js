@@ -13755,6 +13755,7 @@ var GamesRoutes = /** @class */ (function () {
         createCampaignWithTitle: { url: '/games/{game_id}/generateCampaignWithTitle', method: HTTP_METHODS.POST },
         createGameTitle: { url: '/games/{game_id}/generateTitle', method: HTTP_METHODS.POST },
         createGameScheduler: { url: '/games/{game_id}/generateScheduler', method: HTTP_METHODS.POST },
+        releaseStats: { url: '/games/release-stats', method: HTTP_METHODS.GET },
     };
     return GamesRoutes;
 }());
@@ -13819,6 +13820,32 @@ var Games = /** @class */ (function () {
      */
     Games.createGameScheduler = function (game_id, data, params) {
         return Requests.processRoute(GamesRoutes.routes.createGameScheduler, data, { game_id: game_id }, params);
+    };
+    /**
+    * Get release competition statistics and Steam danger zones.
+    *
+    * This tool analyzes the 'ExternalGames' database to show how many other games
+    * are releasing around a specific date. It also overlays hard-coded Steam events
+    * like NextFest and Seasonal Sales.
+    *
+    * @see https://api.glitch.fun/api/documentation#/ExternalGames/getReleaseStats
+    *
+    * @param params Filtering options:
+    *   - precision: 'day' | 'month' | 'year' (Default: 'day'). Use 'month' for long-term planning.
+    *   - start_date: 'YYYY-MM-DD'. The date to begin the analysis from.
+    *
+    * @returns AxiosPromise<Response<ReleaseStatsResponse>>
+    *
+    * @example
+    * Games.getReleaseStats({ precision: 'day', start_date: '2025-06-01' })
+    *   .then(res => console.log(res.data.data));
+    */
+    Games.getReleaseStats = function (params) {
+        // Defensive check: ensure precision is valid if provided
+        if ((params === null || params === void 0 ? void 0 : params.precision) && !['day', 'month', 'year'].includes(params.precision)) {
+            console.warn("Invalid precision '".concat(params.precision, "' passed to getReleaseStats. Defaulting to 'day'."));
+        }
+        return Requests.processRoute(GamesRoutes.routes.releaseStats, undefined, undefined, params);
     };
     return Games;
 }());

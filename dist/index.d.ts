@@ -5303,6 +5303,33 @@ declare class Influencers {
     static workbook<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+/**
+ * Interface for the Release Stats response to help developers
+ * understand the data structure returned by the optimizer.
+ */
+interface ReleaseStatEntry {
+    date: string;
+    count: number;
+    intensity: 'low' | 'medium' | 'high' | 'extreme';
+    is_danger_zone: boolean;
+    recommendation: string;
+    events: Array<{
+        name: string;
+        type: 'nextfest' | 'sale';
+        start: string;
+        end: string;
+    }>;
+}
+interface ReleaseStatsResponse {
+    data: ReleaseStatEntry[];
+    meta: {
+        user_status: 'authenticated' | 'guest';
+        lookahead_days: number;
+        start_date: string;
+        end_date: string;
+        global_events: any[];
+    };
+}
 declare class Games {
     /**
      * Get a list of Games available on he platform.
@@ -5350,6 +5377,29 @@ declare class Games {
      * @returns promise
      */
     static createGameScheduler<T>(game_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Get release competition statistics and Steam danger zones.
+    *
+    * This tool analyzes the 'ExternalGames' database to show how many other games
+    * are releasing around a specific date. It also overlays hard-coded Steam events
+    * like NextFest and Seasonal Sales.
+    *
+    * @see https://api.glitch.fun/api/documentation#/ExternalGames/getReleaseStats
+    *
+    * @param params Filtering options:
+    *   - precision: 'day' | 'month' | 'year' (Default: 'day'). Use 'month' for long-term planning.
+    *   - start_date: 'YYYY-MM-DD'. The date to begin the analysis from.
+    *
+    * @returns AxiosPromise<Response<ReleaseStatsResponse>>
+    *
+    * @example
+    * Games.getReleaseStats({ precision: 'day', start_date: '2025-06-01' })
+    *   .then(res => console.log(res.data.data));
+    */
+    static getReleaseStats<T = ReleaseStatsResponse>(params?: {
+        precision?: 'day' | 'month' | 'year';
+        start_date?: string;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Publications {

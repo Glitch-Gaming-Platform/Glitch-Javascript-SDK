@@ -10,7 +10,7 @@ class GamesRoutes {
     createCampaignWithTitle: { url: '/games/{game_id}/generateCampaignWithTitle', method: HTTP_METHODS.POST },
     createGameTitle: { url: '/games/{game_id}/generateTitle', method: HTTP_METHODS.POST },
     createGameScheduler: { url: '/games/{game_id}/generateScheduler', method: HTTP_METHODS.POST },
-
+    releaseStats: { url: '/games/release-stats', method: HTTP_METHODS.GET },
   };
 
 }
