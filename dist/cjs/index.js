@@ -24877,6 +24877,14 @@ var TitlesRoute = /** @class */ (function () {
         createBehavioralFunnel: { url: '/titles/{title_id}/behavioral-funnels', method: HTTP_METHODS.POST },
         behavioralFunnelReport: { url: '/titles/{title_id}/behavioral-funnels/{funnel_id}/report', method: HTTP_METHODS.GET },
         deleteBehavioralFunnel: { url: '/titles/{title_id}/behavioral-funnels/{funnel_id}', method: HTTP_METHODS.DELETE },
+        // Aegis Deployment
+        getDeploymentUploadUrl: { url: '/titles/{title_id}/deployments/presigned-url', method: HTTP_METHODS.POST },
+        confirmDeployment: { url: '/titles/{title_id}/deployments/confirm', method: HTTP_METHODS.POST },
+        getPlaySession: { url: '/titles/{title_id}/play', method: HTTP_METHODS.GET },
+        // Aegis Payouts
+        listDeveloperPayouts: { url: '/titles/{title_id}/payouts', method: HTTP_METHODS.GET },
+        viewDeveloperPayout: { url: '/titles/{title_id}/payouts/{payout_id}', method: HTTP_METHODS.GET },
+        developerPayoutSummary: { url: '/titles/{title_id}/payouts/summary', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());
@@ -25495,6 +25503,44 @@ var Titles = /** @class */ (function () {
      */
     Titles.deleteBehavioralFunnel = function (title_id, funnel_id) {
         return Requests.processRoute(TitlesRoute.routes.deleteBehavioralFunnel, {}, { title_id: title_id, funnel_id: funnel_id });
+    };
+    /**
+    * Generates a presigned S3 URL for uploading a game build ZIP.
+    */
+    Titles.getDeploymentUploadUrl = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.getDeploymentUploadUrl, {}, { title_id: title_id });
+    };
+    /**
+     * Confirms the upload and starts the automated deployment/extraction process.
+     * @param data { file_path: string, version_string: string, entry_point?: string }
+     */
+    Titles.confirmDeployment = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.confirmDeployment, data, { title_id: title_id });
+    };
+    /**
+     * Initializes a play session. Handles age-gating and license verification.
+     * Returns the CDN URL for WASM/iFrame or Signaling URL for Pixel Streaming.
+     */
+    Titles.getPlaySession = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.getPlaySession, {}, { title_id: title_id });
+    };
+    /**
+     * List all developer payouts for a title.
+     */
+    Titles.listDeveloperPayouts = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.listDeveloperPayouts, undefined, { title_id: title_id }, params);
+    };
+    /**
+     * View a specific payout record.
+     */
+    Titles.viewDeveloperPayout = function (title_id, payout_id) {
+        return Requests.processRoute(TitlesRoute.routes.viewDeveloperPayout, {}, { title_id: title_id, payout_id: payout_id });
+    };
+    /**
+     * Get the total earnings and playtime summary for a title.
+     */
+    Titles.getDeveloperPayoutSummary = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.developerPayoutSummary, {}, { title_id: title_id });
     };
     return Titles;
 }());
@@ -26539,6 +26585,7 @@ var SubscriptionsRoute = /** @class */ (function () {
             url: '/subscriptions/communities/custom/{community_id}',
             method: HTTP_METHODS.POST
         },
+        purchaseLicense: { url: '/titles/{title_id}/purchase', method: HTTP_METHODS.POST },
     };
     return SubscriptionsRoute;
 }());
@@ -26645,6 +26692,14 @@ var Subscriptions = /** @class */ (function () {
     */
     Subscriptions.createCustomCommunitySubscription = function (community_id, data, params) {
         return Requests.processRoute(SubscriptionsRoute.routes.createCustomCommunitySubscription, data, { community_id: community_id }, params);
+    };
+    /**
+     * Purchase a permanent license or rent a game title.
+     * If a rental was active in the last 7 days, the fee is automatically deducted from the premium price.
+     * @param data { purchase_type: 'premium' | 'rental', payment_method_id: string }
+     */
+    Subscriptions.purchaseLicense = function (title_id, data) {
+        return Requests.processRoute(SubscriptionsRoute.routes.purchaseLicense, data, { title_id: title_id });
     };
     return Subscriptions;
 }());

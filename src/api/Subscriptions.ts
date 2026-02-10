@@ -115,6 +115,15 @@ class Subscriptions {
         return Requests.processRoute(SubscriptionsRoute.routes.createCustomCommunitySubscription, data, { community_id }, params);
     }
 
+    /**
+     * Purchase a permanent license or rent a game title.
+     * If a rental was active in the last 7 days, the fee is automatically deducted from the premium price.
+     * @param data { purchase_type: 'premium' | 'rental', payment_method_id: string }
+     */
+    public static purchaseLicense<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.purchaseLicense, data, { title_id });
+    }
+
 
 }
 

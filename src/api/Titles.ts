@@ -932,6 +932,50 @@ class Titles {
     public static deleteBehavioralFunnel<T>(title_id: string, funnel_id: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.deleteBehavioralFunnel, {}, { title_id, funnel_id });
     }
+
+     /**
+     * Generates a presigned S3 URL for uploading a game build ZIP.
+     */
+    public static getDeploymentUploadUrl<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.getDeploymentUploadUrl, {}, { title_id });
+    }
+
+    /**
+     * Confirms the upload and starts the automated deployment/extraction process.
+     * @param data { file_path: string, version_string: string, entry_point?: string }
+     */
+    public static confirmDeployment<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.confirmDeployment, data, { title_id });
+    }
+
+    /**
+     * Initializes a play session. Handles age-gating and license verification.
+     * Returns the CDN URL for WASM/iFrame or Signaling URL for Pixel Streaming.
+     */
+    public static getPlaySession<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.getPlaySession, {}, { title_id });
+    }
+
+    /**
+     * List all developer payouts for a title.
+     */
+    public static listDeveloperPayouts<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.listDeveloperPayouts, undefined, { title_id }, params);
+    }
+
+    /**
+     * View a specific payout record.
+     */
+    public static viewDeveloperPayout<T>(title_id: string, payout_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.viewDeveloperPayout, {}, { title_id, payout_id });
+    }
+
+    /**
+     * Get the total earnings and playtime summary for a title.
+     */
+    public static getDeveloperPayoutSummary<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.developerPayoutSummary, {}, { title_id });
+    }
 }
 
 export default Titles;

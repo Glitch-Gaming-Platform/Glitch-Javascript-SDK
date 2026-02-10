@@ -81,5 +81,11 @@ declare class Subscriptions {
     * @param data { priceId, paymentMethod, custom_name, limits: { posts, enrichments, invites, ads }, metered_prices: [] }
     */
     static createCustomCommunitySubscription<T>(community_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Purchase a permanent license or rent a game title.
+     * If a rental was active in the last 7 days, the fee is automatically deducted from the premium price.
+     * @param data { purchase_type: 'premium' | 'rental', payment_method_id: string }
+     */
+    static purchaseLicense<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
 }
 export default Subscriptions;

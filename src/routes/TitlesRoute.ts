@@ -180,6 +180,16 @@ class TitlesRoute {
     behavioralFunnelReport: { url: '/titles/{title_id}/behavioral-funnels/{funnel_id}/report', method: HTTP_METHODS.GET },
     deleteBehavioralFunnel: { url: '/titles/{title_id}/behavioral-funnels/{funnel_id}', method: HTTP_METHODS.DELETE },
 
+    // Aegis Deployment
+    getDeploymentUploadUrl: { url: '/titles/{title_id}/deployments/presigned-url', method: HTTP_METHODS.POST },
+    confirmDeployment: { url: '/titles/{title_id}/deployments/confirm', method: HTTP_METHODS.POST },
+    getPlaySession: { url: '/titles/{title_id}/play', method: HTTP_METHODS.GET },
+
+    // Aegis Payouts
+    listDeveloperPayouts: { url: '/titles/{title_id}/payouts', method: HTTP_METHODS.GET },
+    viewDeveloperPayout: { url: '/titles/{title_id}/payouts/{payout_id}', method: HTTP_METHODS.GET },
+    developerPayoutSummary: { url: '/titles/{title_id}/payouts/summary', method: HTTP_METHODS.GET },
+
   };
 
 }

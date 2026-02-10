@@ -475,5 +475,31 @@ declare class Titles {
      * Delete a saved behavioral funnel definition.
      */
     static deleteBehavioralFunnel<T>(title_id: string, funnel_id: string): AxiosPromise<Response<T>>;
+    /**
+    * Generates a presigned S3 URL for uploading a game build ZIP.
+    */
+    static getDeploymentUploadUrl<T>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Confirms the upload and starts the automated deployment/extraction process.
+     * @param data { file_path: string, version_string: string, entry_point?: string }
+     */
+    static confirmDeployment<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Initializes a play session. Handles age-gating and license verification.
+     * Returns the CDN URL for WASM/iFrame or Signaling URL for Pixel Streaming.
+     */
+    static getPlaySession<T>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+     * List all developer payouts for a title.
+     */
+    static listDeveloperPayouts<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * View a specific payout record.
+     */
+    static viewDeveloperPayout<T>(title_id: string, payout_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Get the total earnings and playtime summary for a title.
+     */
+    static getDeveloperPayoutSummary<T>(title_id: string): AxiosPromise<Response<T>>;
 }
 export default Titles;

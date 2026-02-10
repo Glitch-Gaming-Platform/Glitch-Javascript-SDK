@@ -19,6 +19,9 @@ class SubscriptionsRoute {
             url: '/subscriptions/communities/custom/{community_id}', 
             method: HTTP_METHODS.POST 
         },
+
+        purchaseLicense: { url: '/titles/{title_id}/purchase', method: HTTP_METHODS.POST },
+
     };
 
   }
