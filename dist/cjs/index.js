@@ -27330,6 +27330,7 @@ var NewslettersRoutes = /** @class */ (function () {
         viewSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.GET },
         updateSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.PUT },
         deleteSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.DELETE },
+        joinDistributionWaitlist: { url: '/newsletters/joinDistributionWaitlist', method: HTTP_METHODS.POST },
     };
     return NewslettersRoutes;
 }());
@@ -27467,6 +27468,17 @@ var Newsletters = /** @class */ (function () {
      */
     Newsletters.deleteSubscriber = function (id) {
         return Requests.processRoute(NewslettersRoutes.routes.deleteSubscriber, undefined, { id: id });
+    };
+    /**
+     * Join the distribution platform waitlist for indie developers.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Newsletters/joinDistributionWaitlist
+     *
+     * @param data { name: string, email: string, game: string, team_size: string, revenue_goal: string }
+     * @returns Promise
+     */
+    Newsletters.joinDistributionWaitlist = function (data, params) {
+        return Requests.processRoute(NewslettersRoutes.routes.joinDistributionWaitlist, data, undefined, params);
     };
     return Newsletters;
 }());

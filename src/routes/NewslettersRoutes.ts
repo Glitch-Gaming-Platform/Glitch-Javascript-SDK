@@ -29,6 +29,8 @@ class NewslettersRoutes {
     viewSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.GET },
     updateSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.PUT },
     deleteSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.DELETE },
+    joinDistributionWaitlist: { url: '/newsletters/joinDistributionWaitlist', method: HTTP_METHODS.POST },
+
   };
 
 }

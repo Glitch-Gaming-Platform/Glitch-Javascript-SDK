@@ -161,7 +161,17 @@ class Newsletters {
         return Requests.processRoute(NewslettersRoutes.routes.deleteSubscriber, undefined, { id });
     }
 
-   
+    /**
+     * Join the distribution platform waitlist for indie developers.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Newsletters/joinDistributionWaitlist
+     * 
+     * @param data { name: string, email: string, game: string, team_size: string, revenue_goal: string }
+     * @returns Promise
+     */
+    public static joinDistributionWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(NewslettersRoutes.routes.joinDistributionWaitlist, data, undefined, params);
+    }
 
 }
 

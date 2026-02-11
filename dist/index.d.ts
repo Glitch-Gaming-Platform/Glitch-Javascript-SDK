@@ -5666,6 +5666,15 @@ declare class Newsletters {
      * Permanently delete a subscriber from the system (Admin only).
      */
     static deleteSubscriber<T>(id: string): AxiosPromise<Response<T>>;
+    /**
+     * Join the distribution platform waitlist for indie developers.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Newsletters/joinDistributionWaitlist
+     *
+     * @param data { name: string, email: string, game: string, team_size: string, revenue_goal: string }
+     * @returns Promise
+     */
+    static joinDistributionWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class PlayTests {
