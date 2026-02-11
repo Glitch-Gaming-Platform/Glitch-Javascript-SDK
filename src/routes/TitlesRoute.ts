@@ -190,6 +190,15 @@ class TitlesRoute {
     viewDeveloperPayout: { url: '/titles/{title_id}/payouts/{payout_id}', method: HTTP_METHODS.GET },
     developerPayoutSummary: { url: '/titles/{title_id}/payouts/summary', method: HTTP_METHODS.GET },
 
+     /**
+     * The Aegis Handshake: Validates if a specific install/session is authorized to play.
+     * POST /titles/{title_id}/installs/{install_id}/validate
+     */
+    validateInstall: { 
+      url: '/titles/{title_id}/installs/{install_id}/validate', 
+      method: HTTP_METHODS.POST 
+    },
+
   };
 
 }

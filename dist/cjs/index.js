@@ -24885,6 +24885,14 @@ var TitlesRoute = /** @class */ (function () {
         listDeveloperPayouts: { url: '/titles/{title_id}/payouts', method: HTTP_METHODS.GET },
         viewDeveloperPayout: { url: '/titles/{title_id}/payouts/{payout_id}', method: HTTP_METHODS.GET },
         developerPayoutSummary: { url: '/titles/{title_id}/payouts/summary', method: HTTP_METHODS.GET },
+        /**
+        * The Aegis Handshake: Validates if a specific install/session is authorized to play.
+        * POST /titles/{title_id}/installs/{install_id}/validate
+        */
+        validateInstall: {
+            url: '/titles/{title_id}/installs/{install_id}/validate',
+            method: HTTP_METHODS.POST
+        },
     };
     return TitlesRoute;
 }());
@@ -25541,6 +25549,21 @@ var Titles = /** @class */ (function () {
      */
     Titles.getDeveloperPayoutSummary = function (title_id) {
         return Requests.processRoute(TitlesRoute.routes.developerPayoutSummary, {}, { title_id: title_id });
+    };
+    /**
+     * The Aegis Handshake: Verify if a player is allowed to play.
+     *
+     * This is used by the game engine (Unity/Unreal) to confirm that the
+     * current session is valid and the user has a proper license.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Aegis%20Security/validateGameSession
+     *
+     * @param title_id The UUID of the game title.
+     * @param install_id The UUID of the specific install/session.
+     * @returns AxiosPromise containing { valid: boolean, user_name: string, license_type: string }
+     */
+    Titles.validateInstall = function (title_id, install_id) {
+        return Requests.processRoute(TitlesRoute.routes.validateInstall, {}, { title_id: title_id, install_id: install_id });
     };
     return Titles;
 }());

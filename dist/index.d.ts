@@ -4289,6 +4289,19 @@ declare class Titles {
      * Get the total earnings and playtime summary for a title.
      */
     static getDeveloperPayoutSummary<T>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+     * The Aegis Handshake: Verify if a player is allowed to play.
+     *
+     * This is used by the game engine (Unity/Unreal) to confirm that the
+     * current session is valid and the user has a proper license.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Aegis%20Security/validateGameSession
+     *
+     * @param title_id The UUID of the game title.
+     * @param install_id The UUID of the specific install/session.
+     * @returns AxiosPromise containing { valid: boolean, user_name: string, license_type: string }
+     */
+    static validateInstall<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {

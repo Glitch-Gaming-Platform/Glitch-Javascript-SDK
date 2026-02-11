@@ -976,6 +976,26 @@ class Titles {
     public static getDeveloperPayoutSummary<T>(title_id: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.developerPayoutSummary, {}, { title_id });
     }
+
+    /**
+     * The Aegis Handshake: Verify if a player is allowed to play.
+     * 
+     * This is used by the game engine (Unity/Unreal) to confirm that the 
+     * current session is valid and the user has a proper license.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Aegis%20Security/validateGameSession
+     * 
+     * @param title_id The UUID of the game title.
+     * @param install_id The UUID of the specific install/session.
+     * @returns AxiosPromise containing { valid: boolean, user_name: string, license_type: string }
+     */
+    public static validateInstall<T>(title_id: string, install_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.validateInstall, 
+            {}, 
+            { title_id: title_id, install_id: install_id }
+        );
+    }
 }
 
 export default Titles;
