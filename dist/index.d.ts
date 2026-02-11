@@ -6970,6 +6970,17 @@ declare class WebsiteAnalytics {
      * @returns Promise with a unified timeline of the user’s journey, in chronological order.
      */
     static userJourney<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+   * Get a detailed marketing report for the game's landing page.
+   * Includes scroll depth, video watch time distribution, and CTA performance.
+   *
+   * @param params
+   *   - title_id: string (Required)
+   *   - start_date?: string (YYYY-MM-DD)
+   *   - end_date?: string (YYYY-MM-DD)
+   *   - group_by?: 'country' | 'device'
+   */
+    static landingPageReport<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class ShortLinks {

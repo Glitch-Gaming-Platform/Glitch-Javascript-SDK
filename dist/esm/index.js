@@ -15907,7 +15907,11 @@ var WebsiteAnalyticsRoute = /** @class */ (function () {
         journey: {
             url: '/analytics/journey',
             method: HTTP_METHODS.GET
-        }
+        },
+        landingPageReport: {
+            url: '/analytics/reports/landing-page',
+            method: HTTP_METHODS.GET
+        },
     };
     return WebsiteAnalyticsRoute;
 }());
@@ -16147,6 +16151,19 @@ var WebsiteAnalytics = /** @class */ (function () {
         return Requests.processRoute(WebsiteAnalyticsRoute.routes.journey, // references our new route definition  
         {}, // no body data (GET request)  
         undefined, params);
+    };
+    /**
+   * Get a detailed marketing report for the game's landing page.
+   * Includes scroll depth, video watch time distribution, and CTA performance.
+   *
+   * @param params
+   *   - title_id: string (Required)
+   *   - start_date?: string (YYYY-MM-DD)
+   *   - end_date?: string (YYYY-MM-DD)
+   *   - group_by?: 'country' | 'device'
+   */
+    WebsiteAnalytics.landingPageReport = function (params) {
+        return Requests.processRoute(WebsiteAnalyticsRoute.routes.landingPageReport, {}, undefined, params);
     };
     return WebsiteAnalytics;
 }());

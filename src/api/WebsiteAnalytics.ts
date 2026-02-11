@@ -319,15 +319,34 @@ class WebsiteAnalytics {
    *   - end_date?: string                 Optional. End date (YYYY-MM-DD) if your API supports time limiting  
    *  
    * @returns Promise with a unified timeline of the user’s journey, in chronological order.  
-   */  
-  public static userJourney<T>(params: Record<string, any>): AxiosPromise<Response<T>> {  
-    return Requests.processRoute(  
+   */
+  public static userJourney<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(
       WebsiteAnalyticsRoute.routes.journey, // references our new route definition  
       {}, // no body data (GET request)  
-      undefined,  
-      params  
-    );  
-  }  
+      undefined,
+      params
+    );
+  }
+
+  /**
+ * Get a detailed marketing report for the game's landing page.
+ * Includes scroll depth, video watch time distribution, and CTA performance.
+ * 
+ * @param params 
+ *   - title_id: string (Required)
+ *   - start_date?: string (YYYY-MM-DD)
+ *   - end_date?: string (YYYY-MM-DD)
+ *   - group_by?: 'country' | 'device'
+ */
+  public static landingPageReport<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(
+      WebsiteAnalyticsRoute.routes.landingPageReport,
+      {},
+      undefined,
+      params
+    );
+  }
 }
 
 export default WebsiteAnalytics;
