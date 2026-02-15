@@ -199,6 +199,9 @@ class TitlesRoute {
       method: HTTP_METHODS.POST 
     },
 
+    listBuilds: { url: '/titles/{title_id}/deployments', method: HTTP_METHODS.GET },
+
+
   };
 
 }

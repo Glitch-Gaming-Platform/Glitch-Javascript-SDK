@@ -71,6 +71,16 @@ class Utility {
         return Requests.processRoute(UtilityRoutes.routes.types, undefined, undefined, params);
     }
 
+    /**
+     * Get all genres that are associated with at least one game title.
+     * Includes the 'titles_count' property.
+     * 
+     * @returns promise
+     */
+    public static listActiveGenres<T>(params?: Record<string, any>) : AxiosPromise<Response<T>> {
+        return Requests.processRoute(UtilityRoutes.routes.genres_active, undefined, undefined, params);
+    }
+
 }
 
 export default Utility;

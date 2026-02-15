@@ -49,5 +49,12 @@ declare class Utility {
      * @returns promise
      */
     static listTypes<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all genres that are associated with at least one game title.
+     * Includes the 'titles_count' property.
+     *
+     * @returns promise
+     */
+    static listActiveGenres<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Utility;

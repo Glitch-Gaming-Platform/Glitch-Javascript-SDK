@@ -3291,6 +3291,13 @@ declare class Utility {
      * @returns promise
      */
     static listTypes<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all genres that are associated with at least one game title.
+     * Includes the 'titles_count' property.
+     *
+     * @returns promise
+     */
+    static listActiveGenres<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Tips {
@@ -4302,6 +4309,11 @@ declare class Titles {
      * @returns AxiosPromise containing { valid: boolean, user_name: string, license_type: string }
      */
     static validateInstall<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
+    /**
+     * List all builds/deployments for a specific title.
+     * @param title_id The UUID of the title.
+     */
+    static listBuilds<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {

@@ -23929,6 +23929,7 @@ var UtilityRoutes = /** @class */ (function () {
         genders: { url: '/util/genders', method: HTTP_METHODS.GET },
         ethnicities: { url: '/util/ethnicities', method: HTTP_METHODS.GET },
         types: { url: '/util/types', method: HTTP_METHODS.GET },
+        genres_active: { url: '/util/genres/active', method: HTTP_METHODS.GET },
     };
     return UtilityRoutes;
 }());
@@ -23995,6 +23996,15 @@ var Utility = /** @class */ (function () {
      */
     Utility.listTypes = function (params) {
         return Requests.processRoute(UtilityRoutes.routes.types, undefined, undefined, params);
+    };
+    /**
+     * Get all genres that are associated with at least one game title.
+     * Includes the 'titles_count' property.
+     *
+     * @returns promise
+     */
+    Utility.listActiveGenres = function (params) {
+        return Requests.processRoute(UtilityRoutes.routes.genres_active, undefined, undefined, params);
     };
     return Utility;
 }());
@@ -24893,6 +24903,7 @@ var TitlesRoute = /** @class */ (function () {
             url: '/titles/{title_id}/installs/{install_id}/validate',
             method: HTTP_METHODS.POST
         },
+        listBuilds: { url: '/titles/{title_id}/deployments', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());
@@ -25564,6 +25575,13 @@ var Titles = /** @class */ (function () {
      */
     Titles.validateInstall = function (title_id, install_id) {
         return Requests.processRoute(TitlesRoute.routes.validateInstall, {}, { title_id: title_id, install_id: install_id });
+    };
+    /**
+     * List all builds/deployments for a specific title.
+     * @param title_id The UUID of the title.
+     */
+    Titles.listBuilds = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.listBuilds, {}, { title_id: title_id }, params);
     };
     return Titles;
 }());

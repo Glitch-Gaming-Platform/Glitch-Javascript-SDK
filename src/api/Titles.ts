@@ -933,9 +933,9 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.deleteBehavioralFunnel, {}, { title_id, funnel_id });
     }
 
-     /**
-     * Generates a presigned S3 URL for uploading a game build ZIP.
-     */
+    /**
+    * Generates a presigned S3 URL for uploading a game build ZIP.
+    */
     public static getDeploymentUploadUrl<T>(title_id: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.getDeploymentUploadUrl, {}, { title_id });
     }
@@ -991,11 +991,19 @@ class Titles {
      */
     public static validateInstall<T>(title_id: string, install_id: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(
-            TitlesRoute.routes.validateInstall, 
-            {}, 
+            TitlesRoute.routes.validateInstall,
+            {},
             { title_id: title_id, install_id: install_id }
         );
     }
+
+    /**
+     * List all builds/deployments for a specific title.
+     * @param title_id The UUID of the title.
+     */
+        public static listBuilds<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+            return Requests.processRoute(TitlesRoute.routes.listBuilds, {}, { title_id }, params);
+        }
 }
 
 export default Titles;
