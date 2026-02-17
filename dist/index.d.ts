@@ -27,11 +27,19 @@ declare class Config {
      */
     static setBaseUrl(baseUrl: string, lock?: boolean): void;
     /**
+     * Gets the base URL
+     */
+    static getBaseUrl(): string;
+    /**
      * Set the JSON Web Token (JWT) that will be passed to the API
      *
      * @param authToken The JWT
      */
     static setAuthToken(authToken: string): void;
+    /**
+    * Gets the auth token
+    */
+    static getAuthToken(): string;
     /**
      * Set the community to be associated with this config through
      *
@@ -45,6 +53,9 @@ declare class Config {
      * @param domain The domain ie: example.com
      */
     static setRootDomain(domain: string): void;
+    /**
+     * Gets the root domain
+     */
     static getRootDomain(): string;
     /**
      * Gets base url
@@ -58,6 +69,10 @@ declare class Config {
      * Gets the community currently associated
      */
     static get getCommunity(): object;
+    /**
+    * Checks if the base URL is locked
+    */
+    static isBaseUrlLocked(): boolean;
 }
 
 interface Response<T> {

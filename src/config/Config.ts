@@ -54,6 +54,13 @@ class Config {
   }
 
   /**
+   * Gets the base URL
+   */
+  public static getBaseUrl(): string {
+    return Config._baseUrl;
+  }
+
+  /**
    * Set the JSON Web Token (JWT) that will be passed to the API
    * 
    * @param authToken The JWT
@@ -63,6 +70,16 @@ class Config {
 
     Requests.setAuthToken(authToken);
   }
+
+
+  /**
+  * Gets the auth token
+  */
+  public static getAuthToken(): string {
+    return Config._authToken;
+  }
+
+
 
   /**
    * Set the community to be associated with this config through
@@ -76,6 +93,7 @@ class Config {
 
     LabelManager.initialize(community);
   }
+
 
   /**
    * Sets the root level domain so data can be accessed across
@@ -95,13 +113,16 @@ class Config {
 
     // REMOVE THIS LINE: formattedDomain = formattedDomain.replace(/^\./, '');
     // We WANT the dot.
-    
+
     this._rootDomain = formattedDomain;
 
     Storage.setRootDomain(formattedDomain);
   }
 
-  public static getRootDomain() {
+  /**
+   * Gets the root domain
+   */
+  public static getRootDomain(): string {
     return this._rootDomain;
   }
 
@@ -124,6 +145,13 @@ class Config {
    */
   public static get getCommunity(): object {
     return Config._community;
+  }
+
+  /**
+  * Checks if the base URL is locked
+  */
+  public static isBaseUrlLocked(): boolean {
+    return this._baseUrlLocked;
   }
 }
 

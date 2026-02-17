@@ -5761,6 +5761,12 @@ var Config = /** @class */ (function () {
         }
     };
     /**
+     * Gets the base URL
+     */
+    Config.getBaseUrl = function () {
+        return Config._baseUrl;
+    };
+    /**
      * Set the JSON Web Token (JWT) that will be passed to the API
      *
      * @param authToken The JWT
@@ -5768,6 +5774,12 @@ var Config = /** @class */ (function () {
     Config.setAuthToken = function (authToken) {
         Config._authToken = authToken;
         Requests.setAuthToken(authToken);
+    };
+    /**
+    * Gets the auth token
+    */
+    Config.getAuthToken = function () {
+        return Config._authToken;
     };
     /**
      * Set the community to be associated with this config through
@@ -5798,6 +5810,9 @@ var Config = /** @class */ (function () {
         this._rootDomain = formattedDomain;
         Storage.setRootDomain(formattedDomain);
     };
+    /**
+     * Gets the root domain
+     */
     Config.getRootDomain = function () {
         return this._rootDomain;
     };
@@ -5831,6 +5846,12 @@ var Config = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    /**
+    * Checks if the base URL is locked
+    */
+    Config.isBaseUrlLocked = function () {
+        return this._baseUrlLocked;
+    };
     Config._baseUrlLocked = false;
     return Config;
 }());
