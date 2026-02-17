@@ -201,6 +201,10 @@ class TitlesRoute {
 
     listBuilds: { url: '/titles/{title_id}/deployments', method: HTTP_METHODS.GET },
 
+    listSaves: { url: '/titles/{title_id}/installs/{install_id}/saves', method: HTTP_METHODS.GET },
+    storeSave: { url: '/titles/{title_id}/installs/{install_id}/saves', method: HTTP_METHODS.POST },
+    resolveSaveConflict: { url: '/titles/{title_id}/installs/{install_id}/saves/{save_id}/resolve', method: HTTP_METHODS.POST },
+
 
   };
 

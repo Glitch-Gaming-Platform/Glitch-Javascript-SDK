@@ -519,5 +519,17 @@ declare class Titles {
      * @param title_id The UUID of the title.
      */
     static listBuilds<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all cloud save slots for the player associated with this install.
+     */
+    static listSaves<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Upload game progress. The user is identified by the install_id.
+     */
+    static storeSave<T>(title_id: string, install_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Resolve a conflict.
+     */
+    static resolveSaveConflict<T>(title_id: string, install_id: string, save_id: string, conflict_id: string, choice: 'keep_server' | 'use_client'): AxiosPromise<Response<T>>;
 }
 export default Titles;

@@ -1001,9 +1001,30 @@ class Titles {
      * List all builds/deployments for a specific title.
      * @param title_id The UUID of the title.
      */
-        public static listBuilds<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-            return Requests.processRoute(TitlesRoute.routes.listBuilds, {}, { title_id }, params);
-        }
+    public static listBuilds<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.listBuilds, {}, { title_id }, params);
+    }
+
+    /**
+     * List all cloud save slots for the player associated with this install.
+     */
+    public static listSaves<T>(title_id: string, install_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.listSaves, {}, { title_id, install_id });
+    }
+
+    /**
+     * Upload game progress. The user is identified by the install_id.
+     */
+    public static storeSave<T>(title_id: string, install_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.storeSave, data, { title_id, install_id });
+    }
+
+    /**
+     * Resolve a conflict.
+     */
+    public static resolveSaveConflict<T>(title_id: string, install_id: string, save_id: string, conflict_id: string, choice: 'keep_server' | 'use_client'): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.resolveSaveConflict, { conflict_id, choice }, { title_id, install_id, save_id });
+    }
 }
 
 export default Titles;

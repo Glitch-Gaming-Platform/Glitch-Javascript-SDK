@@ -11720,6 +11720,9 @@ var TitlesRoute = /** @class */ (function () {
             method: HTTP_METHODS.POST
         },
         listBuilds: { url: '/titles/{title_id}/deployments', method: HTTP_METHODS.GET },
+        listSaves: { url: '/titles/{title_id}/installs/{install_id}/saves', method: HTTP_METHODS.GET },
+        storeSave: { url: '/titles/{title_id}/installs/{install_id}/saves', method: HTTP_METHODS.POST },
+        resolveSaveConflict: { url: '/titles/{title_id}/installs/{install_id}/saves/{save_id}/resolve', method: HTTP_METHODS.POST },
     };
     return TitlesRoute;
 }());
@@ -12398,6 +12401,24 @@ var Titles = /** @class */ (function () {
      */
     Titles.listBuilds = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.listBuilds, {}, { title_id: title_id }, params);
+    };
+    /**
+     * List all cloud save slots for the player associated with this install.
+     */
+    Titles.listSaves = function (title_id, install_id) {
+        return Requests.processRoute(TitlesRoute.routes.listSaves, {}, { title_id: title_id, install_id: install_id });
+    };
+    /**
+     * Upload game progress. The user is identified by the install_id.
+     */
+    Titles.storeSave = function (title_id, install_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.storeSave, data, { title_id: title_id, install_id: install_id });
+    };
+    /**
+     * Resolve a conflict.
+     */
+    Titles.resolveSaveConflict = function (title_id, install_id, save_id, conflict_id, choice) {
+        return Requests.processRoute(TitlesRoute.routes.resolveSaveConflict, { conflict_id: conflict_id, choice: choice }, { title_id: title_id, install_id: install_id, save_id: save_id });
     };
     return Titles;
 }());
