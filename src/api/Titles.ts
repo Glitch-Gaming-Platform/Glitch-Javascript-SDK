@@ -952,8 +952,8 @@ class Titles {
      * Initializes a play session. Handles age-gating and license verification.
      * Returns the CDN URL for WASM/iFrame or Signaling URL for Pixel Streaming.
      */
-    public static getPlaySession<T>(title_id: string): AxiosPromise<Response<T>> {
-        return Requests.processRoute(TitlesRoute.routes.getPlaySession, {}, { title_id });
+    public static getPlaySession<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.getPlaySession, {}, { title_id }, params);
     }
 
     /**

@@ -25588,8 +25588,8 @@ var Titles = /** @class */ (function () {
      * Initializes a play session. Handles age-gating and license verification.
      * Returns the CDN URL for WASM/iFrame or Signaling URL for Pixel Streaming.
      */
-    Titles.getPlaySession = function (title_id) {
-        return Requests.processRoute(TitlesRoute.routes.getPlaySession, {}, { title_id: title_id });
+    Titles.getPlaySession = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.getPlaySession, {}, { title_id: title_id }, params);
     };
     /**
      * List all developer payouts for a title.

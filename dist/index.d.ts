@@ -4298,7 +4298,7 @@ declare class Titles {
      * Initializes a play session. Handles age-gating and license verification.
      * Returns the CDN URL for WASM/iFrame or Signaling URL for Pixel Streaming.
      */
-    static getPlaySession<T>(title_id: string): AxiosPromise<Response<T>>;
+    static getPlaySession<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List all developer payouts for a title.
      */
