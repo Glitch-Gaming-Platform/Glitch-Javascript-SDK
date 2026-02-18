@@ -24944,6 +24944,14 @@ var TitlesRoute = /** @class */ (function () {
             url: '/users/me/wishlists',
             method: HTTP_METHODS.GET
         },
+        wishlistMe: {
+            url: '/titles/{title_id}/wishlist/me',
+            method: HTTP_METHODS.GET
+        },
+        attributionFunnel: {
+            url: '/titles/{title_id}/reports/attribution-funnel',
+            method: HTTP_METHODS.GET
+        },
     };
     return TitlesRoute;
 }());
@@ -25677,6 +25685,20 @@ var Titles = /** @class */ (function () {
      */
     Titles.wishlistStats = function (title_id) {
         return Requests.processRoute(TitlesRoute.routes.wishlistStats, undefined, { title_id: title_id });
+    };
+    /**
+     * Get the current user's specific wishlist for a title.
+     * @param title_id The UUID of the title.
+     */
+    Titles.wishlistMe = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.wishlistMe, undefined, { title_id: title_id });
+    };
+    /**
+     * Get the consolidated attribution funnel report.
+     * @param title_id The UUID of the title.
+     */
+    Titles.attributionFunnel = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.attributionFunnel, undefined, { title_id: title_id }, params);
     };
     return Titles;
 }());

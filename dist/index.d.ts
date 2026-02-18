@@ -4372,6 +4372,16 @@ declare class Titles {
      * @param title_id The UUID of the title.
      */
     static wishlistStats<T>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Get the current user's specific wishlist for a title.
+     * @param title_id The UUID of the title.
+     */
+    static wishlistMe<T>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Get the consolidated attribution funnel report.
+     * @param title_id The UUID of the title.
+     */
+    static attributionFunnel<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {

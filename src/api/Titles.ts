@@ -1026,13 +1026,13 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.resolveSaveConflict, { conflict_id, choice }, { title_id, install_id, save_id });
     }
 
-     /**
-     * Toggle a game on the current user's wishlist.
-     * If the game is not wishlisted, it will be added. If it is, it will be removed.
-     * 
-     * @param title_id The UUID of the title.
-     * @param data Optional context: { fingerprint_id?: string, short_link_click_id?: string }
-     */
+    /**
+    * Toggle a game on the current user's wishlist.
+    * If the game is not wishlisted, it will be added. If it is, it will be removed.
+    * 
+    * @param title_id The UUID of the title.
+    * @param data Optional context: { fingerprint_id?: string, short_link_click_id?: string }
+    */
     public static wishlistToggle<T>(title_id: string, data?: object): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.wishlistToggle, data, { title_id });
     }
@@ -1065,6 +1065,22 @@ class Titles {
      */
     public static wishlistStats<T>(title_id: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.wishlistStats, undefined, { title_id });
+    }
+
+    /**
+     * Get the current user's specific wishlist for a title.
+     * @param title_id The UUID of the title.
+     */
+    public static wishlistMe<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.wishlistMe, undefined, { title_id });
+    }
+
+    /**
+     * Get the consolidated attribution funnel report.
+     * @param title_id The UUID of the title.
+     */
+    public static attributionFunnel<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.attributionFunnel, undefined, { title_id }, params);
     }
 }
 

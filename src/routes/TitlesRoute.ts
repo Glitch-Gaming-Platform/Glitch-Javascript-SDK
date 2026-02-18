@@ -222,6 +222,15 @@ class TitlesRoute {
       method: HTTP_METHODS.GET
     },
 
+    wishlistMe: {
+      url: '/titles/{title_id}/wishlist/me',
+      method: HTTP_METHODS.GET
+    },
+    attributionFunnel: {
+      url: '/titles/{title_id}/reports/attribution-funnel',
+      method: HTTP_METHODS.GET
+    },
+
 
   };
 
