@@ -190,13 +190,13 @@ class TitlesRoute {
     viewDeveloperPayout: { url: '/titles/{title_id}/payouts/{payout_id}', method: HTTP_METHODS.GET },
     developerPayoutSummary: { url: '/titles/{title_id}/payouts/summary', method: HTTP_METHODS.GET },
 
-     /**
-     * The Aegis Handshake: Validates if a specific install/session is authorized to play.
-     * POST /titles/{title_id}/installs/{install_id}/validate
-     */
-    validateInstall: { 
-      url: '/titles/{title_id}/installs/{install_id}/validate', 
-      method: HTTP_METHODS.POST 
+    /**
+    * The Aegis Handshake: Validates if a specific install/session is authorized to play.
+    * POST /titles/{title_id}/installs/{install_id}/validate
+    */
+    validateInstall: {
+      url: '/titles/{title_id}/installs/{install_id}/validate',
+      method: HTTP_METHODS.POST
     },
 
     listBuilds: { url: '/titles/{title_id}/deployments', method: HTTP_METHODS.GET },
@@ -204,6 +204,23 @@ class TitlesRoute {
     listSaves: { url: '/titles/{title_id}/installs/{install_id}/saves', method: HTTP_METHODS.GET },
     storeSave: { url: '/titles/{title_id}/installs/{install_id}/saves', method: HTTP_METHODS.POST },
     resolveSaveConflict: { url: '/titles/{title_id}/installs/{install_id}/saves/{save_id}/resolve', method: HTTP_METHODS.POST },
+
+    wishlistToggle: {
+      url: '/titles/{title_id}/wishlist',
+      method: HTTP_METHODS.POST
+    },
+    wishlistUpdateScore: {
+      url: '/titles/{title_id}/wishlist/score',
+      method: HTTP_METHODS.POST
+    },
+    wishlistStats: {
+      url: '/titles/{title_id}/wishlist/stats',
+      method: HTTP_METHODS.GET
+    },
+    myWishlists: {
+      url: '/users/me/wishlists',
+      method: HTTP_METHODS.GET
+    },
 
 
   };

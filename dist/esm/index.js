@@ -11744,6 +11744,22 @@ var TitlesRoute = /** @class */ (function () {
         listSaves: { url: '/titles/{title_id}/installs/{install_id}/saves', method: HTTP_METHODS.GET },
         storeSave: { url: '/titles/{title_id}/installs/{install_id}/saves', method: HTTP_METHODS.POST },
         resolveSaveConflict: { url: '/titles/{title_id}/installs/{install_id}/saves/{save_id}/resolve', method: HTTP_METHODS.POST },
+        wishlistToggle: {
+            url: '/titles/{title_id}/wishlist',
+            method: HTTP_METHODS.POST
+        },
+        wishlistUpdateScore: {
+            url: '/titles/{title_id}/wishlist/score',
+            method: HTTP_METHODS.POST
+        },
+        wishlistStats: {
+            url: '/titles/{title_id}/wishlist/stats',
+            method: HTTP_METHODS.GET
+        },
+        myWishlists: {
+            url: '/users/me/wishlists',
+            method: HTTP_METHODS.GET
+        },
     };
     return TitlesRoute;
 }());
@@ -12440,6 +12456,43 @@ var Titles = /** @class */ (function () {
      */
     Titles.resolveSaveConflict = function (title_id, install_id, save_id, conflict_id, choice) {
         return Requests.processRoute(TitlesRoute.routes.resolveSaveConflict, { conflict_id: conflict_id, choice: choice }, { title_id: title_id, install_id: install_id, save_id: save_id });
+    };
+    /**
+    * Toggle a game on the current user's wishlist.
+    * If the game is not wishlisted, it will be added. If it is, it will be removed.
+    *
+    * @param title_id The UUID of the title.
+    * @param data Optional context: { fingerprint_id?: string, short_link_click_id?: string }
+    */
+    Titles.wishlistToggle = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.wishlistToggle, data, { title_id: title_id });
+    };
+    /**
+     * Record a self-assigned excitement score (1-5) for a wishlisted game.
+     *
+     * @param title_id The UUID of the title.
+     * @param data { score: number } - Must be between 1 and 5.
+     */
+    Titles.wishlistUpdateScore = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.wishlistUpdateScore, data, { title_id: title_id });
+    };
+    /**
+     * Retrieve the current user's personal wishlist collection.
+     *
+     * @param params Optional pagination parameters (?page=1&per_page=25)
+     */
+    Titles.myWishlists = function (params) {
+        return Requests.processRoute(TitlesRoute.routes.myWishlists, undefined, undefined, params);
+    };
+    /**
+     * Get Wishlist Intelligence statistics for a title.
+     * Includes funnel data and predictive revenue forecasting.
+     * Note: Requires Title Administrator permissions.
+     *
+     * @param title_id The UUID of the title.
+     */
+    Titles.wishlistStats = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.wishlistStats, undefined, { title_id: title_id });
     };
     return Titles;
 }());

@@ -1025,6 +1025,47 @@ class Titles {
     public static resolveSaveConflict<T>(title_id: string, install_id: string, save_id: string, conflict_id: string, choice: 'keep_server' | 'use_client'): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.resolveSaveConflict, { conflict_id, choice }, { title_id, install_id, save_id });
     }
+
+     /**
+     * Toggle a game on the current user's wishlist.
+     * If the game is not wishlisted, it will be added. If it is, it will be removed.
+     * 
+     * @param title_id The UUID of the title.
+     * @param data Optional context: { fingerprint_id?: string, short_link_click_id?: string }
+     */
+    public static wishlistToggle<T>(title_id: string, data?: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.wishlistToggle, data, { title_id });
+    }
+
+    /**
+     * Record a self-assigned excitement score (1-5) for a wishlisted game.
+     * 
+     * @param title_id The UUID of the title.
+     * @param data { score: number } - Must be between 1 and 5.
+     */
+    public static wishlistUpdateScore<T>(title_id: string, data: { score: number }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.wishlistUpdateScore, data, { title_id });
+    }
+
+    /**
+     * Retrieve the current user's personal wishlist collection.
+     * 
+     * @param params Optional pagination parameters (?page=1&per_page=25)
+     */
+    public static myWishlists<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.myWishlists, undefined, undefined, params);
+    }
+
+    /**
+     * Get Wishlist Intelligence statistics for a title.
+     * Includes funnel data and predictive revenue forecasting.
+     * Note: Requires Title Administrator permissions.
+     * 
+     * @param title_id The UUID of the title.
+     */
+    public static wishlistStats<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.wishlistStats, undefined, { title_id });
+    }
 }
 
 export default Titles;

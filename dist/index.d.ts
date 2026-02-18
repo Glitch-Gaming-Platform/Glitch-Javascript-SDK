@@ -4341,6 +4341,37 @@ declare class Titles {
      * Resolve a conflict.
      */
     static resolveSaveConflict<T>(title_id: string, install_id: string, save_id: string, conflict_id: string, choice: 'keep_server' | 'use_client'): AxiosPromise<Response<T>>;
+    /**
+    * Toggle a game on the current user's wishlist.
+    * If the game is not wishlisted, it will be added. If it is, it will be removed.
+    *
+    * @param title_id The UUID of the title.
+    * @param data Optional context: { fingerprint_id?: string, short_link_click_id?: string }
+    */
+    static wishlistToggle<T>(title_id: string, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Record a self-assigned excitement score (1-5) for a wishlisted game.
+     *
+     * @param title_id The UUID of the title.
+     * @param data { score: number } - Must be between 1 and 5.
+     */
+    static wishlistUpdateScore<T>(title_id: string, data: {
+        score: number;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve the current user's personal wishlist collection.
+     *
+     * @param params Optional pagination parameters (?page=1&per_page=25)
+     */
+    static myWishlists<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get Wishlist Intelligence statistics for a title.
+     * Includes funnel data and predictive revenue forecasting.
+     * Note: Requires Title Administrator permissions.
+     *
+     * @param title_id The UUID of the title.
+     */
+    static wishlistStats<T>(title_id: string): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {
