@@ -24952,6 +24952,7 @@ var TitlesRoute = /** @class */ (function () {
             url: '/titles/{title_id}/reports/attribution-funnel',
             method: HTTP_METHODS.GET
         },
+        updateBuildStatus: { url: '/titles/{title_id}/deployments/{build_id}/status', method: HTTP_METHODS.PUT },
     };
     return TitlesRoute;
 }());
@@ -25699,6 +25700,15 @@ var Titles = /** @class */ (function () {
      */
     Titles.attributionFunnel = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.attributionFunnel, undefined, { title_id: title_id }, params);
+    };
+    /**
+     * Update the status of a specific deployment build.
+     * @param title_id The UUID of the title.
+     * @param build_id The UUID of the build.
+     * @param status The new status ('ready', 'inactive', or 'failed').
+     */
+    Titles.updateBuildStatus = function (title_id, build_id, status) {
+        return Requests.processRoute(TitlesRoute.routes.updateBuildStatus, { status: status }, { title_id: title_id, build_id: build_id });
     };
     return Titles;
 }());

@@ -1082,6 +1082,16 @@ class Titles {
     public static attributionFunnel<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.attributionFunnel, undefined, { title_id }, params);
     }
+
+    /**
+     * Update the status of a specific deployment build.
+     * @param title_id The UUID of the title.
+     * @param build_id The UUID of the build.
+     * @param status The new status ('ready', 'inactive', or 'failed').
+     */
+    public static updateBuildStatus<T>(title_id: string, build_id: string, status: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.updateBuildStatus, { status }, { title_id, build_id });
+    }
 }
 
 export default Titles;

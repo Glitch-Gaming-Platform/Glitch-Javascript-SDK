@@ -572,5 +572,12 @@ declare class Titles {
      * @param title_id The UUID of the title.
      */
     static attributionFunnel<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update the status of a specific deployment build.
+     * @param title_id The UUID of the title.
+     * @param build_id The UUID of the build.
+     * @param status The new status ('ready', 'inactive', or 'failed').
+     */
+    static updateBuildStatus<T>(title_id: string, build_id: string, status: string): AxiosPromise<Response<T>>;
 }
 export default Titles;

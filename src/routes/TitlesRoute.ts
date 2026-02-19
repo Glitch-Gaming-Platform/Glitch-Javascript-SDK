@@ -231,6 +231,8 @@ class TitlesRoute {
       method: HTTP_METHODS.GET
     },
 
+    updateBuildStatus: { url: '/titles/{title_id}/deployments/{build_id}/status', method: HTTP_METHODS.PUT },
+
 
   };
 
