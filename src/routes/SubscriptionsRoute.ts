@@ -2,7 +2,7 @@ import Route from "./interface";
 import HTTP_METHODS from "../constants/HttpMethods";
 
 class SubscriptionsRoute {
-    
+
     public static routes: { [key: string]: Route } = {
         createCreatorSubscription: { url: '/subscriptions/creators/subscribe', method: HTTP_METHODS.POST },
         getCreatorSubscription: { url: '/subscriptions/creators/{stripe_subscription_id}', method: HTTP_METHODS.GET },
@@ -15,15 +15,17 @@ class SubscriptionsRoute {
         listCommunityInfluencerSubscriptions: { url: '/subscriptions/communities/influencers/{community_id}', method: HTTP_METHODS.GET },
         changeCommunityInfluencerSubscription: { url: '/subscriptions/communities/influencers/change/{community_id}', method: HTTP_METHODS.POST },
 
-        createCustomCommunitySubscription: { 
-            url: '/subscriptions/communities/custom/{community_id}', 
-            method: HTTP_METHODS.POST 
+        createCustomCommunitySubscription: {
+            url: '/subscriptions/communities/custom/{community_id}',
+            method: HTTP_METHODS.POST
         },
 
         purchaseLicense: { url: '/titles/{title_id}/purchase', method: HTTP_METHODS.POST },
+        listMyLicenses: { url: '/subscriptions/my-licenses', method: HTTP_METHODS.GET },
+        refundLicense: { url: '/subscriptions/licenses/{license_id}/refund', method: HTTP_METHODS.POST },
 
     };
 
-  }
+}
 
-  export default SubscriptionsRoute;
+export default SubscriptionsRoute;

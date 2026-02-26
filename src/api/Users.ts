@@ -564,6 +564,13 @@ class Users {
     }
 
 
+    /**
+     * Get a list of games the current user has played.
+     * Includes playtime and last played timestamps.
+     */
+    public static playedGames<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.playedGames, undefined, undefined, params);
+    }
 
 
 }

@@ -391,5 +391,10 @@ declare class Users {
      * @returns Promise resolving to the list of rules
      */
     static getSubredditRules<T>(subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a list of games the current user has played.
+     * Includes playtime and last played timestamps.
+     */
+    static playedGames<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Users;

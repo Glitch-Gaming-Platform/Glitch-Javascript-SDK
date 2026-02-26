@@ -8801,6 +8801,7 @@ var UserRoutes = /** @class */ (function () {
         resendVerificationEmail: { url: '/users/resendVerificationEmail', method: HTTP_METHODS.POST },
         clearInstagramAuth: { url: '/users/clearInstagramAuth', method: HTTP_METHODS.DELETE },
         getSubredditRules: { url: "/users/reddit/redditrules/{subreddit}", method: HTTP_METHODS.GET },
+        playedGames: { url: '/users/me/played-games', method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -9283,6 +9284,13 @@ var Users = /** @class */ (function () {
      */
     Users.getSubredditRules = function (subreddit, params) {
         return Requests.processRoute(UserRoutes.routes.getSubredditRules, undefined, { subreddit: subreddit }, params);
+    };
+    /**
+     * Get a list of games the current user has played.
+     * Includes playtime and last played timestamps.
+     */
+    Users.playedGames = function (params) {
+        return Requests.processRoute(UserRoutes.routes.playedGames, undefined, undefined, params);
     };
     return Users;
 }());
@@ -13570,6 +13578,8 @@ var SubscriptionsRoute = /** @class */ (function () {
             method: HTTP_METHODS.POST
         },
         purchaseLicense: { url: '/titles/{title_id}/purchase', method: HTTP_METHODS.POST },
+        listMyLicenses: { url: '/subscriptions/my-licenses', method: HTTP_METHODS.GET },
+        refundLicense: { url: '/subscriptions/licenses/{license_id}/refund', method: HTTP_METHODS.POST },
     };
     return SubscriptionsRoute;
 }());
@@ -13684,6 +13694,18 @@ var Subscriptions = /** @class */ (function () {
      */
     Subscriptions.purchaseLicense = function (title_id, data) {
         return Requests.processRoute(SubscriptionsRoute.routes.purchaseLicense, data, { title_id: title_id });
+    };
+    /**
+     * List all game licenses (Premium/Rental) owned by the current user.
+     */
+    Subscriptions.listMyLicenses = function (params) {
+        return Requests.processRoute(SubscriptionsRoute.routes.listMyLicenses, undefined, undefined, params);
+    };
+    /**
+     * Request a refund for a premium purchase.
+     */
+    Subscriptions.refundLicense = function (license_id) {
+        return Requests.processRoute(SubscriptionsRoute.routes.refundLicense, {}, { license_id: license_id });
     };
     return Subscriptions;
 }());

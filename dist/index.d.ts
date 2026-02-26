@@ -2250,6 +2250,11 @@ declare class Users {
      * @returns Promise resolving to the list of rules
      */
     static getSubredditRules<T>(subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a list of games the current user has played.
+     * Includes playtime and last played timestamps.
+     */
+    static playedGames<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Events {
@@ -5249,6 +5254,14 @@ declare class Subscriptions {
      * @param data { purchase_type: 'premium' | 'rental', payment_method_id: string }
      */
     static purchaseLicense<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * List all game licenses (Premium/Rental) owned by the current user.
+     */
+    static listMyLicenses<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Request a refund for a premium purchase.
+     */
+    static refundLicense<T>(license_id: string): AxiosPromise<Response<T>>;
 }
 
 declare class Messages {

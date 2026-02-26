@@ -124,6 +124,20 @@ class Subscriptions {
         return Requests.processRoute(SubscriptionsRoute.routes.purchaseLicense, data, { title_id });
     }
 
+    /**
+     * List all game licenses (Premium/Rental) owned by the current user.
+     */
+    public static listMyLicenses<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.listMyLicenses, undefined, undefined, params);
+    }
+
+    /**
+     * Request a refund for a premium purchase.
+     */
+    public static refundLicense<T>(license_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.refundLicense, {}, { license_id });
+    }
+
 
 }
 

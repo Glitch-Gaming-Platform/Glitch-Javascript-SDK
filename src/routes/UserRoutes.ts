@@ -50,6 +50,8 @@ class UserRoutes {
     clearInstagramAuth: { url: '/users/clearInstagramAuth', method: HTTP_METHODS.DELETE },
     getSubredditRules: { url: "/users/reddit/redditrules/{subreddit}", method: HTTP_METHODS.GET },
 
+    playedGames: { url: '/users/me/played-games', method: HTTP_METHODS.GET },
+
 
   };
 

@@ -87,5 +87,13 @@ declare class Subscriptions {
      * @param data { purchase_type: 'premium' | 'rental', payment_method_id: string }
      */
     static purchaseLicense<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * List all game licenses (Premium/Rental) owned by the current user.
+     */
+    static listMyLicenses<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Request a refund for a premium purchase.
+     */
+    static refundLicense<T>(license_id: string): AxiosPromise<Response<T>>;
 }
 export default Subscriptions;
