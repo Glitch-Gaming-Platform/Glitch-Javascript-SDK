@@ -1092,6 +1092,21 @@ class Titles {
     public static updateBuildStatus<T>(title_id: string, build_id: string, status: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.updateBuildStatus, { status }, { title_id, build_id });
     }
+
+    /**
+ * Proxies a request through the backend to the matchmaker.
+ * This avoids HTTPS -> HTTP mixed content blocks.
+ * 
+ * @param title_id The UUID of the game title.
+ * @returns AxiosPromise containing { signallingServer: string }
+ */
+    public static getMatchmakerServer<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.getMatchmakerServer,
+            {},
+            { title_id }
+        );
+    }
 }
 
 export default Titles;

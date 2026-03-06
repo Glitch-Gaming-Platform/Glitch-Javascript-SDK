@@ -11777,6 +11777,11 @@ var TitlesRoute = /** @class */ (function () {
             method: HTTP_METHODS.GET
         },
         updateBuildStatus: { url: '/titles/{title_id}/deployments/{build_id}/status', method: HTTP_METHODS.PUT },
+        // Inside the routes object in TitlesRoute.ts
+        getMatchmakerServer: {
+            url: '/titles/{title_id}/matchmaker/server',
+            method: HTTP_METHODS.GET
+        },
     };
     return TitlesRoute;
 }());
@@ -12533,6 +12538,16 @@ var Titles = /** @class */ (function () {
      */
     Titles.updateBuildStatus = function (title_id, build_id, status) {
         return Requests.processRoute(TitlesRoute.routes.updateBuildStatus, { status: status }, { title_id: title_id, build_id: build_id });
+    };
+    /**
+ * Proxies a request through the backend to the matchmaker.
+ * This avoids HTTPS -> HTTP mixed content blocks.
+ *
+ * @param title_id The UUID of the game title.
+ * @returns AxiosPromise containing { signallingServer: string }
+ */
+    Titles.getMatchmakerServer = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.getMatchmakerServer, {}, { title_id: title_id });
     };
     return Titles;
 }());

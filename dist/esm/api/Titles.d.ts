@@ -579,5 +579,13 @@ declare class Titles {
      * @param status The new status ('ready', 'inactive', or 'failed').
      */
     static updateBuildStatus<T>(title_id: string, build_id: string, status: string): AxiosPromise<Response<T>>;
+    /**
+ * Proxies a request through the backend to the matchmaker.
+ * This avoids HTTPS -> HTTP mixed content blocks.
+ *
+ * @param title_id The UUID of the game title.
+ * @returns AxiosPromise containing { signallingServer: string }
+ */
+    static getMatchmakerServer<T>(title_id: string): AxiosPromise<Response<T>>;
 }
 export default Titles;

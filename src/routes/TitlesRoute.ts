@@ -233,6 +233,11 @@ class TitlesRoute {
 
     updateBuildStatus: { url: '/titles/{title_id}/deployments/{build_id}/status', method: HTTP_METHODS.PUT },
 
+    // Inside the routes object in TitlesRoute.ts
+    getMatchmakerServer: {
+      url: '/titles/{title_id}/matchmaker/server',
+      method: HTTP_METHODS.GET
+    },
 
   };
 
