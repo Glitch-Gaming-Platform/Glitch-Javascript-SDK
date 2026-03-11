@@ -101,5 +101,11 @@ declare class Newsletters {
      * @returns Promise
      */
     static joinDistributionWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Register for Consumer Early Access to the streaming platform.
+     *
+     * @param data { name, email }
+     */
+    static joinConsumerWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Newsletters;

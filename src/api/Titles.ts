@@ -1107,6 +1107,27 @@ class Titles {
             { title_id }
         );
     }
+
+    /**
+    * Initiates a resumable S3 multipart upload for large files.
+    */
+    public static initiateMultipartUpload<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.initiateMultipartUpload, data, { title_id });
+    }
+
+    /**
+     * Get presigned URLs for specific chunk parts.
+     */
+    public static getMultipartUrls<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.getMultipartUrls, data, { title_id });
+    }
+
+    /**
+     * Stitch together all uploaded chunks to complete the file in S3.
+     */
+    public static completeMultipartUpload<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.completeMultipartUpload, data, { title_id });
+    }
 }
 
 export default Titles;

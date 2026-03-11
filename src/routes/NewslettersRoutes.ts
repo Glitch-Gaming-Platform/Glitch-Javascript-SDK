@@ -30,6 +30,7 @@ class NewslettersRoutes {
     updateSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.PUT },
     deleteSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.DELETE },
     joinDistributionWaitlist: { url: '/newsletters/joinDistributionWaitlist', method: HTTP_METHODS.POST },
+    joinConsumerWaitlist: { url: '/newsletters/joinConsumerWaitlist', method: HTTP_METHODS.POST },
 
   };
 

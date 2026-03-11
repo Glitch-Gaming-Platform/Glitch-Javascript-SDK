@@ -173,6 +173,15 @@ class Newsletters {
         return Requests.processRoute(NewslettersRoutes.routes.joinDistributionWaitlist, data, undefined, params);
     }
 
+    /**
+     * Register for Consumer Early Access to the streaming platform.
+     * 
+     * @param data { name, email }
+     */
+    public static joinConsumerWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(NewslettersRoutes.routes.joinConsumerWaitlist, data, undefined, params);
+    }
+
 }
 
 export default Newsletters;

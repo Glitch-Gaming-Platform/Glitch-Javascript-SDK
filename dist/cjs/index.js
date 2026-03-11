@@ -24920,6 +24920,9 @@ var TitlesRoute = /** @class */ (function () {
         getDeploymentUploadUrl: { url: '/titles/{title_id}/deployments/presigned-url', method: HTTP_METHODS.POST },
         confirmDeployment: { url: '/titles/{title_id}/deployments/confirm', method: HTTP_METHODS.POST },
         getPlaySession: { url: '/titles/{title_id}/play', method: HTTP_METHODS.GET },
+        initiateMultipartUpload: { url: '/titles/{title_id}/deployments/multipart/initiate', method: HTTP_METHODS.POST },
+        getMultipartUrls: { url: '/titles/{title_id}/deployments/multipart/urls', method: HTTP_METHODS.POST },
+        completeMultipartUpload: { url: '/titles/{title_id}/deployments/multipart/complete', method: HTTP_METHODS.POST },
         // Aegis Payouts
         listDeveloperPayouts: { url: '/titles/{title_id}/payouts', method: HTTP_METHODS.GET },
         viewDeveloperPayout: { url: '/titles/{title_id}/payouts/{payout_id}', method: HTTP_METHODS.GET },
@@ -25732,6 +25735,24 @@ var Titles = /** @class */ (function () {
  */
     Titles.getMatchmakerServer = function (title_id) {
         return Requests.processRoute(TitlesRoute.routes.getMatchmakerServer, {}, { title_id: title_id });
+    };
+    /**
+    * Initiates a resumable S3 multipart upload for large files.
+    */
+    Titles.initiateMultipartUpload = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.initiateMultipartUpload, data, { title_id: title_id });
+    };
+    /**
+     * Get presigned URLs for specific chunk parts.
+     */
+    Titles.getMultipartUrls = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.getMultipartUrls, data, { title_id: title_id });
+    };
+    /**
+     * Stitch together all uploaded chunks to complete the file in S3.
+     */
+    Titles.completeMultipartUpload = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.completeMultipartUpload, data, { title_id: title_id });
     };
     return Titles;
 }());
@@ -27536,6 +27557,7 @@ var NewslettersRoutes = /** @class */ (function () {
         updateSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.PUT },
         deleteSubscriber: { url: '/admin/newsletters/subscribers/{id}', method: HTTP_METHODS.DELETE },
         joinDistributionWaitlist: { url: '/newsletters/joinDistributionWaitlist', method: HTTP_METHODS.POST },
+        joinConsumerWaitlist: { url: '/newsletters/joinConsumerWaitlist', method: HTTP_METHODS.POST },
     };
     return NewslettersRoutes;
 }());
@@ -27684,6 +27706,14 @@ var Newsletters = /** @class */ (function () {
      */
     Newsletters.joinDistributionWaitlist = function (data, params) {
         return Requests.processRoute(NewslettersRoutes.routes.joinDistributionWaitlist, data, undefined, params);
+    };
+    /**
+     * Register for Consumer Early Access to the streaming platform.
+     *
+     * @param data { name, email }
+     */
+    Newsletters.joinConsumerWaitlist = function (data, params) {
+        return Requests.processRoute(NewslettersRoutes.routes.joinConsumerWaitlist, data, undefined, params);
     };
     return Newsletters;
 }());

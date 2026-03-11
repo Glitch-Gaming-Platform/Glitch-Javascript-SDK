@@ -587,5 +587,17 @@ declare class Titles {
  * @returns AxiosPromise containing { signallingServer: string }
  */
     static getMatchmakerServer<T>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+    * Initiates a resumable S3 multipart upload for large files.
+    */
+    static initiateMultipartUpload<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Get presigned URLs for specific chunk parts.
+     */
+    static getMultipartUrls<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Stitch together all uploaded chunks to complete the file in S3.
+     */
+    static completeMultipartUpload<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
 }
 export default Titles;

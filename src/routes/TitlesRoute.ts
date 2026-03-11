@@ -185,6 +185,10 @@ class TitlesRoute {
     confirmDeployment: { url: '/titles/{title_id}/deployments/confirm', method: HTTP_METHODS.POST },
     getPlaySession: { url: '/titles/{title_id}/play', method: HTTP_METHODS.GET },
 
+    initiateMultipartUpload: { url: '/titles/{title_id}/deployments/multipart/initiate', method: HTTP_METHODS.POST },
+    getMultipartUrls: { url: '/titles/{title_id}/deployments/multipart/urls', method: HTTP_METHODS.POST },
+    completeMultipartUpload: { url: '/titles/{title_id}/deployments/multipart/complete', method: HTTP_METHODS.POST },
+
     // Aegis Payouts
     listDeveloperPayouts: { url: '/titles/{title_id}/payouts', method: HTTP_METHODS.GET },
     viewDeveloperPayout: { url: '/titles/{title_id}/payouts/{payout_id}', method: HTTP_METHODS.GET },
@@ -238,6 +242,8 @@ class TitlesRoute {
       url: '/titles/{title_id}/matchmaker/server',
       method: HTTP_METHODS.GET
     },
+
+    
 
   };
 
