@@ -243,7 +243,16 @@ class TitlesRoute {
       method: HTTP_METHODS.GET
     },
 
-    
+    matchmakerSessionHeartbeat: {
+      url: '/titles/{title_id}/matchmaker/session/heartbeat',
+      method: HTTP_METHODS.POST
+    },
+    matchmakerSessionRelease: {
+      url: '/titles/{title_id}/matchmaker/session/release',
+      method: HTTP_METHODS.POST
+    },
+
+
 
   };
 

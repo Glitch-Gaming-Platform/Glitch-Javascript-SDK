@@ -1100,10 +1100,35 @@ class Titles {
  * @param title_id The UUID of the game title.
  * @returns AxiosPromise containing { signallingServer: string }
  */
-    public static getMatchmakerServer<T>(title_id: string): AxiosPromise<Response<T>> {
+    public static getMatchmakerServer<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(
             TitlesRoute.routes.getMatchmakerServer,
             {},
+            { title_id },
+            params    // ← passes as ?sessionId=xxx via Requests.get()
+        );
+    }
+
+    /**
+     * Send a session heartbeat to keep the dedicated instance claimed.
+     * Called every 30s during active gameplay.
+     */
+    public static matchmakerSessionHeartbeat<T>(title_id: string, data: { sessionId: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.matchmakerSessionHeartbeat,
+            data,
+            { title_id }
+        );
+    }
+
+    /**
+     * Release the session (starts reclaim countdown).
+     * Called on beforeunload or explicit navigation away.
+     */
+    public static matchmakerSessionRelease<T>(title_id: string, data: { sessionId: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.matchmakerSessionRelease,
+            data,
             { title_id }
         );
     }

@@ -11785,6 +11785,14 @@ var TitlesRoute = /** @class */ (function () {
             url: '/titles/{title_id}/matchmaker/server',
             method: HTTP_METHODS.GET
         },
+        matchmakerSessionHeartbeat: {
+            url: '/titles/{title_id}/matchmaker/session/heartbeat',
+            method: HTTP_METHODS.POST
+        },
+        matchmakerSessionRelease: {
+            url: '/titles/{title_id}/matchmaker/session/release',
+            method: HTTP_METHODS.POST
+        },
     };
     return TitlesRoute;
 }());
@@ -12549,8 +12557,23 @@ var Titles = /** @class */ (function () {
  * @param title_id The UUID of the game title.
  * @returns AxiosPromise containing { signallingServer: string }
  */
-    Titles.getMatchmakerServer = function (title_id) {
-        return Requests.processRoute(TitlesRoute.routes.getMatchmakerServer, {}, { title_id: title_id });
+    Titles.getMatchmakerServer = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.getMatchmakerServer, {}, { title_id: title_id }, params // ← passes as ?sessionId=xxx via Requests.get()
+        );
+    };
+    /**
+     * Send a session heartbeat to keep the dedicated instance claimed.
+     * Called every 30s during active gameplay.
+     */
+    Titles.matchmakerSessionHeartbeat = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.matchmakerSessionHeartbeat, data, { title_id: title_id });
+    };
+    /**
+     * Release the session (starts reclaim countdown).
+     * Called on beforeunload or explicit navigation away.
+     */
+    Titles.matchmakerSessionRelease = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.matchmakerSessionRelease, data, { title_id: title_id });
     };
     /**
     * Initiates a resumable S3 multipart upload for large files.
