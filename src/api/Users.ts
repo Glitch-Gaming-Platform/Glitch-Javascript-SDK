@@ -572,6 +572,27 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.playedGames, undefined, undefined, params);
     }
 
+    /**
+     * Get all stats for a user, optionally filtered by title_id.
+     */
+    public static getProgressionStats<T>(user_id: string, params?: { title_id?: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.userProgressionStats, undefined, { user_id }, params);
+    }
+
+    /**
+     * Get all achievements for a user.
+     */
+    public static getProgressionAchievements<T>(user_id: string, params?: { title_id?: string, status?: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.userProgressionAchievements, undefined, { user_id }, params);
+    }
+
+    /**
+     * Get the raw gameplay history (Run Records) for a user.
+     */
+    public static getProgressionHistory<T>(user_id: string, params?: { title_id?: string, page?: number }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.userProgressionHistory, undefined, { user_id }, params);
+    }
+
 
 }
 

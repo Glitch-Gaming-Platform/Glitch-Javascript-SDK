@@ -53,6 +53,11 @@ class UserRoutes {
     playedGames: { url: '/users/me/played-games', method: HTTP_METHODS.GET },
 
 
+    userProgressionStats: { url: '/users/{user_id}/progression/stats', method: HTTP_METHODS.GET },
+    userProgressionAchievements: { url: '/users/{user_id}/progression/achievements', method: HTTP_METHODS.GET },
+    userProgressionHistory: { url: '/users/{user_id}/progression/history', method: HTTP_METHODS.GET },
+
+
   };
 
 }

@@ -396,5 +396,25 @@ declare class Users {
      * Includes playtime and last played timestamps.
      */
     static playedGames<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all stats for a user, optionally filtered by title_id.
+     */
+    static getProgressionStats<T>(user_id: string, params?: {
+        title_id?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get all achievements for a user.
+     */
+    static getProgressionAchievements<T>(user_id: string, params?: {
+        title_id?: string;
+        status?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get the raw gameplay history (Run Records) for a user.
+     */
+    static getProgressionHistory<T>(user_id: string, params?: {
+        title_id?: string;
+        page?: number;
+    }): AxiosPromise<Response<T>>;
 }
 export default Users;

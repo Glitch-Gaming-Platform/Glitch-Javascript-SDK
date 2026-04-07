@@ -8802,6 +8802,9 @@ var UserRoutes = /** @class */ (function () {
         clearInstagramAuth: { url: '/users/clearInstagramAuth', method: HTTP_METHODS.DELETE },
         getSubredditRules: { url: "/users/reddit/redditrules/{subreddit}", method: HTTP_METHODS.GET },
         playedGames: { url: '/users/me/played-games', method: HTTP_METHODS.GET },
+        userProgressionStats: { url: '/users/{user_id}/progression/stats', method: HTTP_METHODS.GET },
+        userProgressionAchievements: { url: '/users/{user_id}/progression/achievements', method: HTTP_METHODS.GET },
+        userProgressionHistory: { url: '/users/{user_id}/progression/history', method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -9291,6 +9294,24 @@ var Users = /** @class */ (function () {
      */
     Users.playedGames = function (params) {
         return Requests.processRoute(UserRoutes.routes.playedGames, undefined, undefined, params);
+    };
+    /**
+     * Get all stats for a user, optionally filtered by title_id.
+     */
+    Users.getProgressionStats = function (user_id, params) {
+        return Requests.processRoute(UserRoutes.routes.userProgressionStats, undefined, { user_id: user_id }, params);
+    };
+    /**
+     * Get all achievements for a user.
+     */
+    Users.getProgressionAchievements = function (user_id, params) {
+        return Requests.processRoute(UserRoutes.routes.userProgressionAchievements, undefined, { user_id: user_id }, params);
+    };
+    /**
+     * Get the raw gameplay history (Run Records) for a user.
+     */
+    Users.getProgressionHistory = function (user_id, params) {
+        return Requests.processRoute(UserRoutes.routes.userProgressionHistory, undefined, { user_id: user_id }, params);
     };
     return Users;
 }());
@@ -11793,6 +11814,21 @@ var TitlesRoute = /** @class */ (function () {
             url: '/titles/{title_id}/matchmaker/session/release',
             method: HTTP_METHODS.POST
         },
+        // --- Title Progression Definitions (Developer API) ---
+        progressionStatsList: { url: '/titles/{title_id}/progression/stats', method: HTTP_METHODS.GET },
+        progressionStatsStore: { url: '/titles/{title_id}/progression/stats', method: HTTP_METHODS.POST },
+        progressionStatsDelete: { url: '/titles/{title_id}/progression/stats/{id}', method: HTTP_METHODS.DELETE },
+        progressionAchievementsList: { url: '/titles/{title_id}/progression/achievements', method: HTTP_METHODS.GET },
+        progressionAchievementsStore: { url: '/titles/{title_id}/progression/achievements', method: HTTP_METHODS.POST },
+        progressionLeaderboardsList: { url: '/titles/{title_id}/progression/leaderboards', method: HTTP_METHODS.GET },
+        progressionLeaderboardsStore: { url: '/titles/{title_id}/progression/leaderboards', method: HTTP_METHODS.POST },
+        progressionSeasonsList: { url: '/titles/{title_id}/progression/seasons', method: HTTP_METHODS.GET },
+        progressionSeasonsStore: { url: '/titles/{title_id}/progression/seasons', method: HTTP_METHODS.POST },
+        // --- In-Game Progression (Client API) ---
+        progressionSubmit: { url: '/titles/{title_id}/installs/{install_id}/submit', method: HTTP_METHODS.POST },
+        progressionPlayerStats: { url: '/titles/{title_id}/installs/{install_id}/stats', method: HTTP_METHODS.GET },
+        progressionPlayerAchievements: { url: '/titles/{title_id}/installs/{install_id}/achievements', method: HTTP_METHODS.GET },
+        progressionLeaderboardView: { url: '/titles/{title_id}/leaderboards/{api_key}', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());
@@ -12592,6 +12628,54 @@ var Titles = /** @class */ (function () {
      */
     Titles.completeMultipartUpload = function (title_id, data) {
         return Requests.processRoute(TitlesRoute.routes.completeMultipartUpload, data, { title_id: title_id });
+    };
+    // --- Developer Definition Methods ---
+    Titles.listProgressionStats = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.progressionStatsList, undefined, { title_id: title_id });
+    };
+    Titles.createProgressionStat = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.progressionStatsStore, data, { title_id: title_id });
+    };
+    Titles.deleteProgressionStat = function (title_id, id) {
+        return Requests.processRoute(TitlesRoute.routes.progressionStatsDelete, undefined, { title_id: title_id, id: id });
+    };
+    Titles.listProgressionAchievements = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.progressionAchievementsList, undefined, { title_id: title_id });
+    };
+    Titles.createProgressionAchievement = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.progressionAchievementsStore, data, { title_id: title_id });
+    };
+    Titles.listProgressionLeaderboards = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.progressionLeaderboardsList, undefined, { title_id: title_id });
+    };
+    Titles.createProgressionLeaderboard = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.progressionLeaderboardsStore, data, { title_id: title_id });
+    };
+    Titles.listProgressionSeasons = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.progressionSeasonsList, undefined, { title_id: title_id });
+    };
+    Titles.createProgressionSeason = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.progressionSeasonsStore, data, { title_id: title_id });
+    };
+    /**
+     * Submit a gameplay run. Updates stats and scores using the install_id for privacy.
+     * @param data { idempotency_key: string, payload: { stats: {}, scores: {} } }
+     */
+    Titles.submitProgressionRun = function (title_id, install_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.progressionSubmit, data, { title_id: title_id, install_id: install_id });
+    };
+    Titles.getProgressionPlayerStats = function (title_id, install_id) {
+        return Requests.processRoute(TitlesRoute.routes.progressionPlayerStats, undefined, { title_id: title_id, install_id: install_id });
+    };
+    Titles.getProgressionPlayerAchievements = function (title_id, install_id) {
+        return Requests.processRoute(TitlesRoute.routes.progressionPlayerAchievements, undefined, { title_id: title_id, install_id: install_id });
+    };
+    /**
+     * View leaderboard rankings.
+     * @param params Optional filters like { around_me: true, install_id: 'uuid', season_id: 'uuid' }
+     */
+    Titles.getProgressionLeaderboard = function (title_id, api_key, params) {
+        return Requests.processRoute(TitlesRoute.routes.progressionLeaderboardView, undefined, { title_id: title_id, api_key: api_key }, params);
     };
     return Titles;
 }());

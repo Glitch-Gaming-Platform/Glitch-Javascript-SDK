@@ -2255,6 +2255,26 @@ declare class Users {
      * Includes playtime and last played timestamps.
      */
     static playedGames<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get all stats for a user, optionally filtered by title_id.
+     */
+    static getProgressionStats<T>(user_id: string, params?: {
+        title_id?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get all achievements for a user.
+     */
+    static getProgressionAchievements<T>(user_id: string, params?: {
+        title_id?: string;
+        status?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get the raw gameplay history (Run Records) for a user.
+     */
+    static getProgressionHistory<T>(user_id: string, params?: {
+        title_id?: string;
+        page?: number;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Events {
@@ -4428,6 +4448,27 @@ declare class Titles {
      * Stitch together all uploaded chunks to complete the file in S3.
      */
     static completeMultipartUpload<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    static listProgressionStats<T>(title_id: string): AxiosPromise<Response<T>>;
+    static createProgressionStat<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    static deleteProgressionStat<T>(title_id: string, id: string): AxiosPromise<Response<T>>;
+    static listProgressionAchievements<T>(title_id: string): AxiosPromise<Response<T>>;
+    static createProgressionAchievement<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    static listProgressionLeaderboards<T>(title_id: string): AxiosPromise<Response<T>>;
+    static createProgressionLeaderboard<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    static listProgressionSeasons<T>(title_id: string): AxiosPromise<Response<T>>;
+    static createProgressionSeason<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Submit a gameplay run. Updates stats and scores using the install_id for privacy.
+     * @param data { idempotency_key: string, payload: { stats: {}, scores: {} } }
+     */
+    static submitProgressionRun<T>(title_id: string, install_id: string, data: object): AxiosPromise<Response<T>>;
+    static getProgressionPlayerStats<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
+    static getProgressionPlayerAchievements<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
+    /**
+     * View leaderboard rankings.
+     * @param params Optional filters like { around_me: true, install_id: 'uuid', season_id: 'uuid' }
+     */
+    static getProgressionLeaderboard<T>(title_id: string, api_key: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {

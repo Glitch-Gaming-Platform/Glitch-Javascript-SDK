@@ -253,6 +253,26 @@ class TitlesRoute {
     },
 
 
+    // --- Title Progression Definitions (Developer API) ---
+    progressionStatsList: { url: '/titles/{title_id}/progression/stats', method: HTTP_METHODS.GET },
+    progressionStatsStore: { url: '/titles/{title_id}/progression/stats', method: HTTP_METHODS.POST },
+    progressionStatsDelete: { url: '/titles/{title_id}/progression/stats/{id}', method: HTTP_METHODS.DELETE },
+
+    progressionAchievementsList: { url: '/titles/{title_id}/progression/achievements', method: HTTP_METHODS.GET },
+    progressionAchievementsStore: { url: '/titles/{title_id}/progression/achievements', method: HTTP_METHODS.POST },
+
+    progressionLeaderboardsList: { url: '/titles/{title_id}/progression/leaderboards', method: HTTP_METHODS.GET },
+    progressionLeaderboardsStore: { url: '/titles/{title_id}/progression/leaderboards', method: HTTP_METHODS.POST },
+
+    progressionSeasonsList: { url: '/titles/{title_id}/progression/seasons', method: HTTP_METHODS.GET },
+    progressionSeasonsStore: { url: '/titles/{title_id}/progression/seasons', method: HTTP_METHODS.POST },
+
+    // --- In-Game Progression (Client API) ---
+    progressionSubmit: { url: '/titles/{title_id}/installs/{install_id}/submit', method: HTTP_METHODS.POST },
+    progressionPlayerStats: { url: '/titles/{title_id}/installs/{install_id}/stats', method: HTTP_METHODS.GET },
+    progressionPlayerAchievements: { url: '/titles/{title_id}/installs/{install_id}/achievements', method: HTTP_METHODS.GET },
+    progressionLeaderboardView: { url: '/titles/{title_id}/leaderboards/{api_key}', method: HTTP_METHODS.GET },
+
 
   };
 

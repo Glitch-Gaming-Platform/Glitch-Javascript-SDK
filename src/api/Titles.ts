@@ -1153,6 +1153,68 @@ class Titles {
     public static completeMultipartUpload<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.completeMultipartUpload, data, { title_id });
     }
+
+     // --- Developer Definition Methods ---
+
+    public static listProgressionStats<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionStatsList, undefined, { title_id });
+    }
+
+    public static createProgressionStat<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionStatsStore, data, { title_id });
+    }
+
+    public static deleteProgressionStat<T>(title_id: string, id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionStatsDelete, undefined, { title_id, id });
+    }
+
+    public static listProgressionAchievements<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionAchievementsList, undefined, { title_id });
+    }
+
+    public static createProgressionAchievement<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionAchievementsStore, data, { title_id });
+    }
+
+    public static listProgressionLeaderboards<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionLeaderboardsList, undefined, { title_id });
+    }
+
+    public static createProgressionLeaderboard<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionLeaderboardsStore, data, { title_id });
+    }
+
+    public static listProgressionSeasons<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionSeasonsList, undefined, { title_id });
+    }
+
+    public static createProgressionSeason<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionSeasonsStore, data, { title_id });
+    }
+
+    /**
+     * Submit a gameplay run. Updates stats and scores using the install_id for privacy.
+     * @param data { idempotency_key: string, payload: { stats: {}, scores: {} } }
+     */
+    public static submitProgressionRun<T>(title_id: string, install_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionSubmit, data, { title_id, install_id });
+    }
+
+    public static getProgressionPlayerStats<T>(title_id: string, install_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionPlayerStats, undefined, { title_id, install_id });
+    }
+
+    public static getProgressionPlayerAchievements<T>(title_id: string, install_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionPlayerAchievements, undefined, { title_id, install_id });
+    }
+
+    /**
+     * View leaderboard rankings.
+     * @param params Optional filters like { around_me: true, install_id: 'uuid', season_id: 'uuid' }
+     */
+    public static getProgressionLeaderboard<T>(title_id: string, api_key: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.progressionLeaderboardView, undefined, { title_id, api_key }, params);
+    }
 }
 
 export default Titles;
