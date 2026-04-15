@@ -252,6 +252,11 @@ class TitlesRoute {
       method: HTTP_METHODS.POST
     },
 
+    getTechnicalEventSummary: {
+      url: '/titles/{title_id}/analytics/events-summary',
+      method: HTTP_METHODS.GET
+    },
+
 
     // --- Title Progression Definitions (Developer API) ---
     progressionStatsList: { url: '/titles/{title_id}/progression/stats', method: HTTP_METHODS.GET },

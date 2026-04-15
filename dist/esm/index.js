@@ -11814,6 +11814,10 @@ var TitlesRoute = /** @class */ (function () {
             url: '/titles/{title_id}/matchmaker/session/release',
             method: HTTP_METHODS.POST
         },
+        getTechnicalEventSummary: {
+            url: '/titles/{title_id}/analytics/events-summary',
+            method: HTTP_METHODS.GET
+        },
         // --- Title Progression Definitions (Developer API) ---
         progressionStatsList: { url: '/titles/{title_id}/progression/stats', method: HTTP_METHODS.GET },
         progressionStatsStore: { url: '/titles/{title_id}/progression/stats', method: HTTP_METHODS.POST },
@@ -12676,6 +12680,9 @@ var Titles = /** @class */ (function () {
      */
     Titles.getProgressionLeaderboard = function (title_id, api_key, params) {
         return Requests.processRoute(TitlesRoute.routes.progressionLeaderboardView, undefined, { title_id: title_id, api_key: api_key }, params);
+    };
+    Titles.getTechnicalEventSummary = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.getTechnicalEventSummary, {}, { title_id: title_id }, params);
     };
     return Titles;
 }());

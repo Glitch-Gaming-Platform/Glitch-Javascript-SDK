@@ -1154,7 +1154,7 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.completeMultipartUpload, data, { title_id });
     }
 
-     // --- Developer Definition Methods ---
+    // --- Developer Definition Methods ---
 
     public static listProgressionStats<T>(title_id: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.progressionStatsList, undefined, { title_id });
@@ -1214,6 +1214,10 @@ class Titles {
      */
     public static getProgressionLeaderboard<T>(title_id: string, api_key: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.progressionLeaderboardView, undefined, { title_id, api_key }, params);
+    }
+
+    public static getTechnicalEventSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.getTechnicalEventSummary, {}, { title_id }, params);
     }
 }
 

@@ -634,5 +634,6 @@ declare class Titles {
      * @param params Optional filters like { around_me: true, install_id: 'uuid', season_id: 'uuid' }
      */
     static getProgressionLeaderboard<T>(title_id: string, api_key: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static getTechnicalEventSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Titles;
