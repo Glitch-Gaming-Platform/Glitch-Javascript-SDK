@@ -11835,6 +11835,7 @@ var TitlesRoute = /** @class */ (function () {
         progressionLeaderboardView: { url: '/titles/{title_id}/leaderboards/{api_key}', method: HTTP_METHODS.GET },
         communityActivity: { url: '/titles/activity/trending', method: HTTP_METHODS.GET },
         socialTrending: { url: '/titles/activity/social', method: HTTP_METHODS.GET },
+        discoveryQueue: { url: '/titles/discovery/queue', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());

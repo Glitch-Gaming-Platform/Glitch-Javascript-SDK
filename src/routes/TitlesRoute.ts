@@ -280,7 +280,7 @@ class TitlesRoute {
 
     communityActivity: { url: '/titles/activity/trending', method: HTTP_METHODS.GET },
     socialTrending: { url: '/titles/activity/social', method: HTTP_METHODS.GET },
-
+    discoveryQueue: { url: '/titles/discovery/queue', method: HTTP_METHODS.GET },
 
   };
 
