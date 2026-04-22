@@ -25017,6 +25017,8 @@ var TitlesRoute = /** @class */ (function () {
         progressionPlayerStats: { url: '/titles/{title_id}/installs/{install_id}/stats', method: HTTP_METHODS.GET },
         progressionPlayerAchievements: { url: '/titles/{title_id}/installs/{install_id}/achievements', method: HTTP_METHODS.GET },
         progressionLeaderboardView: { url: '/titles/{title_id}/leaderboards/{api_key}', method: HTTP_METHODS.GET },
+        communityActivity: { url: '/titles/activity/trending', method: HTTP_METHODS.GET },
+        socialTrending: { url: '/titles/activity/social', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());
@@ -25867,6 +25869,37 @@ var Titles = /** @class */ (function () {
     };
     Titles.getTechnicalEventSummary = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.getTechnicalEventSummary, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Get games ranked by community activity (active players).
+     *
+     * @param params
+     *   - window: number (hours, default 24)
+     *   - limit: number (default 10)
+     */
+    Titles.getCommunityActivity = function (params) {
+        return Requests.processRoute(TitlesRoute.routes.communityActivity, {}, {}, params);
+    };
+    /**
+     * Get games trending on social media.
+     *
+     * @param params
+     *   - type: 'influencer' (campaigns) or 'organic' (non-paid)
+     *   - window: number (hours, default 168)
+     *   - limit: number (default 10)
+     */
+    Titles.getSocialTrending = function (params) {
+        return Requests.processRoute(TitlesRoute.routes.socialTrending, {}, {}, params);
+    };
+    /**
+     * Get a personalized discovery queue of games.
+     *
+     * @param params
+     *   - limit: number (default 12)
+     *   - device_id: string (highly recommended for guest tracking)
+     */
+    Titles.getDiscoveryQueue = function (params) {
+        return Requests.processRoute(TitlesRoute.routes.discoveryQueue, {}, {}, params);
     };
     return Titles;
 }());

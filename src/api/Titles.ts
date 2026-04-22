@@ -1219,6 +1219,40 @@ class Titles {
     public static getTechnicalEventSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.getTechnicalEventSummary, {}, { title_id }, params);
     }
+
+    /**
+     * Get games ranked by community activity (active players).
+     * 
+     * @param params 
+     *   - window: number (hours, default 24)
+     *   - limit: number (default 10)
+     */
+    public static getCommunityActivity<T>(params?: { window?: number, limit?: number }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.communityActivity, {}, {}, params);
+    }
+
+    /**
+     * Get games trending on social media.
+     * 
+     * @param params 
+     *   - type: 'influencer' (campaigns) or 'organic' (non-paid)
+     *   - window: number (hours, default 168)
+     *   - limit: number (default 10)
+     */
+    public static getSocialTrending<T>(params: { type: 'influencer' | 'organic', window?: number, limit?: number }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.socialTrending, {}, {}, params);
+    }
+
+    /**
+     * Get a personalized discovery queue of games.
+     * 
+     * @param params 
+     *   - limit: number (default 12)
+     *   - device_id: string (highly recommended for guest tracking)
+     */
+    public static getDiscoveryQueue<T>(params?: { limit?: number, device_id?: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.discoveryQueue, {}, {}, params);
+    }
 }
 
 export default Titles;

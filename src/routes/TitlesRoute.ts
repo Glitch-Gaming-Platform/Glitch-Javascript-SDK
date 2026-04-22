@@ -278,6 +278,9 @@ class TitlesRoute {
     progressionPlayerAchievements: { url: '/titles/{title_id}/installs/{install_id}/achievements', method: HTTP_METHODS.GET },
     progressionLeaderboardView: { url: '/titles/{title_id}/leaderboards/{api_key}', method: HTTP_METHODS.GET },
 
+    communityActivity: { url: '/titles/activity/trending', method: HTTP_METHODS.GET },
+    socialTrending: { url: '/titles/activity/social', method: HTTP_METHODS.GET },
+
 
   };
 
