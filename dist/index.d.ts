@@ -6322,13 +6322,12 @@ declare class Media {
     static uploadTikTokMusic<T>(file: File, scheduler_id: string): AxiosPromise<Response<T>>;
     /**
      * Generate an S3 Presigned URL for direct upload.
-     * Use this for large files (up to 2GB) to bypass the Laravel server.
      *
      * @param filename The original name of the file.
      * @param extension The file extension (e.g., 'mp4').
-     * @returns AxiosPromise containing upload_url and file_path.
+     * @param is_public Set to true if the file should be publicly accessible via URL.
      */
-    static getPresignedUrl<T = PresignedUrlResponse>(filename: string, extension: string): AxiosPromise<Response<T>>;
+    static getPresignedUrl<T = PresignedUrlResponse>(filename: string, extension: string, is_public?: boolean): AxiosPromise<Response<T>>;
     /**
      * Confirm a successful S3 upload and create the database record.
      * Call this after the direct S3 upload is complete.

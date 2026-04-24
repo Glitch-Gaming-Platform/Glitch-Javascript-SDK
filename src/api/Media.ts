@@ -396,14 +396,21 @@ class Media {
 
     /**
      * Generate an S3 Presigned URL for direct upload.
-     * Use this for large files (up to 2GB) to bypass the Laravel server.
      * 
      * @param filename The original name of the file.
      * @param extension The file extension (e.g., 'mp4').
-     * @returns AxiosPromise containing upload_url and file_path.
+     * @param is_public Set to true if the file should be publicly accessible via URL.
      */
-    public static getPresignedUrl<T = PresignedUrlResponse>(filename: string, extension: string): AxiosPromise<Response<T>> {
-        return Requests.processRoute(MediaRoute.routes.getPresignedUrl, { filename, extension });
+    public static getPresignedUrl<T = PresignedUrlResponse>(
+        filename: string, 
+        extension: string, 
+        is_public: boolean = false // Added parameter
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MediaRoute.routes.getPresignedUrl, { 
+            filename, 
+            extension, 
+            is_public // Pass to backend
+        });
     }
 
     /**
