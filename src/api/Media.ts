@@ -116,6 +116,44 @@ export interface S3ConfirmRequest {
     filename?: string;
 }
 
+/**
+ * Interfaces for the Video Editor Manifest
+ */
+export interface VideoEdit {
+    type: 'trim' | 'crop' | 'text' | 'speed' | 'overlay' | 'thumbnail';
+    params: TrimParams | CropParams | TextParams | SpeedParams | any;
+}
+
+export interface TrimParams {
+    start: number;    // Seconds
+    duration: number; // Seconds
+}
+
+export interface CropParams {
+    x: number;      // Pixels or Percentage based on backend implementation
+    y: number;
+    width: number;
+    height: number;
+}
+
+export interface TextParams {
+    text: string;
+    x: string | number; // e.g., 'center' or 100
+    y: string | number;
+    fontSize: number;
+    fontColor: string; // e.g., 'white' or '#ffffff'
+}
+
+export interface SpeedParams {
+    multiplier: number; // 0.5 for slow-mo, 2.0 for fast-forward
+}
+
+export interface VideoProcessRequest {
+    edits: VideoEdit[];
+    output_format?: 'mp4' | 'webm';
+}
+
+
 class Media {
     /**
      * Upload media content using a File object.
@@ -377,6 +415,22 @@ class Media {
      */
     public static confirmS3Upload<T>(data: S3ConfirmRequest): AxiosPromise<Response<T>> {
         return Requests.processRoute(MediaRoute.routes.confirmS3Upload, data);
+    }
+
+     /**
+     * Submit a video for processing (Trim, Crop, Text, etc.)
+     * This triggers a background job on the server.
+     * 
+     * @param media_id The UUID of the source video.
+     * @param data The edit manifest containing the array of transformations.
+     * @returns Promise with the pending_media_id.
+     */
+    public static process<T>(media_id: string, data: VideoProcessRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            MediaRoute.routes.processVideo, 
+            data, 
+            { media_id: media_id }
+        );
     }
 }
 

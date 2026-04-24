@@ -14913,6 +14913,7 @@ var MediaRoute = /** @class */ (function () {
         uploadTikTokMusic: { url: '/media/tiktok/music', method: HTTP_METHODS.POST },
         getPresignedUrl: { url: '/media/presigned-url', method: HTTP_METHODS.POST },
         confirmS3Upload: { url: '/media/s3-confirm', method: HTTP_METHODS.POST },
+        processVideo: { url: '/media/{media_id}/process', method: HTTP_METHODS.POST },
     };
     return MediaRoute;
 }());
@@ -15163,6 +15164,17 @@ var Media = /** @class */ (function () {
      */
     Media.confirmS3Upload = function (data) {
         return Requests.processRoute(MediaRoute.routes.confirmS3Upload, data);
+    };
+    /**
+    * Submit a video for processing (Trim, Crop, Text, etc.)
+    * This triggers a background job on the server.
+    *
+    * @param media_id The UUID of the source video.
+    * @param data The edit manifest containing the array of transformations.
+    * @returns Promise with the pending_media_id.
+    */
+    Media.process = function (media_id, data) {
+        return Requests.processRoute(MediaRoute.routes.processVideo, data, { media_id: media_id });
     };
     return Media;
 }());

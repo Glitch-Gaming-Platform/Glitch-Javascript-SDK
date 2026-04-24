@@ -14,6 +14,7 @@ class MediaRoute {
         uploadTikTokMusic: { url: '/media/tiktok/music', method: HTTP_METHODS.POST },
         getPresignedUrl: { url: '/media/presigned-url', method: HTTP_METHODS.POST },
         confirmS3Upload: { url: '/media/s3-confirm', method: HTTP_METHODS.POST },
+        processVideo: { url: '/media/{media_id}/process', method: HTTP_METHODS.POST },
     };
 }
 

@@ -97,6 +97,37 @@ export interface S3ConfirmRequest {
     title?: string;
     filename?: string;
 }
+/**
+ * Interfaces for the Video Editor Manifest
+ */
+export interface VideoEdit {
+    type: 'trim' | 'crop' | 'text' | 'speed' | 'overlay' | 'thumbnail';
+    params: TrimParams | CropParams | TextParams | SpeedParams | any;
+}
+export interface TrimParams {
+    start: number;
+    duration: number;
+}
+export interface CropParams {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+export interface TextParams {
+    text: string;
+    x: string | number;
+    y: string | number;
+    fontSize: number;
+    fontColor: string;
+}
+export interface SpeedParams {
+    multiplier: number;
+}
+export interface VideoProcessRequest {
+    edits: VideoEdit[];
+    output_format?: 'mp4' | 'webm';
+}
 declare class Media {
     /**
      * Upload media content using a File object.
@@ -249,5 +280,14 @@ declare class Media {
      * @returns AxiosPromise containing the created Media resource.
      */
     static confirmS3Upload<T>(data: S3ConfirmRequest): AxiosPromise<Response<T>>;
+    /**
+    * Submit a video for processing (Trim, Crop, Text, etc.)
+    * This triggers a background job on the server.
+    *
+    * @param media_id The UUID of the source video.
+    * @param data The edit manifest containing the array of transformations.
+    * @returns Promise with the pending_media_id.
+    */
+    static process<T>(media_id: string, data: VideoProcessRequest): AxiosPromise<Response<T>>;
 }
 export default Media;
