@@ -593,6 +593,71 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.userProgressionHistory, undefined, { user_id }, params);
     }
 
+     /**
+     * List the authenticated user's media library (clips, screenshots, AI generated).
+     * 
+     * @param params Optional filters: { type: 'clip'|'screenshot'|'ai_generated', title_id: string }
+     */
+    public static listMedia<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.listMedia, undefined, undefined, params);
+    }
+
+    /**
+     * Add a Media record to the user's personal library.
+     * 
+     * @param data { media_id: string, type: string, title_id?: string, label?: string, studio_metadata?: object }
+     */
+    public static storeMedia<T>(data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.storeMedia, data);
+    }
+
+    /**
+     * Retrieve details for a specific library item.
+     */
+    public static viewMedia<T>(id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.viewMedia, undefined, { id });
+    }
+
+    /**
+     * Update a library item's label or metadata.
+     */
+    public static updateMedia<T>(id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.updateMedia, data, { id });
+    }
+
+    /**
+     * Remove an item from the user's library (Soft Delete).
+     */
+    public static deleteMedia<T>(id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.deleteMedia, undefined, { id });
+    }
+
+    /**
+     * Apply AI transformations (Style Transfer/Upscale) to a library item.
+     * 
+     * @param id The UUID of the UserMedia record.
+     * @param data { prompt: string, tool: 'style_transfer'|'upscale' }
+     */
+    public static modifyMedia<T>(id: string, data: { prompt: string, tool: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.modifyMedia, data, { id });
+    }
+
+    /**
+     * Get AI-generated suggestions for the best 15-second window to trim a video.
+     */
+    public static suggestSmartTrim<T>(id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.suggestSmartTrim, undefined, { id });
+    }
+
+    /**
+     * Share a library item to social media as User Generated Content (UGC).
+     * 
+     * @param id The UUID of the UserMedia record.
+     * @param data { platform: string, title?: string, content: string }
+     */
+    public static shareMedia<T>(id: string, data: { platform: string, title?: string, content: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.shareMedia, data, { id });
+    }
 
 }
 

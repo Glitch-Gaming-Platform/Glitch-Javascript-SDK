@@ -57,7 +57,17 @@ class UserRoutes {
     userProgressionAchievements: { url: '/users/{user_id}/progression/achievements', method: HTTP_METHODS.GET },
     userProgressionHistory: { url: '/users/{user_id}/progression/history', method: HTTP_METHODS.GET },
 
-
+     // --- User Media Library (Viral Clip Studio) ---
+    listMedia: { url: '/users/me/media', method: HTTP_METHODS.GET },
+    storeMedia: { url: '/users/me/media', method: HTTP_METHODS.POST },
+    viewMedia: { url: '/users/me/media/{id}', method: HTTP_METHODS.GET },
+    updateMedia: { url: '/users/me/media/{id}', method: HTTP_METHODS.PUT },
+    deleteMedia: { url: '/users/me/media/{id}', method: HTTP_METHODS.DELETE },
+    
+    // AI & Social Actions
+    modifyMedia: { url: '/users/me/media/{id}/modify', method: HTTP_METHODS.POST },
+    suggestSmartTrim: { url: '/users/me/media/{id}/smart-trim', method: HTTP_METHODS.GET },
+    shareMedia: { url: '/users/me/media/{id}/share', method: HTTP_METHODS.POST },
   };
 
 }

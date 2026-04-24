@@ -416,5 +416,54 @@ declare class Users {
         title_id?: string;
         page?: number;
     }): AxiosPromise<Response<T>>;
+    /**
+    * List the authenticated user's media library (clips, screenshots, AI generated).
+    *
+    * @param params Optional filters: { type: 'clip'|'screenshot'|'ai_generated', title_id: string }
+    */
+    static listMedia<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Add a Media record to the user's personal library.
+     *
+     * @param data { media_id: string, type: string, title_id?: string, label?: string, studio_metadata?: object }
+     */
+    static storeMedia<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve details for a specific library item.
+     */
+    static viewMedia<T>(id: string): AxiosPromise<Response<T>>;
+    /**
+     * Update a library item's label or metadata.
+     */
+    static updateMedia<T>(id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Remove an item from the user's library (Soft Delete).
+     */
+    static deleteMedia<T>(id: string): AxiosPromise<Response<T>>;
+    /**
+     * Apply AI transformations (Style Transfer/Upscale) to a library item.
+     *
+     * @param id The UUID of the UserMedia record.
+     * @param data { prompt: string, tool: 'style_transfer'|'upscale' }
+     */
+    static modifyMedia<T>(id: string, data: {
+        prompt: string;
+        tool: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get AI-generated suggestions for the best 15-second window to trim a video.
+     */
+    static suggestSmartTrim<T>(id: string): AxiosPromise<Response<T>>;
+    /**
+     * Share a library item to social media as User Generated Content (UGC).
+     *
+     * @param id The UUID of the UserMedia record.
+     * @param data { platform: string, title?: string, content: string }
+     */
+    static shareMedia<T>(id: string, data: {
+        platform: string;
+        title?: string;
+        content: string;
+    }): AxiosPromise<Response<T>>;
 }
 export default Users;

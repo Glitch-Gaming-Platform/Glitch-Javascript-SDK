@@ -8805,6 +8805,16 @@ var UserRoutes = /** @class */ (function () {
         userProgressionStats: { url: '/users/{user_id}/progression/stats', method: HTTP_METHODS.GET },
         userProgressionAchievements: { url: '/users/{user_id}/progression/achievements', method: HTTP_METHODS.GET },
         userProgressionHistory: { url: '/users/{user_id}/progression/history', method: HTTP_METHODS.GET },
+        // --- User Media Library (Viral Clip Studio) ---
+        listMedia: { url: '/users/me/media', method: HTTP_METHODS.GET },
+        storeMedia: { url: '/users/me/media', method: HTTP_METHODS.POST },
+        viewMedia: { url: '/users/me/media/{id}', method: HTTP_METHODS.GET },
+        updateMedia: { url: '/users/me/media/{id}', method: HTTP_METHODS.PUT },
+        deleteMedia: { url: '/users/me/media/{id}', method: HTTP_METHODS.DELETE },
+        // AI & Social Actions
+        modifyMedia: { url: '/users/me/media/{id}/modify', method: HTTP_METHODS.POST },
+        suggestSmartTrim: { url: '/users/me/media/{id}/smart-trim', method: HTTP_METHODS.GET },
+        shareMedia: { url: '/users/me/media/{id}/share', method: HTTP_METHODS.POST },
     };
     return UserRoutes;
 }());
@@ -9312,6 +9322,64 @@ var Users = /** @class */ (function () {
      */
     Users.getProgressionHistory = function (user_id, params) {
         return Requests.processRoute(UserRoutes.routes.userProgressionHistory, undefined, { user_id: user_id }, params);
+    };
+    /**
+    * List the authenticated user's media library (clips, screenshots, AI generated).
+    *
+    * @param params Optional filters: { type: 'clip'|'screenshot'|'ai_generated', title_id: string }
+    */
+    Users.listMedia = function (params) {
+        return Requests.processRoute(UserRoutes.routes.listMedia, undefined, undefined, params);
+    };
+    /**
+     * Add a Media record to the user's personal library.
+     *
+     * @param data { media_id: string, type: string, title_id?: string, label?: string, studio_metadata?: object }
+     */
+    Users.storeMedia = function (data) {
+        return Requests.processRoute(UserRoutes.routes.storeMedia, data);
+    };
+    /**
+     * Retrieve details for a specific library item.
+     */
+    Users.viewMedia = function (id) {
+        return Requests.processRoute(UserRoutes.routes.viewMedia, undefined, { id: id });
+    };
+    /**
+     * Update a library item's label or metadata.
+     */
+    Users.updateMedia = function (id, data) {
+        return Requests.processRoute(UserRoutes.routes.updateMedia, data, { id: id });
+    };
+    /**
+     * Remove an item from the user's library (Soft Delete).
+     */
+    Users.deleteMedia = function (id) {
+        return Requests.processRoute(UserRoutes.routes.deleteMedia, undefined, { id: id });
+    };
+    /**
+     * Apply AI transformations (Style Transfer/Upscale) to a library item.
+     *
+     * @param id The UUID of the UserMedia record.
+     * @param data { prompt: string, tool: 'style_transfer'|'upscale' }
+     */
+    Users.modifyMedia = function (id, data) {
+        return Requests.processRoute(UserRoutes.routes.modifyMedia, data, { id: id });
+    };
+    /**
+     * Get AI-generated suggestions for the best 15-second window to trim a video.
+     */
+    Users.suggestSmartTrim = function (id) {
+        return Requests.processRoute(UserRoutes.routes.suggestSmartTrim, undefined, { id: id });
+    };
+    /**
+     * Share a library item to social media as User Generated Content (UGC).
+     *
+     * @param id The UUID of the UserMedia record.
+     * @param data { platform: string, title?: string, content: string }
+     */
+    Users.shareMedia = function (id, data) {
+        return Requests.processRoute(UserRoutes.routes.shareMedia, data, { id: id });
     };
     return Users;
 }());
