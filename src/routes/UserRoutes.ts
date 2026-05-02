@@ -68,6 +68,9 @@ class UserRoutes {
     modifyMedia: { url: '/users/me/media/{id}/modify', method: HTTP_METHODS.POST },
     suggestSmartTrim: { url: '/users/me/media/{id}/smart-trim', method: HTTP_METHODS.GET },
     shareMedia: { url: '/users/me/media/{id}/share', method: HTTP_METHODS.POST },
+
+    sentGifts: { url: '/users/me/gifts/sent', method: HTTP_METHODS.GET },
+    receivedGifts: { url: '/users/me/gifts/received', method: HTTP_METHODS.GET },
   };
 
 }

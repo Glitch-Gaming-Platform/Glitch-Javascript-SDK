@@ -2,16 +2,21 @@ import Route from "./interface";
 import HTTP_METHODS from "../constants/HttpMethods";
 
 class PostsRoute {
-    
-    public static routes: { [key: string]: Route } = {
-      list: { url: '/posts', method: HTTP_METHODS.GET },
-      create: { url: '/posts', method: HTTP_METHODS.POST  },
-      view : { url: '/posts/{post_id}', method: HTTP_METHODS.GET  },
-      update  :{ url: '/posts/{post_id}', method: HTTP_METHODS.PUT  },
-      delete : { url: '/posts/{post_id}', method: HTTP_METHODS.DELETE },
-      toggleInteraction :  { url: '/posts/{post_id}/toggleInteraction', method: HTTP_METHODS.POST },
-    };
 
-  }
+  public static routes: { [key: string]: Route } = {
+    list: { url: '/posts', method: HTTP_METHODS.GET },
+    create: { url: '/posts', method: HTTP_METHODS.POST },
+    view: { url: '/posts/{post_id}', method: HTTP_METHODS.GET },
+    update: { url: '/posts/{post_id}', method: HTTP_METHODS.PUT },
+    delete: { url: '/posts/{post_id}', method: HTTP_METHODS.DELETE },
+    toggleInteraction: { url: '/posts/{post_id}/toggleInteraction', method: HTTP_METHODS.POST },
+    join: { url: '/posts/{post_id}/join', method: HTTP_METHODS.POST },
+    follow: { url: '/posts/{post_id}/follow', method: HTTP_METHODS.POST },
+    leave: { url: '/posts/{post_id}/leave', method: HTTP_METHODS.DELETE },
+    resolve: { url: '/posts/{post_id}/resolve', method: HTTP_METHODS.POST },
+    updatePreferences: { url: '/posts/{post_id}/participants/me', method: HTTP_METHODS.PUT },
+  };
 
-  export default PostsRoute;
+}
+
+export default PostsRoute;

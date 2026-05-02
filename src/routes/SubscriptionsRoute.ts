@@ -24,6 +24,9 @@ class SubscriptionsRoute {
         listMyLicenses: { url: '/subscriptions/my-licenses', method: HTTP_METHODS.GET },
         refundLicense: { url: '/subscriptions/licenses/{license_id}/refund', method: HTTP_METHODS.POST },
 
+        purchaseGift: { url: '/subscriptions/gifts/purchase', method: HTTP_METHODS.POST },
+        redeemGift: { url: '/subscriptions/gifts/redeem', method: HTTP_METHODS.POST },
+
     };
 
 }

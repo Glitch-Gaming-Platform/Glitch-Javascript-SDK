@@ -2324,6 +2324,24 @@ declare class Users {
         title?: string;
         content: string;
     }): AxiosPromise<Response<T>>;
+    /**
+     * List all gifts purchased by the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userSentGifts
+     *
+     * @param params Optional filters: title_id, status, gift_type, min_amount, max_amount, start_date, end_date, sort_by, sort_order.
+     * @returns promise
+     */
+    static sentGifts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List all gifts received by the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userReceivedGifts
+     *
+     * @param params Optional filters: title_id, status, start_date, sort_by.
+     * @returns promise
+     */
+    static receivedGifts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Events {
@@ -3219,6 +3237,26 @@ declare class Posts {
      * @returns Promise
      */
     static toggleInteraction<T>(post_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Join a Play Together session.
+     */
+    static joinSession<T>(post_id: string, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Follow a bug report for updates.
+     */
+    static followBug<T>(post_id: string, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Update notification preferences for a post.
+     */
+    static updatePreferences<T>(post_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Leave a session or unfollow a bug.
+     */
+    static leave<T>(post_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Mark a bug as resolved (Admin only).
+     */
+    static resolveBug<T>(post_id: string): AxiosPromise<Response<T>>;
 }
 
 declare class Social {
@@ -5422,6 +5460,24 @@ declare class Subscriptions {
      * Request a refund for a premium purchase.
      */
     static refundLicense<T>(license_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Purchase a game or subscription as a gift for another user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/purchaseGift
+     *
+     * @param data { gift_type: 'premium'|'rental'|'subscription', payment_method_id: string, title_id?: string, recipient_id?: string, recipient_email?: string, recipient_name?: string }
+     * @returns promise
+     */
+    static purchaseGift<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Redeem a gift code to grant access to a game or subscription.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/redeemGift
+     *
+     * @param redemption_code The unique GLITCH-XXXX-XXXX code.
+     * @returns promise
+     */
+    static redeemGift<T>(redemption_code: string): AxiosPromise<Response<T>>;
 }
 
 declare class Messages {

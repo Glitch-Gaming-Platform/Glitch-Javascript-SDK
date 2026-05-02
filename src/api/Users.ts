@@ -659,6 +659,30 @@ class Users {
         return Requests.processRoute(UserRoutes.routes.shareMedia, data, { id });
     }
 
+    /**
+     * List all gifts purchased by the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userSentGifts
+     * 
+     * @param params Optional filters: title_id, status, gift_type, min_amount, max_amount, start_date, end_date, sort_by, sort_order.
+     * @returns promise
+     */
+    public static sentGifts<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.sentGifts, undefined, undefined, params);
+    }
+
+    /**
+     * List all gifts received by the current user.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userReceivedGifts
+     * 
+     * @param params Optional filters: title_id, status, start_date, sort_by.
+     * @returns promise
+     */
+    public static receivedGifts<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(UserRoutes.routes.receivedGifts, undefined, undefined, params);
+    }
+
 }
 
 export default Users;

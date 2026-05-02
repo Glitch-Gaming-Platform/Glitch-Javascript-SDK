@@ -21999,6 +21999,8 @@ var UserRoutes = /** @class */ (function () {
         modifyMedia: { url: '/users/me/media/{id}/modify', method: HTTP_METHODS.POST },
         suggestSmartTrim: { url: '/users/me/media/{id}/smart-trim', method: HTTP_METHODS.GET },
         shareMedia: { url: '/users/me/media/{id}/share', method: HTTP_METHODS.POST },
+        sentGifts: { url: '/users/me/gifts/sent', method: HTTP_METHODS.GET },
+        receivedGifts: { url: '/users/me/gifts/received', method: HTTP_METHODS.GET },
     };
     return UserRoutes;
 }());
@@ -22564,6 +22566,28 @@ var Users = /** @class */ (function () {
      */
     Users.shareMedia = function (id, data) {
         return Requests.processRoute(UserRoutes.routes.shareMedia, data, { id: id });
+    };
+    /**
+     * List all gifts purchased by the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userSentGifts
+     *
+     * @param params Optional filters: title_id, status, gift_type, min_amount, max_amount, start_date, end_date, sort_by, sort_order.
+     * @returns promise
+     */
+    Users.sentGifts = function (params) {
+        return Requests.processRoute(UserRoutes.routes.sentGifts, undefined, undefined, params);
+    };
+    /**
+     * List all gifts received by the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/userReceivedGifts
+     *
+     * @param params Optional filters: title_id, status, start_date, sort_by.
+     * @returns promise
+     */
+    Users.receivedGifts = function (params) {
+        return Requests.processRoute(UserRoutes.routes.receivedGifts, undefined, undefined, params);
     };
     return Users;
 }());
@@ -23690,6 +23714,11 @@ var PostsRoute = /** @class */ (function () {
         update: { url: '/posts/{post_id}', method: HTTP_METHODS.PUT },
         delete: { url: '/posts/{post_id}', method: HTTP_METHODS.DELETE },
         toggleInteraction: { url: '/posts/{post_id}/toggleInteraction', method: HTTP_METHODS.POST },
+        join: { url: '/posts/{post_id}/join', method: HTTP_METHODS.POST },
+        follow: { url: '/posts/{post_id}/follow', method: HTTP_METHODS.POST },
+        leave: { url: '/posts/{post_id}/leave', method: HTTP_METHODS.DELETE },
+        resolve: { url: '/posts/{post_id}/resolve', method: HTTP_METHODS.POST },
+        updatePreferences: { url: '/posts/{post_id}/participants/me', method: HTTP_METHODS.PUT },
     };
     return PostsRoute;
 }());
@@ -23854,6 +23883,36 @@ var Posts = /** @class */ (function () {
      */
     Posts.toggleInteraction = function (post_id, data, params) {
         return Requests.processRoute(PostsRoute.routes.toggleInteraction, data, { post_id: post_id }, params);
+    };
+    /**
+     * Join a Play Together session.
+     */
+    Posts.joinSession = function (post_id, data) {
+        return Requests.processRoute(PostsRoute.routes.join, data, { post_id: post_id });
+    };
+    /**
+     * Follow a bug report for updates.
+     */
+    Posts.followBug = function (post_id, data) {
+        return Requests.processRoute(PostsRoute.routes.follow, data, { post_id: post_id });
+    };
+    /**
+     * Update notification preferences for a post.
+     */
+    Posts.updatePreferences = function (post_id, data) {
+        return Requests.processRoute(PostsRoute.routes.updatePreferences, data, { post_id: post_id });
+    };
+    /**
+     * Leave a session or unfollow a bug.
+     */
+    Posts.leave = function (post_id) {
+        return Requests.processRoute(PostsRoute.routes.leave, {}, { post_id: post_id });
+    };
+    /**
+     * Mark a bug as resolved (Admin only).
+     */
+    Posts.resolveBug = function (post_id) {
+        return Requests.processRoute(PostsRoute.routes.resolve, {}, { post_id: post_id });
     };
     return Posts;
 }());
@@ -27016,6 +27075,8 @@ var SubscriptionsRoute = /** @class */ (function () {
         purchaseLicense: { url: '/titles/{title_id}/purchase', method: HTTP_METHODS.POST },
         listMyLicenses: { url: '/subscriptions/my-licenses', method: HTTP_METHODS.GET },
         refundLicense: { url: '/subscriptions/licenses/{license_id}/refund', method: HTTP_METHODS.POST },
+        purchaseGift: { url: '/subscriptions/gifts/purchase', method: HTTP_METHODS.POST },
+        redeemGift: { url: '/subscriptions/gifts/redeem', method: HTTP_METHODS.POST },
     };
     return SubscriptionsRoute;
 }());
@@ -27142,6 +27203,28 @@ var Subscriptions = /** @class */ (function () {
      */
     Subscriptions.refundLicense = function (license_id) {
         return Requests.processRoute(SubscriptionsRoute.routes.refundLicense, {}, { license_id: license_id });
+    };
+    /**
+     * Purchase a game or subscription as a gift for another user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/purchaseGift
+     *
+     * @param data { gift_type: 'premium'|'rental'|'subscription', payment_method_id: string, title_id?: string, recipient_id?: string, recipient_email?: string, recipient_name?: string }
+     * @returns promise
+     */
+    Subscriptions.purchaseGift = function (data) {
+        return Requests.processRoute(SubscriptionsRoute.routes.purchaseGift, data);
+    };
+    /**
+     * Redeem a gift code to grant access to a game or subscription.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/redeemGift
+     *
+     * @param redemption_code The unique GLITCH-XXXX-XXXX code.
+     * @returns promise
+     */
+    Subscriptions.redeemGift = function (redemption_code) {
+        return Requests.processRoute(SubscriptionsRoute.routes.redeemGift, { redemption_code: redemption_code });
     };
     return Subscriptions;
 }());

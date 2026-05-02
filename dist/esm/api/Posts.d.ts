@@ -102,5 +102,25 @@ declare class Posts {
      * @returns Promise
      */
     static toggleInteraction<T>(post_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Join a Play Together session.
+     */
+    static joinSession<T>(post_id: string, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Follow a bug report for updates.
+     */
+    static followBug<T>(post_id: string, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Update notification preferences for a post.
+     */
+    static updatePreferences<T>(post_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Leave a session or unfollow a bug.
+     */
+    static leave<T>(post_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Mark a bug as resolved (Admin only).
+     */
+    static resolveBug<T>(post_id: string): AxiosPromise<Response<T>>;
 }
 export default Posts;

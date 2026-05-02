@@ -95,5 +95,23 @@ declare class Subscriptions {
      * Request a refund for a premium purchase.
      */
     static refundLicense<T>(license_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Purchase a game or subscription as a gift for another user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/purchaseGift
+     *
+     * @param data { gift_type: 'premium'|'rental'|'subscription', payment_method_id: string, title_id?: string, recipient_id?: string, recipient_email?: string, recipient_name?: string }
+     * @returns promise
+     */
+    static purchaseGift<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Redeem a gift code to grant access to a game or subscription.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/redeemGift
+     *
+     * @param redemption_code The unique GLITCH-XXXX-XXXX code.
+     * @returns promise
+     */
+    static redeemGift<T>(redemption_code: string): AxiosPromise<Response<T>>;
 }
 export default Subscriptions;

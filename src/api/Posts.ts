@@ -172,6 +172,41 @@ class Posts {
         return Requests.processRoute(PostsRoute.routes.toggleInteraction, data, { post_id: post_id }, params);
     }
 
+    /**
+     * Join a Play Together session.
+     */
+    public static joinSession<T>(post_id: string, data?: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(PostsRoute.routes.join, data, { post_id });
+    }
+
+    /**
+     * Follow a bug report for updates.
+     */
+    public static followBug<T>(post_id: string, data?: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(PostsRoute.routes.follow, data, { post_id });
+    }
+
+    /**
+     * Update notification preferences for a post.
+     */
+    public static updatePreferences<T>(post_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(PostsRoute.routes.updatePreferences, data, { post_id });
+    }
+
+    /**
+     * Leave a session or unfollow a bug.
+     */
+    public static leave<T>(post_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(PostsRoute.routes.leave, {}, { post_id });
+    }
+
+    /**
+     * Mark a bug as resolved (Admin only).
+     */
+    public static resolveBug<T>(post_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(PostsRoute.routes.resolve, {}, { post_id });
+    }
+
 }
 
 export default Posts;
