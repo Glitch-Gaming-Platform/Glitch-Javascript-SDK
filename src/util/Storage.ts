@@ -2,6 +2,18 @@ class Storage {
   private static rootDomain: string = '';
   private static data: { [key: string]: any } = {};
 
+  private static crossDomainKeys = new Set([
+    'glitch_auth_token',
+    'glitch_token_expiry',
+    'user_id',
+    'user_first_name',
+    'user_last_name',
+    'username',
+    'email',
+    'session_id',
+    'community_id',
+  ]);
+
   public static setRootDomain(rootDomain: string) {
     Storage.rootDomain = rootDomain;
   }
@@ -10,11 +22,13 @@ class Storage {
     return Storage.rootDomain ? `${Storage.rootDomain}:${key}` : key;
   }
 
+  private static shouldShareAcrossSubdomains(key: string): boolean {
+    return !!Storage.rootDomain && Storage.crossDomainKeys.has(key);
+  }
+
   public static set(key: string, value: any) {
-    // 1. Always update in-memory fallback for the current process
     Storage.data[key] = value;
 
-    // 2. Only attempt browser storage if window exists
     if (typeof window !== 'undefined') {
       try {
         const serializedValue = JSON.stringify(value);
@@ -23,17 +37,32 @@ class Storage {
         try {
           const serializedValue = JSON.stringify(value);
           window.sessionStorage.setItem(Storage.getStorageKey(key), serializedValue);
-        } catch (e) {
-          try {
-            this.setCookie(key, value, 31);
-          } catch (e) {}
-        }
+        } catch (e) {}
+      }
+    }
+
+    // Important: shared session keys must be written to a root-domain cookie.
+    if (Storage.shouldShareAcrossSubdomains(key)) {
+      if (value === null || value === undefined) {
+        Storage.eraseCookie(key);
+      } else {
+        Storage.setCookie(key, value, 31);
       }
     }
   }
 
   public static get(key: string): any {
-    // 1. Try Browser Storage if available
+    // Important: for shared session keys, cookie must win over localStorage.
+    // Otherwise stale www.glitch.fun localStorage can override the real shared cookie.
+    if (Storage.shouldShareAcrossSubdomains(key)) {
+      try {
+        const cookieValue = Storage.getCookie(key);
+        if (cookieValue !== null && cookieValue !== undefined && cookieValue !== 'null') {
+          return cookieValue;
+        }
+      } catch (e) {}
+    }
+
     if (typeof window !== 'undefined') {
       try {
         const serializedValue = window.localStorage.getItem(Storage.getStorageKey(key));
@@ -46,98 +75,96 @@ class Storage {
       }
     }
 
-    // 2. Try Cookie (getCookie is now SSR safe)
-    let value = null;
     try {
-      value = Storage.getCookie(key);
+      const cookieValue = Storage.getCookie(key);
+      if (cookieValue !== null && cookieValue !== undefined && cookieValue !== 'null') {
+        return cookieValue;
+      }
     } catch (e) {}
 
-    // 3. Fallback to in-memory data
-    if (!value) {
-      value = Storage.data[key];
-    }
-    return value;
+    return Storage.data[key];
   }
 
   public static setAuthToken(token: string | null) {
-    if (Storage.rootDomain) {
-      if (token) {
-        this.setCookie('glitch_auth_token', token, 31);
-      } else {
-        this.eraseCookie('glitch_auth_token');
-      }
-    }
     Storage.set('glitch_auth_token', token);
   }
 
   public static getAuthToken(): string | null {
-    let token = Storage.getCookie('glitch_auth_token');
-
-    if (!token || token === 'null') {
-      token = Storage.get('glitch_auth_token');
-    }
-
-    return (token === 'null' || !token) ? null : token;
+    const token = Storage.get('glitch_auth_token');
+    return token === 'null' || !token ? null : token;
   }
 
   public static eraseCookie(name: string) {
-    // Use typeof check to prevent ReferenceError
-    if (typeof document !== 'undefined') {
+    if (typeof document === 'undefined') return;
+
+    // Clear host-only cookie.
+    document.cookie =
+      `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure`;
+
+    // Clear root-domain cookie.
+    if (Storage.rootDomain) {
       document.cookie =
-        name +
-        '=; Secure; HttpOnly=false; SameSite=none; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        `${name}=; Path=/; Domain=${Storage.rootDomain}; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure`;
     }
   }
 
-  private static setCookie(name: string, value: string, days: number) {
+  private static setCookie(name: string, value: any, days: number) {
     let expires = '';
+
     if (days) {
       const date = new Date();
       date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-      expires = '; expires=' + date.toUTCString();
+      expires = '; Expires=' + date.toUTCString();
     }
 
     if (typeof document !== 'undefined') {
+      const encodedValue = encodeURIComponent(JSON.stringify(value));
+
       document.cookie =
-        name +
-        '=' +
-        (value || '') +
-        expires +
-        '; path=/; domain=' +
-        Storage.rootDomain +
-        '; SameSite=Lax; Secure';
+        `${name}=${encodedValue}${expires}; Path=/; Domain=${Storage.rootDomain}; SameSite=Lax; Secure`;
     }
   }
 
-  private static getCookie(name: string): string | null {
-    // Use typeof check to prevent ReferenceError
+  private static getCookie(name: string): any {
     if (typeof document !== 'undefined') {
       const nameEQ = name + '=';
       const ca = document.cookie.split(';');
+
       for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+
+        while (c.charAt(0) === ' ') {
+          c = c.substring(1, c.length);
+        }
+
+        if (c.indexOf(nameEQ) === 0) {
+          const rawValue = c.substring(nameEQ.length, c.length);
+
+          try {
+            const decodedValue = decodeURIComponent(rawValue);
+            return JSON.parse(decodedValue);
+          } catch (e) {
+            try {
+              return decodeURIComponent(rawValue);
+            } catch (e2) {
+              return rawValue;
+            }
+          }
+        }
       }
     }
+
     return null;
   }
 
   public static setTokenExpiry(expiresInSeconds: number) {
-    const expiryTime = Date.now() + (expiresInSeconds * 1000);
+    const expiryTime = Date.now() + expiresInSeconds * 1000;
     Storage.set('glitch_token_expiry', expiryTime);
-
-    if (Storage.rootDomain && typeof document !== 'undefined') {
-      this.setCookie('glitch_token_expiry', expiryTime.toString(), 31);
-    }
   }
 
   public static getTokenExpiry(): number | null {
-    let expiry = Storage.getCookie('glitch_token_expiry');
-    if (!expiry) {
-      expiry = Storage.get('glitch_token_expiry');
-    }
-    return expiry ? parseInt(expiry) : null;
+    const expiry = Storage.get('glitch_token_expiry');
+    return expiry ? parseInt(String(expiry), 10) : null;
   }
 
   public static isTokenExpired(): boolean {

@@ -1,8 +1,10 @@
 declare class Storage {
     private static rootDomain;
     private static data;
+    private static crossDomainKeys;
     static setRootDomain(rootDomain: string): void;
     private static getStorageKey;
+    private static shouldShareAcrossSubdomains;
     static set(key: string, value: any): void;
     static get(key: string): any;
     static setAuthToken(token: string | null): void;

@@ -18772,10 +18772,11 @@ var Storage = /** @class */ (function () {
     Storage.getStorageKey = function (key) {
         return Storage.rootDomain ? "".concat(Storage.rootDomain, ":").concat(key) : key;
     };
+    Storage.shouldShareAcrossSubdomains = function (key) {
+        return !!Storage.rootDomain && Storage.crossDomainKeys.has(key);
+    };
     Storage.set = function (key, value) {
-        // 1. Always update in-memory fallback for the current process
         Storage.data[key] = value;
-        // 2. Only attempt browser storage if window exists
         if (typeof window !== 'undefined') {
             try {
                 var serializedValue = JSON.stringify(value);
@@ -18786,17 +18787,31 @@ var Storage = /** @class */ (function () {
                     var serializedValue = JSON.stringify(value);
                     window.sessionStorage.setItem(Storage.getStorageKey(key), serializedValue);
                 }
-                catch (e) {
-                    try {
-                        this.setCookie(key, value, 31);
-                    }
-                    catch (e) { }
-                }
+                catch (e) { }
+            }
+        }
+        // Important: shared session keys must be written to a root-domain cookie.
+        if (Storage.shouldShareAcrossSubdomains(key)) {
+            if (value === null || value === undefined) {
+                Storage.eraseCookie(key);
+            }
+            else {
+                Storage.setCookie(key, value, 31);
             }
         }
     };
     Storage.get = function (key) {
-        // 1. Try Browser Storage if available
+        // Important: for shared session keys, cookie must win over localStorage.
+        // Otherwise stale www.glitch.fun localStorage can override the real shared cookie.
+        if (Storage.shouldShareAcrossSubdomains(key)) {
+            try {
+                var cookieValue = Storage.getCookie(key);
+                if (cookieValue !== null && cookieValue !== undefined && cookieValue !== 'null') {
+                    return cookieValue;
+                }
+            }
+            catch (e) { }
+        }
         if (typeof window !== 'undefined') {
             try {
                 var serializedValue = window.localStorage.getItem(Storage.getStorageKey(key));
@@ -18812,42 +18827,32 @@ var Storage = /** @class */ (function () {
                 catch (e) { }
             }
         }
-        // 2. Try Cookie (getCookie is now SSR safe)
-        var value = null;
         try {
-            value = Storage.getCookie(key);
+            var cookieValue = Storage.getCookie(key);
+            if (cookieValue !== null && cookieValue !== undefined && cookieValue !== 'null') {
+                return cookieValue;
+            }
         }
         catch (e) { }
-        // 3. Fallback to in-memory data
-        if (!value) {
-            value = Storage.data[key];
-        }
-        return value;
+        return Storage.data[key];
     };
     Storage.setAuthToken = function (token) {
-        if (Storage.rootDomain) {
-            if (token) {
-                this.setCookie('glitch_auth_token', token, 31);
-            }
-            else {
-                this.eraseCookie('glitch_auth_token');
-            }
-        }
         Storage.set('glitch_auth_token', token);
     };
     Storage.getAuthToken = function () {
-        var token = Storage.getCookie('glitch_auth_token');
-        if (!token || token === 'null') {
-            token = Storage.get('glitch_auth_token');
-        }
-        return (token === 'null' || !token) ? null : token;
+        var token = Storage.get('glitch_auth_token');
+        return token === 'null' || !token ? null : token;
     };
     Storage.eraseCookie = function (name) {
-        // Use typeof check to prevent ReferenceError
-        if (typeof document !== 'undefined') {
+        if (typeof document === 'undefined')
+            return;
+        // Clear host-only cookie.
+        document.cookie =
+            "".concat(name, "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure");
+        // Clear root-domain cookie.
+        if (Storage.rootDomain) {
             document.cookie =
-                name +
-                    '=; Secure; HttpOnly=false; SameSite=none; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                "".concat(name, "=; Path=/; Domain=").concat(Storage.rootDomain, "; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure");
         }
     };
     Storage.setCookie = function (name, value, days) {
@@ -18855,47 +18860,49 @@ var Storage = /** @class */ (function () {
         if (days) {
             var date = new Date();
             date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-            expires = '; expires=' + date.toUTCString();
+            expires = '; Expires=' + date.toUTCString();
         }
         if (typeof document !== 'undefined') {
+            var encodedValue = encodeURIComponent(JSON.stringify(value));
             document.cookie =
-                name +
-                    '=' +
-                    (value || '') +
-                    expires +
-                    '; path=/; domain=' +
-                    Storage.rootDomain +
-                    '; SameSite=Lax; Secure';
+                "".concat(name, "=").concat(encodedValue).concat(expires, "; Path=/; Domain=").concat(Storage.rootDomain, "; SameSite=Lax; Secure");
         }
     };
     Storage.getCookie = function (name) {
-        // Use typeof check to prevent ReferenceError
         if (typeof document !== 'undefined') {
             var nameEQ = name + '=';
             var ca = document.cookie.split(';');
             for (var i = 0; i < ca.length; i++) {
                 var c = ca[i];
-                while (c.charAt(0) == ' ')
+                while (c.charAt(0) === ' ') {
                     c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) == 0)
-                    return c.substring(nameEQ.length, c.length);
+                }
+                if (c.indexOf(nameEQ) === 0) {
+                    var rawValue = c.substring(nameEQ.length, c.length);
+                    try {
+                        var decodedValue = decodeURIComponent(rawValue);
+                        return JSON.parse(decodedValue);
+                    }
+                    catch (e) {
+                        try {
+                            return decodeURIComponent(rawValue);
+                        }
+                        catch (e2) {
+                            return rawValue;
+                        }
+                    }
+                }
             }
         }
         return null;
     };
     Storage.setTokenExpiry = function (expiresInSeconds) {
-        var expiryTime = Date.now() + (expiresInSeconds * 1000);
+        var expiryTime = Date.now() + expiresInSeconds * 1000;
         Storage.set('glitch_token_expiry', expiryTime);
-        if (Storage.rootDomain && typeof document !== 'undefined') {
-            this.setCookie('glitch_token_expiry', expiryTime.toString(), 31);
-        }
     };
     Storage.getTokenExpiry = function () {
-        var expiry = Storage.getCookie('glitch_token_expiry');
-        if (!expiry) {
-            expiry = Storage.get('glitch_token_expiry');
-        }
-        return expiry ? parseInt(expiry) : null;
+        var expiry = Storage.get('glitch_token_expiry');
+        return expiry ? parseInt(String(expiry), 10) : null;
     };
     Storage.isTokenExpired = function () {
         var expiry = this.getTokenExpiry();
@@ -18905,6 +18912,17 @@ var Storage = /** @class */ (function () {
     };
     Storage.rootDomain = '';
     Storage.data = {};
+    Storage.crossDomainKeys = new Set([
+        'glitch_auth_token',
+        'glitch_token_expiry',
+        'user_id',
+        'user_first_name',
+        'user_last_name',
+        'username',
+        'email',
+        'session_id',
+        'community_id',
+    ]);
     return Storage;
 }());
 
