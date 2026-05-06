@@ -162,6 +162,18 @@ class Subscriptions {
         return Requests.processRoute(SubscriptionsRoute.routes.redeemGift, { redemption_code });
     }
 
+    /**
+     * Cancel an unredeemed gift and trigger a refund.
+     * Only the user who purchased the gift (the giver) can perform this action.
+     * 
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/cancelGift
+     * 
+     * @param gift_id The UUID of the gift to cancel.
+     * @returns promise
+     */
+    public static cancelGift<T>(gift_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.cancelGift, {}, { gift_id });
+    }
 
 }
 

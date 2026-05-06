@@ -113,5 +113,15 @@ declare class Subscriptions {
      * @returns promise
      */
     static redeemGift<T>(redemption_code: string): AxiosPromise<Response<T>>;
+    /**
+     * Cancel an unredeemed gift and trigger a refund.
+     * Only the user who purchased the gift (the giver) can perform this action.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/cancelGift
+     *
+     * @param gift_id The UUID of the gift to cancel.
+     * @returns promise
+     */
+    static cancelGift<T>(gift_id: string): AxiosPromise<Response<T>>;
 }
 export default Subscriptions;

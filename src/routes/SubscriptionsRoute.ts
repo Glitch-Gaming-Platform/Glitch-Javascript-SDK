@@ -26,6 +26,7 @@ class SubscriptionsRoute {
 
         purchaseGift: { url: '/subscriptions/gifts/purchase', method: HTTP_METHODS.POST },
         redeemGift: { url: '/subscriptions/gifts/redeem', method: HTTP_METHODS.POST },
+        cancelGift: { url: '/subscriptions/gifts/{gift_id}', method: HTTP_METHODS.DELETE },
 
     };
 

@@ -25067,7 +25067,7 @@ var TitlesRoute = /** @class */ (function () {
         // Aegis Deployment
         getDeploymentUploadUrl: { url: '/titles/{title_id}/deployments/presigned-url', method: HTTP_METHODS.POST },
         confirmDeployment: { url: '/titles/{title_id}/deployments/confirm', method: HTTP_METHODS.POST },
-        getPlaySession: { url: '/titles/{title_id}/play', method: HTTP_METHODS.GET },
+        getPlaySession: { url: '/titles/{title_id}/play', method: HTTP_METHODS.POST },
         initiateMultipartUpload: { url: '/titles/{title_id}/deployments/multipart/initiate', method: HTTP_METHODS.POST },
         getMultipartUrls: { url: '/titles/{title_id}/deployments/multipart/urls', method: HTTP_METHODS.POST },
         completeMultipartUpload: { url: '/titles/{title_id}/deployments/multipart/complete', method: HTTP_METHODS.POST },
@@ -25783,8 +25783,8 @@ var Titles = /** @class */ (function () {
      * Initializes a play session. Handles age-gating and license verification.
      * Returns the CDN URL for WASM/iFrame or Signaling URL for Pixel Streaming.
      */
-    Titles.getPlaySession = function (title_id, params) {
-        return Requests.processRoute(TitlesRoute.routes.getPlaySession, {}, { title_id: title_id }, params);
+    Titles.getPlaySession = function (title_id, data, params) {
+        return Requests.processRoute(TitlesRoute.routes.getPlaySession, data, { title_id: title_id }, params);
     };
     /**
      * List all developer payouts for a title.
@@ -27077,6 +27077,7 @@ var SubscriptionsRoute = /** @class */ (function () {
         refundLicense: { url: '/subscriptions/licenses/{license_id}/refund', method: HTTP_METHODS.POST },
         purchaseGift: { url: '/subscriptions/gifts/purchase', method: HTTP_METHODS.POST },
         redeemGift: { url: '/subscriptions/gifts/redeem', method: HTTP_METHODS.POST },
+        cancelGift: { url: '/subscriptions/gifts/{gift_id}', method: HTTP_METHODS.DELETE },
     };
     return SubscriptionsRoute;
 }());
@@ -27225,6 +27226,18 @@ var Subscriptions = /** @class */ (function () {
      */
     Subscriptions.redeemGift = function (redemption_code) {
         return Requests.processRoute(SubscriptionsRoute.routes.redeemGift, { redemption_code: redemption_code });
+    };
+    /**
+     * Cancel an unredeemed gift and trigger a refund.
+     * Only the user who purchased the gift (the giver) can perform this action.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/cancelGift
+     *
+     * @param gift_id The UUID of the gift to cancel.
+     * @returns promise
+     */
+    Subscriptions.cancelGift = function (gift_id) {
+        return Requests.processRoute(SubscriptionsRoute.routes.cancelGift, {}, { gift_id: gift_id });
     };
     return Subscriptions;
 }());

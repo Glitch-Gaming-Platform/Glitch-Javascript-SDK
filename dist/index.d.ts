@@ -4410,7 +4410,7 @@ declare class Titles {
      * Initializes a play session. Handles age-gating and license verification.
      * Returns the CDN URL for WASM/iFrame or Signaling URL for Pixel Streaming.
      */
-    static getPlaySession<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static getPlaySession<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List all developer payouts for a title.
      */
@@ -5478,6 +5478,16 @@ declare class Subscriptions {
      * @returns promise
      */
     static redeemGift<T>(redemption_code: string): AxiosPromise<Response<T>>;
+    /**
+     * Cancel an unredeemed gift and trigger a refund.
+     * Only the user who purchased the gift (the giver) can perform this action.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Subscriptions/cancelGift
+     *
+     * @param gift_id The UUID of the gift to cancel.
+     * @returns promise
+     */
+    static cancelGift<T>(gift_id: string): AxiosPromise<Response<T>>;
 }
 
 declare class Messages {

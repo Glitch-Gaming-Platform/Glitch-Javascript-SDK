@@ -183,7 +183,7 @@ class TitlesRoute {
     // Aegis Deployment
     getDeploymentUploadUrl: { url: '/titles/{title_id}/deployments/presigned-url', method: HTTP_METHODS.POST },
     confirmDeployment: { url: '/titles/{title_id}/deployments/confirm', method: HTTP_METHODS.POST },
-    getPlaySession: { url: '/titles/{title_id}/play', method: HTTP_METHODS.GET },
+    getPlaySession: { url: '/titles/{title_id}/play', method: HTTP_METHODS.POST },
 
     initiateMultipartUpload: { url: '/titles/{title_id}/deployments/multipart/initiate', method: HTTP_METHODS.POST },
     getMultipartUrls: { url: '/titles/{title_id}/deployments/multipart/urls', method: HTTP_METHODS.POST },
