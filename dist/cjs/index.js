@@ -27096,6 +27096,7 @@ var SubscriptionsRoute = /** @class */ (function () {
         purchaseGift: { url: '/subscriptions/gifts/purchase', method: HTTP_METHODS.POST },
         redeemGift: { url: '/subscriptions/gifts/redeem', method: HTTP_METHODS.POST },
         cancelGift: { url: '/subscriptions/gifts/{gift_id}', method: HTTP_METHODS.DELETE },
+        validateCoupon: { url: '/subscriptions/coupons/validate', method: HTTP_METHODS.POST },
     };
     return SubscriptionsRoute;
 }());
@@ -27256,6 +27257,13 @@ var Subscriptions = /** @class */ (function () {
      */
     Subscriptions.cancelGift = function (gift_id) {
         return Requests.processRoute(SubscriptionsRoute.routes.cancelGift, {}, { gift_id: gift_id });
+    };
+    /**
+     * Validates a coupon code and returns the calculated discount.
+     * @param data { code: string, price: number, currency?: string }
+     */
+    Subscriptions.validateCoupon = function (data) {
+        return Requests.processRoute(SubscriptionsRoute.routes.validateCoupon, data);
     };
     return Subscriptions;
 }());

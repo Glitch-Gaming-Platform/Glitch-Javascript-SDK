@@ -5488,6 +5488,15 @@ declare class Subscriptions {
      * @returns promise
      */
     static cancelGift<T>(gift_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Validates a coupon code and returns the calculated discount.
+     * @param data { code: string, price: number, currency?: string }
+     */
+    static validateCoupon<T>(data: {
+        code: string;
+        price: number;
+        currency?: string;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Messages {

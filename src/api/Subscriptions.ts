@@ -175,6 +175,14 @@ class Subscriptions {
         return Requests.processRoute(SubscriptionsRoute.routes.cancelGift, {}, { gift_id });
     }
 
+    /**
+     * Validates a coupon code and returns the calculated discount.
+     * @param data { code: string, price: number, currency?: string }
+     */
+    public static validateCoupon<T>(data: { code: string, price: number, currency?: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.validateCoupon, data);
+    }
+
 }
 
 export default Subscriptions;

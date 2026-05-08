@@ -28,6 +28,8 @@ class SubscriptionsRoute {
         redeemGift: { url: '/subscriptions/gifts/redeem', method: HTTP_METHODS.POST },
         cancelGift: { url: '/subscriptions/gifts/{gift_id}', method: HTTP_METHODS.DELETE },
 
+        validateCoupon: { url: '/subscriptions/coupons/validate', method: HTTP_METHODS.POST },
+
     };
 
 }
