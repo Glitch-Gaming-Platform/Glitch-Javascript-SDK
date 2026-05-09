@@ -4592,6 +4592,34 @@ declare class Titles {
         limit?: number;
         device_id?: string;
     }): AxiosPromise<Response<T>>;
+    /**
+    * Get a curated, playable feed for the Swipe interface.
+    * This route ensures games have builds and images, and supports seeded randomization.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Discovery/getSwipeFeed
+    *
+    * @param params Object of query params:
+    *   - seed?: number (For consistent randomization)
+    *   - genres?: string[] (Filter by genre names)
+    *   - models?: string[] (premium, rental, subscription, free)
+    *   - excluded_ids?: string[] (UUIDs to skip)
+    *   - page?: number
+    *   - per_page?: number
+    */
+    static swipeFeed<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a consolidated report of all earnings for a title, including
+     * playtime payouts, direct premium purchases, and rentals (minus refunds).
+     *
+     * @param title_id The UUID of the title.
+     * @returns AxiosPromise containing the consolidated financial data.
+     */
+    static getDeveloperPayoutConsolidatedSummary<T>(title_id: string): AxiosPromise<Response<T>>;
+    static wishlistHistory<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static wishlistInfluencers<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static wishlistAds<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static wishlistUtms<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static wishlistConversions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {

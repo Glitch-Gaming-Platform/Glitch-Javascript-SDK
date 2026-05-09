@@ -1253,6 +1253,59 @@ class Titles {
     public static getDiscoveryQueue<T>(params?: { limit?: number, device_id?: string }): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.discoveryQueue, {}, {}, params);
     }
+
+    /**
+    * Get a curated, playable feed for the Swipe interface.
+    * This route ensures games have builds and images, and supports seeded randomization.
+    * 
+    * @see https://api.glitch.fun/api/documentation#/Discovery/getSwipeFeed
+    * 
+    * @param params Object of query params:
+    *   - seed?: number (For consistent randomization)
+    *   - genres?: string[] (Filter by genre names)
+    *   - models?: string[] (premium, rental, subscription, free)
+    *   - excluded_ids?: string[] (UUIDs to skip)
+    *   - page?: number
+    *   - per_page?: number
+    */
+    public static swipeFeed<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.swipeFeed, {}, undefined, params);
+    }
+
+    /**
+     * Get a consolidated report of all earnings for a title, including 
+     * playtime payouts, direct premium purchases, and rentals (minus refunds).
+     * 
+     * @param title_id The UUID of the title.
+     * @returns AxiosPromise containing the consolidated financial data.
+     */
+    public static getDeveloperPayoutConsolidatedSummary<T>(title_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            TitlesRoute.routes.developerPayoutConsolidatedSummary,
+            {},
+            { title_id }
+        );
+    }
+
+    public static wishlistHistory<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.wishlistHistory, undefined, { title_id }, params);
+    }
+
+    public static wishlistInfluencers<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.wishlistInfluencers, undefined, { title_id }, params);
+    }
+
+    public static wishlistAds<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.wishlistAds, undefined, { title_id }, params);
+    }
+
+    public static wishlistUtms<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.wishlistUtms, undefined, { title_id }, params);
+    }
+
+    public static wishlistConversions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.wishlistConversions, undefined, { title_id }, params);
+    }
 }
 
 export default Titles;

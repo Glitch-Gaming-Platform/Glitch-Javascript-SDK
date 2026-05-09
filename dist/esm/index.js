@@ -11981,6 +11981,20 @@ var TitlesRoute = /** @class */ (function () {
         communityActivity: { url: '/titles/activity/trending', method: HTTP_METHODS.GET },
         socialTrending: { url: '/titles/activity/social', method: HTTP_METHODS.GET },
         discoveryQueue: { url: '/titles/discovery/queue', method: HTTP_METHODS.GET },
+        /**
+        * Curated, playable feed for the Swipe interface.
+        * GET /titles/discovery/swipe
+        */
+        swipeFeed: { url: '/titles/discovery/swipe', method: HTTP_METHODS.GET },
+        developerPayoutConsolidatedSummary: {
+            url: '/titles/{title_id}/payouts/consolidated-summary',
+            method: HTTP_METHODS.GET
+        },
+        wishlistHistory: { url: '/titles/{title_id}/wishlist/history', method: HTTP_METHODS.GET },
+        wishlistInfluencers: { url: '/titles/{title_id}/wishlist/influencers', method: HTTP_METHODS.GET },
+        wishlistAds: { url: '/titles/{title_id}/wishlist/ads', method: HTTP_METHODS.GET },
+        wishlistUtms: { url: '/titles/{title_id}/wishlist/utms', method: HTTP_METHODS.GET },
+        wishlistConversions: { url: '/titles/{title_id}/wishlist/conversions', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());
@@ -12862,6 +12876,48 @@ var Titles = /** @class */ (function () {
      */
     Titles.getDiscoveryQueue = function (params) {
         return Requests.processRoute(TitlesRoute.routes.discoveryQueue, {}, {}, params);
+    };
+    /**
+    * Get a curated, playable feed for the Swipe interface.
+    * This route ensures games have builds and images, and supports seeded randomization.
+    *
+    * @see https://api.glitch.fun/api/documentation#/Discovery/getSwipeFeed
+    *
+    * @param params Object of query params:
+    *   - seed?: number (For consistent randomization)
+    *   - genres?: string[] (Filter by genre names)
+    *   - models?: string[] (premium, rental, subscription, free)
+    *   - excluded_ids?: string[] (UUIDs to skip)
+    *   - page?: number
+    *   - per_page?: number
+    */
+    Titles.swipeFeed = function (params) {
+        return Requests.processRoute(TitlesRoute.routes.swipeFeed, {}, undefined, params);
+    };
+    /**
+     * Get a consolidated report of all earnings for a title, including
+     * playtime payouts, direct premium purchases, and rentals (minus refunds).
+     *
+     * @param title_id The UUID of the title.
+     * @returns AxiosPromise containing the consolidated financial data.
+     */
+    Titles.getDeveloperPayoutConsolidatedSummary = function (title_id) {
+        return Requests.processRoute(TitlesRoute.routes.developerPayoutConsolidatedSummary, {}, { title_id: title_id });
+    };
+    Titles.wishlistHistory = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.wishlistHistory, undefined, { title_id: title_id }, params);
+    };
+    Titles.wishlistInfluencers = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.wishlistInfluencers, undefined, { title_id: title_id }, params);
+    };
+    Titles.wishlistAds = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.wishlistAds, undefined, { title_id: title_id }, params);
+    };
+    Titles.wishlistUtms = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.wishlistUtms, undefined, { title_id: title_id }, params);
+    };
+    Titles.wishlistConversions = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.wishlistConversions, undefined, { title_id: title_id }, params);
     };
     return Titles;
 }());

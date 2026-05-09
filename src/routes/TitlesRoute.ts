@@ -282,6 +282,23 @@ class TitlesRoute {
     socialTrending: { url: '/titles/activity/social', method: HTTP_METHODS.GET },
     discoveryQueue: { url: '/titles/discovery/queue', method: HTTP_METHODS.GET },
 
+     /**
+     * Curated, playable feed for the Swipe interface.
+     * GET /titles/discovery/swipe
+     */
+    swipeFeed: { url: '/titles/discovery/swipe', method: HTTP_METHODS.GET },
+
+    developerPayoutConsolidatedSummary: { 
+      url: '/titles/{title_id}/payouts/consolidated-summary', 
+      method: HTTP_METHODS.GET 
+    },
+
+    wishlistHistory: { url: '/titles/{title_id}/wishlist/history', method: HTTP_METHODS.GET },
+    wishlistInfluencers: { url: '/titles/{title_id}/wishlist/influencers', method: HTTP_METHODS.GET },
+    wishlistAds: { url: '/titles/{title_id}/wishlist/ads', method: HTTP_METHODS.GET },
+    wishlistUtms: { url: '/titles/{title_id}/wishlist/utms', method: HTTP_METHODS.GET },
+    wishlistConversions: { url: '/titles/{title_id}/wishlist/conversions', method: HTTP_METHODS.GET },
+
   };
 
 }
