@@ -11995,6 +11995,8 @@ var TitlesRoute = /** @class */ (function () {
         wishlistAds: { url: '/titles/{title_id}/wishlist/ads', method: HTTP_METHODS.GET },
         wishlistUtms: { url: '/titles/{title_id}/wishlist/utms', method: HTTP_METHODS.GET },
         wishlistConversions: { url: '/titles/{title_id}/wishlist/conversions', method: HTTP_METHODS.GET },
+        wishlistGeo: { url: '/titles/{title_id}/wishlist/geo', method: HTTP_METHODS.GET },
+        wishlistDevices: { url: '/titles/{title_id}/wishlist/devices', method: HTTP_METHODS.GET },
     };
     return TitlesRoute;
 }());
@@ -12918,6 +12920,12 @@ var Titles = /** @class */ (function () {
     };
     Titles.wishlistConversions = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.wishlistConversions, undefined, { title_id: title_id }, params);
+    };
+    Titles.wishlistGeo = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.wishlistGeo, undefined, { title_id: title_id }, params);
+    };
+    Titles.wishlistDevices = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.wishlistDevices, undefined, { title_id: title_id }, params);
     };
     return Titles;
 }());

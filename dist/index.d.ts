@@ -4620,6 +4620,8 @@ declare class Titles {
     static wishlistAds<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static wishlistUtms<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static wishlistConversions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static wishlistGeo<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static wishlistDevices<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {

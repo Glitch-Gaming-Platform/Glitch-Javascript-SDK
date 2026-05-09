@@ -1306,6 +1306,14 @@ class Titles {
     public static wishlistConversions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.wishlistConversions, undefined, { title_id }, params);
     }
+
+    public static wishlistGeo<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.wishlistGeo, undefined, { title_id }, params);
+    }
+
+    public static wishlistDevices<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.wishlistDevices, undefined, { title_id }, params);
+    }
 }
 
 export default Titles;

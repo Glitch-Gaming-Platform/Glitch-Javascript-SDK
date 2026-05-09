@@ -298,6 +298,8 @@ class TitlesRoute {
     wishlistAds: { url: '/titles/{title_id}/wishlist/ads', method: HTTP_METHODS.GET },
     wishlistUtms: { url: '/titles/{title_id}/wishlist/utms', method: HTTP_METHODS.GET },
     wishlistConversions: { url: '/titles/{title_id}/wishlist/conversions', method: HTTP_METHODS.GET },
+    wishlistGeo: { url: '/titles/{title_id}/wishlist/geo', method: HTTP_METHODS.GET },
+    wishlistDevices: { url: '/titles/{title_id}/wishlist/devices', method: HTTP_METHODS.GET },
 
   };
 
