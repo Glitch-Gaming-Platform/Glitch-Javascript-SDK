@@ -24471,6 +24471,10 @@ var SocialPostsRoute = /** @class */ (function () {
             url: '/reports/fingerprinting/social-post-attribution',
             method: HTTP_METHODS.GET
         },
+        influencerAttribution: {
+            url: '/reports/fingerprinting/influencer-attribution',
+            method: HTTP_METHODS.GET
+        },
         /**
          * Get UTM performance correlated with installs and revenue.
          * GET /reports/fingerprinting/utm-attribution
@@ -24955,6 +24959,9 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.getUtmAttribution = function (params) {
         return Requests.processRoute(SocialPostsRoute.routes.utmAttribution, {}, undefined, params);
+    };
+    SocialPosts.getInfluencerAttribution = function (params) {
+        return Requests.processRoute(SocialPostsRoute.routes.influencerAttribution, {}, undefined, params);
     };
     return SocialPosts;
 }());

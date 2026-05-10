@@ -522,6 +522,15 @@ class SocialPosts {
     }): AxiosPromise<Response<T>> {
         return Requests.processRoute(SocialPostsRoute.routes.utmAttribution, {}, undefined, params);
     }
+
+    public static getInfluencerAttribution<T>(params: { 
+        title_id: string, 
+        start_date?: string, 
+        end_date?: string, 
+        confidence_threshold?: number 
+    }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.influencerAttribution, {}, undefined, params);
+    }
 }
 
 export default SocialPosts;

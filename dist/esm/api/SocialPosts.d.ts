@@ -383,5 +383,11 @@ declare class SocialPosts {
         end_date?: string;
         confidence_threshold?: number;
     }): AxiosPromise<Response<T>>;
+    static getInfluencerAttribution<T>(params: {
+        title_id: string;
+        start_date?: string;
+        end_date?: string;
+        confidence_threshold?: number;
+    }): AxiosPromise<Response<T>>;
 }
 export default SocialPosts;

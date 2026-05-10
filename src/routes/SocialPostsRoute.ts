@@ -45,6 +45,11 @@ class SocialPostsRoute {
             method: HTTP_METHODS.GET 
         },
 
+        influencerAttribution: { 
+            url: '/reports/fingerprinting/influencer-attribution', 
+            method: HTTP_METHODS.GET 
+        },
+
         /**
          * Get UTM performance correlated with installs and revenue.
          * GET /reports/fingerprinting/utm-attribution
