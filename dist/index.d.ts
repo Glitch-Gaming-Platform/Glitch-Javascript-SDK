@@ -3920,6 +3920,36 @@ declare class SocialPosts {
         content: string;
         title_id: string;
     }): AxiosPromise<Response<T>>;
+    /**
+     * Get a report attributing game installs, wishlists, and purchases to specific social media posts.
+     *
+     * @param params Filter object:
+     *   - title_id: string (Required)
+     *   - start_date?: string (YYYY-MM-DD)
+     *   - end_date?: string (YYYY-MM-DD)
+     *   - confidence_threshold?: number (0-100)
+     */
+    static getSocialPostAttribution<T>(params: {
+        title_id: string;
+        start_date?: string;
+        end_date?: string;
+        confidence_threshold?: number;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Get a report attributing game installs and revenue to specific UTM sources and campaigns.
+     *
+     * @param params Filter object:
+     *   - title_id: string (Required)
+     *   - start_date?: string (YYYY-MM-DD)
+     *   - end_date?: string (YYYY-MM-DD)
+     *   - confidence_threshold?: number (0-100)
+     */
+    static getUtmAttribution<T>(params: {
+        title_id: string;
+        start_date?: string;
+        end_date?: string;
+        confidence_threshold?: number;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Titles {

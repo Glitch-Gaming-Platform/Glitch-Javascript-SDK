@@ -11279,6 +11279,22 @@ var SocialPostsRoute = /** @class */ (function () {
         getSocialPostAttributionReport: { url: '/reports/fingerprinting/social-post-attribution', method: HTTP_METHODS.GET },
         getLinkSummary: { url: '/socialposts/{post_id}/link-summary', method: HTTP_METHODS.GET },
         syncHistory: { url: '/social/sync-history/{platform}', method: HTTP_METHODS.POST },
+        /**
+        * Get social media posts correlated with installs, wishlists, and purchases.
+        * GET /reports/fingerprinting/social-post-attribution
+        */
+        socialPostAttribution: {
+            url: '/reports/fingerprinting/social-post-attribution',
+            method: HTTP_METHODS.GET
+        },
+        /**
+         * Get UTM performance correlated with installs and revenue.
+         * GET /reports/fingerprinting/utm-attribution
+         */
+        utmAttribution: {
+            url: '/reports/fingerprinting/utm-attribution',
+            method: HTTP_METHODS.GET
+        },
         performAction: { url: '/socialposts/{post_id}/action', method: HTTP_METHODS.POST },
         performCommentAction: { url: '/socialposts/comments/{comment_id}/action', method: HTTP_METHODS.POST },
         creativePerformance: { url: '/socialposts/creative-performance', method: HTTP_METHODS.GET },
@@ -11731,6 +11747,30 @@ var SocialPosts = /** @class */ (function () {
      */
     SocialPosts.optimizeRedditPost = function (data) {
         return Requests.processRoute(SocialPostsRoute.routes.optimizeRedditPost, data);
+    };
+    /**
+     * Get a report attributing game installs, wishlists, and purchases to specific social media posts.
+     *
+     * @param params Filter object:
+     *   - title_id: string (Required)
+     *   - start_date?: string (YYYY-MM-DD)
+     *   - end_date?: string (YYYY-MM-DD)
+     *   - confidence_threshold?: number (0-100)
+     */
+    SocialPosts.getSocialPostAttribution = function (params) {
+        return Requests.processRoute(SocialPostsRoute.routes.socialPostAttribution, {}, undefined, params);
+    };
+    /**
+     * Get a report attributing game installs and revenue to specific UTM sources and campaigns.
+     *
+     * @param params Filter object:
+     *   - title_id: string (Required)
+     *   - start_date?: string (YYYY-MM-DD)
+     *   - end_date?: string (YYYY-MM-DD)
+     *   - confidence_threshold?: number (0-100)
+     */
+    SocialPosts.getUtmAttribution = function (params) {
+        return Requests.processRoute(SocialPostsRoute.routes.utmAttribution, {}, undefined, params);
     };
     return SocialPosts;
 }());

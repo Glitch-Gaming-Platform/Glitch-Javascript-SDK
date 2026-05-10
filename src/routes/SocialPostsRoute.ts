@@ -35,6 +35,24 @@ class SocialPostsRoute {
         getSocialPostAttributionReport: { url: '/reports/fingerprinting/social-post-attribution', method: HTTP_METHODS.GET },
         getLinkSummary: { url: '/socialposts/{post_id}/link-summary', method: HTTP_METHODS.GET },
         syncHistory: { url: '/social/sync-history/{platform}', method: HTTP_METHODS.POST },
+        
+         /**
+         * Get social media posts correlated with installs, wishlists, and purchases.
+         * GET /reports/fingerprinting/social-post-attribution
+         */
+        socialPostAttribution: { 
+            url: '/reports/fingerprinting/social-post-attribution', 
+            method: HTTP_METHODS.GET 
+        },
+
+        /**
+         * Get UTM performance correlated with installs and revenue.
+         * GET /reports/fingerprinting/utm-attribution
+         */
+        utmAttribution: { 
+            url: '/reports/fingerprinting/utm-attribution', 
+            method: HTTP_METHODS.GET 
+        },
 
         performAction: { url: '/socialposts/{post_id}/action', method: HTTP_METHODS.POST },
         performCommentAction: { url: '/socialposts/comments/{comment_id}/action', method: HTTP_METHODS.POST },

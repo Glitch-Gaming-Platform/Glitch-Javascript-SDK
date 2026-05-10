@@ -486,6 +486,42 @@ class SocialPosts {
     public static optimizeRedditPost<T>(data: { subreddit: string, content: string, title_id: string }): AxiosPromise<Response<T>> {
         return Requests.processRoute(SocialPostsRoute.routes.optimizeRedditPost, data);
     }
+
+    /**
+     * Get a report attributing game installs, wishlists, and purchases to specific social media posts.
+     * 
+     * @param params Filter object:
+     *   - title_id: string (Required)
+     *   - start_date?: string (YYYY-MM-DD)
+     *   - end_date?: string (YYYY-MM-DD)
+     *   - confidence_threshold?: number (0-100)
+     */
+    public static getSocialPostAttribution<T>(params: { 
+        title_id: string, 
+        start_date?: string, 
+        end_date?: string, 
+        confidence_threshold?: number 
+    }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.socialPostAttribution, {}, undefined, params);
+    }
+
+    /**
+     * Get a report attributing game installs and revenue to specific UTM sources and campaigns.
+     * 
+     * @param params Filter object:
+     *   - title_id: string (Required)
+     *   - start_date?: string (YYYY-MM-DD)
+     *   - end_date?: string (YYYY-MM-DD)
+     *   - confidence_threshold?: number (0-100)
+     */
+    public static getUtmAttribution<T>(params: { 
+        title_id: string, 
+        start_date?: string, 
+        end_date?: string, 
+        confidence_threshold?: number 
+    }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.utmAttribution, {}, undefined, params);
+    }
 }
 
 export default SocialPosts;
