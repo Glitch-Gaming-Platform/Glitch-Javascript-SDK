@@ -12698,8 +12698,8 @@ var Titles = /** @class */ (function () {
     /**
      * Get the total earnings and playtime summary for a title.
      */
-    Titles.getDeveloperPayoutSummary = function (title_id) {
-        return Requests.processRoute(TitlesRoute.routes.developerPayoutSummary, {}, { title_id: title_id });
+    Titles.getDeveloperPayoutSummary = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.developerPayoutSummary, {}, { title_id: title_id }, params);
     };
     /**
      * The Aegis Handshake: Verify if a player is allowed to play.

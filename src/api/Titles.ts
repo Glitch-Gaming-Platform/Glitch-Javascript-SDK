@@ -973,8 +973,8 @@ class Titles {
     /**
      * Get the total earnings and playtime summary for a title.
      */
-    public static getDeveloperPayoutSummary<T>(title_id: string): AxiosPromise<Response<T>> {
-        return Requests.processRoute(TitlesRoute.routes.developerPayoutSummary, {}, { title_id });
+    public static getDeveloperPayoutSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.developerPayoutSummary, {}, { title_id }, params);
     }
 
     /**

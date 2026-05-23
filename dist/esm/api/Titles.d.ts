@@ -500,7 +500,7 @@ declare class Titles {
     /**
      * Get the total earnings and playtime summary for a title.
      */
-    static getDeveloperPayoutSummary<T>(title_id: string): AxiosPromise<Response<T>>;
+    static getDeveloperPayoutSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * The Aegis Handshake: Verify if a player is allowed to play.
      *
