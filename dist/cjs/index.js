@@ -21392,9 +21392,10 @@ var Users = /** @class */ (function () {
     };
     /**
      * Share a library item to social media as User Generated Content (UGC).
+     * This uses the player media share route, not the developer/scheduler post route.
      *
      * @param id The UUID of the UserMedia record.
-     * @param data { platform: string, title?: string, content: string }
+     * @param data Player post payload, including platform/channel/schedule options.
      */
     Users.shareMedia = function (id, data) {
         return Requests.processRoute(UserRoutes.routes.shareMedia, data, { id: id });

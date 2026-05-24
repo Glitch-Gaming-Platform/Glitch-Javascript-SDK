@@ -456,14 +456,24 @@ declare class Users {
     static suggestSmartTrim<T>(id: string): AxiosPromise<Response<T>>;
     /**
      * Share a library item to social media as User Generated Content (UGC).
+     * This uses the player media share route, not the developer/scheduler post route.
      *
      * @param id The UUID of the UserMedia record.
-     * @param data { platform: string, title?: string, content: string }
+     * @param data Player post payload, including platform/channel/schedule options.
      */
     static shareMedia<T>(id: string, data: {
         platform: string;
+        social_platform?: string;
         title?: string;
         content: string;
+        status?: 'pending' | 'scheduled' | string;
+        scheduled_at?: string;
+        main_channel_id?: string;
+        sub_channel_id?: string;
+        token?: string;
+        track_links?: boolean;
+        media_type?: string;
+        [key: string]: any;
     }): AxiosPromise<Response<T>>;
     /**
      * List all gifts purchased by the current user.
