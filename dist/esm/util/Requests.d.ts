@@ -15,6 +15,7 @@ declare class Requests {
     static get<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static post<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static put<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static patch<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static delete<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static uploadFile<T>(url: string, filename: string, file: File | Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     static uploadBlob<T>(url: string, filename: string, blob: Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;

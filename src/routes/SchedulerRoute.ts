@@ -137,6 +137,7 @@ class SchedulerRoute {
         getTikTokTrendingHashtags: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags/trending', method: HTTP_METHODS.GET },
         getTikTokHashtagDetail: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags/detail', method: HTTP_METHODS.GET },
         getTikTokTrendingKeywords: { url: '/schedulers/{scheduler_id}/tiktok/discovery/search-keywords', method: HTTP_METHODS.GET },
+        getTikTokRecommendedKeywords: { url: '/schedulers/{scheduler_id}/tiktok/discovery/search-keywords/recommend', method: HTTP_METHODS.GET },
 
     };
 }

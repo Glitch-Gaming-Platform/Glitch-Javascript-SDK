@@ -882,6 +882,14 @@ class Scheduler {
         return Requests.processRoute(SchedulerRoute.routes.getTikTokTrendingKeywords, {}, { scheduler_id }, params);
     }
 
+    /**
+     * Get recommended search keywords on TikTok.
+     * @param params { is_personalized: boolean }
+     */
+    public static getTikTokRecommendedKeywords<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokRecommendedKeywords, {}, { scheduler_id }, params);
+    }
+
 }
 
 export default Scheduler;

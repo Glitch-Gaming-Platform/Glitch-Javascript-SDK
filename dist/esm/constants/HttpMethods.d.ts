@@ -1,6 +1,7 @@
 declare const HTTP_METHODS: {
     readonly GET: "GET";
     readonly POST: "POST";
+    readonly PATCH: "PATCH";
     readonly PUT: "PUT";
     readonly DELETE: "DELETE";
 };

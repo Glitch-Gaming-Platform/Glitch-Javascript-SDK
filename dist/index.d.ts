@@ -3968,6 +3968,41 @@ declare class SocialPosts {
     }): AxiosPromise<Response<T>>;
 }
 
+type GameReviewRecommendation = 'recommended' | 'not_recommended' | 'neutral';
+type GameReviewSentiment = 'positive' | 'mixed' | 'negative';
+type GameReviewVoteType = 'helpful' | 'funny' | 'detailed' | 'not_helpful';
+type GameReviewReportReason = 'abuse' | 'spam' | 'off_topic' | 'manipulation' | 'hate' | 'personal_info' | 'other';
+interface GameReviewRatings {
+    gameplay?: GameReviewSentiment;
+    performance?: GameReviewSentiment;
+    value?: GameReviewSentiment;
+    content?: GameReviewSentiment;
+    multiplayer?: GameReviewSentiment;
+    monetization?: GameReviewSentiment;
+    stability?: GameReviewSentiment;
+    localization?: GameReviewSentiment;
+    accessibility?: GameReviewSentiment;
+}
+interface CreateGameReviewRequest {
+    recommendation: GameReviewRecommendation;
+    title: string;
+    body: string;
+    review_type?: 'first_impression' | 'full_review' | 'bug_performance_warning' | 'early_access_feedback' | 'multiplayer_community_feedback' | 'monetization_pricing_feedback' | 'changed_opinion_after_update';
+    liked?: string;
+    needs_work?: string;
+    audience?: string;
+    language?: string;
+    game_version?: string;
+    platform?: string;
+    acquisition_type?: 'purchased' | 'free_to_play' | 'free_copy' | 'promotional_key' | 'beta_key' | 'demo' | 'external_verified';
+    received_for_free?: boolean;
+    early_access?: boolean;
+    current_version_review?: boolean;
+    main_negative_reason?: 'bugs_crashes' | 'bad_performance' | 'not_enough_content' | 'misleading_marketing' | 'price_value' | 'monetization' | 'community_toxicity' | 'developer_business_decision' | 'localization' | 'server_network' | 'gameplay_design' | 'not_my_type' | 'other';
+    change_reason?: string;
+    ratings?: GameReviewRatings;
+}
+type UpdateGameReviewRequest = Partial<CreateGameReviewRequest>;
 declare class Titles {
     /**
      * List all the Titles.
@@ -4609,10 +4644,12 @@ declare class Titles {
      * @param params
      *   - window: number (hours, default 24)
      *   - limit: number (default 10)
+     *   - is_nsfw: 1 for adult titles only, 0 for safe titles only
      */
     static getCommunityActivity<T>(params?: {
         window?: number;
         limit?: number;
+        is_nsfw?: number | boolean;
     }): AxiosPromise<Response<T>>;
     /**
      * Get games trending on social media.
@@ -4621,11 +4658,13 @@ declare class Titles {
      *   - type: 'influencer' (campaigns) or 'organic' (non-paid)
      *   - window: number (hours, default 168)
      *   - limit: number (default 10)
+     *   - is_nsfw: 1 for adult titles only, 0 for safe titles only
      */
     static getSocialTrending<T>(params: {
         type: 'influencer' | 'organic';
         window?: number;
         limit?: number;
+        is_nsfw?: number | boolean;
     }): AxiosPromise<Response<T>>;
     /**
      * Get a personalized discovery queue of games.
@@ -4633,10 +4672,12 @@ declare class Titles {
      * @param params
      *   - limit: number (default 12)
      *   - device_id: string (highly recommended for guest tracking)
+     *   - is_nsfw: 1 for adult titles only, 0 for safe titles only
      */
     static getDiscoveryQueue<T>(params?: {
         limit?: number;
         device_id?: string;
+        is_nsfw?: number | boolean;
     }): AxiosPromise<Response<T>>;
     /**
     * Get a curated, playable feed for the Swipe interface.
@@ -4648,6 +4689,7 @@ declare class Titles {
     *   - seed?: number (For consistent randomization)
     *   - genres?: string[] (Filter by genre names)
     *   - models?: string[] (premium, rental, subscription, free)
+    *   - is_nsfw?: 1 | 0 (1 for adult titles only, 0 for safe titles only)
     *   - excluded_ids?: string[] (UUIDs to skip)
     *   - page?: number
     *   - per_page?: number
@@ -4668,6 +4710,55 @@ declare class Titles {
     static wishlistConversions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static wishlistGeo<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static wishlistDevices<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List public reviews for a title.
+     *
+     * @param title_id The UUID of the title.
+     * @param params Optional filters: recommendation, language, current_version_only,
+     * verified_only, platform, acquisition_type, complaint, playtime, sort, per_page.
+     */
+    static listReviews<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get aggregate review scores and structured praise/complaint summaries.
+     */
+    static reviewSummary<T>(title_id: string, params?: {
+        language?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Create the current user's review for a title. The backend verifies play/purchase eligibility.
+     */
+    static createReview<T>(title_id: string, data: CreateGameReviewRequest): AxiosPromise<Response<T>>;
+    /**
+     * View a single review, including revision history when the backend includes it.
+     */
+    static viewReview<T>(review_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update the current user's review and preserve a backend revision trail.
+     */
+    static updateReview<T>(review_id: string, data: UpdateGameReviewRequest): AxiosPromise<Response<T>>;
+    /**
+     * Delete the current user's review, or a title admin's moderated review.
+     */
+    static deleteReview<T>(review_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Vote on a review as helpful, funny, detailed, or not helpful.
+     */
+    static voteReview<T>(review_id: string, vote_type: GameReviewVoteType): AxiosPromise<Response<T>>;
+    /**
+     * Report a review for moderation.
+     */
+    static reportReview<T>(review_id: string, data: {
+        reason: GameReviewReportReason;
+        notes?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Create or update the title developer's official response to a review.
+     */
+    static respondToReview<T>(review_id: string, data: {
+        body: string;
+        linked_patch_note_id?: string;
+        issue_marked_fixed?: boolean;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {
@@ -7074,6 +7165,11 @@ declare class Scheduler {
      * @param params { is_personalized: boolean }
      */
     static getTikTokTrendingKeywords<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get recommended search keywords on TikTok.
+     * @param params { is_personalized: boolean }
+     */
+    static getTikTokRecommendedKeywords<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Funnel {
@@ -8097,6 +8193,7 @@ declare class Requests {
     static get<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static post<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static put<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static patch<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static delete<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static uploadFile<T>(url: string, filename: string, file: File | Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     static uploadBlob<T>(url: string, filename: string, blob: Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;

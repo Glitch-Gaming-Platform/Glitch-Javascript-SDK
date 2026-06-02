@@ -5308,6 +5308,7 @@ var axios$1 = axios;
 var HTTP_METHODS = {
     GET: 'GET',
     POST: 'POST',
+    PATCH: 'PATCH',
     PUT: 'PUT',
     DELETE: 'DELETE',
 };
@@ -5393,6 +5394,21 @@ var Requests = /** @class */ (function () {
             data = __assign(__assign({}, data), { community_id: Requests.community_id });
         }
         return Requests.request('PUT', url, data);
+    };
+    Requests.patch = function (url, data, params) {
+        if (params && Object.keys(params).length > 0) {
+            var queryString = Object.entries(params)
+                .map(function (_a) {
+                var key = _a[0], value = _a[1];
+                return "".concat(key, "=").concat(encodeURIComponent(value));
+            })
+                .join('&');
+            url = "".concat(url, "?").concat(queryString);
+        }
+        if (Requests.community_id) {
+            data = __assign(__assign({}, data), { community_id: Requests.community_id });
+        }
+        return Requests.request('PATCH', url, data);
     };
     Requests.delete = function (url, params) {
         if (params && Object.keys(params).length > 0) {
@@ -5564,6 +5580,9 @@ var Requests = /** @class */ (function () {
         }
         else if (route.method == HTTP_METHODS.POST) {
             return Requests.post(url, data, params);
+        }
+        else if (route.method == HTTP_METHODS.PATCH) {
+            return Requests.patch(url, data, params);
         }
         else if (route.method == HTTP_METHODS.PUT) {
             return Requests.put(url, data, params);
@@ -12045,6 +12064,16 @@ var TitlesRoute = /** @class */ (function () {
         wishlistConversions: { url: '/titles/{title_id}/wishlist/conversions', method: HTTP_METHODS.GET },
         wishlistGeo: { url: '/titles/{title_id}/wishlist/geo', method: HTTP_METHODS.GET },
         wishlistDevices: { url: '/titles/{title_id}/wishlist/devices', method: HTTP_METHODS.GET },
+        // Game Reviews
+        reviewsList: { url: '/titles/{title_id}/reviews', method: HTTP_METHODS.GET },
+        reviewsSummary: { url: '/titles/{title_id}/review-summary', method: HTTP_METHODS.GET },
+        reviewsCreate: { url: '/titles/{title_id}/reviews', method: HTTP_METHODS.POST },
+        reviewsShow: { url: '/reviews/{review_id}', method: HTTP_METHODS.GET },
+        reviewsUpdate: { url: '/reviews/{review_id}', method: HTTP_METHODS.PATCH },
+        reviewsDelete: { url: '/reviews/{review_id}', method: HTTP_METHODS.DELETE },
+        reviewsVote: { url: '/reviews/{review_id}/vote', method: HTTP_METHODS.POST },
+        reviewsReport: { url: '/reviews/{review_id}/report', method: HTTP_METHODS.POST },
+        reviewsDeveloperResponse: { url: '/reviews/{review_id}/developer-response', method: HTTP_METHODS.POST },
     };
     return TitlesRoute;
 }());
@@ -12902,6 +12931,7 @@ var Titles = /** @class */ (function () {
      * @param params
      *   - window: number (hours, default 24)
      *   - limit: number (default 10)
+     *   - is_nsfw: 1 for adult titles only, 0 for safe titles only
      */
     Titles.getCommunityActivity = function (params) {
         return Requests.processRoute(TitlesRoute.routes.communityActivity, {}, {}, params);
@@ -12913,6 +12943,7 @@ var Titles = /** @class */ (function () {
      *   - type: 'influencer' (campaigns) or 'organic' (non-paid)
      *   - window: number (hours, default 168)
      *   - limit: number (default 10)
+     *   - is_nsfw: 1 for adult titles only, 0 for safe titles only
      */
     Titles.getSocialTrending = function (params) {
         return Requests.processRoute(TitlesRoute.routes.socialTrending, {}, {}, params);
@@ -12923,6 +12954,7 @@ var Titles = /** @class */ (function () {
      * @param params
      *   - limit: number (default 12)
      *   - device_id: string (highly recommended for guest tracking)
+     *   - is_nsfw: 1 for adult titles only, 0 for safe titles only
      */
     Titles.getDiscoveryQueue = function (params) {
         return Requests.processRoute(TitlesRoute.routes.discoveryQueue, {}, {}, params);
@@ -12937,6 +12969,7 @@ var Titles = /** @class */ (function () {
     *   - seed?: number (For consistent randomization)
     *   - genres?: string[] (Filter by genre names)
     *   - models?: string[] (premium, rental, subscription, free)
+    *   - is_nsfw?: 1 | 0 (1 for adult titles only, 0 for safe titles only)
     *   - excluded_ids?: string[] (UUIDs to skip)
     *   - page?: number
     *   - per_page?: number
@@ -12974,6 +13007,64 @@ var Titles = /** @class */ (function () {
     };
     Titles.wishlistDevices = function (title_id, params) {
         return Requests.processRoute(TitlesRoute.routes.wishlistDevices, undefined, { title_id: title_id }, params);
+    };
+    /**
+     * List public reviews for a title.
+     *
+     * @param title_id The UUID of the title.
+     * @param params Optional filters: recommendation, language, current_version_only,
+     * verified_only, platform, acquisition_type, complaint, playtime, sort, per_page.
+     */
+    Titles.listReviews = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.reviewsList, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Get aggregate review scores and structured praise/complaint summaries.
+     */
+    Titles.reviewSummary = function (title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.reviewsSummary, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Create the current user's review for a title. The backend verifies play/purchase eligibility.
+     */
+    Titles.createReview = function (title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.reviewsCreate, data, { title_id: title_id });
+    };
+    /**
+     * View a single review, including revision history when the backend includes it.
+     */
+    Titles.viewReview = function (review_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.reviewsShow, {}, { review_id: review_id }, params);
+    };
+    /**
+     * Update the current user's review and preserve a backend revision trail.
+     */
+    Titles.updateReview = function (review_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.reviewsUpdate, data, { review_id: review_id });
+    };
+    /**
+     * Delete the current user's review, or a title admin's moderated review.
+     */
+    Titles.deleteReview = function (review_id) {
+        return Requests.processRoute(TitlesRoute.routes.reviewsDelete, {}, { review_id: review_id });
+    };
+    /**
+     * Vote on a review as helpful, funny, detailed, or not helpful.
+     */
+    Titles.voteReview = function (review_id, vote_type) {
+        return Requests.processRoute(TitlesRoute.routes.reviewsVote, { vote_type: vote_type }, { review_id: review_id });
+    };
+    /**
+     * Report a review for moderation.
+     */
+    Titles.reportReview = function (review_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.reviewsReport, data, { review_id: review_id });
+    };
+    /**
+     * Create or update the title developer's official response to a review.
+     */
+    Titles.respondToReview = function (review_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.reviewsDeveloperResponse, data, { review_id: review_id });
     };
     return Titles;
 }());
@@ -15541,6 +15632,7 @@ var SchedulerRoute = /** @class */ (function () {
         getTikTokTrendingHashtags: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags/trending', method: HTTP_METHODS.GET },
         getTikTokHashtagDetail: { url: '/schedulers/{scheduler_id}/tiktok/discovery/hashtags/detail', method: HTTP_METHODS.GET },
         getTikTokTrendingKeywords: { url: '/schedulers/{scheduler_id}/tiktok/discovery/search-keywords', method: HTTP_METHODS.GET },
+        getTikTokRecommendedKeywords: { url: '/schedulers/{scheduler_id}/tiktok/discovery/search-keywords/recommend', method: HTTP_METHODS.GET },
     };
     return SchedulerRoute;
 }());
@@ -16268,6 +16360,13 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.getTikTokTrendingKeywords = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.getTikTokTrendingKeywords, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Get recommended search keywords on TikTok.
+     * @param params { is_personalized: boolean }
+     */
+    Scheduler.getTikTokRecommendedKeywords = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getTikTokRecommendedKeywords, {}, { scheduler_id: scheduler_id }, params);
     };
     return Scheduler;
 }());

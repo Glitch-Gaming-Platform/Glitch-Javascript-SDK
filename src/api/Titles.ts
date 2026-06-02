@@ -3,6 +3,45 @@ import Requests from "../util/Requests";
 import Response from "../util/Response";
 import { AxiosPromise } from "axios";
 
+export type GameReviewRecommendation = 'recommended' | 'not_recommended' | 'neutral';
+export type GameReviewSentiment = 'positive' | 'mixed' | 'negative';
+export type GameReviewVoteType = 'helpful' | 'funny' | 'detailed' | 'not_helpful';
+export type GameReviewReportReason = 'abuse' | 'spam' | 'off_topic' | 'manipulation' | 'hate' | 'personal_info' | 'other';
+
+export interface GameReviewRatings {
+    gameplay?: GameReviewSentiment;
+    performance?: GameReviewSentiment;
+    value?: GameReviewSentiment;
+    content?: GameReviewSentiment;
+    multiplayer?: GameReviewSentiment;
+    monetization?: GameReviewSentiment;
+    stability?: GameReviewSentiment;
+    localization?: GameReviewSentiment;
+    accessibility?: GameReviewSentiment;
+}
+
+export interface CreateGameReviewRequest {
+    recommendation: GameReviewRecommendation;
+    title: string;
+    body: string;
+    review_type?: 'first_impression' | 'full_review' | 'bug_performance_warning' | 'early_access_feedback' | 'multiplayer_community_feedback' | 'monetization_pricing_feedback' | 'changed_opinion_after_update';
+    liked?: string;
+    needs_work?: string;
+    audience?: string;
+    language?: string;
+    game_version?: string;
+    platform?: string;
+    acquisition_type?: 'purchased' | 'free_to_play' | 'free_copy' | 'promotional_key' | 'beta_key' | 'demo' | 'external_verified';
+    received_for_free?: boolean;
+    early_access?: boolean;
+    current_version_review?: boolean;
+    main_negative_reason?: 'bugs_crashes' | 'bad_performance' | 'not_enough_content' | 'misleading_marketing' | 'price_value' | 'monetization' | 'community_toxicity' | 'developer_business_decision' | 'localization' | 'server_network' | 'gameplay_design' | 'not_my_type' | 'other';
+    change_reason?: string;
+    ratings?: GameReviewRatings;
+}
+
+export type UpdateGameReviewRequest = Partial<CreateGameReviewRequest>;
+
 class Titles {
 
     /**
@@ -1226,8 +1265,9 @@ class Titles {
      * @param params 
      *   - window: number (hours, default 24)
      *   - limit: number (default 10)
+     *   - is_nsfw: 1 for adult titles only, 0 for safe titles only
      */
-    public static getCommunityActivity<T>(params?: { window?: number, limit?: number }): AxiosPromise<Response<T>> {
+    public static getCommunityActivity<T>(params?: { window?: number, limit?: number, is_nsfw?: number | boolean }): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.communityActivity, {}, {}, params);
     }
 
@@ -1238,8 +1278,9 @@ class Titles {
      *   - type: 'influencer' (campaigns) or 'organic' (non-paid)
      *   - window: number (hours, default 168)
      *   - limit: number (default 10)
+     *   - is_nsfw: 1 for adult titles only, 0 for safe titles only
      */
-    public static getSocialTrending<T>(params: { type: 'influencer' | 'organic', window?: number, limit?: number }): AxiosPromise<Response<T>> {
+    public static getSocialTrending<T>(params: { type: 'influencer' | 'organic', window?: number, limit?: number, is_nsfw?: number | boolean }): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.socialTrending, {}, {}, params);
     }
 
@@ -1249,8 +1290,9 @@ class Titles {
      * @param params 
      *   - limit: number (default 12)
      *   - device_id: string (highly recommended for guest tracking)
+     *   - is_nsfw: 1 for adult titles only, 0 for safe titles only
      */
-    public static getDiscoveryQueue<T>(params?: { limit?: number, device_id?: string }): AxiosPromise<Response<T>> {
+    public static getDiscoveryQueue<T>(params?: { limit?: number, device_id?: string, is_nsfw?: number | boolean }): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.discoveryQueue, {}, {}, params);
     }
 
@@ -1264,6 +1306,7 @@ class Titles {
     *   - seed?: number (For consistent randomization)
     *   - genres?: string[] (Filter by genre names)
     *   - models?: string[] (premium, rental, subscription, free)
+    *   - is_nsfw?: 1 | 0 (1 for adult titles only, 0 for safe titles only)
     *   - excluded_ids?: string[] (UUIDs to skip)
     *   - page?: number
     *   - per_page?: number
@@ -1313,6 +1356,76 @@ class Titles {
 
     public static wishlistDevices<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.wishlistDevices, undefined, { title_id }, params);
+    }
+
+    /**
+     * List public reviews for a title.
+     *
+     * @param title_id The UUID of the title.
+     * @param params Optional filters: recommendation, language, current_version_only,
+     * verified_only, platform, acquisition_type, complaint, playtime, sort, per_page.
+     */
+    public static listReviews<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.reviewsList, {}, { title_id }, params);
+    }
+
+    /**
+     * Get aggregate review scores and structured praise/complaint summaries.
+     */
+    public static reviewSummary<T>(title_id: string, params?: { language?: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.reviewsSummary, {}, { title_id }, params);
+    }
+
+    /**
+     * Create the current user's review for a title. The backend verifies play/purchase eligibility.
+     */
+    public static createReview<T>(title_id: string, data: CreateGameReviewRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.reviewsCreate, data, { title_id });
+    }
+
+    /**
+     * View a single review, including revision history when the backend includes it.
+     */
+    public static viewReview<T>(review_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.reviewsShow, {}, { review_id }, params);
+    }
+
+    /**
+     * Update the current user's review and preserve a backend revision trail.
+     */
+    public static updateReview<T>(review_id: string, data: UpdateGameReviewRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.reviewsUpdate, data, { review_id });
+    }
+
+    /**
+     * Delete the current user's review, or a title admin's moderated review.
+     */
+    public static deleteReview<T>(review_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.reviewsDelete, {}, { review_id });
+    }
+
+    /**
+     * Vote on a review as helpful, funny, detailed, or not helpful.
+     */
+    public static voteReview<T>(review_id: string, vote_type: GameReviewVoteType): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.reviewsVote, { vote_type }, { review_id });
+    }
+
+    /**
+     * Report a review for moderation.
+     */
+    public static reportReview<T>(review_id: string, data: { reason: GameReviewReportReason; notes?: string }): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.reviewsReport, data, { review_id });
+    }
+
+    /**
+     * Create or update the title developer's official response to a review.
+     */
+    public static respondToReview<T>(
+        review_id: string,
+        data: { body: string; linked_patch_note_id?: string; issue_marked_fixed?: boolean }
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.reviewsDeveloperResponse, data, { review_id });
     }
 }
 

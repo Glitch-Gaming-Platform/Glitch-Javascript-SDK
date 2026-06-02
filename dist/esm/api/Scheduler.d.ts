@@ -576,5 +576,10 @@ declare class Scheduler {
      * @param params { is_personalized: boolean }
      */
     static getTikTokTrendingKeywords<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get recommended search keywords on TikTok.
+     * @param params { is_personalized: boolean }
+     */
+    static getTikTokRecommendedKeywords<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Scheduler;

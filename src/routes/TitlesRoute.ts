@@ -301,6 +301,17 @@ class TitlesRoute {
     wishlistGeo: { url: '/titles/{title_id}/wishlist/geo', method: HTTP_METHODS.GET },
     wishlistDevices: { url: '/titles/{title_id}/wishlist/devices', method: HTTP_METHODS.GET },
 
+    // Game Reviews
+    reviewsList: { url: '/titles/{title_id}/reviews', method: HTTP_METHODS.GET },
+    reviewsSummary: { url: '/titles/{title_id}/review-summary', method: HTTP_METHODS.GET },
+    reviewsCreate: { url: '/titles/{title_id}/reviews', method: HTTP_METHODS.POST },
+    reviewsShow: { url: '/reviews/{review_id}', method: HTTP_METHODS.GET },
+    reviewsUpdate: { url: '/reviews/{review_id}', method: HTTP_METHODS.PATCH },
+    reviewsDelete: { url: '/reviews/{review_id}', method: HTTP_METHODS.DELETE },
+    reviewsVote: { url: '/reviews/{review_id}/vote', method: HTTP_METHODS.POST },
+    reviewsReport: { url: '/reviews/{review_id}/report', method: HTTP_METHODS.POST },
+    reviewsDeveloperResponse: { url: '/reviews/{review_id}/developer-response', method: HTTP_METHODS.POST },
+
   };
 
 }

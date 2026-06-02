@@ -29,7 +29,7 @@ class Requests {
   }
 
   private static request<T>(
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+    method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE',
     url: string,
     data?: any,
     fileData?: any
@@ -117,6 +117,24 @@ class Requests {
     }
 
     return Requests.request<T>('PUT', url, data);
+  }
+
+  public static patch<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    if (params && Object.keys(params).length > 0) {
+      const queryString = Object.entries(params)
+        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+        .join('&');
+      url = `${url}?${queryString}`;
+    }
+
+    if (Requests.community_id) {
+      data = {
+        ...data,
+        community_id: Requests.community_id,
+      };
+    }
+
+    return Requests.request<T>('PATCH', url, data);
   }
 
   public static delete<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -323,6 +341,8 @@ class Requests {
       return Requests.get(url, params);
     } else if (route.method == HTTP_METHODS.POST) {
       return Requests.post(url, data, params);
+    } else if (route.method == HTTP_METHODS.PATCH) {
+      return Requests.patch(url, data, params);
     } else if (route.method == HTTP_METHODS.PUT) {
       return Requests.put(url, data, params);
     } else if (route.method == HTTP_METHODS.DELETE) {
