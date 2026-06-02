@@ -42,6 +42,7 @@ import { Raffles } from './api';
 import { DiscordMarketplace } from './api';
 import { Education } from './api';
 import { Crm } from './api';
+import { Multiplayer } from './api';
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -105,6 +106,7 @@ declare class Glitch {
         DiscordMarketplace: typeof DiscordMarketplace;
         Education: typeof Education;
         Crm: typeof Crm;
+        Multiplayer: typeof Multiplayer;
     };
     static util: {
         Requests: typeof Requests;

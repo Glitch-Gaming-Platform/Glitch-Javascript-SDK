@@ -42,6 +42,7 @@ import Raffles from "./Raffles";
 import DiscordMarketplace from "./DiscordMarketplace";
 import Education from "./Education";
 import Crm from "./Crm";
+import Multiplayer from "./Multiplayer";
 
 export {Ads};
 export {AccessKeys};
@@ -87,3 +88,4 @@ export {Raffles};
 export {DiscordMarketplace};
 export {Education};
 export {Crm};
+export {Multiplayer};

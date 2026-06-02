@@ -18234,6 +18234,543 @@ var Crm = /** @class */ (function () {
     return Crm;
 }());
 
+var MultiplayerRoute = /** @class */ (function () {
+    function MultiplayerRoute() {
+    }
+    MultiplayerRoute.routes = {
+        searchLobbies: { url: '/titles/{title_id}/multiplayer/lobbies', method: HTTP_METHODS.GET },
+        createLobby: { url: '/titles/{title_id}/multiplayer/lobbies', method: HTTP_METHODS.POST },
+        showLobby: { url: '/titles/{title_id}/multiplayer/lobbies/{lobby_id}', method: HTTP_METHODS.GET },
+        updateLobby: { url: '/titles/{title_id}/multiplayer/lobbies/{lobby_id}', method: HTTP_METHODS.PUT },
+        joinLobby: { url: '/titles/{title_id}/multiplayer/lobbies/{lobby_id}/join', method: HTTP_METHODS.POST },
+        leaveLobby: { url: '/titles/{title_id}/multiplayer/lobbies/{lobby_id}/leave', method: HTTP_METHODS.POST },
+        setLobbyServer: { url: '/titles/{title_id}/multiplayer/lobbies/{lobby_id}/server', method: HTTP_METHODS.POST },
+        listLobbyMessages: { url: '/titles/{title_id}/multiplayer/lobbies/{lobby_id}/messages', method: HTTP_METHODS.GET },
+        sendLobbyMessage: { url: '/titles/{title_id}/multiplayer/lobbies/{lobby_id}/messages', method: HTTP_METHODS.POST },
+        listVoiceRooms: { url: '/titles/{title_id}/multiplayer/voice/rooms', method: HTTP_METHODS.GET },
+        createVoiceRoom: { url: '/titles/{title_id}/multiplayer/voice/rooms', method: HTTP_METHODS.POST },
+        showVoiceRoom: { url: '/titles/{title_id}/multiplayer/voice/rooms/{voice_room_id}', method: HTTP_METHODS.GET },
+        updateVoiceRoom: { url: '/titles/{title_id}/multiplayer/voice/rooms/{voice_room_id}', method: HTTP_METHODS.PUT },
+        joinVoiceRoom: { url: '/titles/{title_id}/multiplayer/voice/rooms/{voice_room_id}/join', method: HTTP_METHODS.POST },
+        heartbeatVoice: { url: '/multiplayer/voice/heartbeat', method: HTTP_METHODS.POST },
+        leaveVoice: { url: '/multiplayer/voice/leave', method: HTTP_METHODS.POST },
+        sendVoicePacket: { url: '/multiplayer/voice/packets', method: HTTP_METHODS.POST },
+        pollVoicePackets: { url: '/multiplayer/voice/poll', method: HTTP_METHODS.POST },
+        browseServers: { url: '/titles/{title_id}/multiplayer/servers', method: HTTP_METHODS.GET },
+        registerServer: { url: '/titles/{title_id}/multiplayer/servers', method: HTTP_METHODS.POST },
+        heartbeatServer: { url: '/titles/{title_id}/multiplayer/servers/{server_id}/heartbeat', method: HTTP_METHODS.POST },
+        reserveServer: { url: '/titles/{title_id}/multiplayer/servers/{server_id}/reserve', method: HTTP_METHODS.POST },
+        heartbeatSession: { url: '/multiplayer/sessions/heartbeat', method: HTTP_METHODS.POST },
+        releaseSession: { url: '/multiplayer/sessions/release', method: HTTP_METHODS.POST },
+        issueAuthTicket: { url: '/titles/{title_id}/multiplayer/auth-tickets', method: HTTP_METHODS.POST },
+        validateAuthTicket: { url: '/titles/{title_id}/multiplayer/auth-tickets/validate', method: HTTP_METHODS.POST },
+        validateAuthTicketForServer: { url: '/titles/{title_id}/multiplayer/servers/{server_id}/auth-tickets/validate', method: HTTP_METHODS.POST },
+        listFavorites: { url: '/titles/{title_id}/multiplayer/favorites', method: HTTP_METHODS.GET },
+        addFavorite: { url: '/titles/{title_id}/multiplayer/favorites', method: HTTP_METHODS.POST },
+        deleteFavorite: { url: '/titles/{title_id}/multiplayer/favorites/{favorite_id}', method: HTTP_METHODS.DELETE },
+    };
+    return MultiplayerRoute;
+}());
+
+/**
+ * Steam-style multiplayer APIs for Glitch titles.
+ *
+ * The multiplayer surface is split into three groups:
+ * lobby coordination, voice coordination, server browser/reservations, and short-lived auth tickets.
+ * User JWTs can infer the player from the authenticated user. Title-token clients
+ * and game clients without a Glitch user session should pass a stable `player_id`.
+ * Dedicated servers use `server_token` on heartbeat and server-side ticket validation
+ * so they do not need to hold a user JWT or title token.
+ *
+ * These endpoints are intentionally database-agnostic from the SDK's point of view:
+ * callers work with public identifiers, metadata objects, and lifecycle events,
+ * while the backend owns how those records are stored.
+ */
+var Multiplayer = /** @class */ (function () {
+    function Multiplayer() {
+    }
+    /**
+     * Search joinable, non-expired lobbies for a title.
+     *
+     * Filters are exact-match except `skill_band`, which the backend can use for
+     * near sorting. Default results exclude full, closed, unjoinable, and expired
+     * lobbies. Lifecycle context: clients usually call this before `joinLobby`;
+     * joins create a `lobby.joined` event on the backend.
+     *
+     * @param title_id Title UUID.
+     * @param params Optional filters such as region, game mode, map, lobby type, skill band, and limit.
+     * @example
+     * Multiplayer.searchLobbies('title-uuid', {
+     *   region: 'us-central',
+     *   game_mode: 'ranked_duos',
+     *   skill_band: 1840,
+     *   limit: 25
+     * });
+     */
+    Multiplayer.searchLobbies = function (title_id, params) {
+        return Requests.processRoute(MultiplayerRoute.routes.searchLobbies, undefined, { title_id: title_id }, params);
+    };
+    /**
+     * Create a lobby and insert the owner as the first joined member.
+     *
+     * Use this when matchmaking has no suitable lobby, when a player invites
+     * friends, or when a party needs pre-game setup before server assignment.
+     * Lifecycle events: `lobby.created`, then `lobby.joined` for the owner.
+     *
+     * @param title_id Title UUID.
+     * @param data Lobby configuration and optional owner/member metadata.
+     * @example
+     * Multiplayer.createLobby('title-uuid', {
+     *   player_id: 'steam:76561198000000000',
+     *   display_name: 'CinderAce',
+     *   lobby_type: 'public',
+     *   max_members: 4,
+     *   region: 'us-central',
+     *   game_mode: 'ranked_duos',
+     *   metadata: { playlist: 'ranked', allow_voice: true }
+     * });
+     */
+    Multiplayer.createLobby = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.createLobby, data, { title_id: title_id });
+    };
+    /**
+     * Retrieve a lobby with members and assigned server information when present.
+     *
+     * Call this after lobby lifecycle notifications such as `lobby.joined`,
+     * `lobby.updated`, `lobby.owner_transferred`, or `lobby.server_assigned`.
+     *
+     * @param title_id Title UUID.
+     * @param lobby_id Lobby UUID.
+     */
+    Multiplayer.showLobby = function (title_id, lobby_id) {
+        return Requests.processRoute(MultiplayerRoute.routes.showLobby, undefined, { title_id: title_id, lobby_id: lobby_id });
+    };
+    /**
+     * Join a lobby or refresh an existing membership.
+     *
+     * This call is idempotent for a player already in the lobby and can update
+     * display name, ready state, or member metadata. It returns 409 when the lobby
+     * is full, closed, expired, or not joinable. Lifecycle event: `lobby.joined`.
+     *
+     * @param title_id Title UUID.
+     * @param lobby_id Lobby UUID.
+     * @param data Player identity and optional member metadata.
+     * @example
+     * Multiplayer.joinLobby('title-uuid', 'lobby-uuid', {
+     *   player_id: 'steam:76561198000000001',
+     *   display_name: 'Nova',
+     *   ready: false,
+     *   member_data: { character: 'Ash', rank: 1799 }
+     * });
+     */
+    Multiplayer.joinLobby = function (title_id, lobby_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.joinLobby, data, { title_id: title_id, lobby_id: lobby_id });
+    };
+    /**
+     * Leave a lobby.
+     *
+     * If the owner leaves, ownership transfers to the oldest remaining joined
+     * member. If no members remain, the lobby closes. Lifecycle events:
+     * `lobby.left`, optionally `lobby.owner_transferred` or `lobby.updated`.
+     *
+     * @param title_id Title UUID.
+     * @param lobby_id Lobby UUID.
+     * @param data Optional player_id for title-token clients.
+     */
+    Multiplayer.leaveLobby = function (title_id, lobby_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.leaveLobby, data, { title_id: title_id, lobby_id: lobby_id });
+    };
+    /**
+     * Update lobby metadata, visibility, joinability, limits, or state.
+     *
+     * This is owner-only. `max_members` cannot be lower than the current member
+     * count. Keep metadata low-frequency and mostly search/display oriented.
+     * Lifecycle event: `lobby.updated`.
+     *
+     * @param title_id Title UUID.
+     * @param lobby_id Lobby UUID.
+     * @param data Owner identity plus fields to update.
+     */
+    Multiplayer.updateLobby = function (title_id, lobby_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.updateLobby, data, { title_id: title_id, lobby_id: lobby_id });
+    };
+    /**
+     * Assign a registered game server to a lobby.
+     *
+     * This owner-only handoff mirrors Steam's SetLobbyGameServer flow. Clients
+     * should react by reserving or connecting to the assigned server, then
+     * optionally leaving the lobby. Lifecycle event: `lobby.server_assigned`.
+     *
+     * @param title_id Title UUID.
+     * @param lobby_id Lobby UUID.
+     * @param data Server UUID and optional lobby state/joinability updates.
+     */
+    Multiplayer.setLobbyServer = function (title_id, lobby_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.setLobbyServer, data, { title_id: title_id, lobby_id: lobby_id });
+    };
+    /**
+     * List ordered low-bandwidth lobby messages.
+     *
+     * Use `after_sequence` to poll for messages missed during reconnects or after
+     * a realtime `lobby.message_sent` event. This channel is for chat and control
+     * messages, not gameplay, positional data, or voice streaming.
+     *
+     * @param title_id Title UUID.
+     * @param lobby_id Lobby UUID.
+     * @param params Optional sequence cursor and limit.
+     */
+    Multiplayer.listLobbyMessages = function (title_id, lobby_id, params) {
+        return Requests.processRoute(MultiplayerRoute.routes.listLobbyMessages, undefined, { title_id: title_id, lobby_id: lobby_id }, params);
+    };
+    /**
+     * Send a low-bandwidth message to all lobby members.
+     *
+     * Payloads are capped at 4KB by the backend. Use this for chat, ready signals,
+     * invite/kick control messages, and owner-arbitrated choices. Lifecycle event:
+     * `lobby.message_sent`.
+     *
+     * @param title_id Title UUID.
+     * @param lobby_id Lobby UUID.
+     * @param data Message type, sender identity, and JSON payload.
+     * @example
+     * Multiplayer.sendLobbyMessage('title-uuid', 'lobby-uuid', {
+     *   player_id: 'steam:76561198000000000',
+     *   message_type: 'ready',
+     *   payload: { ready: true }
+     * });
+     */
+    Multiplayer.sendLobbyMessage = function (title_id, lobby_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.sendLobbyMessage, data, { title_id: title_id, lobby_id: lobby_id });
+    };
+    /**
+     * List active/non-expired voice rooms for a title.
+     *
+     * Rooms can be attached to a lobby, a server, a party, or a proximity group.
+     * Use this to discover existing voice state before joining. Lifecycle context:
+     * realtime transports should mirror `voice.room_created`, `voice.room_updated`,
+     * `voice.joined`, and `voice.left`.
+     *
+     * @param title_id Title UUID.
+     * @param params Optional room filters such as lobby_id, server_id, provider, topology, state, region, and limit.
+     */
+    Multiplayer.listVoiceRooms = function (title_id, params) {
+        return Requests.processRoute(MultiplayerRoute.routes.listVoiceRooms, undefined, { title_id: title_id }, params);
+    };
+    /**
+     * Create a voice room and join the creator as the first participant.
+     *
+     * The backend returns `voice_token` once. Keep it client-side and use it for
+     * voice heartbeat, packet send, packet polling, and leave calls. `glitch_relay`
+     * can carry base64 Opus frames for prototypes, small-party fallback, or
+     * signaling. For production-scale audio, set `provider: 'external'` and reuse
+     * the room/token contract with WebRTC, an SFU, Vivox, Steam Networking, or an
+     * engine-native transport. Lifecycle events: `voice.room_created`,
+     * `voice.joined`.
+     *
+     * @param title_id Title UUID.
+     * @param data Voice codec, topology, linked lobby/server, and owner metadata.
+     * @example
+     * const { data } = await Multiplayer.createVoiceRoom('title-uuid', {
+     *   player_id: 'steam:76561198000000000',
+     *   display_name: 'CinderAce',
+     *   lobby_id: 'lobby-uuid',
+     *   provider: 'glitch_relay',
+     *   topology: 'lobby',
+     *   codec: 'opus',
+     *   sample_rate: 48000,
+     *   frame_duration_ms: 20,
+     *   channels: 1,
+     *   metadata: { push_to_talk: true }
+     * });
+     */
+    Multiplayer.createVoiceRoom = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.createVoiceRoom, data, { title_id: title_id });
+    };
+    /**
+     * Retrieve a voice room with participant media states.
+     *
+     * Use this after `voice.joined`, `voice.heartbeat`, `voice.left`, or
+     * `voice.room_updated` to refresh in-game UI such as speaker lists, mute
+     * icons, or team voice controls.
+     *
+     * @param title_id Title UUID.
+     * @param voice_room_id Voice room UUID.
+     */
+    Multiplayer.showVoiceRoom = function (title_id, voice_room_id) {
+        return Requests.processRoute(MultiplayerRoute.routes.showVoiceRoom, undefined, { title_id: title_id, voice_room_id: voice_room_id });
+    };
+    /**
+     * Update owner-controlled voice room state.
+     *
+     * Owner-only. Use this to close a room, adjust capacity, update moderation
+     * flags, or provide external provider connection details. The backend rejects
+     * lowering `max_participants` below the current participant count. Lifecycle
+     * event: `voice.room_updated`.
+     *
+     * @param title_id Title UUID.
+     * @param voice_room_id Voice room UUID.
+     * @param data Owner player identity and room fields to update.
+     */
+    Multiplayer.updateVoiceRoom = function (title_id, voice_room_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.updateVoiceRoom, data, { title_id: title_id, voice_room_id: voice_room_id });
+    };
+    /**
+     * Join a voice room and receive a participant-scoped token.
+     *
+     * Rejoining with the same player is idempotent and rotates the token. The
+     * token is used by participant endpoints instead of requiring a user JWT or
+     * title token on every media request. Returns 409 when the room is closed,
+     * expired, or full. Lifecycle event: `voice.joined`.
+     *
+     * @param title_id Title UUID.
+     * @param voice_room_id Voice room UUID.
+     * @param data Player identity, display name, metadata, and token TTL.
+     */
+    Multiplayer.joinVoiceRoom = function (title_id, voice_room_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.joinVoiceRoom, data, { title_id: title_id, voice_room_id: voice_room_id });
+    };
+    /**
+     * Heartbeat voice participant state.
+     *
+     * Call every 10-30 seconds and whenever mute/deafen/speaking state changes.
+     * `last_sequence` tells the backend how far this participant has processed
+     * ordered packets. Expired participants are rejected with 409. Lifecycle event:
+     * `voice.heartbeat`.
+     *
+     * @param data Participant voice token and mutable media state.
+     */
+    Multiplayer.heartbeatVoice = function (data) {
+        return Requests.processRoute(MultiplayerRoute.routes.heartbeatVoice, data);
+    };
+    /**
+     * Leave the current voice room for a participant token.
+     *
+     * This is idempotent for disconnect cleanup: room participant count is
+     * decremented once, room ownership is transferred when possible, and an
+     * empty room closes. The token remains valid only for retrying this leave
+     * call; heartbeat, send, and poll calls reject left participants. Lifecycle
+     * event: `voice.left`.
+     *
+     * @param data Participant voice token.
+     */
+    Multiplayer.leaveVoice = function (data) {
+        return Requests.processRoute(MultiplayerRoute.routes.leaveVoice, data);
+    };
+    /**
+     * Send one ordered voice-room packet.
+     *
+     * `audio` packets should contain compact compressed frames such as base64 Opus
+     * at 48kHz mono/20ms. `offer`, `answer`, and `ice` packets support WebRTC
+     * signaling. `control`, `speaking`, and `mute_state` packets are for custom
+     * engine state. Audio payloads are capped at 16KB; non-audio packets at 4KB.
+     * Muted participants cannot send audio. Lifecycle event: `voice.packet_sent`.
+     *
+     * @param data Participant token, packet type, payload, and optional duration.
+     * @example
+     * await Multiplayer.sendVoicePacket({
+     *   voice_token: voiceToken,
+     *   packet_type: 'audio',
+     *   payload: base64OpusFrame,
+     *   duration_ms: 20
+     * });
+     */
+    Multiplayer.sendVoicePacket = function (data) {
+        return Requests.processRoute(MultiplayerRoute.routes.sendVoicePacket, data);
+    };
+    /**
+     * Poll ordered voice-room packets after a known sequence.
+     *
+     * Defaults to excluding packets sent by the caller. Use the highest returned
+     * sequence as the next `after_sequence` cursor. This is useful for fallback
+     * relay, WebRTC signaling, reconnect recovery, and small-party prototypes.
+     * Lifecycle event: `voice.packet_polled`.
+     *
+     * @param data Participant token, optional sequence cursor, limit, and self-exclusion flag.
+     */
+    Multiplayer.pollVoicePackets = function (data) {
+        return Requests.processRoute(MultiplayerRoute.routes.pollVoicePackets, data);
+    };
+    /**
+     * Browse public, joinable multiplayer servers for a title.
+     *
+     * Default results exclude private, draining, offline, stale, expired, and full
+     * servers. Title administrators can pass `include_private` to inspect servers
+     * that normal clients cannot join.
+     *
+     * @param title_id Title UUID.
+     * @param params Optional server browser filters.
+     */
+    Multiplayer.browseServers = function (title_id, params) {
+        return Requests.processRoute(MultiplayerRoute.routes.browseServers, undefined, { title_id: title_id }, params);
+    };
+    /**
+     * Register or refresh a multiplayer server and receive a one-time server token.
+     *
+     * Store `server_token` only on the server process. The backend stores only a
+     * hash and will not return the plain token again. Counts are validated so
+     * `current_players + bot_players` cannot exceed `max_players`. Lifecycle event:
+     * `server.registered`.
+     *
+     * @param title_id Title UUID.
+     * @param data Server browser, connection, rule, and capacity metadata.
+     * @example
+     * Multiplayer.registerServer('title-uuid', {
+     *   name: 'Ranked US Central 01',
+     *   server_type: 'dedicated',
+     *   status: 'active',
+     *   host: '203.0.113.42',
+     *   game_port: 7777,
+     *   query_port: 27015,
+     *   transport: 'udp',
+     *   max_players: 16,
+     *   secure: true,
+     *   tags: ['ranked', 'duos']
+     * });
+     */
+    Multiplayer.registerServer = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.registerServer, data, { title_id: title_id });
+    };
+    /**
+     * Heartbeat a multiplayer server with its dedicated `server_token`.
+     *
+     * Call every 30-60 seconds and whenever player counts, rules, or metadata
+     * change. Stale servers are hidden from default browsing and reservation.
+     * This endpoint is for dedicated/listen server processes and does not require
+     * a user JWT. Lifecycle event: `server.heartbeat`.
+     *
+     * @param title_id Title UUID.
+     * @param server_id Server UUID.
+     * @param data Server token and optional mutable server state.
+     */
+    Multiplayer.heartbeatServer = function (title_id, server_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.heartbeatServer, data, { title_id: title_id, server_id: server_id });
+    };
+    /**
+     * Reserve a short-lived slot on a multiplayer server before connecting.
+     *
+     * Reservations protect capacity during game handoff. The backend rejects stale,
+     * private, full, draining, offline, expired, or duplicate open reservations.
+     * The plain `reservation_token` is returned once and is used for session
+     * heartbeat/release calls. Lifecycle event: `server.reserved`.
+     *
+     * @param title_id Title UUID.
+     * @param server_id Server UUID.
+     * @param data Optional player/lobby identity and reservation TTL.
+     */
+    Multiplayer.reserveServer = function (title_id, server_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.reserveServer, data, { title_id: title_id, server_id: server_id });
+    };
+    /**
+     * Heartbeat an open multiplayer session reservation.
+     *
+     * Use this after a successful reservation while the client is connecting or
+     * playing. Expired sessions are marked expired and capacity is recovered before
+     * the backend returns 409. Lifecycle events: `session.heartbeat` or
+     * `session.expired`.
+     *
+     * @param data Reservation token and optional state/TTL.
+     */
+    Multiplayer.heartbeatSession = function (data) {
+        return Requests.processRoute(MultiplayerRoute.routes.heartbeatSession, data);
+    };
+    /**
+     * Release an open multiplayer session reservation.
+     *
+     * Call this on normal disconnect, failed connection attempts, or shutdown so
+     * server capacity is decremented promptly. The backend makes release safe to
+     * call more than once for an already closed reservation. Lifecycle event:
+     * `session.released`.
+     *
+     * @param data Reservation token returned by `reserveServer`.
+     */
+    Multiplayer.releaseSession = function (data) {
+        return Requests.processRoute(MultiplayerRoute.routes.releaseSession, data);
+    };
+    /**
+     * Issue a short-lived multiplayer auth ticket for a player.
+     *
+     * The plain `auth_ticket` is returned once and only a hash is stored by the
+     * backend. Use this for P2P or dedicated-server admission before game traffic
+     * begins. `remote_identity` can bind the ticket to a server or validator.
+     * Lifecycle event: `auth_ticket.issued`.
+     *
+     * @param title_id Title UUID.
+     * @param data Player identity, optional remote identity, and TTL.
+     */
+    Multiplayer.issueAuthTicket = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.issueAuthTicket, data, { title_id: title_id });
+    };
+    /**
+     * Validate a multiplayer auth ticket from a trusted title/user context.
+     *
+     * Pass `consume: true` for one-time tickets to prevent replay. Dedicated
+     * servers should usually call `validateAuthTicketForServer` so they can use
+     * `server_token` instead of a title token or user JWT. Lifecycle event:
+     * `auth_ticket.validated`.
+     *
+     * @param title_id Title UUID.
+     * @param data Ticket, optional remote identity check, and consume flag.
+     */
+    Multiplayer.validateAuthTicket = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.validateAuthTicket, data, { title_id: title_id });
+    };
+    /**
+     * Validate an auth ticket as a dedicated server.
+     *
+     * This server-token endpoint lets a dedicated server admit players without
+     * holding a user JWT or title token. Pass `consume: true` to prevent replay.
+     * Lifecycle event: `auth_ticket.validated`.
+     *
+     * @param title_id Title UUID.
+     * @param server_id Server UUID.
+     * @param data Server token, player auth ticket, optional remote identity, and consume flag.
+     */
+    Multiplayer.validateAuthTicketForServer = function (title_id, server_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.validateAuthTicketForServer, data, { title_id: title_id, server_id: server_id });
+    };
+    /**
+     * List a player's server favorites or history entries.
+     *
+     * Use this for Steam-like favorites and recent servers tabs. Title-token
+     * clients should pass `player_id`; user JWT clients default to the user UUID.
+     *
+     * @param title_id Title UUID.
+     * @param params Optional player and favorite/history filter.
+     */
+    Multiplayer.listFavorites = function (title_id, params) {
+        return Requests.processRoute(MultiplayerRoute.routes.listFavorites, undefined, { title_id: title_id }, params);
+    };
+    /**
+     * Add or update a favorite/history server entry for a player.
+     *
+     * Provide `server_id` for a registered Glitch server, or `host` plus
+     * `game_port` for a direct/community server. Lifecycle event:
+     * `favorite.upserted`.
+     *
+     * @param title_id Title UUID.
+     * @param data Favorite/history target and optional metadata.
+     */
+    Multiplayer.addFavorite = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.addFavorite, data, { title_id: title_id });
+    };
+    /**
+     * Delete a player's favorite/history server entry.
+     *
+     * The SDK sends optional `player_id` as a query parameter because the shared
+     * request helper treats DELETE payloads as query params. This maps cleanly to
+     * the backend's optional player identity validation for title-token clients.
+     * Lifecycle event: `favorite.deleted`.
+     *
+     * @param title_id Title UUID.
+     * @param favorite_id Favorite/history UUID.
+     * @param params Optional player_id for title-token clients.
+     */
+    Multiplayer.deleteFavorite = function (title_id, favorite_id, params) {
+        return Requests.processRoute(MultiplayerRoute.routes.deleteFavorite, undefined, { title_id: title_id, favorite_id: favorite_id }, params);
+    };
+    return Multiplayer;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -18774,6 +19311,7 @@ var Glitch = /** @class */ (function () {
         DiscordMarketplace: DiscordMarketplace,
         Education: Education,
         Crm: Crm,
+        Multiplayer: Multiplayer,
     };
     Glitch.util = {
         Requests: Requests,
