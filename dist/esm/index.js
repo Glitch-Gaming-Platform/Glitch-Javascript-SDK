@@ -18771,6 +18771,34 @@ var Multiplayer = /** @class */ (function () {
     return Multiplayer;
 }());
 
+var ServerOperationsRoute = /** @class */ (function () {
+    function ServerOperationsRoute() {
+    }
+    ServerOperationsRoute.routes = {
+        listDeployments: {
+            url: '/admin/server-operations/deployments',
+            method: HTTP_METHODS.GET
+        },
+        updatePolicy: {
+            url: '/admin/server-operations/titles/{title_id}/builds/{build_id}/policy',
+            method: HTTP_METHODS.PUT
+        },
+    };
+    return ServerOperationsRoute;
+}());
+
+var ServerOperations = /** @class */ (function () {
+    function ServerOperations() {
+    }
+    ServerOperations.listDeployments = function (params) {
+        return Requests.processRoute(ServerOperationsRoute.routes.listDeployments, undefined, undefined, params);
+    };
+    ServerOperations.updatePolicy = function (title_id, build_id, data) {
+        return Requests.processRoute(ServerOperationsRoute.routes.updatePolicy, data, { title_id: title_id, build_id: build_id });
+    };
+    return ServerOperations;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -19312,6 +19340,7 @@ var Glitch = /** @class */ (function () {
         Education: Education,
         Crm: Crm,
         Multiplayer: Multiplayer,
+        ServerOperations: ServerOperations,
     };
     Glitch.util = {
         Requests: Requests,

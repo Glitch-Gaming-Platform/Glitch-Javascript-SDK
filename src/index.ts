@@ -47,6 +47,7 @@ import {DiscordMarketplace} from './api';
 import {Education} from './api';
 import {Crm} from './api';
 import {Multiplayer} from './api';
+import {ServerOperations} from './api';
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -123,6 +124,7 @@ class Glitch {
         Education: Education,
         Crm : Crm,
         Multiplayer : Multiplayer,
+        ServerOperations : ServerOperations,
     }
 
     public static util = {

@@ -9044,6 +9044,11 @@ declare class Multiplayer {
     static deleteFavorite<T = MultiplayerDeleteFavoriteResponse>(title_id: string, favorite_id: string, params?: MultiplayerDeleteFavoriteParams): AxiosPromise<Response<T>>;
 }
 
+declare class ServerOperations {
+    static listDeployments<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static updatePolicy<T>(title_id: string, build_id: string, data: object): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -9397,6 +9402,7 @@ declare class Glitch {
         Education: typeof Education;
         Crm: typeof Crm;
         Multiplayer: typeof Multiplayer;
+        ServerOperations: typeof ServerOperations;
     };
     static util: {
         Requests: typeof Requests;
