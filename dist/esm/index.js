@@ -18882,6 +18882,190 @@ var ServerOperations = /** @class */ (function () {
     return ServerOperations;
 }());
 
+var AgentsRoute = /** @class */ (function () {
+    function AgentsRoute() {
+    }
+    AgentsRoute.routes = {
+        listTitles: { url: "/agents/titles", method: HTTP_METHODS.GET },
+        routeCatalog: { url: "/agents/routes/catalog", method: HTTP_METHODS.GET },
+        workspace: { url: "/agents/titles/{title_id}/workspace", method: HTTP_METHODS.GET },
+        listAgents: { url: "/agents/titles/{title_id}/agents", method: HTTP_METHODS.GET },
+        createAgent: { url: "/agents/titles/{title_id}/agents", method: HTTP_METHODS.POST },
+        viewAgent: { url: "/agents/titles/{title_id}/agents/{agent_id}", method: HTTP_METHODS.GET },
+        updateAgent: { url: "/agents/titles/{title_id}/agents/{agent_id}", method: HTTP_METHODS.PUT },
+        deleteAgent: { url: "/agents/titles/{title_id}/agents/{agent_id}", method: HTTP_METHODS.DELETE },
+        runAgent: { url: "/agents/titles/{title_id}/agents/{agent_id}/run", method: HTTP_METHODS.POST },
+        listRuns: { url: "/agents/titles/{title_id}/runs", method: HTTP_METHODS.GET },
+        listActions: { url: "/agents/titles/{title_id}/actions", method: HTTP_METHODS.GET },
+        approveAction: { url: "/agents/titles/{title_id}/actions/{action_id}/approve", method: HTTP_METHODS.POST },
+        rejectAction: { url: "/agents/titles/{title_id}/actions/{action_id}/reject", method: HTTP_METHODS.POST },
+        executeAction: { url: "/agents/titles/{title_id}/actions/{action_id}/execute", method: HTTP_METHODS.POST },
+        listGuidance: { url: "/agents/titles/{title_id}/guidance", method: HTTP_METHODS.GET },
+        answerGuidance: { url: "/agents/titles/{title_id}/guidance/{guidance_id}/answer", method: HTTP_METHODS.POST },
+        listMemories: { url: "/agents/titles/{title_id}/memories", method: HTTP_METHODS.GET },
+        results: { url: "/agents/titles/{title_id}/results", method: HTTP_METHODS.GET },
+        usage: { url: "/agents/titles/{title_id}/usage", method: HTTP_METHODS.GET },
+        credits: { url: "/agents/titles/{title_id}/credits", method: HTTP_METHODS.GET },
+        purchaseCredits: { url: "/agents/titles/{title_id}/credits/purchase", method: HTTP_METHODS.POST },
+        startTrial: { url: "/agents/titles/{title_id}/subscription/trial", method: HTTP_METHODS.POST },
+        agencyOverview: { url: "/agents/agency/overview", method: HTTP_METHODS.GET },
+        agencyInbox: { url: "/agents/agency/inbox", method: HTTP_METHODS.GET },
+    };
+    return AgentsRoute;
+}());
+
+var Agents = /** @class */ (function () {
+    function Agents() {
+    }
+    /**
+     * List game titles that can be managed in the Agents section.
+     */
+    Agents.listTitles = function (params) {
+        return Requests.processRoute(AgentsRoute.routes.listTitles, {}, {}, params);
+    };
+    /**
+     * Return the full Laravel API route catalog agents use for route-aware planning.
+     */
+    Agents.routeCatalog = function (params) {
+        return Requests.processRoute(AgentsRoute.routes.routeCatalog, {}, {}, params);
+    };
+    /**
+     * Get a title-scoped agent workspace with setup, billing, counts, and route summary.
+     */
+    Agents.workspace = function (title_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.workspace, {}, { title_id: title_id }, params);
+    };
+    /**
+     * List agents for a title.
+     */
+    Agents.listAgents = function (title_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.listAgents, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Create an agent before payment. Runs/results remain gated until trial/subscription.
+     */
+    Agents.createAgent = function (title_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.createAgent, data, { title_id: title_id }, params);
+    };
+    /**
+     * View one agent.
+     */
+    Agents.viewAgent = function (title_id, agent_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.viewAgent, {}, { title_id: title_id, agent_id: agent_id }, params);
+    };
+    /**
+     * Update an agent's setup, policies, and guidance stop rules.
+     */
+    Agents.updateAgent = function (title_id, agent_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.updateAgent, data, { title_id: title_id, agent_id: agent_id }, params);
+    };
+    /**
+     * Archive an agent.
+     */
+    Agents.deleteAgent = function (title_id, agent_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.deleteAgent, {}, { title_id: title_id, agent_id: agent_id }, params);
+    };
+    /**
+     * Run an agent planning cycle. Returns 402 when trial/subscription is required.
+     */
+    Agents.runAgent = function (title_id, agent_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.runAgent, data, { title_id: title_id, agent_id: agent_id }, params);
+    };
+    /**
+     * List agent runs for a title.
+     */
+    Agents.listRuns = function (title_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.listRuns, {}, { title_id: title_id }, params);
+    };
+    /**
+     * List agent actions/approval queue for a title.
+     */
+    Agents.listActions = function (title_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.listActions, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Approve an agent action.
+     */
+    Agents.approveAction = function (title_id, action_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.approveAction, data || {}, { title_id: title_id, action_id: action_id }, params);
+    };
+    /**
+     * Reject an agent action.
+     */
+    Agents.rejectAction = function (title_id, action_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.rejectAction, data || {}, { title_id: title_id, action_id: action_id }, params);
+    };
+    /**
+     * Execute an approved safe action.
+     */
+    Agents.executeAction = function (title_id, action_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.executeAction, data || {}, { title_id: title_id, action_id: action_id }, params);
+    };
+    /**
+     * List guidance requests where agents have stopped for developer direction.
+     */
+    Agents.listGuidance = function (title_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.listGuidance, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Answer a guidance request and write structured agent memory.
+     */
+    Agents.answerGuidance = function (title_id, guidance_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.answerGuidance, data, { title_id: title_id, guidance_id: guidance_id }, params);
+    };
+    /**
+     * List structured agent memories for a title.
+     */
+    Agents.listMemories = function (title_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.listMemories, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Get results and outcome summary for title agents. Returns 402 until trial/subscription is active.
+     */
+    Agents.results = function (title_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.results, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Get this title's agent usage against plan limits (agents used/included, monthly runs, and
+     * AI dollars spent vs the configured monthly AI budget). Powers usage meters and limit warnings.
+     */
+    Agents.usage = function (title_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.usage, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Get the prepaid agent credit balance and ledger (Pay-As-You-Go plan).
+     */
+    Agents.credits = function (title_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.credits, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Buy prepaid agent credits (Pay-As-You-Go). Charges the card up front; the agent draws down
+     * credits per run and stops when they run out. data: { paymentMethod, amount_usd }.
+     */
+    Agents.purchaseCredits = function (title_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.purchaseCredits, data, { title_id: title_id }, params);
+    };
+    /**
+     * Start a Stripe-backed agent trial/subscription after setup.
+     */
+    Agents.startTrial = function (title_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.startTrial, data, { title_id: title_id }, params);
+    };
+    /**
+     * Cross-title agency cockpit: per-title agent status, billing/credits, and portfolio totals.
+     */
+    Agents.agencyOverview = function (params) {
+        return Requests.processRoute(AgentsRoute.routes.agencyOverview, {}, {}, params);
+    };
+    /**
+     * Unified cross-title "needs you" inbox (open guidance + pending approvals across all titles).
+     */
+    Agents.agencyInbox = function (params) {
+        return Requests.processRoute(AgentsRoute.routes.agencyInbox, {}, {}, params);
+    };
+    return Agents;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -19425,6 +19609,7 @@ var Glitch = /** @class */ (function () {
         Crm: Crm,
         Multiplayer: Multiplayer,
         ServerOperations: ServerOperations,
+        Agents: Agents,
     };
     Glitch.util = {
         Requests: Requests,

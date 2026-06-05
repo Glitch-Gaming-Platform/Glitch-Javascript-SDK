@@ -9098,6 +9098,107 @@ declare class ServerOperations {
     static updatePolicy<T>(title_id: string, build_id: string, data: object): AxiosPromise<Response<T>>;
 }
 
+declare class Agents {
+    /**
+     * List game titles that can be managed in the Agents section.
+     */
+    static listTitles<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Return the full Laravel API route catalog agents use for route-aware planning.
+     */
+    static routeCatalog<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get a title-scoped agent workspace with setup, billing, counts, and route summary.
+     */
+    static workspace<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List agents for a title.
+     */
+    static listAgents<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create an agent before payment. Runs/results remain gated until trial/subscription.
+     */
+    static createAgent<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * View one agent.
+     */
+    static viewAgent<T>(title_id: string, agent_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update an agent's setup, policies, and guidance stop rules.
+     */
+    static updateAgent<T>(title_id: string, agent_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Archive an agent.
+     */
+    static deleteAgent<T>(title_id: string, agent_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Run an agent planning cycle. Returns 402 when trial/subscription is required.
+     */
+    static runAgent<T>(title_id: string, agent_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List agent runs for a title.
+     */
+    static listRuns<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List agent actions/approval queue for a title.
+     */
+    static listActions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Approve an agent action.
+     */
+    static approveAction<T>(title_id: string, action_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Reject an agent action.
+     */
+    static rejectAction<T>(title_id: string, action_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Execute an approved safe action.
+     */
+    static executeAction<T>(title_id: string, action_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List guidance requests where agents have stopped for developer direction.
+     */
+    static listGuidance<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Answer a guidance request and write structured agent memory.
+     */
+    static answerGuidance<T>(title_id: string, guidance_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List structured agent memories for a title.
+     */
+    static listMemories<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get results and outcome summary for title agents. Returns 402 until trial/subscription is active.
+     */
+    static results<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get this title's agent usage against plan limits (agents used/included, monthly runs, and
+     * AI dollars spent vs the configured monthly AI budget). Powers usage meters and limit warnings.
+     */
+    static usage<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get the prepaid agent credit balance and ledger (Pay-As-You-Go plan).
+     */
+    static credits<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Buy prepaid agent credits (Pay-As-You-Go). Charges the card up front; the agent draws down
+     * credits per run and stops when they run out. data: { paymentMethod, amount_usd }.
+     */
+    static purchaseCredits<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Start a Stripe-backed agent trial/subscription after setup.
+     */
+    static startTrial<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Cross-title agency cockpit: per-title agent status, billing/credits, and portfolio totals.
+     */
+    static agencyOverview<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Unified cross-title "needs you" inbox (open guidance + pending approvals across all titles).
+     */
+    static agencyInbox<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -9453,6 +9554,7 @@ declare class Glitch {
         Crm: typeof Crm;
         Multiplayer: typeof Multiplayer;
         ServerOperations: typeof ServerOperations;
+        Agents: typeof Agents;
     };
     static util: {
         Requests: typeof Requests;
