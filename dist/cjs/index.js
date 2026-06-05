@@ -27611,6 +27611,8 @@ var SchedulerRoute = /** @class */ (function () {
         },
         getRedditRecommendations: { url: '/schedulers/{scheduler_id}/reddit/recommendations', method: HTTP_METHODS.POST },
         generateRedditContent: { url: '/schedulers/{scheduler_id}/reddit/generateContent', method: HTTP_METHODS.POST },
+        getRedditSubredditMatches: { url: '/schedulers/{scheduler_id}/reddit/subreddit-matches', method: HTTP_METHODS.POST },
+        getRedditSubredditPositioning: { url: '/schedulers/{scheduler_id}/reddit/subreddit-positioning', method: HTTP_METHODS.POST },
         listDestinations: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations', method: HTTP_METHODS.GET },
         createDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations', method: HTTP_METHODS.POST },
         getDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations/{destination_id}', method: HTTP_METHODS.GET },
@@ -28241,7 +28243,7 @@ var Scheduler = /** @class */ (function () {
         return Requests.processRoute(SchedulerRoute.routes.deleteDestination, {}, { scheduler_id: scheduler_id, update_id: update_id, destination_id: destination_id }, params);
     };
     /**
-     * Get AI-powered subreddit recommendations for a scheduler.
+     * Get subreddit recommendations for a scheduler.
      *
      * @see https://api.glitch.fun/api/documentation#/Scheduler/getSchedulerRedditRecommendations
      *
@@ -28263,6 +28265,27 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.generateRedditContent = function (scheduler_id, data, params) {
         return Requests.processRoute(SchedulerRoute.routes.generateRedditContent, data, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Match the scheduler title to indexed Reddit communities.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data Optional post context and filters.
+     * @returns promise
+     */
+    Scheduler.getRedditSubredditMatches = function (scheduler_id, data, params) {
+        if (data === void 0) { data = {}; }
+        return Requests.processRoute(SchedulerRoute.routes.getRedditSubredditMatches, data, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Position a registered game for a subreddit and optionally prepare Reddit draft content.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The target subreddit and optional post context.
+     * @returns promise
+     */
+    Scheduler.getRedditSubredditPositioning = function (scheduler_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getRedditSubredditPositioning, data, { scheduler_id: scheduler_id }, params);
     };
     /**
     * Get all posts and comments for a scheduler.
@@ -28367,6 +28390,66 @@ var Scheduler = /** @class */ (function () {
         return Requests.processRoute(SchedulerRoute.routes.getTikTokRecommendedKeywords, {}, { scheduler_id: scheduler_id }, params);
     };
     return Scheduler;
+}());
+
+var RedditSubredditsRoute = /** @class */ (function () {
+    function RedditSubredditsRoute() {
+    }
+    RedditSubredditsRoute.routes = {
+        list: { url: '/reddit/subreddits', method: HTTP_METHODS.GET },
+        show: { url: '/reddit/subreddits/{subreddit}', method: HTTP_METHODS.GET },
+        match: { url: '/reddit/subreddits/match', method: HTTP_METHODS.POST },
+        ingest: { url: '/admin/reddit/subreddits/ingest', method: HTTP_METHODS.POST },
+        refresh: { url: '/admin/reddit/subreddits/{subreddit}/refresh', method: HTTP_METHODS.POST },
+    };
+    return RedditSubredditsRoute;
+}());
+
+var RedditSubreddits = /** @class */ (function () {
+    function RedditSubreddits() {
+    }
+    /**
+     * Search indexed Reddit communities for game marketing research.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Reddit%20Subreddit%20Intelligence/indexRedditSubreddits
+     */
+    RedditSubreddits.list = function (params) {
+        return Requests.processRoute(RedditSubredditsRoute.routes.list, undefined, undefined, params);
+    };
+    /**
+     * Get an analyzed subreddit record by display name.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Reddit%20Subreddit%20Intelligence/showRedditSubreddit
+     */
+    RedditSubreddits.show = function (subreddit, params) {
+        return Requests.processRoute(RedditSubredditsRoute.routes.show, undefined, { subreddit: subreddit }, params);
+    };
+    /**
+     * Match a game concept to relevant Reddit communities.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Reddit%20Subreddit%20Intelligence/matchRedditSubreddits
+     */
+    RedditSubreddits.match = function (data, params) {
+        return Requests.processRoute(RedditSubredditsRoute.routes.match, data, undefined, params);
+    };
+    /**
+     * Admin-only ingestion of subreddit metadata and rules.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Reddit%20Subreddit%20Intelligence/ingestRedditSubreddits
+     */
+    RedditSubreddits.ingest = function (data, params) {
+        return Requests.processRoute(RedditSubredditsRoute.routes.ingest, data, undefined, params);
+    };
+    /**
+     * Admin-only refresh for one subreddit.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Reddit%20Subreddit%20Intelligence/refreshRedditSubreddit
+     */
+    RedditSubreddits.refresh = function (subreddit, data, params) {
+        if (data === void 0) { data = {}; }
+        return Requests.processRoute(RedditSubredditsRoute.routes.refresh, data, { subreddit: subreddit }, params);
+    };
+    return RedditSubreddits;
 }());
 
 // src/routes/FunnelRoutes.tsx
@@ -31325,6 +31408,7 @@ var Glitch = /** @class */ (function () {
         PlayTests: PlayTests,
         Media: Media,
         Scheduler: Scheduler,
+        RedditSubreddits: RedditSubreddits,
         Funnel: Funnel,
         SocialStats: SocialStats,
         WebsiteAnalytics: WebsiteAnalytics,

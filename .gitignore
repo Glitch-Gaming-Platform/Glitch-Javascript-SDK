@@ -1,1 +1,4 @@
 node_modules/*
+
+# Local npm auth token (do not commit)
+.npmrc

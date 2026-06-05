@@ -477,7 +477,7 @@ declare class Scheduler {
      */
     static deleteDestination<T>(scheduler_id: string, update_id: string, destination_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-     * Get AI-powered subreddit recommendations for a scheduler.
+     * Get subreddit recommendations for a scheduler.
      *
      * @see https://api.glitch.fun/api/documentation#/Scheduler/getSchedulerRedditRecommendations
      *
@@ -496,6 +496,22 @@ declare class Scheduler {
      * @returns promise
      */
     static generateRedditContent<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Match the scheduler title to indexed Reddit communities.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data Optional post context and filters.
+     * @returns promise
+     */
+    static getRedditSubredditMatches<T>(scheduler_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Position a registered game for a subreddit and optionally prepare Reddit draft content.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The target subreddit and optional post context.
+     * @returns promise
+     */
+    static getRedditSubredditPositioning<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
     * Get all posts and comments for a scheduler.
     *

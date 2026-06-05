@@ -752,7 +752,7 @@ class Scheduler {
     }
 
     /**
-     * Get AI-powered subreddit recommendations for a scheduler.
+     * Get subreddit recommendations for a scheduler.
      * 
      * @see https://api.glitch.fun/api/documentation#/Scheduler/getSchedulerRedditRecommendations
      * 
@@ -775,6 +775,28 @@ class Scheduler {
      */
     public static generateRedditContent<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(SchedulerRoute.routes.generateRedditContent, data, { scheduler_id }, params);
+    }
+
+    /**
+     * Match the scheduler title to indexed Reddit communities.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data Optional post context and filters.
+     * @returns promise
+     */
+    public static getRedditSubredditMatches<T>(scheduler_id: string, data: object = {}, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getRedditSubredditMatches, data, { scheduler_id }, params);
+    }
+
+    /**
+     * Position a registered game for a subreddit and optionally prepare Reddit draft content.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param data The target subreddit and optional post context.
+     * @returns promise
+     */
+    public static getRedditSubredditPositioning<T>(scheduler_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getRedditSubredditPositioning, data, { scheduler_id }, params);
     }
 
     /**

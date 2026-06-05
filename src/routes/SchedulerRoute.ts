@@ -112,6 +112,8 @@ class SchedulerRoute {
 
         getRedditRecommendations: { url: '/schedulers/{scheduler_id}/reddit/recommendations', method: HTTP_METHODS.POST },
         generateRedditContent: { url: '/schedulers/{scheduler_id}/reddit/generateContent', method: HTTP_METHODS.POST },
+        getRedditSubredditMatches: { url: '/schedulers/{scheduler_id}/reddit/subreddit-matches', method: HTTP_METHODS.POST },
+        getRedditSubredditPositioning: { url: '/schedulers/{scheduler_id}/reddit/subreddit-positioning', method: HTTP_METHODS.POST },
 
         listDestinations: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations', method: HTTP_METHODS.GET },
         createDestination: { url: '/schedulers/{scheduler_id}/updates/{update_id}/destinations', method: HTTP_METHODS.POST },

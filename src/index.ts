@@ -33,6 +33,7 @@ import {Newsletters} from "./api";
 import {PlayTests} from "./api";
 import {Media} from "./api";
 import {Scheduler} from "./api";
+import {RedditSubreddits} from "./api";
 import {Funnel} from "./api";
 import {SocialStats} from "./api";
 import {Hashtags} from "./api";
@@ -111,6 +112,7 @@ class Glitch {
         PlayTests : PlayTests,
         Media : Media,
         Scheduler : Scheduler,
+        RedditSubreddits : RedditSubreddits,
         Funnel: Funnel,
         SocialStats : SocialStats,
         WebsiteAnalytics: WebsiteAnalytics,

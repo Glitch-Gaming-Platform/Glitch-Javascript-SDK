@@ -29,6 +29,7 @@ import { Newsletters } from "./api";
 import { PlayTests } from "./api";
 import { Media } from "./api";
 import { Scheduler } from "./api";
+import { RedditSubreddits } from "./api";
 import { Funnel } from "./api";
 import { SocialStats } from "./api";
 import { Hashtags } from "./api";
@@ -95,6 +96,7 @@ declare class Glitch {
         PlayTests: typeof PlayTests;
         Media: typeof Media;
         Scheduler: typeof Scheduler;
+        RedditSubreddits: typeof RedditSubreddits;
         Funnel: typeof Funnel;
         SocialStats: typeof SocialStats;
         WebsiteAnalytics: typeof WebsiteAnalytics;
