@@ -18899,6 +18899,7 @@ var AgentsRoute = /** @class */ (function () {
         listRuns: { url: "/agents/titles/{title_id}/runs", method: HTTP_METHODS.GET },
         viewRun: { url: "/agents/titles/{title_id}/runs/{run_id}", method: HTTP_METHODS.GET },
         listRunEvents: { url: "/agents/titles/{title_id}/runs/{run_id}/events", method: HTTP_METHODS.GET },
+        heartbeatRun: { url: "/agents/titles/{title_id}/runs/{run_id}/heartbeat", method: HTTP_METHODS.POST },
         cancelRun: { url: "/agents/titles/{title_id}/runs/{run_id}/cancel", method: HTTP_METHODS.POST },
         interjectRun: { url: "/agents/titles/{title_id}/runs/{run_id}/interject", method: HTTP_METHODS.POST },
         listActions: { url: "/agents/titles/{title_id}/actions", method: HTTP_METHODS.GET },
@@ -18913,6 +18914,8 @@ var AgentsRoute = /** @class */ (function () {
         credits: { url: "/agents/titles/{title_id}/credits", method: HTTP_METHODS.GET },
         purchaseCredits: { url: "/agents/titles/{title_id}/credits/purchase", method: HTTP_METHODS.POST },
         startTrial: { url: "/agents/titles/{title_id}/subscription/trial", method: HTTP_METHODS.POST },
+        listSchedulers: { url: "/schedulers", method: HTTP_METHODS.GET },
+        createScheduler: { url: "/schedulers", method: HTTP_METHODS.POST },
         agencyOverview: { url: "/agents/agency/overview", method: HTTP_METHODS.GET },
         agencyInbox: { url: "/agents/agency/inbox", method: HTTP_METHODS.GET },
     };
@@ -19010,6 +19013,13 @@ var Agents = /** @class */ (function () {
         return Requests.processRoute(AgentsRoute.routes.listRunEvents, {}, { title_id: title_id, run_id: run_id }, params);
     };
     /**
+     * Mark a queued or running agent run as being watched live so the UI can stream the loop
+     * and the backend can avoid sending delayed background summaries to active viewers.
+     */
+    Agents.heartbeatRun = function (title_id, run_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.heartbeatRun, data || {}, { title_id: title_id, run_id: run_id }, params);
+    };
+    /**
      * Request cancellation for a queued or running agent run.
      */
     Agents.cancelRun = function (title_id, run_id, data, params) {
@@ -19094,6 +19104,18 @@ var Agents = /** @class */ (function () {
      */
     Agents.startTrial = function (title_id, data, params) {
         return Requests.processRoute(AgentsRoute.routes.startTrial, data, { title_id: title_id }, params);
+    };
+    /**
+     * List social/ad schedulers. Useful when agent setup needs to attach to an existing workflow.
+     */
+    Agents.listSchedulers = function (params) {
+        return Requests.processRoute(AgentsRoute.routes.listSchedulers, {}, {}, params);
+    };
+    /**
+     * Create a scheduler inline from an agent setup flow.
+     */
+    Agents.createScheduler = function (data, params) {
+        return Requests.processRoute(AgentsRoute.routes.createScheduler, data || {}, {}, params);
     };
     /**
      * Cross-title agency cockpit: per-title agent status, billing/credits, and portfolio totals.

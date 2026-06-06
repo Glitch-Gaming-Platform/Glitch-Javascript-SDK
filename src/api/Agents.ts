@@ -121,6 +121,14 @@ class Agents {
   }
 
   /**
+   * Mark a queued or running agent run as being watched live so the UI can stream the loop
+   * and the backend can avoid sending delayed background summaries to active viewers.
+   */
+  public static heartbeatRun<T>(title_id: string, run_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.heartbeatRun, data || {}, { title_id, run_id }, params);
+  }
+
+  /**
    * Request cancellation for a queued or running agent run.
    */
   public static cancelRun<T>(title_id: string, run_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -218,6 +226,20 @@ class Agents {
    */
   public static startTrial<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(AgentsRoute.routes.startTrial, data, { title_id }, params);
+  }
+
+  /**
+   * List social/ad schedulers. Useful when agent setup needs to attach to an existing workflow.
+   */
+  public static listSchedulers<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.listSchedulers, {}, {}, params);
+  }
+
+  /**
+   * Create a scheduler inline from an agent setup flow.
+   */
+  public static createScheduler<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.createScheduler, data || {}, {}, params);
   }
 
   /**

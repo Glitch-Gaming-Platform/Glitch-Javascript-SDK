@@ -58,6 +58,11 @@ declare class Agents {
      */
     static listRunEvents<T>(title_id: string, run_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Mark a queued or running agent run as being watched live so the UI can stream the loop
+     * and the backend can avoid sending delayed background summaries to active viewers.
+     */
+    static heartbeatRun<T>(title_id: string, run_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Request cancellation for a queued or running agent run.
      */
     static cancelRun<T>(title_id: string, run_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
@@ -115,6 +120,14 @@ declare class Agents {
      * Start a Stripe-backed agent trial/subscription after setup.
      */
     static startTrial<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List social/ad schedulers. Useful when agent setup needs to attach to an existing workflow.
+     */
+    static listSchedulers<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a scheduler inline from an agent setup flow.
+     */
+    static createScheduler<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Cross-title agency cockpit: per-title agent status, billing/credits, and portfolio totals.
      */

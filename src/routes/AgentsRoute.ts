@@ -16,6 +16,7 @@ class AgentsRoute {
     listRuns: { url: "/agents/titles/{title_id}/runs", method: HTTP_METHODS.GET },
     viewRun: { url: "/agents/titles/{title_id}/runs/{run_id}", method: HTTP_METHODS.GET },
     listRunEvents: { url: "/agents/titles/{title_id}/runs/{run_id}/events", method: HTTP_METHODS.GET },
+    heartbeatRun: { url: "/agents/titles/{title_id}/runs/{run_id}/heartbeat", method: HTTP_METHODS.POST },
     cancelRun: { url: "/agents/titles/{title_id}/runs/{run_id}/cancel", method: HTTP_METHODS.POST },
     interjectRun: { url: "/agents/titles/{title_id}/runs/{run_id}/interject", method: HTTP_METHODS.POST },
     listActions: { url: "/agents/titles/{title_id}/actions", method: HTTP_METHODS.GET },
@@ -30,6 +31,8 @@ class AgentsRoute {
     credits: { url: "/agents/titles/{title_id}/credits", method: HTTP_METHODS.GET },
     purchaseCredits: { url: "/agents/titles/{title_id}/credits/purchase", method: HTTP_METHODS.POST },
     startTrial: { url: "/agents/titles/{title_id}/subscription/trial", method: HTTP_METHODS.POST },
+    listSchedulers: { url: "/schedulers", method: HTTP_METHODS.GET },
+    createScheduler: { url: "/schedulers", method: HTTP_METHODS.POST },
     agencyOverview: { url: "/agents/agency/overview", method: HTTP_METHODS.GET },
     agencyInbox: { url: "/agents/agency/inbox", method: HTTP_METHODS.GET },
   };
