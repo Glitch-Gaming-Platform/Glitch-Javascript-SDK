@@ -6,6 +6,7 @@ class MessagesRoute {
     public static routes: { [key: string]: Route } = {
         listMessageThreads: { url: '/messages', method: HTTP_METHODS.GET },
         sendMessage: { url: '/messages', method: HTTP_METHODS.POST },
+        updateMessage: { url: '/messages/{message_id}', method: HTTP_METHODS.PUT },
         deleteMessage: { url: '/messages/{message_id}', method: HTTP_METHODS.DELETE },
         createOrGetThread: { url: '/messages/makeThread', method: HTTP_METHODS.POST },
         getThread: { url: '/messages/thread/{thread_id}', method: HTTP_METHODS.GET },

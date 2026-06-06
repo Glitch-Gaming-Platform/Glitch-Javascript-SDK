@@ -28,6 +28,17 @@ class Messages {
     }
 
     /**
+     * Updates a message.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/updateMessage
+     *
+     * @returns A promise
+     */
+    public static updateMessage<T>(message_id: string, data? : object, params?: Record<string, any>) :  AxiosPromise<Response<T>> {
+        return Requests.processRoute(MessagesRoute.routes.updateMessage, data, {message_id : message_id}, params);
+    }
+
+    /**
      * Deletes a message.
      * 
      * @see https://api.glitch.fun/api/documentation#/Messages/destroyMessage

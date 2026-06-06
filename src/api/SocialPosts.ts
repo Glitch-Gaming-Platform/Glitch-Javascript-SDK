@@ -161,8 +161,8 @@ class SocialPosts {
     * 
     * @returns promise
     */
-    public static reports<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(SocialPostsRoute.routes.reports, undefined, undefined, params);
+    public static reports<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SocialPostsRoute.routes.reports, undefined, { post_id }, params);
     }
 
     /**

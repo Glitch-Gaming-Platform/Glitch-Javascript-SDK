@@ -13,7 +13,7 @@ class PostsRoute {
     join: { url: '/posts/{post_id}/join', method: HTTP_METHODS.POST },
     follow: { url: '/posts/{post_id}/follow', method: HTTP_METHODS.POST },
     leave: { url: '/posts/{post_id}/leave', method: HTTP_METHODS.DELETE },
-    resolve: { url: '/posts/{post_id}/resolve', method: HTTP_METHODS.POST },
+    resolve: { url: '/posts/{post_id}/resolve', method: HTTP_METHODS.PATCH },
     updatePreferences: { url: '/posts/{post_id}/participants/me', method: HTTP_METHODS.PUT },
   };
 

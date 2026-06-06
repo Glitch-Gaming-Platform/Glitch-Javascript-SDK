@@ -22569,7 +22569,7 @@ var PostsRoute = /** @class */ (function () {
         join: { url: '/posts/{post_id}/join', method: HTTP_METHODS.POST },
         follow: { url: '/posts/{post_id}/follow', method: HTTP_METHODS.POST },
         leave: { url: '/posts/{post_id}/leave', method: HTTP_METHODS.DELETE },
-        resolve: { url: '/posts/{post_id}/resolve', method: HTTP_METHODS.POST },
+        resolve: { url: '/posts/{post_id}/resolve', method: HTTP_METHODS.PATCH },
         updatePreferences: { url: '/posts/{post_id}/participants/me', method: HTTP_METHODS.PUT },
     };
     return PostsRoute;
@@ -23477,8 +23477,8 @@ var SocialPosts = /** @class */ (function () {
     *
     * @returns promise
     */
-    SocialPosts.reports = function (params) {
-        return Requests.processRoute(SocialPostsRoute.routes.reports, undefined, undefined, params);
+    SocialPosts.reports = function (post_id, params) {
+        return Requests.processRoute(SocialPostsRoute.routes.reports, undefined, { post_id: post_id }, params);
     };
     /**
      * Update the information about a post impressions, for posts who API do not give view counts.
@@ -25072,6 +25072,7 @@ var CampaignsRoute = /** @class */ (function () {
     }
     CampaignsRoute.routes = {
         listCampaigns: { url: '/campaigns', method: HTTP_METHODS.GET },
+        listPublicCampaigns: { url: '/campaigns/public', method: HTTP_METHODS.GET },
         createCampaign: { url: '/campaigns', method: HTTP_METHODS.POST },
         viewCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.GET },
         updateCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.PUT },
@@ -25088,6 +25089,7 @@ var CampaignsRoute = /** @class */ (function () {
         listInfluencerCampaigns: { url: '/campaigns/influencers', method: HTTP_METHODS.GET },
         viewInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.GET },
         updateInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.PUT },
+        deleteInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.DELETE },
         markInfluencerCampaignComplete: { url: '/campaigns/{campaign_id}/influencers/{user_id}/setComplete', method: HTTP_METHODS.POST },
         markInfluencerCampaignIncomplete: { url: '/campaigns/{campaign_id}/influencers/{user_id}/setIncomplete', method: HTTP_METHODS.POST },
         listInfluencerCampaignLinks: { url: '/campaigns/{campaign_id}/influencers/{user_id}/links', method: HTTP_METHODS.GET },
@@ -25187,6 +25189,16 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.list = function (params) {
         return Requests.processRoute(CampaignsRoute.routes.listCampaigns, undefined, undefined, params);
+    };
+    /**
+     * List public influencer campaigns.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getPublicCampaigns
+     *
+     * @returns promise
+     */
+    Campaigns.listPublic = function (params) {
+        return Requests.processRoute(CampaignsRoute.routes.listPublicCampaigns, undefined, undefined, params);
     };
     /**
      * Create a new campaign.
@@ -25377,6 +25389,15 @@ var Campaigns = /** @class */ (function () {
     */
     Campaigns.updateInfluencerCampaign = function (campaign_id, user_id, data, params) {
         return Requests.processRoute(CampaignsRoute.routes.updateInfluencerCampaign, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+    * Delete an influencer campaign relationship.
+    *
+    * The backend route currently exists, but the controller destroy implementation is intentionally
+    * treated as an agent/admin stop-gate because removal can orphan posts, payouts, or contracts.
+    */
+    Campaigns.deleteInfluencerCampaign = function (campaign_id, user_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.deleteInfluencerCampaign, undefined, { campaign_id: campaign_id, user_id: user_id }, params);
     };
     /**
      * Retrieve the information for a single campaign.
@@ -25803,7 +25824,7 @@ var Campaigns = /** @class */ (function () {
      * @returns promise
      */
     Campaigns.listPayouts = function (campaign_id, params) {
-        return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.listPayouts, undefined, { campaign_id: campaign_id }, params);
     };
     /**
     * Generate a contract for the influencer based on the values in the campaign.
@@ -26291,6 +26312,7 @@ var MessagesRoute = /** @class */ (function () {
     MessagesRoute.routes = {
         listMessageThreads: { url: '/messages', method: HTTP_METHODS.GET },
         sendMessage: { url: '/messages', method: HTTP_METHODS.POST },
+        updateMessage: { url: '/messages/{message_id}', method: HTTP_METHODS.PUT },
         deleteMessage: { url: '/messages/{message_id}', method: HTTP_METHODS.DELETE },
         createOrGetThread: { url: '/messages/makeThread', method: HTTP_METHODS.POST },
         getThread: { url: '/messages/thread/{thread_id}', method: HTTP_METHODS.GET },
@@ -26320,6 +26342,16 @@ var Messages = /** @class */ (function () {
      */
     Messages.sendMessage = function (data, params) {
         return Requests.processRoute(MessagesRoute.routes.sendMessage, data, {}, params);
+    };
+    /**
+     * Updates a message.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/updateMessage
+     *
+     * @returns A promise
+     */
+    Messages.updateMessage = function (message_id, data, params) {
+        return Requests.processRoute(MessagesRoute.routes.updateMessage, data, { message_id: message_id }, params);
     };
     /**
      * Deletes a message.
@@ -27552,6 +27584,7 @@ var SchedulerRoute = /** @class */ (function () {
         getInstagramAccounts: { url: '/schedulers/{scheduler_id}/instagram/accounts', method: HTTP_METHODS.GET },
         getRedditSubreddits: { url: '/schedulers/{scheduler_id}/reddit/subreddits', method: HTTP_METHODS.GET },
         getRedditSubredditFlairs: { url: '/schedulers/{scheduler_id}/reddit/subreddits/{subreddit}/flairs', method: HTTP_METHODS.GET },
+        getRedditSubredditRules: { url: '/schedulers/{scheduler_id}/reddit/subreddits/{subreddit}/rules', method: HTTP_METHODS.GET },
         getDiscordChannels: { url: '/schedulers/{scheduler_id}/discord/channels', method: HTTP_METHODS.GET },
         crossPromoteListRelationships: {
             url: '/schedulers/{scheduler_id}/crosspromote/relationships',
@@ -27591,6 +27624,30 @@ var SchedulerRoute = /** @class */ (function () {
         },
         crossPromoteRelationshipPosts: {
             url: '/schedulers/{scheduler_id}/crosspromote/relationships/{relationship_id}/posts',
+            method: HTTP_METHODS.GET
+        },
+        crossPromoteSearch: {
+            url: '/schedulers/cross-promote/search',
+            method: HTTP_METHODS.GET
+        },
+        crossPromoteInvitationSend: {
+            url: '/schedulers/cross-promote/invitations',
+            method: HTTP_METHODS.POST
+        },
+        crossPromoteInvitationRespond: {
+            url: '/schedulers/cross-promote/invitations/{invitation_id}/respond',
+            method: HTTP_METHODS.POST
+        },
+        crossPromoteRelationshipsList: {
+            url: '/schedulers/cross-promote/relationships',
+            method: HTTP_METHODS.GET
+        },
+        crossPromoteRelationshipEnd: {
+            url: '/schedulers/cross-promote/relationships/{relationship_id}/end',
+            method: HTTP_METHODS.POST
+        },
+        crossPromoteRelationshipLogs: {
+            url: '/schedulers/cross-promote/relationships/{relationship_id}/logs',
             method: HTTP_METHODS.GET
         },
         getCampaignBusinesses: {
@@ -28006,6 +28063,16 @@ var Scheduler = /** @class */ (function () {
         return Requests.processRoute(SchedulerRoute.routes.getRedditSubredditFlairs, {}, { scheduler_id: scheduler_id, subreddit: subreddit }, params);
     };
     /**
+     * Get posting rules for a specific Reddit subreddit.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param subreddit The name of the subreddit.
+     * @returns promise
+     */
+    Scheduler.getRedditSubredditRules = function (scheduler_id, subreddit, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getRedditSubredditRules, {}, { scheduler_id: scheduler_id, subreddit: subreddit }, params);
+    };
+    /**
     * Get Discord channels associated with the scheduler's Discord account.
     *
     * @param scheduler_id The ID of the promotion schedule.
@@ -28131,6 +28198,48 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.crossPromoteRelationshipPosts = function (scheduler_id, relationship_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.crossPromoteRelationshipPosts, {}, { scheduler_id: scheduler_id, relationship_id: relationship_id }, params);
+    };
+    /**
+     * Search cross-promote opportunities using the normalized route family.
+     * GET /schedulers/cross-promote/search
+     */
+    Scheduler.crossPromoteSearch = function (params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteSearch, {}, {}, params);
+    };
+    /**
+     * Send a normalized cross-promote invitation.
+     * POST /schedulers/cross-promote/invitations
+     */
+    Scheduler.crossPromoteInvitationSend = function (data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteInvitationSend, data, {}, params);
+    };
+    /**
+     * Respond to a normalized cross-promote invitation.
+     * POST /schedulers/cross-promote/invitations/{invitation_id}/respond
+     */
+    Scheduler.crossPromoteInvitationRespond = function (invitation_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteInvitationRespond, data, { invitation_id: invitation_id }, params);
+    };
+    /**
+     * List normalized cross-promote relationships.
+     * GET /schedulers/cross-promote/relationships
+     */
+    Scheduler.crossPromoteRelationshipsList = function (params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteRelationshipsList, {}, {}, params);
+    };
+    /**
+     * End a normalized cross-promote relationship.
+     * POST /schedulers/cross-promote/relationships/{relationship_id}/end
+     */
+    Scheduler.crossPromoteRelationshipEnd = function (relationship_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteRelationshipEnd, {}, { relationship_id: relationship_id }, params);
+    };
+    /**
+     * List normalized cross-promote relationship logs.
+     * GET /schedulers/cross-promote/relationships/{relationship_id}/logs
+     */
+    Scheduler.crossPromoteRelationshipLogs = function (relationship_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.crossPromoteRelationshipLogs, {}, { relationship_id: relationship_id }, params);
     };
     /**
      * List platform-level businesses for the given campaign ID,

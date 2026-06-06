@@ -296,6 +296,14 @@ declare class Scheduler {
      */
     static getRedditSubredditFlairs<T>(scheduler_id: string, subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Get posting rules for a specific Reddit subreddit.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param subreddit The name of the subreddit.
+     * @returns promise
+     */
+    static getRedditSubredditRules<T>(scheduler_id: string, subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
     * Get Discord channels associated with the scheduler's Discord account.
     *
     * @param scheduler_id The ID of the promotion schedule.
@@ -385,6 +393,36 @@ declare class Scheduler {
      * GET /schedulers/{scheduler_id}/crosspromote/relationships/{relationship_id}/posts
      */
     static crossPromoteRelationshipPosts<T>(scheduler_id: string, relationship_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Search cross-promote opportunities using the normalized route family.
+     * GET /schedulers/cross-promote/search
+     */
+    static crossPromoteSearch<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send a normalized cross-promote invitation.
+     * POST /schedulers/cross-promote/invitations
+     */
+    static crossPromoteInvitationSend<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Respond to a normalized cross-promote invitation.
+     * POST /schedulers/cross-promote/invitations/{invitation_id}/respond
+     */
+    static crossPromoteInvitationRespond<T>(invitation_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List normalized cross-promote relationships.
+     * GET /schedulers/cross-promote/relationships
+     */
+    static crossPromoteRelationshipsList<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * End a normalized cross-promote relationship.
+     * POST /schedulers/cross-promote/relationships/{relationship_id}/end
+     */
+    static crossPromoteRelationshipEnd<T>(relationship_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List normalized cross-promote relationship logs.
+     * GET /schedulers/cross-promote/relationships/{relationship_id}/logs
+     */
+    static crossPromoteRelationshipLogs<T>(relationship_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List platform-level businesses for the given campaign ID,
      * as defined by /schedulers/{scheduler_id}/businesses on the backend.

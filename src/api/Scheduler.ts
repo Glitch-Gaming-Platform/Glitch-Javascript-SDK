@@ -411,6 +411,17 @@ class Scheduler {
     }
 
     /**
+     * Get posting rules for a specific Reddit subreddit.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param subreddit The name of the subreddit.
+     * @returns promise
+     */
+    public static getRedditSubredditRules<T>(scheduler_id: string, subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SchedulerRoute.routes.getRedditSubredditRules, {}, { scheduler_id, subreddit }, params);
+    }
+
+    /**
     * Get Discord channels associated with the scheduler's Discord account.
     *
     * @param scheduler_id The ID of the promotion schedule.
@@ -608,6 +619,84 @@ class Scheduler {
             SchedulerRoute.routes.crossPromoteRelationshipPosts,
             {},
             { scheduler_id, relationship_id },
+            params
+        );
+    }
+
+    /**
+     * Search cross-promote opportunities using the normalized route family.
+     * GET /schedulers/cross-promote/search
+     */
+    public static crossPromoteSearch<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.crossPromoteSearch,
+            {},
+            {},
+            params
+        );
+    }
+
+    /**
+     * Send a normalized cross-promote invitation.
+     * POST /schedulers/cross-promote/invitations
+     */
+    public static crossPromoteInvitationSend<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.crossPromoteInvitationSend,
+            data,
+            {},
+            params
+        );
+    }
+
+    /**
+     * Respond to a normalized cross-promote invitation.
+     * POST /schedulers/cross-promote/invitations/{invitation_id}/respond
+     */
+    public static crossPromoteInvitationRespond<T>(invitation_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.crossPromoteInvitationRespond,
+            data,
+            { invitation_id },
+            params
+        );
+    }
+
+    /**
+     * List normalized cross-promote relationships.
+     * GET /schedulers/cross-promote/relationships
+     */
+    public static crossPromoteRelationshipsList<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.crossPromoteRelationshipsList,
+            {},
+            {},
+            params
+        );
+    }
+
+    /**
+     * End a normalized cross-promote relationship.
+     * POST /schedulers/cross-promote/relationships/{relationship_id}/end
+     */
+    public static crossPromoteRelationshipEnd<T>(relationship_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.crossPromoteRelationshipEnd,
+            {},
+            { relationship_id },
+            params
+        );
+    }
+
+    /**
+     * List normalized cross-promote relationship logs.
+     * GET /schedulers/cross-promote/relationships/{relationship_id}/logs
+     */
+    public static crossPromoteRelationshipLogs<T>(relationship_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.crossPromoteRelationshipLogs,
+            {},
+            { relationship_id },
             params
         );
     }

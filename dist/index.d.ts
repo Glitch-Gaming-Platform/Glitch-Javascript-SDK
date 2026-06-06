@@ -3693,7 +3693,7 @@ declare class SocialPosts {
     *
     * @returns promise
     */
-    static reports<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static reports<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update the information about a post impressions, for posts who API do not give view counts.
      *
@@ -4771,6 +4771,14 @@ declare class Campaigns {
      */
     static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * List public influencer campaigns.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getPublicCampaigns
+     *
+     * @returns promise
+     */
+    static listPublic<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Create a new campaign.
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/createCampaign
@@ -4926,6 +4934,13 @@ declare class Campaigns {
     * @returns promise
     */
     static updateInfluencerCampaign<T>(campaign_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Delete an influencer campaign relationship.
+    *
+    * The backend route currently exists, but the controller destroy implementation is intentionally
+    * treated as an agent/admin stop-gate because removal can orphan posts, payouts, or contracts.
+    */
+    static deleteInfluencerCampaign<T>(campaign_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single campaign.
      *
@@ -5683,6 +5698,14 @@ declare class Messages {
      * @returns A promise
      */
     static sendMessage<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Updates a message.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/updateMessage
+     *
+     * @returns A promise
+     */
+    static updateMessage<T>(message_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deletes a message.
      *
@@ -6885,6 +6908,14 @@ declare class Scheduler {
      */
     static getRedditSubredditFlairs<T>(scheduler_id: string, subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Get posting rules for a specific Reddit subreddit.
+     *
+     * @param scheduler_id The ID of the promotion schedule.
+     * @param subreddit The name of the subreddit.
+     * @returns promise
+     */
+    static getRedditSubredditRules<T>(scheduler_id: string, subreddit: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
     * Get Discord channels associated with the scheduler's Discord account.
     *
     * @param scheduler_id The ID of the promotion schedule.
@@ -6974,6 +7005,36 @@ declare class Scheduler {
      * GET /schedulers/{scheduler_id}/crosspromote/relationships/{relationship_id}/posts
      */
     static crossPromoteRelationshipPosts<T>(scheduler_id: string, relationship_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Search cross-promote opportunities using the normalized route family.
+     * GET /schedulers/cross-promote/search
+     */
+    static crossPromoteSearch<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send a normalized cross-promote invitation.
+     * POST /schedulers/cross-promote/invitations
+     */
+    static crossPromoteInvitationSend<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Respond to a normalized cross-promote invitation.
+     * POST /schedulers/cross-promote/invitations/{invitation_id}/respond
+     */
+    static crossPromoteInvitationRespond<T>(invitation_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List normalized cross-promote relationships.
+     * GET /schedulers/cross-promote/relationships
+     */
+    static crossPromoteRelationshipsList<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * End a normalized cross-promote relationship.
+     * POST /schedulers/cross-promote/relationships/{relationship_id}/end
+     */
+    static crossPromoteRelationshipEnd<T>(relationship_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List normalized cross-promote relationship logs.
+     * GET /schedulers/cross-promote/relationships/{relationship_id}/logs
+     */
+    static crossPromoteRelationshipLogs<T>(relationship_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List platform-level businesses for the given campaign ID,
      * as defined by /schedulers/{scheduler_id}/businesses on the backend.

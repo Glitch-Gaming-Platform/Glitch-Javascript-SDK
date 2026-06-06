@@ -17,6 +17,17 @@ class Campaigns {
     }
 
     /**
+     * List public influencer campaigns.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getPublicCampaigns
+     *
+     * @returns promise
+     */
+    public static listPublic<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.listPublicCampaigns, undefined, undefined, params);
+    }
+
+    /**
      * Create a new campaign.
      * 
      * @see https://api.glitch.fun/api/documentation#/Campaigns/createCampaign
@@ -231,6 +242,17 @@ class Campaigns {
     public static updateInfluencerCampaign<T>(campaign_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(CampaignsRoute.routes.updateInfluencerCampaign, data, { campaign_id: campaign_id, user_id: user_id }, params);
+    }
+
+    /**
+    * Delete an influencer campaign relationship.
+    *
+    * The backend route currently exists, but the controller destroy implementation is intentionally
+    * treated as an agent/admin stop-gate because removal can orphan posts, payouts, or contracts.
+    */
+    public static deleteInfluencerCampaign<T>(campaign_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.deleteInfluencerCampaign, undefined, { campaign_id: campaign_id, user_id: user_id }, params);
     }
 
     /**
@@ -734,7 +756,7 @@ class Campaigns {
      * @returns promise
      */
     public static listPayouts<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(CampaignsRoute.routes.getLedger, undefined, { campaign_id: campaign_id }, params);
+        return Requests.processRoute(CampaignsRoute.routes.listPayouts, undefined, { campaign_id: campaign_id }, params);
     }
 
     /**

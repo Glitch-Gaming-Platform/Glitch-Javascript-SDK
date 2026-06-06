@@ -116,7 +116,7 @@ declare class SocialPosts {
     *
     * @returns promise
     */
-    static reports<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static reports<T>(post_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Update the information about a post impressions, for posts who API do not give view counts.
      *

@@ -48,6 +48,7 @@ class SchedulerRoute {
         getInstagramAccounts: { url: '/schedulers/{scheduler_id}/instagram/accounts', method: HTTP_METHODS.GET },
         getRedditSubreddits: { url: '/schedulers/{scheduler_id}/reddit/subreddits', method: HTTP_METHODS.GET },
         getRedditSubredditFlairs: { url: '/schedulers/{scheduler_id}/reddit/subreddits/{subreddit}/flairs', method: HTTP_METHODS.GET },
+        getRedditSubredditRules: { url: '/schedulers/{scheduler_id}/reddit/subreddits/{subreddit}/rules', method: HTTP_METHODS.GET },
         getDiscordChannels: { url: '/schedulers/{scheduler_id}/discord/channels', method: HTTP_METHODS.GET },
 
         crossPromoteListRelationships: {
@@ -88,6 +89,30 @@ class SchedulerRoute {
         },
         crossPromoteRelationshipPosts: {
             url: '/schedulers/{scheduler_id}/crosspromote/relationships/{relationship_id}/posts',
+            method: HTTP_METHODS.GET
+        },
+        crossPromoteSearch: {
+            url: '/schedulers/cross-promote/search',
+            method: HTTP_METHODS.GET
+        },
+        crossPromoteInvitationSend: {
+            url: '/schedulers/cross-promote/invitations',
+            method: HTTP_METHODS.POST
+        },
+        crossPromoteInvitationRespond: {
+            url: '/schedulers/cross-promote/invitations/{invitation_id}/respond',
+            method: HTTP_METHODS.POST
+        },
+        crossPromoteRelationshipsList: {
+            url: '/schedulers/cross-promote/relationships',
+            method: HTTP_METHODS.GET
+        },
+        crossPromoteRelationshipEnd: {
+            url: '/schedulers/cross-promote/relationships/{relationship_id}/end',
+            method: HTTP_METHODS.POST
+        },
+        crossPromoteRelationshipLogs: {
+            url: '/schedulers/cross-promote/relationships/{relationship_id}/logs',
             method: HTTP_METHODS.GET
         },
 

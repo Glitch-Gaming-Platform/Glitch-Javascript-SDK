@@ -10,6 +10,14 @@ declare class Campaigns {
      */
     static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * List public influencer campaigns.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/getPublicCampaigns
+     *
+     * @returns promise
+     */
+    static listPublic<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Create a new campaign.
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/createCampaign
@@ -165,6 +173,13 @@ declare class Campaigns {
     * @returns promise
     */
     static updateInfluencerCampaign<T>(campaign_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+    * Delete an influencer campaign relationship.
+    *
+    * The backend route currently exists, but the controller destroy implementation is intentionally
+    * treated as an agent/admin stop-gate because removal can orphan posts, payouts, or contracts.
+    */
+    static deleteInfluencerCampaign<T>(campaign_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single campaign.
      *

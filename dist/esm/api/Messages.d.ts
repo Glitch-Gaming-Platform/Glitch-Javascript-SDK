@@ -18,6 +18,14 @@ declare class Messages {
      */
     static sendMessage<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Updates a message.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Messages/updateMessage
+     *
+     * @returns A promise
+     */
+    static updateMessage<T>(message_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Deletes a message.
      *
      * @see https://api.glitch.fun/api/documentation#/Messages/destroyMessage

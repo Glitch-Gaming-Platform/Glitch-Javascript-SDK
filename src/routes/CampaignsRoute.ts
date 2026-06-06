@@ -5,6 +5,7 @@ class CampaignsRoute {
 
   public static routes: { [key: string]: Route } = {
     listCampaigns: { url: '/campaigns', method: HTTP_METHODS.GET },
+    listPublicCampaigns: { url: '/campaigns/public', method: HTTP_METHODS.GET },
     createCampaign: { url: '/campaigns', method: HTTP_METHODS.POST },
     viewCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.GET },
     updateCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.PUT },
@@ -21,6 +22,7 @@ class CampaignsRoute {
     listInfluencerCampaigns: { url: '/campaigns/influencers', method: HTTP_METHODS.GET },
     viewInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.GET },
     updateInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.PUT },
+    deleteInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.DELETE },
     markInfluencerCampaignComplete: { url: '/campaigns/{campaign_id}/influencers/{user_id}/setComplete', method: HTTP_METHODS.POST },
     markInfluencerCampaignIncomplete: { url: '/campaigns/{campaign_id}/influencers/{user_id}/setIncomplete', method: HTTP_METHODS.POST },
     listInfluencerCampaignLinks: { url: '/campaigns/{campaign_id}/influencers/{user_id}/links', method: HTTP_METHODS.GET },
