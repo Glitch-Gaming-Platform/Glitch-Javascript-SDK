@@ -9136,9 +9136,33 @@ declare class Agents {
      */
     static runAgent<T>(title_id: string, agent_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Upload one file for an agent run. data can include { agent_run_id }.
+     */
+    static uploadAgentFile<T>(title_id: string, agent_id: string, file: File | Blob, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    /**
+     * Alias for callers that use plural naming while uploading one file at a time.
+     */
+    static uploadAgentFiles<T>(title_id: string, agent_id: string, file: File | Blob, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    /**
      * List agent runs for a title.
      */
     static listRuns<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * View one durable agent run, including events, files, actions, and guidance when loaded by the API.
+     */
+    static viewRun<T>(title_id: string, run_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List real-time user-visible events for an agent run.
+     */
+    static listRunEvents<T>(title_id: string, run_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Request cancellation for a queued or running agent run.
+     */
+    static cancelRun<T>(title_id: string, run_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send a course correction to a queued or running agent run.
+     */
+    static interjectRun<T>(title_id: string, run_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List agent actions/approval queue for a title.
      */

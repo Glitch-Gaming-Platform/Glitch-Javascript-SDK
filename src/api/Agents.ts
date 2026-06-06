@@ -1,7 +1,7 @@
 import AgentsRoute from "../routes/AgentsRoute";
 import Requests from "../util/Requests";
 import Response from "../util/Response";
-import { AxiosPromise } from "axios";
+import { AxiosPromise, AxiosProgressEvent } from "axios";
 
 class Agents {
   /**
@@ -68,10 +68,70 @@ class Agents {
   }
 
   /**
+   * Upload one file for an agent run. data can include { agent_run_id }.
+   */
+  public static uploadAgentFile<T>(
+    title_id: string,
+    agent_id: string,
+    file: File | Blob,
+    data?: object,
+    params?: Record<string, any>,
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+  ): AxiosPromise<Response<T>> {
+    const url = AgentsRoute.routes.uploadAgentFiles.url
+      .replace("{title_id}", title_id)
+      .replace("{agent_id}", agent_id);
+
+    return Requests.uploadFile(url, "file", file, data, params, onUploadProgress);
+  }
+
+  /**
+   * Alias for callers that use plural naming while uploading one file at a time.
+   */
+  public static uploadAgentFiles<T>(
+    title_id: string,
+    agent_id: string,
+    file: File | Blob,
+    data?: object,
+    params?: Record<string, any>,
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+  ): AxiosPromise<Response<T>> {
+    return Agents.uploadAgentFile(title_id, agent_id, file, data, params, onUploadProgress);
+  }
+
+  /**
    * List agent runs for a title.
    */
   public static listRuns<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(AgentsRoute.routes.listRuns, {}, { title_id }, params);
+  }
+
+  /**
+   * View one durable agent run, including events, files, actions, and guidance when loaded by the API.
+   */
+  public static viewRun<T>(title_id: string, run_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.viewRun, {}, { title_id, run_id }, params);
+  }
+
+  /**
+   * List real-time user-visible events for an agent run.
+   */
+  public static listRunEvents<T>(title_id: string, run_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.listRunEvents, {}, { title_id, run_id }, params);
+  }
+
+  /**
+   * Request cancellation for a queued or running agent run.
+   */
+  public static cancelRun<T>(title_id: string, run_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.cancelRun, data || {}, { title_id, run_id }, params);
+  }
+
+  /**
+   * Send a course correction to a queued or running agent run.
+   */
+  public static interjectRun<T>(title_id: string, run_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.interjectRun, data || {}, { title_id, run_id }, params);
   }
 
   /**

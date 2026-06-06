@@ -18895,7 +18895,12 @@ var AgentsRoute = /** @class */ (function () {
         updateAgent: { url: "/agents/titles/{title_id}/agents/{agent_id}", method: HTTP_METHODS.PUT },
         deleteAgent: { url: "/agents/titles/{title_id}/agents/{agent_id}", method: HTTP_METHODS.DELETE },
         runAgent: { url: "/agents/titles/{title_id}/agents/{agent_id}/run", method: HTTP_METHODS.POST },
+        uploadAgentFiles: { url: "/agents/titles/{title_id}/agents/{agent_id}/files", method: HTTP_METHODS.POST },
         listRuns: { url: "/agents/titles/{title_id}/runs", method: HTTP_METHODS.GET },
+        viewRun: { url: "/agents/titles/{title_id}/runs/{run_id}", method: HTTP_METHODS.GET },
+        listRunEvents: { url: "/agents/titles/{title_id}/runs/{run_id}/events", method: HTTP_METHODS.GET },
+        cancelRun: { url: "/agents/titles/{title_id}/runs/{run_id}/cancel", method: HTTP_METHODS.POST },
+        interjectRun: { url: "/agents/titles/{title_id}/runs/{run_id}/interject", method: HTTP_METHODS.POST },
         listActions: { url: "/agents/titles/{title_id}/actions", method: HTTP_METHODS.GET },
         approveAction: { url: "/agents/titles/{title_id}/actions/{action_id}/approve", method: HTTP_METHODS.POST },
         rejectAction: { url: "/agents/titles/{title_id}/actions/{action_id}/reject", method: HTTP_METHODS.POST },
@@ -18972,10 +18977,49 @@ var Agents = /** @class */ (function () {
         return Requests.processRoute(AgentsRoute.routes.runAgent, data, { title_id: title_id, agent_id: agent_id }, params);
     };
     /**
+     * Upload one file for an agent run. data can include { agent_run_id }.
+     */
+    Agents.uploadAgentFile = function (title_id, agent_id, file, data, params, onUploadProgress) {
+        var url = AgentsRoute.routes.uploadAgentFiles.url
+            .replace("{title_id}", title_id)
+            .replace("{agent_id}", agent_id);
+        return Requests.uploadFile(url, "file", file, data, params, onUploadProgress);
+    };
+    /**
+     * Alias for callers that use plural naming while uploading one file at a time.
+     */
+    Agents.uploadAgentFiles = function (title_id, agent_id, file, data, params, onUploadProgress) {
+        return Agents.uploadAgentFile(title_id, agent_id, file, data, params, onUploadProgress);
+    };
+    /**
      * List agent runs for a title.
      */
     Agents.listRuns = function (title_id, params) {
         return Requests.processRoute(AgentsRoute.routes.listRuns, {}, { title_id: title_id }, params);
+    };
+    /**
+     * View one durable agent run, including events, files, actions, and guidance when loaded by the API.
+     */
+    Agents.viewRun = function (title_id, run_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.viewRun, {}, { title_id: title_id, run_id: run_id }, params);
+    };
+    /**
+     * List real-time user-visible events for an agent run.
+     */
+    Agents.listRunEvents = function (title_id, run_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.listRunEvents, {}, { title_id: title_id, run_id: run_id }, params);
+    };
+    /**
+     * Request cancellation for a queued or running agent run.
+     */
+    Agents.cancelRun = function (title_id, run_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.cancelRun, data || {}, { title_id: title_id, run_id: run_id }, params);
+    };
+    /**
+     * Send a course correction to a queued or running agent run.
+     */
+    Agents.interjectRun = function (title_id, run_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.interjectRun, data || {}, { title_id: title_id, run_id: run_id }, params);
     };
     /**
      * List agent actions/approval queue for a title.
