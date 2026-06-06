@@ -32,6 +32,15 @@ class RedditSubreddits {
     }
 
     /**
+     * Match one of the authenticated user's administered titles to Reddit communities.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Reddit%20Subreddit%20Intelligence/titleRedditSubredditMatches
+     */
+    public static matchTitle<T>(title_id: string, data: object = {}, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(RedditSubredditsRoute.routes.matchTitle, data, { title_id }, params);
+    }
+
+    /**
      * Admin-only ingestion of subreddit metadata and rules.
      *
      * @see https://api.glitch.fun/api/documentation#/Reddit%20Subreddit%20Intelligence/ingestRedditSubreddits
