@@ -9104,6 +9104,17 @@ declare class ServerOperations {
     static updatePolicy<T>(title_id: string, build_id: string, data: object): AxiosPromise<Response<T>>;
 }
 
+interface AgentRunRequest {
+    run_type?: string;
+    trigger_source?: string;
+    background?: boolean;
+    inline?: boolean;
+    live_mode?: boolean;
+    initial_message?: string | null;
+    attachment_ids?: string[];
+    agent_run_id?: string | null;
+    [key: string]: any;
+}
 declare class Agents {
     /**
      * List game titles that can be managed in the Agents section.
@@ -9140,7 +9151,7 @@ declare class Agents {
     /**
      * Run an agent planning cycle. Returns 402 when trial/subscription is required.
      */
-    static runAgent<T>(title_id: string, agent_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static runAgent<T>(title_id: string, agent_id: string, data?: AgentRunRequest, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Upload one file for an agent run. data can include { agent_run_id }.
      */
