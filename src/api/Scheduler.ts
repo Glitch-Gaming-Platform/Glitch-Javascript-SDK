@@ -771,6 +771,22 @@ class Scheduler {
     }
 
     /**
+     * List Google Ads conversion actions available to a scheduler account.
+     * GET /schedulers/{scheduler_id}/conversion-actions
+     */
+    public static listConversionActions<T>(
+        scheduler_id: string,
+        params?: Record<string, any>
+    ): AxiosPromise<Response<T>> {
+        return Requests.processRoute(
+            SchedulerRoute.routes.getConversionActions,
+            undefined,
+            { scheduler_id },
+            params
+        );
+    }
+
+    /**
      * List all destinations for a title update.
      * 
      * @see https://api.glitch.fun/api/documentation#/Scheduler/listTitleUpdateDestinations

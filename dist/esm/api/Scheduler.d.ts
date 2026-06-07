@@ -460,6 +460,11 @@ declare class Scheduler {
      */
     static listCampaignFundingInstruments<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * List Google Ads conversion actions available to a scheduler account.
+     * GET /schedulers/{scheduler_id}/conversion-actions
+     */
+    static listConversionActions<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List all destinations for a title update.
      *
      * @see https://api.glitch.fun/api/documentation#/Scheduler/listTitleUpdateDestinations

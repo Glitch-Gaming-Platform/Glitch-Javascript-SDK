@@ -7102,6 +7102,10 @@ var AdsRoute = /** @class */ (function () {
             url: "/ads/reports/time-performance",
             method: HTTP_METHODS.GET,
         },
+        getDetailedBreakdownReport: {
+            url: "/ads/reports/detailed-breakdown",
+            method: HTTP_METHODS.GET,
+        },
         getGoogleGeoSuggestions: {
             url: "/ads/google/targeting/geo/suggest",
             method: HTTP_METHODS.GET,
@@ -7156,6 +7160,10 @@ var AdsRoute = /** @class */ (function () {
         },
         createGoogleAccount: {
             url: "/ads/google/accounts/create",
+            method: HTTP_METHODS.POST,
+        },
+        reportSkanAttributionPostback: {
+            url: "/.well-known/appattribution/report-attribution",
             method: HTTP_METHODS.POST,
         },
     };
@@ -7758,6 +7766,12 @@ var Ads = /** @class */ (function () {
         return Requests.processRoute(AdsRoute.routes.getTimePerformanceReport, undefined, undefined, params);
     };
     /**
+     * Get detailed paid campaign performance rows for tables and exports.
+     */
+    Ads.getDetailedBreakdownReport = function (params) {
+        return Requests.processRoute(AdsRoute.routes.getDetailedBreakdownReport, undefined, undefined, params);
+    };
+    /**
  * GET /ads/google/targeting/geo/suggest
  */
     Ads.listGoogleGeoSuggestions = function (params) {
@@ -7837,6 +7851,13 @@ var Ads = /** @class */ (function () {
      */
     Ads.createGoogleAccount = function (data) {
         return Requests.processRoute(AdsRoute.routes.createGoogleAccount, data, undefined, undefined);
+    };
+    /**
+     * Submit a SKAN attribution postback to the public Apple app attribution endpoint.
+     * This mirrors POST /.well-known/appattribution/report-attribution.
+     */
+    Ads.reportSkanAttributionPostback = function (data, params) {
+        return Requests.processRoute(AdsRoute.routes.reportSkanAttributionPostback, data, undefined, params);
     };
     return Ads;
 }());
@@ -16287,6 +16308,13 @@ var Scheduler = /** @class */ (function () {
      */
     Scheduler.listCampaignFundingInstruments = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.getCampaignFundingInstruments, undefined, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * List Google Ads conversion actions available to a scheduler account.
+     * GET /schedulers/{scheduler_id}/conversion-actions
+     */
+    Scheduler.listConversionActions = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getConversionActions, undefined, { scheduler_id: scheduler_id }, params);
     };
     /**
      * List all destinations for a title update.

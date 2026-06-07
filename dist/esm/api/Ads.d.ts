@@ -418,6 +418,19 @@ declare class Ads {
         platform?: string;
     }): AxiosPromise<Response<T>>;
     /**
+     * Get detailed paid campaign performance rows for tables and exports.
+     */
+    static getDetailedBreakdownReport<T>(params: {
+        start_date: string;
+        end_date: string;
+        community_id?: string;
+        scheduler_id?: string;
+        platform?: string;
+        campaign_id?: string;
+        ad_group_id?: string;
+        ad_id?: string;
+    }): AxiosPromise<Response<T>>;
+    /**
  * GET /ads/google/targeting/geo/suggest
  */
     static listGoogleGeoSuggestions<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
@@ -476,5 +489,14 @@ declare class Ads {
         currency_code: string;
         time_zone: string;
     }): AxiosPromise<Response<T>>;
+    /**
+     * Submit a SKAN attribution postback to the public Apple app attribution endpoint.
+     * This mirrors POST /.well-known/appattribution/report-attribution.
+     */
+    static reportSkanAttributionPostback<T>(data: {
+        "jws-string"?: string;
+        jws?: string;
+        [key: string]: any;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Ads;

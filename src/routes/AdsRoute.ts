@@ -402,6 +402,11 @@ class AdsRoute {
             method: HTTP_METHODS.GET,
         },
 
+        getDetailedBreakdownReport: {
+            url: "/ads/reports/detailed-breakdown",
+            method: HTTP_METHODS.GET,
+        },
+
         getGoogleGeoSuggestions: {
             url: "/ads/google/targeting/geo/suggest",
             method: HTTP_METHODS.GET,
@@ -462,6 +467,11 @@ class AdsRoute {
         },
         createGoogleAccount: {
             url: "/ads/google/accounts/create",
+            method: HTTP_METHODS.POST,
+        },
+
+        reportSkanAttributionPostback: {
+            url: "/.well-known/appattribution/report-attribution",
             method: HTTP_METHODS.POST,
         },
 
