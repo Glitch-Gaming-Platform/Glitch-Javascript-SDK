@@ -27699,6 +27699,7 @@ var SchedulerRoute = /** @class */ (function () {
         getSchedulerPostsWithComments: { url: '/schedulers/{scheduler_id}/posts-with-comments', method: HTTP_METHODS.GET },
         syncAllSchedulerComments: { url: '/schedulers/{scheduler_id}/sync-all-comments', method: HTTP_METHODS.POST },
         getConversionActions: { url: '/schedulers/{scheduler_id}/conversion-actions', method: HTTP_METHODS.GET },
+        sendTestConversionEvent: { url: '/schedulers/{scheduler_id}/test-event/{platform}', method: HTTP_METHODS.GET },
         syncHistory: { url: '/schedulers/{scheduler_id}/sync-history/{platform}', method: HTTP_METHODS.POST },
         generateHashtags: {
             url: '/schedulers/{scheduler_id}/generateHashtags',
@@ -28456,6 +28457,16 @@ var Scheduler = /** @class */ (function () {
     */
     Scheduler.getConversionActions = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.getConversionActions, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+    * Send a platform test conversion event through the backend scheduler route.
+    *
+    * @param scheduler_id The ID of the promotion schedule.
+    * @param platform Platform key, e.g. reddit, tiktok, facebook, google.
+    * @param params Query parameters such as Reddit test_id or Meta test_event_code.
+    */
+    Scheduler.sendTestConversionEvent = function (scheduler_id, platform, params) {
+        return Requests.processRoute(SchedulerRoute.routes.sendTestConversionEvent, {}, { scheduler_id: scheduler_id, platform: platform }, params);
     };
     /**
      * Trigger a historical sync for a specific platform on a scheduler.

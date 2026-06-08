@@ -586,6 +586,14 @@ declare class Scheduler {
         account_id?: string;
     }): AxiosPromise<Response<T>>;
     /**
+    * Send a platform test conversion event through the backend scheduler route.
+    *
+    * @param scheduler_id The ID of the promotion schedule.
+    * @param platform Platform key, e.g. reddit, tiktok, facebook, google.
+    * @param params Query parameters such as Reddit test_id or Meta test_event_code.
+    */
+    static sendTestConversionEvent<T>(scheduler_id: string, platform: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Trigger a historical sync for a specific platform on a scheduler.
      *
      * @see https://api.glitch.fun/api/documentation#/Scheduler/syncHistory

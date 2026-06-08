@@ -150,6 +150,7 @@ class SchedulerRoute {
         syncAllSchedulerComments: { url: '/schedulers/{scheduler_id}/sync-all-comments', method: HTTP_METHODS.POST },
 
         getConversionActions: { url: '/schedulers/{scheduler_id}/conversion-actions', method: HTTP_METHODS.GET },
+        sendTestConversionEvent: { url: '/schedulers/{scheduler_id}/test-event/{platform}', method: HTTP_METHODS.GET },
 
         syncHistory: { url: '/schedulers/{scheduler_id}/sync-history/{platform}', method: HTTP_METHODS.POST },
 
