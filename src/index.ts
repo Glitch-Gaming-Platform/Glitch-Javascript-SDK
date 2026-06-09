@@ -50,6 +50,7 @@ import {Crm} from './api';
 import {Multiplayer} from './api';
 import {ServerOperations} from './api';
 import {Agents} from './api';
+import {PrDirectory} from './api';
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -129,6 +130,7 @@ class Glitch {
         Multiplayer : Multiplayer,
         ServerOperations : ServerOperations,
         Agents : Agents,
+        PrDirectory : PrDirectory,
     }
 
     public static util = {

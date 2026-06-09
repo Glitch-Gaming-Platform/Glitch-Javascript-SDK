@@ -46,6 +46,7 @@ import Crm from "./Crm";
 import Multiplayer from "./Multiplayer";
 import ServerOperations from "./ServerOperations";
 import Agents from "./Agents";
+import PrDirectory from "./PrDirectory";
 
 export {Ads};
 export {AccessKeys};
@@ -95,3 +96,4 @@ export {Crm};
 export {Multiplayer};
 export {ServerOperations};
 export {Agents};
+export {PrDirectory};

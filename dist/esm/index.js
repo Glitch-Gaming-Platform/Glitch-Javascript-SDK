@@ -19290,6 +19290,121 @@ var Agents = /** @class */ (function () {
     return Agents;
 }());
 
+/**
+ * Route declarations for the PR Directory API.
+ *
+ * These mirror the Laravel routes under `/api/pr/*` and the title-scoped
+ * matcher route under `/api/titles/{title_id}/pr/matches`. Keeping the URL
+ * templates in one place lets the SDK methods stay small and consistent with
+ * the rest of the package's route-wrapper pattern.
+ */
+var PrDirectoryRoutes = /** @class */ (function () {
+    function PrDirectoryRoutes() {
+    }
+    PrDirectoryRoutes.routes = {
+        listPublications: { url: "/pr/publications", method: HTTP_METHODS.GET },
+        viewPublication: { url: "/pr/publications/{publication_id}", method: HTTP_METHODS.GET },
+        listPeople: { url: "/pr/people", method: HTTP_METHODS.GET },
+        viewPerson: { url: "/pr/people/{person_id}", method: HTTP_METHODS.GET },
+        listTags: { url: "/pr/tags", method: HTTP_METHODS.GET },
+        report: { url: "/pr/report", method: HTTP_METHODS.GET },
+        titleMatches: { url: "/titles/{title_id}/pr/matches", method: HTTP_METHODS.GET },
+        queueVerification: { url: "/admin/pr/verification/queue", method: HTTP_METHODS.POST },
+    };
+    return PrDirectoryRoutes;
+}());
+
+/**
+ * SDK wrapper for the PR Directory API.
+ *
+ * The PR directory is read-friendly by default: public endpoints expose
+ * searchable publications, people, tags, and reporting metrics. Authenticated
+ * title admins can request title-specific PR matches, and site admins can queue
+ * monthly-style verification jobs.
+ */
+var PrDirectory = /** @class */ (function () {
+    function PrDirectory() {
+    }
+    /**
+     * Search gaming-focused PR publications, independent blogs, and podcasts.
+     *
+     * @example
+     * ```ts
+     * Glitch.api.PrDirectory.listPublications({
+     *   q: "indie RPG",
+     *   has_email: true,
+     *   eligibility_status: "eligible",
+     *   sort: "-last_verified_at",
+     * });
+     * ```
+     */
+    PrDirectory.listPublications = function (params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.listPublications, {}, {}, params);
+    };
+    /**
+     * Retrieve one PR publication profile with loaded people, contact points,
+     * evidence links, and tags.
+     */
+    PrDirectory.viewPublication = function (publication_id, params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.viewPublication, {}, { publication_id: publication_id }, params);
+    };
+    /**
+     * Search PR people and roles across all known publications.
+     *
+     * @example
+     * ```ts
+     * Glitch.api.PrDirectory.listPeople({
+     *   q: "reviews editor",
+     *   has_email: true,
+     *   role_category: "editor",
+     * });
+     * ```
+     */
+    PrDirectory.listPeople = function (params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.listPeople, {}, {}, params);
+    };
+    /**
+     * Retrieve one PR person profile with their outlet roles, profile links,
+     * contact points, and metadata tags.
+     */
+    PrDirectory.viewPerson = function (person_id, params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.viewPerson, {}, { person_id: person_id }, params);
+    };
+    /**
+     * List the normalized tag vocabulary used for PR search, filters, matching,
+     * and reporting.
+     */
+    PrDirectory.listTags = function (params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.listTags, {}, {}, params);
+    };
+    /**
+     * Get aggregate PR directory reporting metrics. Publication filters can be
+     * supplied to scope the outlet portion of the report.
+     */
+    PrDirectory.report = function (params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.report, {}, {}, params);
+    };
+    /**
+     * Match a registered game title to PR outlets. Requires an auth token for a
+     * user who can administer the requested title.
+     */
+    PrDirectory.titleMatches = function (title_id, params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.titleMatches, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Queue PR verification jobs. Requires a site-admin auth token.
+     *
+     * @example
+     * ```ts
+     * Glitch.api.PrDirectory.queueVerification({ due: true, limit: 250 });
+     * ```
+     */
+    PrDirectory.queueVerification = function (data, params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.queueVerification, data || {}, {}, params);
+    };
+    return PrDirectory;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -19834,6 +19949,7 @@ var Glitch = /** @class */ (function () {
         Multiplayer: Multiplayer,
         ServerOperations: ServerOperations,
         Agents: Agents,
+        PrDirectory: PrDirectory,
     };
     Glitch.util = {
         Requests: Requests,
