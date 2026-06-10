@@ -18,6 +18,7 @@ class UserRoutes {
     clearTwitchAuth: { url: '/users/clearTwitchAuth', method: HTTP_METHODS.DELETE },
     clearFacebookAuth: { url: '/users/clearFacebookAuth', method: HTTP_METHODS.DELETE },
     clearGoogleAuth: { url: '/users/clearGoogleAuth', method: HTTP_METHODS.DELETE },
+    clearGmailAuth: { url: '/users/clearGmailAuth', method: HTTP_METHODS.DELETE },
     clearStripeAuth: { url: '/users/clearStripeAuth', method: HTTP_METHODS.DELETE },
     clearTikTokAuth: { url: '/users/clearTikTokAuth', method: HTTP_METHODS.DELETE },
     clearYoutubeAuth: { url: '/users/clearYoutubeAuth', method: HTTP_METHODS.DELETE },

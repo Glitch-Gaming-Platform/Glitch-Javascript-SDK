@@ -23,6 +23,16 @@ interface User {
     twitch_handle?: string;
     youtube_handle?: string;
     paetron_handle?: string;
+    gmail_oauth_token?: string;
+    gmail_refresh_token?: string;
+    gmail_token_expiration?: number;
+    gmail_token_expires_at?: string;
+    gmail_id?: string;
+    gmail_name?: string;
+    gmail_email?: string;
+    gmail_avatar?: string;
+    gmail_scopes?: string[];
+    gmail_connected_at?: string;
     created_at?: string;
     updated_at?: string;
 }

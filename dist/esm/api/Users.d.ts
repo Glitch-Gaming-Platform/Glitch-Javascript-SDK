@@ -180,6 +180,14 @@ declare class Users {
      */
     static clearGoogleAuth<T>(): AxiosPromise<Response<T>>;
     /**
+     * Clear Gmail Workspace authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/clearGmailAuth
+     *
+     * @returns promise
+     */
+    static clearGmailAuth<T>(): AxiosPromise<Response<T>>;
+    /**
      * Clear Stripe authentication information from the current user.
      *
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage

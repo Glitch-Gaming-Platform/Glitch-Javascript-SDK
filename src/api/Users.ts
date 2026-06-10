@@ -257,6 +257,18 @@ class Users {
     }
 
     /**
+     * Clear Gmail Workspace authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/clearGmailAuth
+     *
+     * @returns promise
+     */
+    public static clearGmailAuth<T>(): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(UserRoutes.routes.clearGmailAuth, {});
+    }
+
+    /**
      * Clear Stripe authentication information from the current user.
      * 
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/userCreateDonationPage

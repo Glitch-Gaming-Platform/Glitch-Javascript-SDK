@@ -8831,6 +8831,7 @@ var UserRoutes = /** @class */ (function () {
         clearTwitchAuth: { url: '/users/clearTwitchAuth', method: HTTP_METHODS.DELETE },
         clearFacebookAuth: { url: '/users/clearFacebookAuth', method: HTTP_METHODS.DELETE },
         clearGoogleAuth: { url: '/users/clearGoogleAuth', method: HTTP_METHODS.DELETE },
+        clearGmailAuth: { url: '/users/clearGmailAuth', method: HTTP_METHODS.DELETE },
         clearStripeAuth: { url: '/users/clearStripeAuth', method: HTTP_METHODS.DELETE },
         clearTikTokAuth: { url: '/users/clearTikTokAuth', method: HTTP_METHODS.DELETE },
         clearYoutubeAuth: { url: '/users/clearYoutubeAuth', method: HTTP_METHODS.DELETE },
@@ -9095,6 +9096,16 @@ var Users = /** @class */ (function () {
      */
     Users.clearGoogleAuth = function () {
         return Requests.processRoute(UserRoutes.routes.clearGoogleAuth, {});
+    };
+    /**
+     * Clear Gmail Workspace authentication information from the current user.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Users%20Route/clearGmailAuth
+     *
+     * @returns promise
+     */
+    Users.clearGmailAuth = function () {
+        return Requests.processRoute(UserRoutes.routes.clearGmailAuth, {});
     };
     /**
      * Clear Stripe authentication information from the current user.
