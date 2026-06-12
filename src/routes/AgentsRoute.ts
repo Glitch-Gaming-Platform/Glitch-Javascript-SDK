@@ -25,6 +25,7 @@ class AgentsRoute {
     executeAction: { url: "/agents/titles/{title_id}/actions/{action_id}/execute", method: HTTP_METHODS.POST },
     listGuidance: { url: "/agents/titles/{title_id}/guidance", method: HTTP_METHODS.GET },
     answerGuidance: { url: "/agents/titles/{title_id}/guidance/{guidance_id}/answer", method: HTTP_METHODS.POST },
+    rewriteAgentDraft: { url: "/agents/titles/{title_id}/drafts/rewrite", method: HTTP_METHODS.POST },
     listMemories: { url: "/agents/titles/{title_id}/memories", method: HTTP_METHODS.GET },
     results: { url: "/agents/titles/{title_id}/results", method: HTTP_METHODS.GET },
     usage: { url: "/agents/titles/{title_id}/usage", method: HTTP_METHODS.GET },

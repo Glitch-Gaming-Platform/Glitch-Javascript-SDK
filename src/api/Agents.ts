@@ -197,6 +197,13 @@ class Agents {
   }
 
   /**
+   * Rewrite an editable agent draft for review without executing the parent action.
+   */
+  public static rewriteAgentDraft<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.rewriteAgentDraft, data, { title_id }, params);
+  }
+
+  /**
    * List structured agent memories for a title.
    */
   public static listMemories<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {

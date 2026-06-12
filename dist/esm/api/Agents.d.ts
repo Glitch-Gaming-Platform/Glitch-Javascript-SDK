@@ -106,6 +106,10 @@ declare class Agents {
      */
     static answerGuidance<T>(title_id: string, guidance_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Rewrite an editable agent draft for review without executing the parent action.
+     */
+    static rewriteAgentDraft<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List structured agent memories for a title.
      */
     static listMemories<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
