@@ -45,7 +45,7 @@ class Agents {
   }
 
   /**
-   * Create an agent before payment. Runs/results remain gated until trial/subscription.
+   * Create an agent before payment. Runs/results remain gated until subscription or prepaid credits.
    */
   public static createAgent<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(AgentsRoute.routes.createAgent, data, { title_id }, params);
@@ -73,7 +73,7 @@ class Agents {
   }
 
   /**
-   * Run an agent planning cycle. Returns 402 when trial/subscription is required.
+   * Run an agent planning cycle. Returns 402 when subscription or prepaid credits are required.
    */
   public static runAgent<T>(title_id: string, agent_id: string, data?: AgentRunRequest, params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(AgentsRoute.routes.runAgent, data, { title_id, agent_id }, params);
@@ -211,7 +211,7 @@ class Agents {
   }
 
   /**
-   * Get results and outcome summary for title agents. Returns 402 until trial/subscription is active.
+   * Get results and outcome summary for title agents. Returns 402 until subscription or prepaid credits are active.
    */
   public static results<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(AgentsRoute.routes.results, {}, { title_id }, params);
@@ -241,7 +241,7 @@ class Agents {
   }
 
   /**
-   * Start a Stripe-backed agent trial/subscription after setup.
+   * Start a Stripe-backed agent subscription after setup.
    */
   public static startTrial<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(AgentsRoute.routes.startTrial, data, { title_id }, params);

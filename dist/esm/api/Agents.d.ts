@@ -29,7 +29,7 @@ declare class Agents {
      */
     static listAgents<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-     * Create an agent before payment. Runs/results remain gated until trial/subscription.
+     * Create an agent before payment. Runs/results remain gated until subscription or prepaid credits.
      */
     static createAgent<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
@@ -45,7 +45,7 @@ declare class Agents {
      */
     static deleteAgent<T>(title_id: string, agent_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-     * Run an agent planning cycle. Returns 402 when trial/subscription is required.
+     * Run an agent planning cycle. Returns 402 when subscription or prepaid credits are required.
      */
     static runAgent<T>(title_id: string, agent_id: string, data?: AgentRunRequest, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
@@ -114,7 +114,7 @@ declare class Agents {
      */
     static listMemories<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-     * Get results and outcome summary for title agents. Returns 402 until trial/subscription is active.
+     * Get results and outcome summary for title agents. Returns 402 until subscription or prepaid credits are active.
      */
     static results<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
@@ -132,7 +132,7 @@ declare class Agents {
      */
     static purchaseCredits<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-     * Start a Stripe-backed agent trial/subscription after setup.
+     * Start a Stripe-backed agent subscription after setup.
      */
     static startTrial<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**

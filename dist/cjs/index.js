@@ -31147,7 +31147,7 @@ var Agents = /** @class */ (function () {
         return Requests.processRoute(AgentsRoute.routes.listAgents, {}, { title_id: title_id }, params);
     };
     /**
-     * Create an agent before payment. Runs/results remain gated until trial/subscription.
+     * Create an agent before payment. Runs/results remain gated until subscription or prepaid credits.
      */
     Agents.createAgent = function (title_id, data, params) {
         return Requests.processRoute(AgentsRoute.routes.createAgent, data, { title_id: title_id }, params);
@@ -31171,7 +31171,7 @@ var Agents = /** @class */ (function () {
         return Requests.processRoute(AgentsRoute.routes.deleteAgent, {}, { title_id: title_id, agent_id: agent_id }, params);
     };
     /**
-     * Run an agent planning cycle. Returns 402 when trial/subscription is required.
+     * Run an agent planning cycle. Returns 402 when subscription or prepaid credits are required.
      */
     Agents.runAgent = function (title_id, agent_id, data, params) {
         return Requests.processRoute(AgentsRoute.routes.runAgent, data, { title_id: title_id, agent_id: agent_id }, params);
@@ -31277,7 +31277,7 @@ var Agents = /** @class */ (function () {
         return Requests.processRoute(AgentsRoute.routes.listMemories, {}, { title_id: title_id }, params);
     };
     /**
-     * Get results and outcome summary for title agents. Returns 402 until trial/subscription is active.
+     * Get results and outcome summary for title agents. Returns 402 until subscription or prepaid credits are active.
      */
     Agents.results = function (title_id, params) {
         return Requests.processRoute(AgentsRoute.routes.results, {}, { title_id: title_id }, params);
@@ -31303,7 +31303,7 @@ var Agents = /** @class */ (function () {
         return Requests.processRoute(AgentsRoute.routes.purchaseCredits, data, { title_id: title_id }, params);
     };
     /**
-     * Start a Stripe-backed agent trial/subscription after setup.
+     * Start a Stripe-backed agent subscription after setup.
      */
     Agents.startTrial = function (title_id, data, params) {
         return Requests.processRoute(AgentsRoute.routes.startTrial, data, { title_id: title_id }, params);
