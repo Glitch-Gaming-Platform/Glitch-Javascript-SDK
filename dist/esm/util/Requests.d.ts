@@ -11,6 +11,13 @@ declare class Requests {
     static setBaseUrl(url: string): void;
     static setAuthToken(token: string): void;
     static setCommunityID(community_id: string | undefined): void;
+    /**
+     * Build an absolute API URL using the currently configured base URL.
+     *
+     * This is useful for browser primitives such as EventSource that need a URL
+     * string instead of an Axios request wrapper.
+     */
+    static buildUrl(url: string, params?: Record<string, any>): string;
     private static request;
     static get<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static post<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;

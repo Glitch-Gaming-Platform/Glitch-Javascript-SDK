@@ -28,6 +28,35 @@ class Requests {
     Requests.community_id = community_id;
   }
 
+  /**
+   * Build an absolute API URL using the currently configured base URL.
+   *
+   * This is useful for browser primitives such as EventSource that need a URL
+   * string instead of an Axios request wrapper.
+   */
+  public static buildUrl(url: string, params?: Record<string, any>): string {
+    let path = url;
+
+    if (params && Object.keys(params).length > 0) {
+      const queryString = Object.entries(params)
+        .filter(([, value]) => value !== undefined && value !== null && value !== '')
+        .map(([key, value]) => {
+          if (Array.isArray(value)) {
+            return value.map((item) => `${key}[]=${encodeURIComponent(item)}`).join('&');
+          }
+          return `${key}=${encodeURIComponent(value)}`;
+        })
+        .filter(Boolean)
+        .join('&');
+
+      if (queryString) {
+        path = `${path}${path.includes('?') ? '&' : '?'}${queryString}`;
+      }
+    }
+
+    return Requests.baseUrl.replace(/\/+$/, '') + '/' + path.replace(/^\/+/, '');
+  }
+
   private static request<T>(
     method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE',
     url: string,

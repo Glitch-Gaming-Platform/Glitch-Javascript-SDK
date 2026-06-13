@@ -50,6 +50,7 @@ import {Crm} from './api';
 import {Multiplayer} from './api';
 import {ServerOperations} from './api';
 import {Agents} from './api';
+import {Mcp} from './api';
 import {PrDirectory} from './api';
 
 import Requests from "./util/Requests";
@@ -130,6 +131,7 @@ class Glitch {
         Multiplayer : Multiplayer,
         ServerOperations : ServerOperations,
         Agents : Agents,
+        Mcp : Mcp,
         PrDirectory : PrDirectory,
     }
 

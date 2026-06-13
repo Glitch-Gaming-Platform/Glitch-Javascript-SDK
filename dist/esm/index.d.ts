@@ -46,6 +46,7 @@ import { Crm } from './api';
 import { Multiplayer } from './api';
 import { ServerOperations } from './api';
 import { Agents } from './api';
+import { Mcp } from './api';
 import { PrDirectory } from './api';
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -114,6 +115,7 @@ declare class Glitch {
         Multiplayer: typeof Multiplayer;
         ServerOperations: typeof ServerOperations;
         Agents: typeof Agents;
+        Mcp: typeof Mcp;
         PrDirectory: typeof PrDirectory;
     };
     static util: {

@@ -5326,6 +5326,35 @@ var Requests = /** @class */ (function () {
     Requests.setCommunityID = function (community_id) {
         Requests.community_id = community_id;
     };
+    /**
+     * Build an absolute API URL using the currently configured base URL.
+     *
+     * This is useful for browser primitives such as EventSource that need a URL
+     * string instead of an Axios request wrapper.
+     */
+    Requests.buildUrl = function (url, params) {
+        var path = url;
+        if (params && Object.keys(params).length > 0) {
+            var queryString = Object.entries(params)
+                .filter(function (_a) {
+                var value = _a[1];
+                return value !== undefined && value !== null && value !== '';
+            })
+                .map(function (_a) {
+                var key = _a[0], value = _a[1];
+                if (Array.isArray(value)) {
+                    return value.map(function (item) { return "".concat(key, "[]=").concat(encodeURIComponent(item)); }).join('&');
+                }
+                return "".concat(key, "=").concat(encodeURIComponent(value));
+            })
+                .filter(Boolean)
+                .join('&');
+            if (queryString) {
+                path = "".concat(path).concat(path.includes('?') ? '&' : '?').concat(queryString);
+            }
+        }
+        return Requests.baseUrl.replace(/\/+$/, '') + '/' + path.replace(/^\/+/, '');
+    };
     Requests.request = function (method, url, data, fileData) {
         var headers = {
             'Content-Type': 'application/json',
@@ -19309,6 +19338,152 @@ var Agents = /** @class */ (function () {
 }());
 
 /**
+ * Glitch MCP paid facade (/mcp/v1).
+ *
+ * Mirrors the routes served by McpAgentController. These endpoints authenticate
+ * with either a Glitch user JWT or a title-scoped MCP token and keep all planner,
+ * billing, and executor logic server-side. The public @glitch/mcp adapter calls
+ * the same endpoints; this SDK surface lets first-party TypeScript clients reuse them.
+ */
+var McpRoute = /** @class */ (function () {
+    function McpRoute() {
+    }
+    McpRoute.routes = {
+        authStatus: { url: "/mcp/v1/auth/status", method: HTTP_METHODS.GET },
+        listTitles: { url: "/mcp/v1/titles", method: HTTP_METHODS.GET },
+        titleContext: { url: "/mcp/v1/titles/{title_id}/context", method: HTTP_METHODS.GET },
+        billing: { url: "/mcp/v1/titles/{title_id}/billing", method: HTTP_METHODS.GET },
+        startRun: { url: "/mcp/v1/titles/{title_id}/runs", method: HTTP_METHODS.POST },
+        viewRun: { url: "/mcp/v1/titles/{title_id}/runs/{run_id}", method: HTTP_METHODS.GET },
+        runEvents: { url: "/mcp/v1/titles/{title_id}/runs/{run_id}/events", method: HTTP_METHODS.GET },
+        streamRun: { url: "/mcp/v1/titles/{title_id}/runs/{run_id}/stream", method: HTTP_METHODS.GET },
+        finalReport: { url: "/mcp/v1/titles/{title_id}/runs/{run_id}/report", method: HTTP_METHODS.GET },
+        artifacts: { url: "/mcp/v1/titles/{title_id}/runs/{run_id}/artifacts", method: HTTP_METHODS.GET },
+        listActions: { url: "/mcp/v1/titles/{title_id}/actions", method: HTTP_METHODS.GET },
+        approveAction: { url: "/mcp/v1/titles/{title_id}/actions/{action_id}/approve", method: HTTP_METHODS.POST },
+        rejectAction: { url: "/mcp/v1/titles/{title_id}/actions/{action_id}/reject", method: HTTP_METHODS.POST },
+        executeAction: { url: "/mcp/v1/titles/{title_id}/actions/{action_id}/execute", method: HTTP_METHODS.POST },
+        listGuidance: { url: "/mcp/v1/titles/{title_id}/guidance", method: HTTP_METHODS.GET },
+        answerGuidance: { url: "/mcp/v1/titles/{title_id}/guidance/{guidance_id}/answer", method: HTTP_METHODS.POST },
+        createUpload: { url: "/mcp/v1/titles/{title_id}/uploads", method: HTTP_METHODS.POST },
+        uploadFile: { url: "/mcp/v1/titles/{title_id}/files", method: HTTP_METHODS.POST },
+        listTokens: { url: "/mcp/v1/titles/{title_id}/tokens", method: HTTP_METHODS.GET },
+        createToken: { url: "/mcp/v1/titles/{title_id}/tokens", method: HTTP_METHODS.POST },
+        revokeToken: { url: "/mcp/v1/titles/{title_id}/tokens/{token_id}", method: HTTP_METHODS.DELETE },
+    };
+    return McpRoute;
+}());
+
+/**
+ * Client for the Glitch MCP paid facade (/mcp/v1).
+ *
+ * Authenticate with a Glitch user JWT or a title-scoped MCP token. The facade
+ * enforces subscription, title permissions, scope, and approval guardrails on
+ * every call; this client only forwards requests.
+ */
+var Mcp = /** @class */ (function () {
+    function Mcp() {
+    }
+    /** Health/auth probe. Returns authenticated=false (200) when no credential is set. */
+    Mcp.authStatus = function (params) {
+        return Requests.processRoute(McpRoute.routes.authStatus, {}, {}, params);
+    };
+    /** List titles visible to the current user token or title-scoped MCP token. */
+    Mcp.listTitles = function (params) {
+        return Requests.processRoute(McpRoute.routes.listTitles, {}, {}, params);
+    };
+    /** Fetch safe, subscription-gated workspace context for a title. */
+    Mcp.titleContext = function (title_id, params) {
+        return Requests.processRoute(McpRoute.routes.titleContext, {}, { title_id: title_id }, params);
+    };
+    /** Check subscription, trial, plan, and credit state for a title. */
+    Mcp.billing = function (title_id, params) {
+        return Requests.processRoute(McpRoute.routes.billing, {}, { title_id: title_id }, params);
+    };
+    /** Start a paid Glitch Agent run for a title. */
+    Mcp.startRun = function (title_id, data, params) {
+        return Requests.processRoute(McpRoute.routes.startRun, data !== null && data !== void 0 ? data : {}, { title_id: title_id }, params);
+    };
+    /** Fetch a durable run with status, actions, guidance, events, files, and report. */
+    Mcp.viewRun = function (title_id, run_id, params) {
+        return Requests.processRoute(McpRoute.routes.viewRun, {}, { title_id: title_id, run_id: run_id }, params);
+    };
+    /** List user-visible timeline events for a run. */
+    Mcp.runEvents = function (title_id, run_id, params) {
+        return Requests.processRoute(McpRoute.routes.runEvents, {}, { title_id: title_id, run_id: run_id }, params);
+    };
+    /** Fetch the human-friendly final or partial report for a run. */
+    Mcp.finalReport = function (title_id, run_id, params) {
+        return Requests.processRoute(McpRoute.routes.finalReport, {}, { title_id: title_id, run_id: run_id }, params);
+    };
+    /**
+     * Server-Sent Events URL for a run's live event stream.
+     *
+     * Returns the absolute URL to open with an EventSource/fetch reader; the
+     * endpoint emits `status`, `run_event`, and a terminal `settled`/`timeout` event.
+     */
+    Mcp.runStreamUrl = function (title_id, run_id, params) {
+        var url = McpRoute.routes.streamRun.url
+            .replace("{title_id}", encodeURIComponent(title_id))
+            .replace("{run_id}", encodeURIComponent(run_id));
+        return Requests.buildUrl(url, params);
+    };
+    /** List downloadable files and hosted report artifacts for a run. */
+    Mcp.artifacts = function (title_id, run_id, params) {
+        return Requests.processRoute(McpRoute.routes.artifacts, {}, { title_id: title_id, run_id: run_id }, params);
+    };
+    /** List proposed/guidance/approval/executed actions for a title. */
+    Mcp.listActions = function (title_id, params) {
+        return Requests.processRoute(McpRoute.routes.listActions, {}, { title_id: title_id }, params);
+    };
+    /** Approve a reviewable action. Execution remains guarded server-side. */
+    Mcp.approveAction = function (title_id, action_id, data, params) {
+        return Requests.processRoute(McpRoute.routes.approveAction, data !== null && data !== void 0 ? data : {}, { title_id: title_id, action_id: action_id }, params);
+    };
+    /** Reject a proposed or approval-needed action. */
+    Mcp.rejectAction = function (title_id, action_id, data, params) {
+        return Requests.processRoute(McpRoute.routes.rejectAction, data !== null && data !== void 0 ? data : {}, { title_id: title_id, action_id: action_id }, params);
+    };
+    /** Execute an approved action. Public/paid/creator-facing work stays guarded. */
+    Mcp.executeAction = function (title_id, action_id, data, params) {
+        return Requests.processRoute(McpRoute.routes.executeAction, data !== null && data !== void 0 ? data : {}, { title_id: title_id, action_id: action_id }, params);
+    };
+    /** List open or answered guidance requests for a title or run. */
+    Mcp.listGuidance = function (title_id, params) {
+        return Requests.processRoute(McpRoute.routes.listGuidance, {}, { title_id: title_id }, params);
+    };
+    /** Answer a guidance request and resume the server-side workflow when possible. */
+    Mcp.answerGuidance = function (title_id, guidance_id, data, params) {
+        return Requests.processRoute(McpRoute.routes.answerGuidance, data !== null && data !== void 0 ? data : {}, { title_id: title_id, guidance_id: guidance_id }, params);
+    };
+    /** Get instructions for uploading a file (points at uploadFile below). */
+    Mcp.createUpload = function (title_id, data, params) {
+        return Requests.processRoute(McpRoute.routes.createUpload, data !== null && data !== void 0 ? data : {}, { title_id: title_id }, params);
+    };
+    /**
+     * Upload a file (image, video, or document) to a title or run as multipart/form-data.
+     * The facade re-checks the title scope, subscription, and allowed mime types.
+     */
+    Mcp.uploadFile = function (title_id, file, data, params, onUploadProgress) {
+        var url = McpRoute.routes.uploadFile.url.replace("{title_id}", title_id);
+        return Requests.uploadFile(url, "file", file, data, params, onUploadProgress);
+    };
+    /** List MCP title tokens (user JWT only). */
+    Mcp.listTokens = function (title_id, params) {
+        return Requests.processRoute(McpRoute.routes.listTokens, {}, { title_id: title_id }, params);
+    };
+    /** Create a revocable title-scoped MCP token (user JWT only). */
+    Mcp.createToken = function (title_id, data, params) {
+        return Requests.processRoute(McpRoute.routes.createToken, data !== null && data !== void 0 ? data : {}, { title_id: title_id }, params);
+    };
+    /** Revoke a title-scoped MCP token (user JWT only). */
+    Mcp.revokeToken = function (title_id, token_id, params) {
+        return Requests.processRoute(McpRoute.routes.revokeToken, {}, { title_id: title_id, token_id: token_id }, params);
+    };
+    return Mcp;
+}());
+
+/**
  * Route declarations for the PR Directory API.
  *
  * These mirror the Laravel routes under `/api/pr/*` and the title-scoped
@@ -19967,6 +20142,7 @@ var Glitch = /** @class */ (function () {
         Multiplayer: Multiplayer,
         ServerOperations: ServerOperations,
         Agents: Agents,
+        Mcp: Mcp,
         PrDirectory: PrDirectory,
     };
     Glitch.util = {
