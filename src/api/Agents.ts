@@ -24,6 +24,20 @@ class Agents {
   }
 
   /**
+   * List title-agent subscriptions linked to titles in a community.
+   */
+  public static listCommunitySubscriptions<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.listCommunitySubscriptions, {}, { community_id }, params);
+  }
+
+  /**
+   * Cancel a title-agent subscription linked to a community title.
+   */
+  public static cancelCommunitySubscription<T>(community_id: string, stripe_subscription_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.cancelCommunitySubscription, {}, { community_id, stripe_subscription_id }, params);
+  }
+
+  /**
    * Return the full Laravel API route catalog agents use for route-aware planning.
    */
   public static routeCatalog<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {

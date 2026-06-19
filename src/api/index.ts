@@ -48,6 +48,7 @@ import ServerOperations from "./ServerOperations";
 import Agents from "./Agents";
 import Mcp from "./Mcp";
 import PrDirectory from "./PrDirectory";
+import AdminReports from "./AdminReports";
 
 export {Ads};
 export {AccessKeys};
@@ -99,3 +100,4 @@ export {ServerOperations};
 export {Agents};
 export {Mcp};
 export {PrDirectory};
+export {AdminReports};

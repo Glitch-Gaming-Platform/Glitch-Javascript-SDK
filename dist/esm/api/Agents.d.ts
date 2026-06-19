@@ -17,6 +17,14 @@ declare class Agents {
      */
     static listTitles<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * List title-agent subscriptions linked to titles in a community.
+     */
+    static listCommunitySubscriptions<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Cancel a title-agent subscription linked to a community title.
+     */
+    static cancelCommunitySubscription<T>(community_id: string, stripe_subscription_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Return the full Laravel API route catalog agents use for route-aware planning.
      */
     static routeCatalog<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;

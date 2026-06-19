@@ -4,6 +4,8 @@ import HTTP_METHODS from "../constants/HttpMethods";
 class AgentsRoute {
   public static routes: { [key: string]: Route } = {
     listTitles: { url: "/agents/titles", method: HTTP_METHODS.GET },
+    listCommunitySubscriptions: { url: "/agents/communities/{community_id}/subscriptions", method: HTTP_METHODS.GET },
+    cancelCommunitySubscription: { url: "/agents/communities/{community_id}/subscriptions/{stripe_subscription_id}", method: HTTP_METHODS.DELETE },
     routeCatalog: { url: "/agents/routes/catalog", method: HTTP_METHODS.GET },
     workspace: { url: "/agents/titles/{title_id}/workspace", method: HTTP_METHODS.GET },
     listAgents: { url: "/agents/titles/{title_id}/agents", method: HTTP_METHODS.GET },

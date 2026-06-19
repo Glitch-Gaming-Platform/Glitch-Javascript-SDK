@@ -9225,6 +9225,14 @@ declare class Agents {
      */
     static listTitles<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * List title-agent subscriptions linked to titles in a community.
+     */
+    static listCommunitySubscriptions<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Cancel a title-agent subscription linked to a community title.
+     */
+    static cancelCommunitySubscription<T>(community_id: string, stripe_subscription_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Return the full Laravel API route catalog agents use for route-aware planning.
      */
     static routeCatalog<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
@@ -9816,6 +9824,14 @@ declare class PrDirectory {
     static queueVerification<T = PrQueueVerificationResponse>(data?: PrQueueVerificationRequest, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class AdminReports {
+    /**
+     * Returns aggregate site-admin reporting for user growth, churn, acquisition,
+     * engagement, and user-generated revenue.
+     */
+    static usersRevenue<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -10181,6 +10197,7 @@ declare class Glitch {
         Agents: typeof Agents;
         Mcp: typeof Mcp;
         PrDirectory: typeof PrDirectory;
+        AdminReports: typeof AdminReports;
     };
     static util: {
         Requests: typeof Requests;

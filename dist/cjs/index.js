@@ -31083,6 +31083,8 @@ var AgentsRoute = /** @class */ (function () {
     }
     AgentsRoute.routes = {
         listTitles: { url: "/agents/titles", method: HTTP_METHODS.GET },
+        listCommunitySubscriptions: { url: "/agents/communities/{community_id}/subscriptions", method: HTTP_METHODS.GET },
+        cancelCommunitySubscription: { url: "/agents/communities/{community_id}/subscriptions/{stripe_subscription_id}", method: HTTP_METHODS.DELETE },
         routeCatalog: { url: "/agents/routes/catalog", method: HTTP_METHODS.GET },
         workspace: { url: "/agents/titles/{title_id}/workspace", method: HTTP_METHODS.GET },
         listAgents: { url: "/agents/titles/{title_id}/agents", method: HTTP_METHODS.GET },
@@ -31127,6 +31129,18 @@ var Agents = /** @class */ (function () {
      */
     Agents.listTitles = function (params) {
         return Requests.processRoute(AgentsRoute.routes.listTitles, {}, {}, params);
+    };
+    /**
+     * List title-agent subscriptions linked to titles in a community.
+     */
+    Agents.listCommunitySubscriptions = function (community_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.listCommunitySubscriptions, {}, { community_id: community_id }, params);
+    };
+    /**
+     * Cancel a title-agent subscription linked to a community title.
+     */
+    Agents.cancelCommunitySubscription = function (community_id, stripe_subscription_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.cancelCommunitySubscription, {}, { community_id: community_id, stripe_subscription_id: stripe_subscription_id }, params);
     };
     /**
      * Return the full Laravel API route catalog agents use for route-aware planning.
@@ -31594,6 +31608,31 @@ var PrDirectory = /** @class */ (function () {
         return Requests.processRoute(PrDirectoryRoutes.routes.queueVerification, data || {}, {}, params);
     };
     return PrDirectory;
+}());
+
+var AdminReportsRoute = /** @class */ (function () {
+    function AdminReportsRoute() {
+    }
+    AdminReportsRoute.routes = {
+        usersRevenue: {
+            url: '/admin/reports/users-revenue',
+            method: HTTP_METHODS.GET
+        },
+    };
+    return AdminReportsRoute;
+}());
+
+var AdminReports = /** @class */ (function () {
+    function AdminReports() {
+    }
+    /**
+     * Returns aggregate site-admin reporting for user growth, churn, acquisition,
+     * engagement, and user-generated revenue.
+     */
+    AdminReports.usersRevenue = function (params) {
+        return Requests.processRoute(AdminReportsRoute.routes.usersRevenue, undefined, undefined, params);
+    };
+    return AdminReports;
 }());
 
 var Parser = /** @class */ (function () {
@@ -32142,6 +32181,7 @@ var Glitch = /** @class */ (function () {
         Agents: Agents,
         Mcp: Mcp,
         PrDirectory: PrDirectory,
+        AdminReports: AdminReports,
     };
     Glitch.util = {
         Requests: Requests,
