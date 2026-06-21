@@ -14457,6 +14457,15 @@ var FeedbackRoute = /** @class */ (function () {
         listFeedback: { url: '/feedback', method: HTTP_METHODS.GET },
         sendFeedback: { url: '/feedback', method: HTTP_METHODS.POST },
         viewFeedback: { url: '/feedback/{feedback_id}', method: HTTP_METHODS.GET },
+        listSupportTickets: { url: '/support/tickets', method: HTTP_METHODS.GET },
+        createSupportTicket: { url: '/support/tickets', method: HTTP_METHODS.POST },
+        viewSupportTicket: { url: '/support/tickets/{feedback_id}', method: HTTP_METHODS.GET },
+        replySupportTicket: { url: '/support/tickets/{feedback_id}/replies', method: HTTP_METHODS.POST },
+        adminListFeedback: { url: '/admin/support/feedback', method: HTTP_METHODS.GET },
+        adminViewFeedback: { url: '/admin/support/feedback/{feedback_id}', method: HTTP_METHODS.GET },
+        adminUpdateFeedback: { url: '/admin/support/feedback/{feedback_id}', method: HTTP_METHODS.PUT },
+        adminReplyFeedback: { url: '/admin/support/feedback/{feedback_id}/reply', method: HTTP_METHODS.POST },
+        adminRewardFeedback: { url: '/admin/support/feedback/{feedback_id}/reward', method: HTTP_METHODS.POST },
     };
     return FeedbackRoute;
 }());
@@ -14483,6 +14492,48 @@ var Feedback = /** @class */ (function () {
      */
     Feedback.viewFeedback = function (feedback_id, params) {
         return Requests.processRoute(FeedbackRoute.routes.viewFeedback, undefined, { feedback_id: feedback_id }, params);
+    };
+    /**
+     * List support tickets owned by the logged-in user.
+     */
+    Feedback.listSupportTickets = function (params) {
+        return Requests.processRoute(FeedbackRoute.routes.listSupportTickets, undefined, undefined, params);
+    };
+    /**
+     * Create a support ticket for the logged-in user.
+     */
+    Feedback.createSupportTicket = function (data, params) {
+        return Requests.processRoute(FeedbackRoute.routes.createSupportTicket, data, {}, params);
+    };
+    /**
+     * View a support ticket owned by the logged-in user.
+     */
+    Feedback.viewSupportTicket = function (feedback_id, params) {
+        return Requests.processRoute(FeedbackRoute.routes.viewSupportTicket, undefined, { feedback_id: feedback_id }, params);
+    };
+    /**
+     * Reply to a support ticket owned by the logged-in user.
+     */
+    Feedback.replySupportTicket = function (feedback_id, data, params) {
+        return Requests.processRoute(FeedbackRoute.routes.replySupportTicket, data, { feedback_id: feedback_id }, params);
+    };
+    /**
+     * Admin support inbox covering support tickets and feedback.
+     */
+    Feedback.adminListFeedback = function (params) {
+        return Requests.processRoute(FeedbackRoute.routes.adminListFeedback, undefined, undefined, params);
+    };
+    Feedback.adminViewFeedback = function (feedback_id, params) {
+        return Requests.processRoute(FeedbackRoute.routes.adminViewFeedback, undefined, { feedback_id: feedback_id }, params);
+    };
+    Feedback.adminUpdateFeedback = function (feedback_id, data, params) {
+        return Requests.processRoute(FeedbackRoute.routes.adminUpdateFeedback, data, { feedback_id: feedback_id }, params);
+    };
+    Feedback.adminReplyFeedback = function (feedback_id, data, params) {
+        return Requests.processRoute(FeedbackRoute.routes.adminReplyFeedback, data, { feedback_id: feedback_id }, params);
+    };
+    Feedback.adminRewardFeedback = function (feedback_id, data, params) {
+        return Requests.processRoute(FeedbackRoute.routes.adminRewardFeedback, data, { feedback_id: feedback_id }, params);
     };
     /**
      * Submit feedback.

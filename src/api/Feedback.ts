@@ -28,6 +28,57 @@ class Feedback {
     }
 
     /**
+     * List support tickets owned by the logged-in user.
+     */
+    public static listSupportTickets<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(FeedbackRoute.routes.listSupportTickets, undefined, undefined, params);
+    }
+
+    /**
+     * Create a support ticket for the logged-in user.
+     */
+    public static createSupportTicket<T>(data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(FeedbackRoute.routes.createSupportTicket, data, {}, params);
+    }
+
+    /**
+     * View a support ticket owned by the logged-in user.
+     */
+    public static viewSupportTicket<T>(feedback_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(FeedbackRoute.routes.viewSupportTicket, undefined, { feedback_id: feedback_id }, params);
+    }
+
+    /**
+     * Reply to a support ticket owned by the logged-in user.
+     */
+    public static replySupportTicket<T>(feedback_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(FeedbackRoute.routes.replySupportTicket, data, { feedback_id: feedback_id }, params);
+    }
+
+    /**
+     * Admin support inbox covering support tickets and feedback.
+     */
+    public static adminListFeedback<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(FeedbackRoute.routes.adminListFeedback, undefined, undefined, params);
+    }
+
+    public static adminViewFeedback<T>(feedback_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(FeedbackRoute.routes.adminViewFeedback, undefined, { feedback_id: feedback_id }, params);
+    }
+
+    public static adminUpdateFeedback<T>(feedback_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(FeedbackRoute.routes.adminUpdateFeedback, data, { feedback_id: feedback_id }, params);
+    }
+
+    public static adminReplyFeedback<T>(feedback_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(FeedbackRoute.routes.adminReplyFeedback, data, { feedback_id: feedback_id }, params);
+    }
+
+    public static adminRewardFeedback<T>(feedback_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(FeedbackRoute.routes.adminRewardFeedback, data, { feedback_id: feedback_id }, params);
+    }
+
+    /**
      * Submit feedback.
      * 
      * @see https://api.glitch.fun/api/documentation#/Feedback/a64fe3d6f90ed1af5bbd5311a795c134
