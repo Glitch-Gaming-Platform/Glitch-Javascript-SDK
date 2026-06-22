@@ -34,6 +34,13 @@ declare class Subscriptions {
      */
     static listCommunityInfluencerSubscriptions<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Check whether the current user can access developer tool creation for a feature.
+     *
+     * @param params { feature: 'social_media'|'influencers'|'ads', community_id?: string, title_id?: string, scheduler_id?: string }
+     * @returns promise
+     */
+    static getDeveloperToolAccess<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Create a new subscription of a content creator
      *
      * @see https://api.glitch.fun/api/documentation#/Subscriptions/createCreatorSubscription

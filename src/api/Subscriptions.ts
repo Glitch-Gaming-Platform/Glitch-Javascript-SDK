@@ -50,6 +50,16 @@ class Subscriptions {
     }
 
     /**
+     * Check whether the current user can access developer tool creation for a feature.
+     *
+     * @param params { feature: 'social_media'|'influencers'|'ads', community_id?: string, title_id?: string, scheduler_id?: string }
+     * @returns promise
+     */
+    public static getDeveloperToolAccess<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(SubscriptionsRoute.routes.getDeveloperToolAccess, undefined, undefined, params);
+    }
+
+    /**
      * Create a new subscription of a content creator
      * 
      * @see https://api.glitch.fun/api/documentation#/Subscriptions/createCreatorSubscription

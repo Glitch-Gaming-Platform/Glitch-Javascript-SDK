@@ -26185,6 +26185,7 @@ var SubscriptionsRoute = /** @class */ (function () {
         cancelCommunityInfluencerSubscription: { url: '/subscriptions/communities/influencers/{community_id}/{stripe_subscription_id}', method: HTTP_METHODS.DELETE },
         listCommunityInfluencerSubscriptions: { url: '/subscriptions/communities/influencers/{community_id}', method: HTTP_METHODS.GET },
         changeCommunityInfluencerSubscription: { url: '/subscriptions/communities/influencers/change/{community_id}', method: HTTP_METHODS.POST },
+        getDeveloperToolAccess: { url: '/subscriptions/developer-tools/access', method: HTTP_METHODS.GET },
         createCustomCommunitySubscription: {
             url: '/subscriptions/communities/custom/{community_id}',
             method: HTTP_METHODS.POST
@@ -26242,6 +26243,15 @@ var Subscriptions = /** @class */ (function () {
      */
     Subscriptions.listCommunityInfluencerSubscriptions = function (community_id, params) {
         return Requests.processRoute(SubscriptionsRoute.routes.listCommunityInfluencerSubscriptions, undefined, { community_id: community_id }, params);
+    };
+    /**
+     * Check whether the current user can access developer tool creation for a feature.
+     *
+     * @param params { feature: 'social_media'|'influencers'|'ads', community_id?: string, title_id?: string, scheduler_id?: string }
+     * @returns promise
+     */
+    Subscriptions.getDeveloperToolAccess = function (params) {
+        return Requests.processRoute(SubscriptionsRoute.routes.getDeveloperToolAccess, undefined, undefined, params);
     };
     /**
      * Create a new subscription of a content creator
