@@ -25140,6 +25140,7 @@ var CampaignsRoute = /** @class */ (function () {
         deleteCampaign: { url: '/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE },
         getLedger: { url: '/campaigns/{campaign_id}/ledger', method: HTTP_METHODS.GET },
         getPosts: { url: '/campaigns/{campaign_id}/posts', method: HTTP_METHODS.GET },
+        getCampaignCalendar: { url: '/campaigns/{campaign_id}/calendar', method: HTTP_METHODS.GET },
         statistics: { url: '/campaigns/{campaign_id}/statistics', method: HTTP_METHODS.GET },
         streamViewCounts: { url: '/campaigns/{campaign_id}/streamViewCounts', method: HTTP_METHODS.GET },
         listCampaignLinks: { url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.GET },
@@ -25148,7 +25149,9 @@ var CampaignsRoute = /** @class */ (function () {
         updateCampaignLink: { url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.PUT },
         createInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers', method: HTTP_METHODS.POST },
         listInfluencerCampaigns: { url: '/campaigns/influencers', method: HTTP_METHODS.GET },
+        getInfluencerCalendar: { url: '/campaigns/influencers/calendar', method: HTTP_METHODS.GET },
         viewInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.GET },
+        saveInfluencerCalendarPosts: { url: '/campaigns/{campaign_id}/influencers/{user_id}/calendar-posts', method: HTTP_METHODS.POST },
         updateInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.PUT },
         deleteInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers/{user_id}', method: HTTP_METHODS.DELETE },
         markInfluencerCampaignComplete: { url: '/campaigns/{campaign_id}/influencers/{user_id}/setComplete', method: HTTP_METHODS.POST },
@@ -25330,6 +25333,15 @@ var Campaigns = /** @class */ (function () {
         return Requests.processRoute(CampaignsRoute.routes.getPosts, undefined, { campaign_id: campaign_id }, params);
     };
     /**
+     * Get planned influencer content for a campaign calendar.
+     *
+     * @param campaign_id The campaign id to retrieve calendar posts for.
+     * @param params Optional filters such as scheduled_at_from, scheduled_at_to, status, or user_id.
+     */
+    Campaigns.getCampaignCalendar = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.getCampaignCalendar, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
      * Get the associated statistics for the campaign.
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/campaignStatistics
@@ -25427,6 +25439,12 @@ var Campaigns = /** @class */ (function () {
         return Requests.processRoute(CampaignsRoute.routes.listInfluencerCampaigns, undefined, undefined, params);
     };
     /**
+    * List planned influencer content across the authenticated influencer's accepted campaigns.
+    */
+    Campaigns.getInfluencerCalendar = function (params) {
+        return Requests.processRoute(CampaignsRoute.routes.getInfluencerCalendar, undefined, undefined, params);
+    };
+    /**
      * Create an influencer campaign
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/6d834c837c5f330d6a4cef5786c45c90
@@ -25471,6 +25489,16 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.viewInfluencerCampaign = function (campaign_id, user_id, params) {
         return Requests.processRoute(CampaignsRoute.routes.viewInfluencerCampaign, {}, { campaign_id: campaign_id, user_id: user_id }, params);
+    };
+    /**
+     * Create or update planned campaign content for an influencer.
+     *
+     * @param campaign_id The campaign id.
+     * @param user_id The influencer user id.
+     * @param data The posts payload.
+     */
+    Campaigns.saveInfluencerCalendarPosts = function (campaign_id, user_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.saveInfluencerCalendarPosts, data, { campaign_id: campaign_id, user_id: user_id }, params);
     };
     /**
      * Mark an influencer campaign as completed.

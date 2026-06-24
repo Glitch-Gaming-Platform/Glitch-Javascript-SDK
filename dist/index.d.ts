@@ -4865,6 +4865,13 @@ declare class Campaigns {
      */
     static getPosts<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Get planned influencer content for a campaign calendar.
+     *
+     * @param campaign_id The campaign id to retrieve calendar posts for.
+     * @param params Optional filters such as scheduled_at_from, scheduled_at_to, status, or user_id.
+     */
+    static getCampaignCalendar<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Get the associated statistics for the campaign.
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/campaignStatistics
@@ -4944,6 +4951,10 @@ declare class Campaigns {
     */
     static listInfluencerCampaigns<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+    * List planned influencer content across the authenticated influencer's accepted campaigns.
+    */
+    static getInfluencerCalendar<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Create an influencer campaign
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/6d834c837c5f330d6a4cef5786c45c90
@@ -4981,6 +4992,14 @@ declare class Campaigns {
      * @returns promise
      */
     static viewInfluencerCampaign<T>(campaign_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create or update planned campaign content for an influencer.
+     *
+     * @param campaign_id The campaign id.
+     * @param user_id The influencer user id.
+     * @param data The posts payload.
+     */
+    static saveInfluencerCalendarPosts<T>(campaign_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Mark an influencer campaign as completed.
      *

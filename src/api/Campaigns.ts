@@ -106,6 +106,16 @@ class Campaigns {
     }
 
     /**
+     * Get planned influencer content for a campaign calendar.
+     *
+     * @param campaign_id The campaign id to retrieve calendar posts for.
+     * @param params Optional filters such as scheduled_at_from, scheduled_at_to, status, or user_id.
+     */
+    public static getCampaignCalendar<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.getCampaignCalendar, undefined, { campaign_id: campaign_id }, params);
+    }
+
+    /**
      * Get the associated statistics for the campaign.
      * 
      * @see https://api.glitch.fun/api/documentation#/Campaigns/campaignStatistics
@@ -217,6 +227,13 @@ class Campaigns {
     }
 
     /**
+    * List planned influencer content across the authenticated influencer's accepted campaigns.
+    */
+    public static getInfluencerCalendar<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.getInfluencerCalendar, undefined, undefined, params);
+    }
+
+    /**
      * Create an influencer campaign
      * 
      * @see https://api.glitch.fun/api/documentation#/Campaigns/6d834c837c5f330d6a4cef5786c45c90
@@ -267,6 +284,17 @@ class Campaigns {
     public static viewInfluencerCampaign<T>(campaign_id: string, user_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(CampaignsRoute.routes.viewInfluencerCampaign, {}, { campaign_id: campaign_id, user_id: user_id }, params);
+    }
+
+    /**
+     * Create or update planned campaign content for an influencer.
+     *
+     * @param campaign_id The campaign id.
+     * @param user_id The influencer user id.
+     * @param data The posts payload.
+     */
+    public static saveInfluencerCalendarPosts<T>(campaign_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.saveInfluencerCalendarPosts, data, { campaign_id: campaign_id, user_id: user_id }, params);
     }
 
     /**
