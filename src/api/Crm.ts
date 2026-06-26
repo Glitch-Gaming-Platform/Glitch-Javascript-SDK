@@ -194,6 +194,13 @@ class Crm {
     }
 
     /**
+     * List human-readable filter options for the CRM campaign composer.
+     */
+    public static getCampaignFilterOptions<T>(): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.getCampaignFilterOptions);
+    }
+
+    /**
      * List the backend-supported CRM campaign merge fields for the composer.
      */
     public static getCampaignMergeFields<T>(): AxiosPromise<Response<T>> {
@@ -205,6 +212,13 @@ class Crm {
      */
     public static renderCampaignTemplatePreview<T>(data: object): AxiosPromise<Response<T>> {
         return Requests.processRoute(CrmRoute.routes.renderCampaignTemplatePreview, data);
+    }
+
+    /**
+     * Send a non-tracked CRM campaign test email with rendered merge fields.
+     */
+    public static sendCampaignTestEmail<T>(data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.sendCampaignTestEmail, data);
     }
 
     /**

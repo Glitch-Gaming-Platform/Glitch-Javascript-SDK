@@ -8407,6 +8407,10 @@ declare class Crm {
      */
     static previewCampaignAudience<T>(data: object): AxiosPromise<Response<T>>;
     /**
+     * List human-readable filter options for the CRM campaign composer.
+     */
+    static getCampaignFilterOptions<T>(): AxiosPromise<Response<T>>;
+    /**
      * List the backend-supported CRM campaign merge fields for the composer.
      */
     static getCampaignMergeFields<T>(): AxiosPromise<Response<T>>;
@@ -8414,6 +8418,10 @@ declare class Crm {
      * Render CRM campaign content with the same merge-field engine used at send time.
      */
     static renderCampaignTemplatePreview<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Send a non-tracked CRM campaign test email with rendered merge fields.
+     */
+    static sendCampaignTestEmail<T>(data: object): AxiosPromise<Response<T>>;
     /**
      * Read CRM campaign queue depth and Azure/system email rate-limit windows.
      */

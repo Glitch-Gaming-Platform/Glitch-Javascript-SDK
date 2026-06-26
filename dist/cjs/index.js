@@ -30466,8 +30466,10 @@ var CrmRoute = /** @class */ (function () {
         updateCampaign: { url: '/admin/crm/campaigns/{campaign_id}', method: HTTP_METHODS.PUT },
         deleteCampaign: { url: '/admin/crm/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE },
         previewCampaignAudience: { url: '/admin/crm/campaigns/preview', method: HTTP_METHODS.POST },
+        getCampaignFilterOptions: { url: '/admin/crm/campaigns/filter-options', method: HTTP_METHODS.GET },
         getCampaignMergeFields: { url: '/admin/crm/campaigns/merge-fields', method: HTTP_METHODS.GET },
         renderCampaignTemplatePreview: { url: '/admin/crm/campaigns/render-preview', method: HTTP_METHODS.POST },
+        sendCampaignTestEmail: { url: '/admin/crm/campaigns/test-email', method: HTTP_METHODS.POST },
         getCampaignDeliveryStatus: { url: '/admin/crm/campaigns/delivery-status', method: HTTP_METHODS.GET },
         sendCampaign: { url: '/admin/crm/campaigns/{campaign_id}/send', method: HTTP_METHODS.POST },
         getCampaignStats: { url: '/admin/crm/campaigns/{campaign_id}/stats', method: HTTP_METHODS.GET },
@@ -30651,6 +30653,12 @@ var Crm = /** @class */ (function () {
         return Requests.processRoute(CrmRoute.routes.previewCampaignAudience, data);
     };
     /**
+     * List human-readable filter options for the CRM campaign composer.
+     */
+    Crm.getCampaignFilterOptions = function () {
+        return Requests.processRoute(CrmRoute.routes.getCampaignFilterOptions);
+    };
+    /**
      * List the backend-supported CRM campaign merge fields for the composer.
      */
     Crm.getCampaignMergeFields = function () {
@@ -30661,6 +30669,12 @@ var Crm = /** @class */ (function () {
      */
     Crm.renderCampaignTemplatePreview = function (data) {
         return Requests.processRoute(CrmRoute.routes.renderCampaignTemplatePreview, data);
+    };
+    /**
+     * Send a non-tracked CRM campaign test email with rendered merge fields.
+     */
+    Crm.sendCampaignTestEmail = function (data) {
+        return Requests.processRoute(CrmRoute.routes.sendCampaignTestEmail, data);
     };
     /**
      * Read CRM campaign queue depth and Azure/system email rate-limit windows.
