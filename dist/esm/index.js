@@ -18478,6 +18478,11 @@ var CrmRoute = /** @class */ (function () {
         listCampaignRecipients: { url: '/admin/crm/campaigns/{campaign_id}/recipients', method: HTTP_METHODS.GET },
         previewCampaignProspectImport: { url: '/admin/crm/campaigns/import-prospects/preview', method: HTTP_METHODS.POST },
         importCampaignProspects: { url: '/admin/crm/campaigns/import-prospects', method: HTTP_METHODS.POST },
+        listEmailProviderAddresses: { url: '/admin/crm/email-provider-addresses', method: HTTP_METHODS.GET },
+        getEmailProviderAddressOptions: { url: '/admin/crm/email-provider-addresses/options', method: HTTP_METHODS.GET },
+        createEmailProviderAddress: { url: '/admin/crm/email-provider-addresses', method: HTTP_METHODS.POST },
+        updateEmailProviderAddress: { url: '/admin/crm/email-provider-addresses/{address_id}', method: HTTP_METHODS.PUT },
+        deactivateEmailProviderAddress: { url: '/admin/crm/email-provider-addresses/{address_id}', method: HTTP_METHODS.DELETE },
         // Automation Triggers
         triggerSourcing: { url: '/admin/crm/automation/source', method: HTTP_METHODS.POST },
         triggerSync: { url: '/admin/crm/automation/sync', method: HTTP_METHODS.POST },
@@ -18716,6 +18721,36 @@ var Crm = /** @class */ (function () {
     Crm.importCampaignProspects = function (prospects, options) {
         if (options === void 0) { options = {}; }
         return Requests.processRoute(CrmRoute.routes.importCampaignProspects, __assign({ prospects: prospects }, options));
+    };
+    /**
+     * List provider-managed sender and reply-to addresses for CRM campaigns.
+     */
+    Crm.listEmailProviderAddresses = function (params) {
+        return Requests.processRoute(CrmRoute.routes.listEmailProviderAddresses, undefined, undefined, params);
+    };
+    /**
+     * List sender/reply-to dropdown options and defaults for the campaign composer.
+     */
+    Crm.getEmailProviderAddressOptions = function () {
+        return Requests.processRoute(CrmRoute.routes.getEmailProviderAddressOptions);
+    };
+    /**
+     * Add a provider-managed sender or reply-to address.
+     */
+    Crm.createEmailProviderAddress = function (data) {
+        return Requests.processRoute(CrmRoute.routes.createEmailProviderAddress, data);
+    };
+    /**
+     * Update provider verification, sendability, capabilities, defaults, or notes.
+     */
+    Crm.updateEmailProviderAddress = function (address_id, data) {
+        return Requests.processRoute(CrmRoute.routes.updateEmailProviderAddress, data, { address_id: address_id });
+    };
+    /**
+     * Deactivate a provider address while keeping the audit record.
+     */
+    Crm.deactivateEmailProviderAddress = function (address_id) {
+        return Requests.processRoute(CrmRoute.routes.deactivateEmailProviderAddress, {}, { address_id: address_id });
     };
     return Crm;
 }());

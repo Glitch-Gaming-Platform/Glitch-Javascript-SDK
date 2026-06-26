@@ -149,5 +149,25 @@ declare class Crm {
      * Import external prospects into CRM leads and contacts for future campaigns.
      */
     static importCampaignProspects<T>(prospects: object[], options?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List provider-managed sender and reply-to addresses for CRM campaigns.
+     */
+    static listEmailProviderAddresses<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List sender/reply-to dropdown options and defaults for the campaign composer.
+     */
+    static getEmailProviderAddressOptions<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Add a provider-managed sender or reply-to address.
+     */
+    static createEmailProviderAddress<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Update provider verification, sendability, capabilities, defaults, or notes.
+     */
+    static updateEmailProviderAddress<T>(address_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Deactivate a provider address while keeping the audit record.
+     */
+    static deactivateEmailProviderAddress<T>(address_id: string): AxiosPromise<Response<T>>;
 }
 export default Crm;

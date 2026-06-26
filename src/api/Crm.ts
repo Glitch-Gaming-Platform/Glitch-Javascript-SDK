@@ -263,6 +263,41 @@ class Crm {
         return Requests.processRoute(CrmRoute.routes.importCampaignProspects, { prospects, ...options });
     }
 
+    /**
+     * List provider-managed sender and reply-to addresses for CRM campaigns.
+     */
+    public static listEmailProviderAddresses<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.listEmailProviderAddresses, undefined, undefined, params);
+    }
+
+    /**
+     * List sender/reply-to dropdown options and defaults for the campaign composer.
+     */
+    public static getEmailProviderAddressOptions<T>(): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.getEmailProviderAddressOptions);
+    }
+
+    /**
+     * Add a provider-managed sender or reply-to address.
+     */
+    public static createEmailProviderAddress<T>(data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.createEmailProviderAddress, data);
+    }
+
+    /**
+     * Update provider verification, sendability, capabilities, defaults, or notes.
+     */
+    public static updateEmailProviderAddress<T>(address_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.updateEmailProviderAddress, data, { address_id });
+    }
+
+    /**
+     * Deactivate a provider address while keeping the audit record.
+     */
+    public static deactivateEmailProviderAddress<T>(address_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.deactivateEmailProviderAddress, {}, { address_id });
+    }
+
 }
 
 export default Crm;

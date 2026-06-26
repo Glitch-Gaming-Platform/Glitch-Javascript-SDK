@@ -41,6 +41,11 @@ class CrmRoute {
     listCampaignRecipients: { url: '/admin/crm/campaigns/{campaign_id}/recipients', method: HTTP_METHODS.GET },
     previewCampaignProspectImport: { url: '/admin/crm/campaigns/import-prospects/preview', method: HTTP_METHODS.POST },
     importCampaignProspects: { url: '/admin/crm/campaigns/import-prospects', method: HTTP_METHODS.POST },
+    listEmailProviderAddresses: { url: '/admin/crm/email-provider-addresses', method: HTTP_METHODS.GET },
+    getEmailProviderAddressOptions: { url: '/admin/crm/email-provider-addresses/options', method: HTTP_METHODS.GET },
+    createEmailProviderAddress: { url: '/admin/crm/email-provider-addresses', method: HTTP_METHODS.POST },
+    updateEmailProviderAddress: { url: '/admin/crm/email-provider-addresses/{address_id}', method: HTTP_METHODS.PUT },
+    deactivateEmailProviderAddress: { url: '/admin/crm/email-provider-addresses/{address_id}', method: HTTP_METHODS.DELETE },
 
     // Automation Triggers
     triggerSourcing: { url: '/admin/crm/automation/source', method: HTTP_METHODS.POST },
