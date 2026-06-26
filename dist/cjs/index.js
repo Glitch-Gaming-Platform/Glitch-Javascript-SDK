@@ -30459,6 +30459,19 @@ var CrmRoute = /** @class */ (function () {
         bulkApprove: { url: '/admin/crm/contacts/bulk-approve', method: HTTP_METHODS.POST },
         updateContact: { url: '/admin/crm/contacts/{contact_id}', method: HTTP_METHODS.PUT },
         deleteContact: { url: '/admin/crm/contacts/{contact_id}', method: HTTP_METHODS.DELETE },
+        // Newsletter and Campaign Management
+        listCampaigns: { url: '/admin/crm/campaigns', method: HTTP_METHODS.GET },
+        createCampaign: { url: '/admin/crm/campaigns', method: HTTP_METHODS.POST },
+        viewCampaign: { url: '/admin/crm/campaigns/{campaign_id}', method: HTTP_METHODS.GET },
+        updateCampaign: { url: '/admin/crm/campaigns/{campaign_id}', method: HTTP_METHODS.PUT },
+        deleteCampaign: { url: '/admin/crm/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE },
+        previewCampaignAudience: { url: '/admin/crm/campaigns/preview', method: HTTP_METHODS.POST },
+        getCampaignDeliveryStatus: { url: '/admin/crm/campaigns/delivery-status', method: HTTP_METHODS.GET },
+        sendCampaign: { url: '/admin/crm/campaigns/{campaign_id}/send', method: HTTP_METHODS.POST },
+        getCampaignStats: { url: '/admin/crm/campaigns/{campaign_id}/stats', method: HTTP_METHODS.GET },
+        listCampaignRecipients: { url: '/admin/crm/campaigns/{campaign_id}/recipients', method: HTTP_METHODS.GET },
+        previewCampaignProspectImport: { url: '/admin/crm/campaigns/import-prospects/preview', method: HTTP_METHODS.POST },
+        importCampaignProspects: { url: '/admin/crm/campaigns/import-prospects', method: HTTP_METHODS.POST },
         // Automation Triggers
         triggerSourcing: { url: '/admin/crm/automation/source', method: HTTP_METHODS.POST },
         triggerSync: { url: '/admin/crm/automation/sync', method: HTTP_METHODS.POST },
@@ -30598,6 +30611,81 @@ var Crm = /** @class */ (function () {
      */
     Crm.deleteContact = function (contact_id) {
         return Requests.processRoute(CrmRoute.routes.deleteContact, {}, { contact_id: contact_id });
+    };
+    /**
+     * List CRM newsletter and mass-email campaigns.
+     */
+    Crm.listCampaigns = function (params) {
+        return Requests.processRoute(CrmRoute.routes.listCampaigns, undefined, undefined, params);
+    };
+    /**
+     * Create a CRM campaign draft with filters, exclusions, and optional variants.
+     */
+    Crm.createCampaign = function (data) {
+        return Requests.processRoute(CrmRoute.routes.createCampaign, data);
+    };
+    /**
+     * View a CRM campaign. Pass include_recipients in params for a small recipient sample.
+     */
+    Crm.viewCampaign = function (campaign_id, params) {
+        return Requests.processRoute(CrmRoute.routes.viewCampaign, {}, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Update an editable CRM campaign draft or paused campaign.
+     */
+    Crm.updateCampaign = function (campaign_id, data) {
+        return Requests.processRoute(CrmRoute.routes.updateCampaign, data, { campaign_id: campaign_id });
+    };
+    /**
+     * Delete an unsent CRM campaign draft.
+     */
+    Crm.deleteCampaign = function (campaign_id) {
+        return Requests.processRoute(CrmRoute.routes.deleteCampaign, {}, { campaign_id: campaign_id });
+    };
+    /**
+     * Preview campaign audience filters and exclusions without creating recipients.
+     */
+    Crm.previewCampaignAudience = function (data) {
+        return Requests.processRoute(CrmRoute.routes.previewCampaignAudience, data);
+    };
+    /**
+     * Read CRM campaign queue depth and Azure/system email rate-limit windows.
+     */
+    Crm.getCampaignDeliveryStatus = function () {
+        return Requests.processRoute(CrmRoute.routes.getCampaignDeliveryStatus);
+    };
+    /**
+     * Materialize and queue a CRM campaign, optionally with a limit or dispatch=false.
+     */
+    Crm.sendCampaign = function (campaign_id, data) {
+        if (data === void 0) { data = {}; }
+        return Requests.processRoute(CrmRoute.routes.sendCampaign, data, { campaign_id: campaign_id });
+    };
+    /**
+     * Refresh and read CRM campaign engagement, reply, and conversion stats.
+     */
+    Crm.getCampaignStats = function (campaign_id) {
+        return Requests.processRoute(CrmRoute.routes.getCampaignStats, {}, { campaign_id: campaign_id });
+    };
+    /**
+     * List campaign recipient audit rows with optional status or variant filters.
+     */
+    Crm.listCampaignRecipients = function (campaign_id, params) {
+        return Requests.processRoute(CrmRoute.routes.listCampaignRecipients, {}, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Validate external prospect rows and preview field mapping/dedupe outcomes.
+     */
+    Crm.previewCampaignProspectImport = function (prospects, options) {
+        if (options === void 0) { options = {}; }
+        return Requests.processRoute(CrmRoute.routes.previewCampaignProspectImport, __assign({ prospects: prospects }, options));
+    };
+    /**
+     * Import external prospects into CRM leads and contacts for future campaigns.
+     */
+    Crm.importCampaignProspects = function (prospects, options) {
+        if (options === void 0) { options = {}; }
+        return Requests.processRoute(CrmRoute.routes.importCampaignProspects, __assign({ prospects: prospects }, options));
     };
     return Crm;
 }());

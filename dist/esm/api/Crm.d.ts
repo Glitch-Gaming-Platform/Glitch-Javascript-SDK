@@ -85,5 +85,53 @@ declare class Crm {
      * Remove a contact from a lead.
      */
     static deleteContact<T>(contact_id: string): AxiosPromise<Response<T>>;
+    /**
+     * List CRM newsletter and mass-email campaigns.
+     */
+    static listCampaigns<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a CRM campaign draft with filters, exclusions, and optional variants.
+     */
+    static createCampaign<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * View a CRM campaign. Pass include_recipients in params for a small recipient sample.
+     */
+    static viewCampaign<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update an editable CRM campaign draft or paused campaign.
+     */
+    static updateCampaign<T>(campaign_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Delete an unsent CRM campaign draft.
+     */
+    static deleteCampaign<T>(campaign_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Preview campaign audience filters and exclusions without creating recipients.
+     */
+    static previewCampaignAudience<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Read CRM campaign queue depth and Azure/system email rate-limit windows.
+     */
+    static getCampaignDeliveryStatus<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Materialize and queue a CRM campaign, optionally with a limit or dispatch=false.
+     */
+    static sendCampaign<T>(campaign_id: string, data?: object): AxiosPromise<Response<T>>;
+    /**
+     * Refresh and read CRM campaign engagement, reply, and conversion stats.
+     */
+    static getCampaignStats<T>(campaign_id: string): AxiosPromise<Response<T>>;
+    /**
+     * List campaign recipient audit rows with optional status or variant filters.
+     */
+    static listCampaignRecipients<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Validate external prospect rows and preview field mapping/dedupe outcomes.
+     */
+    static previewCampaignProspectImport<T>(prospects: object[], options?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Import external prospects into CRM leads and contacts for future campaigns.
+     */
+    static importCampaignProspects<T>(prospects: object[], options?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default Crm;

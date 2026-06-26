@@ -24,6 +24,20 @@ class CrmRoute {
     updateContact: { url: '/admin/crm/contacts/{contact_id}', method: HTTP_METHODS.PUT },
     deleteContact: { url: '/admin/crm/contacts/{contact_id}', method: HTTP_METHODS.DELETE },
 
+    // Newsletter and Campaign Management
+    listCampaigns: { url: '/admin/crm/campaigns', method: HTTP_METHODS.GET },
+    createCampaign: { url: '/admin/crm/campaigns', method: HTTP_METHODS.POST },
+    viewCampaign: { url: '/admin/crm/campaigns/{campaign_id}', method: HTTP_METHODS.GET },
+    updateCampaign: { url: '/admin/crm/campaigns/{campaign_id}', method: HTTP_METHODS.PUT },
+    deleteCampaign: { url: '/admin/crm/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE },
+    previewCampaignAudience: { url: '/admin/crm/campaigns/preview', method: HTTP_METHODS.POST },
+    getCampaignDeliveryStatus: { url: '/admin/crm/campaigns/delivery-status', method: HTTP_METHODS.GET },
+    sendCampaign: { url: '/admin/crm/campaigns/{campaign_id}/send', method: HTTP_METHODS.POST },
+    getCampaignStats: { url: '/admin/crm/campaigns/{campaign_id}/stats', method: HTTP_METHODS.GET },
+    listCampaignRecipients: { url: '/admin/crm/campaigns/{campaign_id}/recipients', method: HTTP_METHODS.GET },
+    previewCampaignProspectImport: { url: '/admin/crm/campaigns/import-prospects/preview', method: HTTP_METHODS.POST },
+    importCampaignProspects: { url: '/admin/crm/campaigns/import-prospects', method: HTTP_METHODS.POST },
+
     // Automation Triggers
     triggerSourcing: { url: '/admin/crm/automation/source', method: HTTP_METHODS.POST },
     triggerSync: { url: '/admin/crm/automation/sync', method: HTTP_METHODS.POST },

@@ -151,6 +151,90 @@ class Crm {
         return Requests.processRoute(CrmRoute.routes.deleteContact, {}, { contact_id });
     }
 
+    /**
+     * List CRM newsletter and mass-email campaigns.
+     */
+    public static listCampaigns<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.listCampaigns, undefined, undefined, params);
+    }
+
+    /**
+     * Create a CRM campaign draft with filters, exclusions, and optional variants.
+     */
+    public static createCampaign<T>(data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.createCampaign, data);
+    }
+
+    /**
+     * View a CRM campaign. Pass include_recipients in params for a small recipient sample.
+     */
+    public static viewCampaign<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.viewCampaign, {}, { campaign_id }, params);
+    }
+
+    /**
+     * Update an editable CRM campaign draft or paused campaign.
+     */
+    public static updateCampaign<T>(campaign_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.updateCampaign, data, { campaign_id });
+    }
+
+    /**
+     * Delete an unsent CRM campaign draft.
+     */
+    public static deleteCampaign<T>(campaign_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.deleteCampaign, {}, { campaign_id });
+    }
+
+    /**
+     * Preview campaign audience filters and exclusions without creating recipients.
+     */
+    public static previewCampaignAudience<T>(data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.previewCampaignAudience, data);
+    }
+
+    /**
+     * Read CRM campaign queue depth and Azure/system email rate-limit windows.
+     */
+    public static getCampaignDeliveryStatus<T>(): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.getCampaignDeliveryStatus);
+    }
+
+    /**
+     * Materialize and queue a CRM campaign, optionally with a limit or dispatch=false.
+     */
+    public static sendCampaign<T>(campaign_id: string, data: object = {}): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.sendCampaign, data, { campaign_id });
+    }
+
+    /**
+     * Refresh and read CRM campaign engagement, reply, and conversion stats.
+     */
+    public static getCampaignStats<T>(campaign_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.getCampaignStats, {}, { campaign_id });
+    }
+
+    /**
+     * List campaign recipient audit rows with optional status or variant filters.
+     */
+    public static listCampaignRecipients<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.listCampaignRecipients, {}, { campaign_id }, params);
+    }
+
+    /**
+     * Validate external prospect rows and preview field mapping/dedupe outcomes.
+     */
+    public static previewCampaignProspectImport<T>(prospects: object[], options: Record<string, any> = {}): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.previewCampaignProspectImport, { prospects, ...options });
+    }
+
+    /**
+     * Import external prospects into CRM leads and contacts for future campaigns.
+     */
+    public static importCampaignProspects<T>(prospects: object[], options: Record<string, any> = {}): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.importCampaignProspects, { prospects, ...options });
+    }
+
 }
 
 export default Crm;
