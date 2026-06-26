@@ -194,6 +194,20 @@ class Crm {
     }
 
     /**
+     * List the backend-supported CRM campaign merge fields for the composer.
+     */
+    public static getCampaignMergeFields<T>(): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.getCampaignMergeFields);
+    }
+
+    /**
+     * Render CRM campaign content with the same merge-field engine used at send time.
+     */
+    public static renderCampaignTemplatePreview<T>(data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.renderCampaignTemplatePreview, data);
+    }
+
+    /**
      * Read CRM campaign queue depth and Azure/system email rate-limit windows.
      */
     public static getCampaignDeliveryStatus<T>(): AxiosPromise<Response<T>> {

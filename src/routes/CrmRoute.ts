@@ -31,6 +31,8 @@ class CrmRoute {
     updateCampaign: { url: '/admin/crm/campaigns/{campaign_id}', method: HTTP_METHODS.PUT },
     deleteCampaign: { url: '/admin/crm/campaigns/{campaign_id}', method: HTTP_METHODS.DELETE },
     previewCampaignAudience: { url: '/admin/crm/campaigns/preview', method: HTTP_METHODS.POST },
+    getCampaignMergeFields: { url: '/admin/crm/campaigns/merge-fields', method: HTTP_METHODS.GET },
+    renderCampaignTemplatePreview: { url: '/admin/crm/campaigns/render-preview', method: HTTP_METHODS.POST },
     getCampaignDeliveryStatus: { url: '/admin/crm/campaigns/delivery-status', method: HTTP_METHODS.GET },
     sendCampaign: { url: '/admin/crm/campaigns/{campaign_id}/send', method: HTTP_METHODS.POST },
     getCampaignStats: { url: '/admin/crm/campaigns/{campaign_id}/stats', method: HTTP_METHODS.GET },
