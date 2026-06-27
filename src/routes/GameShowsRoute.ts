@@ -17,6 +17,21 @@ class GameShowsRoute {
         viewTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.GET },
         updateTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.PUT },
         deleteTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.DELETE },
+        listBlocks: { url: '/gameshows/{show_id}/blocks', method: HTTP_METHODS.GET },
+        createBlock: { url: '/gameshows/{show_id}/blocks', method: HTTP_METHODS.POST },
+        updateBlock: { url: '/gameshows/{show_id}/blocks/{block_id}', method: HTTP_METHODS.PUT },
+        deleteBlock: { url: '/gameshows/{show_id}/blocks/{block_id}', method: HTTP_METHODS.DELETE },
+        reorderBlocks: { url: '/gameshows/{show_id}/blocks/reorder', method: HTTP_METHODS.POST },
+        listSchedule: { url: '/gameshows/{show_id}/schedule', method: HTTP_METHODS.GET },
+        createScheduleItem: { url: '/gameshows/{show_id}/schedule', method: HTTP_METHODS.POST },
+        updateScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.PUT },
+        deleteScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.DELETE },
+        discoveryQueue: { url: '/gameshows/{show_id}/discovery', method: HTTP_METHODS.GET },
+        trackAnalytics: { url: '/gameshows/{show_id}/analytics', method: HTTP_METHODS.POST },
+        analyticsReport: { url: '/gameshows/{show_id}/analytics/report', method: HTTP_METHODS.GET },
+        joinWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.POST },
+        listWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.GET },
+        listForTitle: { url: '/titles/{title_id}/gameshows', method: HTTP_METHODS.GET },
     };
 
   }

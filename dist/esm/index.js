@@ -14909,6 +14909,21 @@ var GameShowsRoute = /** @class */ (function () {
         viewTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.GET },
         updateTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.PUT },
         deleteTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.DELETE },
+        listBlocks: { url: '/gameshows/{show_id}/blocks', method: HTTP_METHODS.GET },
+        createBlock: { url: '/gameshows/{show_id}/blocks', method: HTTP_METHODS.POST },
+        updateBlock: { url: '/gameshows/{show_id}/blocks/{block_id}', method: HTTP_METHODS.PUT },
+        deleteBlock: { url: '/gameshows/{show_id}/blocks/{block_id}', method: HTTP_METHODS.DELETE },
+        reorderBlocks: { url: '/gameshows/{show_id}/blocks/reorder', method: HTTP_METHODS.POST },
+        listSchedule: { url: '/gameshows/{show_id}/schedule', method: HTTP_METHODS.GET },
+        createScheduleItem: { url: '/gameshows/{show_id}/schedule', method: HTTP_METHODS.POST },
+        updateScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.PUT },
+        deleteScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.DELETE },
+        discoveryQueue: { url: '/gameshows/{show_id}/discovery', method: HTTP_METHODS.GET },
+        trackAnalytics: { url: '/gameshows/{show_id}/analytics', method: HTTP_METHODS.POST },
+        analyticsReport: { url: '/gameshows/{show_id}/analytics/report', method: HTTP_METHODS.GET },
+        joinWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.POST },
+        listWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.GET },
+        listForTitle: { url: '/titles/{title_id}/gameshows', method: HTTP_METHODS.GET },
     };
     return GameShowsRoute;
 }());
@@ -15052,7 +15067,7 @@ var GameShows = /** @class */ (function () {
      * Get details of a specific title in a game show.
      */
     GameShows.getTitle = function (show_id, title_id, params) {
-        return Requests.processRoute(GameShowsRoute.routes.getTitle, {}, { show_id: show_id, title_id: title_id }, params);
+        return Requests.processRoute(GameShowsRoute.routes.viewTitle, {}, { show_id: show_id, title_id: title_id }, params);
     };
     /**
      * Update a specific title in a game show.
@@ -15065,6 +15080,96 @@ var GameShows = /** @class */ (function () {
      */
     GameShows.deleteTitle = function (show_id, title_id, params) {
         return Requests.processRoute(GameShowsRoute.routes.deleteTitle, {}, { show_id: show_id, title_id: title_id }, params);
+    };
+    /**
+     * List public page-builder blocks for a game show.
+     */
+    GameShows.listBlocks = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listBlocks, {}, { show_id: show_id }, params);
+    };
+    /**
+     * Create a page-builder block for a game show. Requires organizer permissions.
+     */
+    GameShows.createBlock = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.createBlock, data, { show_id: show_id }, params);
+    };
+    /**
+     * Update a page-builder block for a game show. Requires organizer permissions.
+     */
+    GameShows.updateBlock = function (show_id, block_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.updateBlock, data, { show_id: show_id, block_id: block_id }, params);
+    };
+    /**
+     * Delete a page-builder block from a game show. Requires organizer permissions.
+     */
+    GameShows.deleteBlock = function (show_id, block_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.deleteBlock, {}, { show_id: show_id, block_id: block_id }, params);
+    };
+    /**
+     * Reorder page-builder blocks for a game show. Requires organizer permissions.
+     */
+    GameShows.reorderBlocks = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.reorderBlocks, data, { show_id: show_id }, params);
+    };
+    /**
+     * List livestream and programming schedule items for a game show.
+     */
+    GameShows.listSchedule = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listSchedule, {}, { show_id: show_id }, params);
+    };
+    /**
+     * Create a schedule item for a game show. Requires organizer permissions.
+     */
+    GameShows.createScheduleItem = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.createScheduleItem, data, { show_id: show_id }, params);
+    };
+    /**
+     * Update a schedule item for a game show. Requires organizer permissions.
+     */
+    GameShows.updateScheduleItem = function (show_id, schedule_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.updateScheduleItem, data, { show_id: show_id, schedule_id: schedule_id }, params);
+    };
+    /**
+     * Delete a schedule item from a game show. Requires organizer permissions.
+     */
+    GameShows.deleteScheduleItem = function (show_id, schedule_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.deleteScheduleItem, {}, { show_id: show_id, schedule_id: schedule_id }, params);
+    };
+    /**
+     * Get the game show discovery queue.
+     */
+    GameShows.discoveryQueue = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.discoveryQueue, {}, { show_id: show_id }, params);
+    };
+    /**
+     * Track public game show analytics events.
+     */
+    GameShows.trackAnalytics = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.trackAnalytics, data, { show_id: show_id }, params);
+    };
+    /**
+     * Get organizer analytics for a game show.
+     */
+    GameShows.analyticsReport = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.analyticsReport, {}, { show_id: show_id }, params);
+    };
+    /**
+     * Join or update a public notification signup for a game show.
+     */
+    GameShows.joinWishlist = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.joinWishlist, data, { show_id: show_id }, params);
+    };
+    /**
+     * List notification signups for a game show. Requires organizer permissions.
+     */
+    GameShows.listWishlist = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listWishlist, {}, { show_id: show_id }, params);
+    };
+    /**
+     * List public game shows that include a title. Useful for game-page festival banners.
+     */
+    GameShows.listForTitle = function (title_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listForTitle, {}, { title_id: title_id }, params);
     };
     return GameShows;
 }());
@@ -19741,7 +19846,7 @@ var Mcp = /** @class */ (function () {
  * Route declarations for the PR Directory API.
  *
  * These mirror the Laravel routes under `/api/pr/*` and the title-scoped
- * matcher route under `/api/titles/{title_id}/pr/matches`. Keeping the URL
+ * matcher/research routes under `/api/titles/{title_id}/pr/*`. Keeping the URL
  * templates in one place lets the SDK methods stay small and consistent with
  * the rest of the package's route-wrapper pattern.
  */
@@ -19753,10 +19858,17 @@ var PrDirectoryRoutes = /** @class */ (function () {
         viewPublication: { url: "/pr/publications/{publication_id}", method: HTTP_METHODS.GET },
         listPeople: { url: "/pr/people", method: HTTP_METHODS.GET },
         viewPerson: { url: "/pr/people/{person_id}", method: HTTP_METHODS.GET },
+        listFeeds: { url: "/pr/feeds", method: HTTP_METHODS.GET },
+        viewFeed: { url: "/pr/feeds/{feed_id}", method: HTTP_METHODS.GET },
+        listStories: { url: "/pr/stories", method: HTTP_METHODS.GET },
+        viewStory: { url: "/pr/stories/{story_id}", method: HTTP_METHODS.GET },
         listTags: { url: "/pr/tags", method: HTTP_METHODS.GET },
         report: { url: "/pr/report", method: HTTP_METHODS.GET },
         titleMatches: { url: "/titles/{title_id}/pr/matches", method: HTTP_METHODS.GET },
+        titleResearch: { url: "/titles/{title_id}/pr/research", method: HTTP_METHODS.GET },
+        titleDraft: { url: "/titles/{title_id}/pr/drafts", method: HTTP_METHODS.POST },
         queueVerification: { url: "/admin/pr/verification/queue", method: HTTP_METHODS.POST },
+        refreshFeeds: { url: "/admin/pr/feeds/refresh", method: HTTP_METHODS.POST },
     };
     return PrDirectoryRoutes;
 }());
@@ -19765,9 +19877,9 @@ var PrDirectoryRoutes = /** @class */ (function () {
  * SDK wrapper for the PR Directory API.
  *
  * The PR directory is read-friendly by default: public endpoints expose
- * searchable publications, people, tags, and reporting metrics. Authenticated
- * title admins can request title-specific PR matches, and site admins can queue
- * monthly-style verification jobs.
+ * searchable publications, people, feeds, stories, tags, and reporting metrics.
+ * Authenticated title admins can request title-specific research and review-only
+ * outreach drafts, and site admins can queue verification or feed refresh jobs.
  */
 var PrDirectory = /** @class */ (function () {
     function PrDirectory() {
@@ -19818,6 +19930,31 @@ var PrDirectory = /** @class */ (function () {
         return Requests.processRoute(PrDirectoryRoutes.routes.viewPerson, {}, { person_id: person_id }, params);
     };
     /**
+     * Search discovered RSS/Atom/JSON feeds across known publications.
+     */
+    PrDirectory.listFeeds = function (params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.listFeeds, {}, {}, params);
+    };
+    /**
+     * Retrieve one feed with freshness metadata and recent imported stories.
+     * Pass `include_raw: true` to request the stored XML/RSS payload.
+     */
+    PrDirectory.viewFeed = function (feed_id, params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.viewFeed, {}, { feed_id: feed_id }, params);
+    };
+    /**
+     * Search imported stories, reviews, guides, and episodes by outlet or byline.
+     */
+    PrDirectory.listStories = function (params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.listStories, {}, {}, params);
+    };
+    /**
+     * Retrieve one imported story with feed, publication, and byline evidence.
+     */
+    PrDirectory.viewStory = function (story_id, params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.viewStory, {}, { story_id: story_id }, params);
+    };
+    /**
      * List the normalized tag vocabulary used for PR search, filters, matching,
      * and reporting.
      */
@@ -19839,6 +19976,20 @@ var PrDirectory = /** @class */ (function () {
         return Requests.processRoute(PrDirectoryRoutes.routes.titleMatches, {}, { title_id: title_id }, params);
     };
     /**
+     * Get a title-scoped PR research workspace with outlet matches, recent story
+     * context, media kit readiness, and next steps.
+     */
+    PrDirectory.titleResearch = function (title_id, params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.titleResearch, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Create a formatted, review-only PR email draft for a selected title target.
+     * The backend returns HTML with paragraphs, bullets, and links but sends no email.
+     */
+    PrDirectory.titleDraft = function (title_id, data, params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.titleDraft, data || {}, { title_id: title_id }, params);
+    };
+    /**
      * Queue PR verification jobs. Requires a site-admin auth token.
      *
      * @example
@@ -19848,6 +19999,13 @@ var PrDirectory = /** @class */ (function () {
      */
     PrDirectory.queueVerification = function (data, params) {
         return Requests.processRoute(PrDirectoryRoutes.routes.queueVerification, data || {}, {}, params);
+    };
+    /**
+     * Discover, queue, or synchronously refresh PR feeds. Requires a site-admin
+     * auth token.
+     */
+    PrDirectory.refreshFeeds = function (data, params) {
+        return Requests.processRoute(PrDirectoryRoutes.routes.refreshFeeds, data || {}, {}, params);
     };
     return PrDirectory;
 }());

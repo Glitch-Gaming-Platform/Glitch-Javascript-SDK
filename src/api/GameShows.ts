@@ -165,7 +165,7 @@ class GameShows {
      * Get details of a specific title in a game show.
      */
     public static getTitle<T>(show_id: string, title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
-        return Requests.processRoute(GameShowsRoute.routes.getTitle, {}, { show_id: show_id, title_id: title_id }, params);
+        return Requests.processRoute(GameShowsRoute.routes.viewTitle, {}, { show_id: show_id, title_id: title_id }, params);
     }
 
     /**
@@ -180,6 +180,111 @@ class GameShows {
      */
     public static deleteTitle<T>(show_id: string, title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(GameShowsRoute.routes.deleteTitle, {}, { show_id: show_id, title_id: title_id }, params);
+    }
+
+    /**
+     * List public page-builder blocks for a game show.
+     */
+    public static listBlocks<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listBlocks, {}, { show_id: show_id }, params);
+    }
+
+    /**
+     * Create a page-builder block for a game show. Requires organizer permissions.
+     */
+    public static createBlock<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.createBlock, data, { show_id: show_id }, params);
+    }
+
+    /**
+     * Update a page-builder block for a game show. Requires organizer permissions.
+     */
+    public static updateBlock<T>(show_id: string, block_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.updateBlock, data, { show_id: show_id, block_id: block_id }, params);
+    }
+
+    /**
+     * Delete a page-builder block from a game show. Requires organizer permissions.
+     */
+    public static deleteBlock<T>(show_id: string, block_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.deleteBlock, {}, { show_id: show_id, block_id: block_id }, params);
+    }
+
+    /**
+     * Reorder page-builder blocks for a game show. Requires organizer permissions.
+     */
+    public static reorderBlocks<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.reorderBlocks, data, { show_id: show_id }, params);
+    }
+
+    /**
+     * List livestream and programming schedule items for a game show.
+     */
+    public static listSchedule<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listSchedule, {}, { show_id: show_id }, params);
+    }
+
+    /**
+     * Create a schedule item for a game show. Requires organizer permissions.
+     */
+    public static createScheduleItem<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.createScheduleItem, data, { show_id: show_id }, params);
+    }
+
+    /**
+     * Update a schedule item for a game show. Requires organizer permissions.
+     */
+    public static updateScheduleItem<T>(show_id: string, schedule_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.updateScheduleItem, data, { show_id: show_id, schedule_id: schedule_id }, params);
+    }
+
+    /**
+     * Delete a schedule item from a game show. Requires organizer permissions.
+     */
+    public static deleteScheduleItem<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.deleteScheduleItem, {}, { show_id: show_id, schedule_id: schedule_id }, params);
+    }
+
+    /**
+     * Get the game show discovery queue.
+     */
+    public static discoveryQueue<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.discoveryQueue, {}, { show_id: show_id }, params);
+    }
+
+    /**
+     * Track public game show analytics events.
+     */
+    public static trackAnalytics<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.trackAnalytics, data, { show_id: show_id }, params);
+    }
+
+    /**
+     * Get organizer analytics for a game show.
+     */
+    public static analyticsReport<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.analyticsReport, {}, { show_id: show_id }, params);
+    }
+
+    /**
+     * Join or update a public notification signup for a game show.
+     */
+    public static joinWishlist<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.joinWishlist, data, { show_id: show_id }, params);
+    }
+
+    /**
+     * List notification signups for a game show. Requires organizer permissions.
+     */
+    public static listWishlist<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listWishlist, {}, { show_id: show_id }, params);
+    }
+
+    /**
+     * List public game shows that include a title. Useful for game-page festival banners.
+     */
+    public static listForTitle<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listForTitle, {}, { title_id: title_id }, params);
     }
 
 }

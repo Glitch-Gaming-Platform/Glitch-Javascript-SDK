@@ -6190,6 +6190,66 @@ declare class GameShows {
      * Delete a specific title from a game show.
      */
     static deleteTitle<T>(show_id: string, title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List public page-builder blocks for a game show.
+     */
+    static listBlocks<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a page-builder block for a game show. Requires organizer permissions.
+     */
+    static createBlock<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a page-builder block for a game show. Requires organizer permissions.
+     */
+    static updateBlock<T>(show_id: string, block_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a page-builder block from a game show. Requires organizer permissions.
+     */
+    static deleteBlock<T>(show_id: string, block_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Reorder page-builder blocks for a game show. Requires organizer permissions.
+     */
+    static reorderBlocks<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List livestream and programming schedule items for a game show.
+     */
+    static listSchedule<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Create a schedule item for a game show. Requires organizer permissions.
+     */
+    static createScheduleItem<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update a schedule item for a game show. Requires organizer permissions.
+     */
+    static updateScheduleItem<T>(show_id: string, schedule_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Delete a schedule item from a game show. Requires organizer permissions.
+     */
+    static deleteScheduleItem<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get the game show discovery queue.
+     */
+    static discoveryQueue<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Track public game show analytics events.
+     */
+    static trackAnalytics<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get organizer analytics for a game show.
+     */
+    static analyticsReport<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Join or update a public notification signup for a game show.
+     */
+    static joinWishlist<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List notification signups for a game show. Requires organizer permissions.
+     */
+    static listWishlist<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * List public game shows that include a title. Useful for game-page festival banners.
+     */
+    static listForTitle<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Newsletters {
@@ -9599,6 +9659,14 @@ type PrContactVerificationStatus = "unverified" | "verified" | "stale" | "bounce
  */
 type PrLinkStatus = "unverified" | "ok" | "redirected" | "broken" | "blocked" | "failed" | "stale";
 /**
+ * Refresh state for discovered RSS/Atom/JSON feeds.
+ */
+type PrFeedStatus = "unverified" | "ok" | "empty" | "blocked" | "failed" | "stale" | "needs_review";
+/**
+ * Feed format detected during PR content ingestion.
+ */
+type PrFeedType = "rss" | "atom" | "json" | "unknown";
+/**
  * Filters accepted by `/pr/publications` and `/pr/report`.
  *
  * Tag filters are human-readable slugs from `/pr/tags`. The backend accepts
@@ -9642,6 +9710,39 @@ interface PrPeopleSearchParams {
     per_page?: number;
 }
 /**
+ * Filters accepted by `/pr/feeds`.
+ */
+interface PrFeedSearchParams {
+    q?: string;
+    publication_id?: string;
+    feed_type?: PrFeedType;
+    status?: PrFeedStatus;
+    source?: string;
+    has_stories?: boolean;
+    sort?: "title" | "-title" | "feed_type" | "-feed_type" | "status" | "-status" | "last_fetched_at" | "-last_fetched_at" | "next_fetch_at" | "-next_fetch_at" | "updated_at" | "-updated_at" | string;
+    page?: number;
+    per_page?: number;
+    include_raw?: boolean;
+}
+/**
+ * Filters accepted by `/pr/stories`.
+ */
+interface PrStorySearchParams {
+    q?: string;
+    publication_id?: string;
+    pr_feed_id?: string;
+    pr_person_id?: string;
+    story_type?: string;
+    language?: string;
+    ingestion_status?: string;
+    has_author?: boolean;
+    published_after?: string;
+    published_before?: string;
+    sort?: "published_at" | "-published_at" | "updated_at" | "-updated_at" | "title" | "-title" | string;
+    page?: number;
+    per_page?: number;
+}
+/**
  * Filters accepted by `/pr/tags`.
  */
 interface PrTagSearchParams {
@@ -9661,12 +9762,47 @@ interface PrTitleMatchParams extends PrPublicationSearchParams {
     limit?: number;
 }
 /**
+ * Query parameters accepted by `/titles/{title_id}/pr/research`.
+ */
+interface PrTitleResearchParams extends PrStorySearchParams {
+    limit?: number;
+    story_sort?: string;
+}
+/**
  * Request body accepted by `/admin/pr/verification/queue`.
  */
 interface PrQueueVerificationRequest {
     due?: boolean;
     limit?: number;
     link_ids?: string[];
+}
+/**
+ * Review-only PR draft request for `/titles/{title_id}/pr/drafts`.
+ */
+interface PrTitleDraftRequest {
+    publication_id?: string;
+    pr_person_id?: string;
+    q?: string;
+    prompt?: string;
+    press_kit_url?: string;
+    trailer_url?: string;
+    demo_or_review_key?: string;
+    embargo_or_timing?: string;
+    sender?: {
+        name?: string;
+    };
+    use_ai?: boolean;
+}
+/**
+ * Admin request body for `/admin/pr/feeds/refresh`.
+ */
+interface PrFeedRefreshRequest {
+    discover?: boolean;
+    due?: boolean;
+    queue?: boolean;
+    limit?: number;
+    feed_ids?: string[];
+    publication_ids?: string[];
 }
 /**
  * A normalized metadata tag used to filter and match PR outlets, people, and
@@ -9714,6 +9850,90 @@ interface PrLink {
     last_error?: string | null;
     is_source_of_truth: boolean;
     metadata?: Record<string, any>;
+    created_at?: string | null;
+    updated_at?: string | null;
+}
+/**
+ * RSS/Atom/JSON feed discovered for a publication and used for story research.
+ */
+interface PrFeed {
+    id: string;
+    publication_id: string;
+    pr_link_id?: string | null;
+    feed_url: string;
+    canonical_url?: string | null;
+    feed_type: PrFeedType;
+    title?: string | null;
+    description?: string | null;
+    language?: string | null;
+    status: PrFeedStatus;
+    http_status?: number | null;
+    content_type?: string | null;
+    etag?: string | null;
+    raw_feed_hash?: string | null;
+    raw_feed_content?: string | null;
+    raw_feed_size?: number;
+    last_modified_at?: string | null;
+    last_fetched_at?: string | null;
+    next_fetch_at?: string | null;
+    item_count_last_fetch: number;
+    source?: string | null;
+    last_error?: string | null;
+    publication?: PrPublication | null;
+    stories_count?: number;
+    stories?: PrStory[];
+    metadata?: Record<string, any>;
+    created_at?: string | null;
+    updated_at?: string | null;
+}
+/**
+ * A story, article, guide, review, or episode imported from a PR feed.
+ */
+interface PrStory {
+    id: string;
+    publication_id: string;
+    pr_feed_id?: string | null;
+    canonical_url?: string | null;
+    guid?: string | null;
+    title: string;
+    dek?: string | null;
+    summary?: string | null;
+    content_excerpt?: string | null;
+    content_hash?: string | null;
+    author_name_raw?: string | null;
+    author_email_raw?: string | null;
+    author_url_raw?: string | null;
+    published_at?: string | null;
+    updated_at_feed?: string | null;
+    story_type?: string | null;
+    language?: string | null;
+    categories?: string[];
+    tags?: string[];
+    media_url?: string | null;
+    analysis?: Record<string, any>;
+    ingestion_status?: string | null;
+    publication?: PrPublication | null;
+    feed?: PrFeed | null;
+    authors?: PrStoryAuthor[];
+    created_at?: string | null;
+    updated_at?: string | null;
+}
+/**
+ * Raw byline evidence and optional match to a known PR contact.
+ */
+interface PrStoryAuthor {
+    id: string;
+    pr_story_id: string;
+    publication_id?: string | null;
+    pr_person_id?: string | null;
+    author_name?: string | null;
+    author_email?: string | null;
+    author_url?: string | null;
+    confidence?: number | null;
+    match_source?: string | null;
+    evidence?: Record<string, any>;
+    story?: PrStory | null;
+    person?: PrPerson | null;
     created_at?: string | null;
     updated_at?: string | null;
 }
@@ -9794,9 +10014,13 @@ interface PrPublication {
     people_count?: number;
     contact_points_count?: number;
     links_count?: number;
+    feeds_count?: number;
+    stories_count?: number;
     people?: PublicationPerson[];
     contact_points?: PrContactPoint[];
     links?: PrLink[];
+    feeds?: PrFeed[];
+    stories?: PrStory[];
     tags?: PrTag[];
     metadata?: Record<string, any>;
     created_at?: string | null;
@@ -9823,9 +10047,11 @@ interface PrPerson {
     roles_count?: number;
     contact_points_count?: number;
     links_count?: number;
+    stories_count?: number;
     roles?: PublicationPerson[];
     contact_points?: PrContactPoint[];
     links?: PrLink[];
+    stories?: PrStoryAuthor[];
     tags?: PrTag[];
     metadata?: Record<string, any>;
     created_at?: string | null;
@@ -9866,6 +10092,16 @@ interface PrDirectoryReport {
         total: number;
         by_namespace: Record<string, number>;
     };
+    feeds: {
+        total: number;
+        by_status: Record<string, number>;
+        due_for_fetch: number;
+    };
+    stories: {
+        total: number;
+        with_author: number;
+        by_type: Record<string, number>;
+    };
 }
 /**
  * A ranked title-to-outlet match with evidence, contact route, and plain-English
@@ -9881,18 +10117,87 @@ interface PrTitleMatch {
     evidence_links: PrLink[];
 }
 /**
+ * Title-scoped PR research workspace response.
+ */
+interface PrTitleResearchResponse {
+    generated_at: string;
+    title: {
+        id: string;
+        name: string;
+        slug?: string | null;
+        short_description?: string | null;
+        description?: string | null;
+        genres?: string[];
+        platforms?: string[];
+        website_url?: string | null;
+        steam_url?: string | null;
+        itch_url?: string | null;
+        demo_url?: string | null;
+        video_url?: string | null;
+    };
+    readiness: {
+        score: number;
+        strengths: string[];
+        gaps: string[];
+    };
+    publication_matches: PrTitleMatch[];
+    stories: PrStory[];
+    story_summary: {
+        count: number;
+        with_known_author: number;
+        publication_count: number;
+    };
+    suggested_next_steps: string[];
+}
+/**
+ * Structured draft fields returned alongside the formatted HTML email body.
+ */
+interface PrOutreachDraft {
+    subject?: string | null;
+    opener?: string | null;
+    body?: string | null;
+    body_html?: string | null;
+    key_points?: string[];
+    personalization_notes?: string[];
+    review_notes?: string[];
+    missing_context_warnings?: string[];
+    [key: string]: any;
+}
+/**
+ * Review-only PR draft response. The API never sends email from this endpoint.
+ */
+interface PrTitleDraftResponse {
+    draft_status: "draft_only_not_sent" | "no_verified_email_found" | "no_publication_found" | string;
+    emails_sent: boolean;
+    publication?: PrPublication | null;
+    person?: PrPerson | null;
+    target: Record<string, any>;
+    recent_stories: PrStory[];
+    draft: PrOutreachDraft;
+    body_html: string;
+    review_notes: string[];
+}
+/**
  * Response body returned after queueing PR verification jobs.
  */
 interface PrQueueVerificationResponse {
     queued: number;
 }
 /**
+ * Response body returned after discovering, queueing, or fetching PR feeds.
+ */
+interface PrFeedRefreshResponse {
+    discovered: number;
+    queued: number;
+    fetched: number;
+}
+/**
  * SDK wrapper for the PR Directory API.
  *
  * The PR directory is read-friendly by default: public endpoints expose
- * searchable publications, people, tags, and reporting metrics. Authenticated
- * title admins can request title-specific PR matches, and site admins can queue
- * monthly-style verification jobs.
+ * searchable publications, people, feeds, stories, tags, and reporting metrics.
+ * Authenticated title admins can request title-specific research and review-only
+ * outreach drafts, and site admins can queue verification or feed refresh jobs.
  */
 declare class PrDirectory {
     /**
@@ -9933,6 +10238,23 @@ declare class PrDirectory {
      */
     static viewPerson<T = PrPerson>(person_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Search discovered RSS/Atom/JSON feeds across known publications.
+     */
+    static listFeeds<T = PrFeed[]>(params?: PrFeedSearchParams): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve one feed with freshness metadata and recent imported stories.
+     * Pass `include_raw: true` to request the stored XML/RSS payload.
+     */
+    static viewFeed<T = PrFeed>(feed_id: string, params?: PrFeedSearchParams): AxiosPromise<Response<T>>;
+    /**
+     * Search imported stories, reviews, guides, and episodes by outlet or byline.
+     */
+    static listStories<T = PrStory[]>(params?: PrStorySearchParams): AxiosPromise<Response<T>>;
+    /**
+     * Retrieve one imported story with feed, publication, and byline evidence.
+     */
+    static viewStory<T = PrStory>(story_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List the normalized tag vocabulary used for PR search, filters, matching,
      * and reporting.
      */
@@ -9948,6 +10270,16 @@ declare class PrDirectory {
      */
     static titleMatches<T = PrTitleMatch[]>(title_id: string, params?: PrTitleMatchParams): AxiosPromise<Response<T>>;
     /**
+     * Get a title-scoped PR research workspace with outlet matches, recent story
+     * context, media kit readiness, and next steps.
+     */
+    static titleResearch<T = PrTitleResearchResponse>(title_id: string, params?: PrTitleResearchParams): AxiosPromise<Response<T>>;
+    /**
+     * Create a formatted, review-only PR email draft for a selected title target.
+     * The backend returns HTML with paragraphs, bullets, and links but sends no email.
+     */
+    static titleDraft<T = PrTitleDraftResponse>(title_id: string, data?: PrTitleDraftRequest, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Queue PR verification jobs. Requires a site-admin auth token.
      *
      * @example
@@ -9956,6 +10288,11 @@ declare class PrDirectory {
      * ```
      */
     static queueVerification<T = PrQueueVerificationResponse>(data?: PrQueueVerificationRequest, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Discover, queue, or synchronously refresh PR feeds. Requires a site-admin
+     * auth token.
+     */
+    static refreshFeeds<T = PrFeedRefreshResponse>(data?: PrFeedRefreshRequest, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class AdminReports {
