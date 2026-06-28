@@ -32016,6 +32016,10 @@ var AdminReportsRoute = /** @class */ (function () {
             url: '/admin/reports/users-revenue',
             method: HTTP_METHODS.GET
         },
+        steam: {
+            url: '/admin/reports/steam',
+            method: HTTP_METHODS.GET
+        },
     };
     return AdminReportsRoute;
 }());
@@ -32029,6 +32033,14 @@ var AdminReports = /** @class */ (function () {
      */
     AdminReports.usersRevenue = function (params) {
         return Requests.processRoute(AdminReportsRoute.routes.usersRevenue, undefined, undefined, params);
+    };
+    /**
+     * Returns site-admin Steam market reports, including social profile coverage,
+     * platform usage, follower benchmarks, review/player relationships, and
+     * optional target-app game reports.
+     */
+    AdminReports.steam = function (params) {
+        return Requests.processRoute(AdminReportsRoute.routes.steam, undefined, undefined, params);
     };
     return AdminReports;
 }());

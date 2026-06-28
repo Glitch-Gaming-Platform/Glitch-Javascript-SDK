@@ -7,6 +7,10 @@ class AdminReportsRoute {
       url: '/admin/reports/users-revenue',
       method: HTTP_METHODS.GET
     },
+    steam: {
+      url: '/admin/reports/steam',
+      method: HTTP_METHODS.GET
+    },
   };
 }
 

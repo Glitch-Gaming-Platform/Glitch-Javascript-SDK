@@ -6,5 +6,11 @@ declare class AdminReports {
      * engagement, and user-generated revenue.
      */
     static usersRevenue<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Returns site-admin Steam market reports, including social profile coverage,
+     * platform usage, follower benchmarks, review/player relationships, and
+     * optional target-app game reports.
+     */
+    static steam<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default AdminReports;

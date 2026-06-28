@@ -11,6 +11,15 @@ class AdminReports {
     public static usersRevenue<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdminReportsRoute.routes.usersRevenue, undefined, undefined, params);
     }
+
+    /**
+     * Returns site-admin Steam market reports, including social profile coverage,
+     * platform usage, follower benchmarks, review/player relationships, and
+     * optional target-app game reports.
+     */
+    public static steam<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(AdminReportsRoute.routes.steam, undefined, undefined, params);
+    }
 }
 
 export default AdminReports;
