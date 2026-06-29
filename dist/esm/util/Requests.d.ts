@@ -20,6 +20,7 @@ declare class Requests {
     static buildUrl(url: string, params?: Record<string, any>): string;
     private static request;
     static get<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static download(url: string, params?: Record<string, any>): AxiosPromise<Blob>;
     static post<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static put<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static patch<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;

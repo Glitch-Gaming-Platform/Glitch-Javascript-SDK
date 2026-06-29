@@ -73,6 +73,21 @@ class Communities {
     }
 
     /**
+     * Retrieve the site-admin grant state for the customer-facing game market
+     * research product.
+     */
+    public static getMarketResearchAccess<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.getMarketResearchAccess, undefined, { community_id }, params);
+    }
+
+    /**
+     * Enable or disable game market research access for a business account.
+     */
+    public static updateMarketResearchAccess<T>(community_id: string, data: { enabled: boolean, notes?: string }, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CommunitiesRoute.routes.updateMarketResearchAccess, data, { community_id }, params);
+    }
+
+    /**
      * Updates the main image for the community using a File object.
      * 
      * @see https://api.glitch.fun/api/documentation#/Community%20Route/uploadLogoCommunityImage

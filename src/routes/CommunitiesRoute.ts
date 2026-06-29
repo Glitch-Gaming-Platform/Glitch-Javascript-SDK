@@ -26,6 +26,8 @@ class CommunitiesRoute {
     removeUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.DELETE },
     join: { url: '/communities/{community_id}/join', method: HTTP_METHODS.POST },
     findByDomain: { url: '/communities/findByDomain/{domain}', method: HTTP_METHODS.GET },
+    getMarketResearchAccess: { url: '/communities/{community_id}/market-research-access', method: HTTP_METHODS.GET },
+    updateMarketResearchAccess: { url: '/communities/{community_id}/market-research-access', method: HTTP_METHODS.PUT },
     addPaymentMethod: { url: '/communities/{community_id}/payment/methods', method: HTTP_METHODS.POST },
     getPaymentMethods: { url: '/communities/{community_id}/payment/methods', method: HTTP_METHODS.GET },
     setDefaultPaymentMethod: { url: '/communities/{community_id}/payment/methods/default', method: HTTP_METHODS.POST },

@@ -112,6 +112,44 @@ class Requests {
     return Requests.request<T>('GET', url);
   }
 
+  public static download(url: string, params?: Record<string, any>): AxiosPromise<Blob> {
+    if (params && Object.keys(params).length > 0) {
+      const queryString = Object.entries(params)
+        .filter(([, value]) => value !== undefined && value !== null && value !== '')
+        .map(([key, value]) => {
+          if (Array.isArray(value)) {
+            return value.map((item) => `${key}[]=${encodeURIComponent(item)}`).join('&');
+          }
+          return `${key}=${encodeURIComponent(value)}`;
+        })
+        .filter(Boolean)
+        .join('&');
+
+      if (queryString) {
+        url = `${url}?${queryString}`;
+      }
+    }
+
+    if (Requests.community_id) {
+      const separator = url.includes('?') ? '&' : '?';
+      url = `${url}${separator}community_id=${Requests.community_id}`;
+    }
+
+    const headers: { [key: string]: string } = {};
+    if (Requests.authToken) {
+      headers['Authorization'] = `Bearer ${Requests.authToken}`;
+    }
+
+    const uri = Requests.baseUrl.replace(/\/+$/, '') + '/' + url.replace(/^\/+/, '');
+
+    return axios({
+      method: 'GET',
+      url: uri,
+      headers,
+      responseType: 'blob',
+    });
+  }
+
   public static post<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>> {
     if (params && Object.keys(params).length > 0) {
       const queryString = Object.entries(params)

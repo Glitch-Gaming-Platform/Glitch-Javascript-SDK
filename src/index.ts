@@ -53,6 +53,7 @@ import {Agents} from './api';
 import {Mcp} from './api';
 import {PrDirectory} from './api';
 import {AdminReports} from './api';
+import {MarketResearch} from './api';
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -135,6 +136,7 @@ class Glitch {
         Mcp : Mcp,
         PrDirectory : PrDirectory,
         AdminReports : AdminReports,
+        MarketResearch : MarketResearch,
     }
 
     public static util = {

@@ -5394,6 +5394,42 @@ var Requests = /** @class */ (function () {
         }
         return Requests.request('GET', url);
     };
+    Requests.download = function (url, params) {
+        if (params && Object.keys(params).length > 0) {
+            var queryString = Object.entries(params)
+                .filter(function (_a) {
+                var value = _a[1];
+                return value !== undefined && value !== null && value !== '';
+            })
+                .map(function (_a) {
+                var key = _a[0], value = _a[1];
+                if (Array.isArray(value)) {
+                    return value.map(function (item) { return "".concat(key, "[]=").concat(encodeURIComponent(item)); }).join('&');
+                }
+                return "".concat(key, "=").concat(encodeURIComponent(value));
+            })
+                .filter(Boolean)
+                .join('&');
+            if (queryString) {
+                url = "".concat(url, "?").concat(queryString);
+            }
+        }
+        if (Requests.community_id) {
+            var separator = url.includes('?') ? '&' : '?';
+            url = "".concat(url).concat(separator, "community_id=").concat(Requests.community_id);
+        }
+        var headers = {};
+        if (Requests.authToken) {
+            headers['Authorization'] = "Bearer ".concat(Requests.authToken);
+        }
+        var uri = Requests.baseUrl.replace(/\/+$/, '') + '/' + url.replace(/^\/+/, '');
+        return axios$1({
+            method: 'GET',
+            url: uri,
+            headers: headers,
+            responseType: 'blob',
+        });
+    };
     Requests.post = function (url, data, params) {
         if (params && Object.keys(params).length > 0) {
             var queryString = Object.entries(params)
@@ -7917,6 +7953,8 @@ var CommunitiesRoute = /** @class */ (function () {
         removeUser: { url: '/communities/{community_id}/users/{user_id}', method: HTTP_METHODS.DELETE },
         join: { url: '/communities/{community_id}/join', method: HTTP_METHODS.POST },
         findByDomain: { url: '/communities/findByDomain/{domain}', method: HTTP_METHODS.GET },
+        getMarketResearchAccess: { url: '/communities/{community_id}/market-research-access', method: HTTP_METHODS.GET },
+        updateMarketResearchAccess: { url: '/communities/{community_id}/market-research-access', method: HTTP_METHODS.PUT },
         addPaymentMethod: { url: '/communities/{community_id}/payment/methods', method: HTTP_METHODS.POST },
         getPaymentMethods: { url: '/communities/{community_id}/payment/methods', method: HTTP_METHODS.GET },
         setDefaultPaymentMethod: { url: '/communities/{community_id}/payment/methods/default', method: HTTP_METHODS.POST },
@@ -8059,6 +8097,19 @@ var Communities = /** @class */ (function () {
      */
     Communities.delete = function (community_id, params) {
         return Requests.processRoute(CommunitiesRoute.routes.delete, {}, { community_id: community_id });
+    };
+    /**
+     * Retrieve the site-admin grant state for the customer-facing game market
+     * research product.
+     */
+    Communities.getMarketResearchAccess = function (community_id, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.getMarketResearchAccess, undefined, { community_id: community_id }, params);
+    };
+    /**
+     * Enable or disable game market research access for a business account.
+     */
+    Communities.updateMarketResearchAccess = function (community_id, data, params) {
+        return Requests.processRoute(CommunitiesRoute.routes.updateMarketResearchAccess, data, { community_id: community_id }, params);
     };
     /**
      * Updates the main image for the community using a File object.
@@ -20047,6 +20098,45 @@ var AdminReports = /** @class */ (function () {
     return AdminReports;
 }());
 
+var MarketResearchRoute = /** @class */ (function () {
+    function MarketResearchRoute() {
+    }
+    MarketResearchRoute.routes = {
+        access: { url: '/market-research/access', method: HTTP_METHODS.GET },
+        filterOptions: { url: '/market-research/filter-options', method: HTTP_METHODS.GET },
+        listGames: { url: '/market-research/games', method: HTTP_METHODS.GET },
+        viewGame: { url: '/market-research/games/{game_id}', method: HTTP_METHODS.GET },
+        exportGames: { url: '/market-research/games/export', method: HTTP_METHODS.GET },
+        exportGame: { url: '/market-research/games/{game_id}/export', method: HTTP_METHODS.GET },
+    };
+    return MarketResearchRoute;
+}());
+
+var MarketResearch = /** @class */ (function () {
+    function MarketResearch() {
+    }
+    MarketResearch.access = function (params) {
+        return Requests.processRoute(MarketResearchRoute.routes.access, undefined, undefined, params);
+    };
+    MarketResearch.filterOptions = function (params) {
+        return Requests.processRoute(MarketResearchRoute.routes.filterOptions, undefined, undefined, params);
+    };
+    MarketResearch.listGames = function (params) {
+        return Requests.processRoute(MarketResearchRoute.routes.listGames, undefined, undefined, params);
+    };
+    MarketResearch.viewGame = function (game_id, params) {
+        return Requests.processRoute(MarketResearchRoute.routes.viewGame, undefined, { game_id: game_id }, params);
+    };
+    MarketResearch.exportGames = function (params) {
+        return Requests.download(MarketResearchRoute.routes.exportGames.url, params);
+    };
+    MarketResearch.exportGame = function (game_id, params) {
+        var url = MarketResearchRoute.routes.exportGame.url.replace('{game_id}', game_id);
+        return Requests.download(url, params);
+    };
+    return MarketResearch;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -20594,6 +20684,7 @@ var Glitch = /** @class */ (function () {
         Mcp: Mcp,
         PrDirectory: PrDirectory,
         AdminReports: AdminReports,
+        MarketResearch: MarketResearch,
     };
     Glitch.util = {
         Requests: Requests,

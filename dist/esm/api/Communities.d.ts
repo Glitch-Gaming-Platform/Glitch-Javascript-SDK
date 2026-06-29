@@ -50,6 +50,18 @@ declare class Communities {
      */
     static delete<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Retrieve the site-admin grant state for the customer-facing game market
+     * research product.
+     */
+    static getMarketResearchAccess<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Enable or disable game market research access for a business account.
+     */
+    static updateMarketResearchAccess<T>(community_id: string, data: {
+        enabled: boolean;
+        notes?: string;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Updates the main image for the community using a File object.
      *
      * @see https://api.glitch.fun/api/documentation#/Community%20Route/uploadLogoCommunityImage

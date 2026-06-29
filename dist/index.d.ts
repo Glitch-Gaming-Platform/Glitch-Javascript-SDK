@@ -1251,6 +1251,18 @@ declare class Communities {
      */
     static delete<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Retrieve the site-admin grant state for the customer-facing game market
+     * research product.
+     */
+    static getMarketResearchAccess<T>(community_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Enable or disable game market research access for a business account.
+     */
+    static updateMarketResearchAccess<T>(community_id: string, data: {
+        enabled: boolean;
+        notes?: string;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Updates the main image for the community using a File object.
      *
      * @see https://api.glitch.fun/api/documentation#/Community%20Route/uploadLogoCommunityImage
@@ -10309,6 +10321,15 @@ declare class AdminReports {
     static steam<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
+declare class MarketResearch {
+    static access<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static filterOptions<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static listGames<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static viewGame<T>(game_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static exportGames(params?: Record<string, any>): AxiosPromise<Blob>;
+    static exportGame(game_id: string, params?: Record<string, any>): AxiosPromise<Blob>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -10332,6 +10353,7 @@ declare class Requests {
     static buildUrl(url: string, params?: Record<string, any>): string;
     private static request;
     static get<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static download(url: string, params?: Record<string, any>): AxiosPromise<Blob>;
     static post<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static put<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static patch<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
@@ -10675,6 +10697,7 @@ declare class Glitch {
         Mcp: typeof Mcp;
         PrDirectory: typeof PrDirectory;
         AdminReports: typeof AdminReports;
+        MarketResearch: typeof MarketResearch;
     };
     static util: {
         Requests: typeof Requests;

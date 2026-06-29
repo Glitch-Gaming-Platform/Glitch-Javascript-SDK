@@ -49,6 +49,7 @@ import Agents from "./Agents";
 import Mcp from "./Mcp";
 import PrDirectory from "./PrDirectory";
 import AdminReports from "./AdminReports";
+import MarketResearch from "./MarketResearch";
 
 export {Ads};
 export {AccessKeys};
@@ -101,3 +102,4 @@ export {Agents};
 export {Mcp};
 export {PrDirectory};
 export {AdminReports};
+export {MarketResearch};
