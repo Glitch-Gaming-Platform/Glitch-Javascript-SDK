@@ -8102,6 +8102,17 @@ declare class TwitchReporting {
      */
     static getMostActiveGames<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Discover the most active Twitch games with Steam/IGDB genre, category,
+     * theme, live snapshot, and trend metrics.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Twitch%20Reporting/discoverActiveTwitchGames
+     *
+     * @param params Optional query parameters (e.g., genres, categories, match_mode, trend_days, sort_by, limit).
+     *
+     * @returns promise
+     */
+    static discoverActiveGames<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Get top streamers by performance (average or peak CCV).
      *
      * @see https://api.glitch.fun/api/documentation#/Twitch%20Reporting/getTopStreamers

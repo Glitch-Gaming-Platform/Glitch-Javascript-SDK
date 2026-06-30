@@ -20,6 +20,10 @@ class TwitchReportingRoute {
             url: '/reporting/twitch/games/most-active',
             method: HTTP_METHODS.GET
         },
+        discoverActiveGames: {
+            url: '/reporting/twitch/games/discovery',
+            method: HTTP_METHODS.GET
+        },
         getTopStreamers: {
             url: '/reporting/twitch/streamers/top',
             method: HTTP_METHODS.GET

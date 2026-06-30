@@ -17876,6 +17876,10 @@ var TwitchReportingRoute = /** @class */ (function () {
             url: '/reporting/twitch/games/most-active',
             method: HTTP_METHODS.GET
         },
+        discoverActiveGames: {
+            url: '/reporting/twitch/games/discovery',
+            method: HTTP_METHODS.GET
+        },
         getTopStreamers: {
             url: '/reporting/twitch/streamers/top',
             method: HTTP_METHODS.GET
@@ -17947,6 +17951,19 @@ var TwitchReporting = /** @class */ (function () {
      */
     TwitchReporting.getMostActiveGames = function (params) {
         return Requests.processRoute(TwitchReportingRoute.routes.getMostActiveGames, undefined, undefined, params);
+    };
+    /**
+     * Discover the most active Twitch games with Steam/IGDB genre, category,
+     * theme, live snapshot, and trend metrics.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Twitch%20Reporting/discoverActiveTwitchGames
+     *
+     * @param params Optional query parameters (e.g., genres, categories, match_mode, trend_days, sort_by, limit).
+     *
+     * @returns promise
+     */
+    TwitchReporting.discoverActiveGames = function (params) {
+        return Requests.processRoute(TwitchReportingRoute.routes.discoverActiveGames, undefined, undefined, params);
     };
     /**
      * Get top streamers by performance (average or peak CCV).
