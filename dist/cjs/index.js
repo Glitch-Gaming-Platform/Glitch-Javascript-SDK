@@ -17525,6 +17525,39 @@ var Requests = /** @class */ (function () {
             onUploadProgress: onUploadProgress,
         });
     };
+    Requests.postFormData = function (url, formData, params, onUploadProgress) {
+        if (params && Object.keys(params).length > 0) {
+            var queryString = Object.entries(params)
+                .filter(function (_a) {
+                var value = _a[1];
+                return value !== undefined && value !== null && value !== '';
+            })
+                .map(function (_a) {
+                var key = _a[0], value = _a[1];
+                if (Array.isArray(value)) {
+                    return value.map(function (item) { return "".concat(key, "[]=").concat(encodeURIComponent(item)); }).join('&');
+                }
+                return "".concat(key, "=").concat(encodeURIComponent(value));
+            })
+                .filter(Boolean)
+                .join('&');
+            if (queryString) {
+                url = "".concat(url, "?").concat(queryString);
+            }
+        }
+        var headers = {};
+        if (Requests.authToken) {
+            headers['Authorization'] = "Bearer ".concat(Requests.authToken);
+        }
+        var uri = Requests.baseUrl.replace(/\/+$/, '') + '/' + url.replace(/^\/+/, '');
+        return axios$1({
+            method: 'POST',
+            url: uri,
+            data: formData,
+            headers: headers,
+            onUploadProgress: onUploadProgress,
+        });
+    };
     Requests.uploadBlob = function (url, filename, blob, data, params, onUploadProgress) {
         // Process URL and params
         if (params && Object.keys(params).length > 0) {
@@ -30649,6 +30682,12 @@ var CrmRoute = /** @class */ (function () {
         listCampaignRecipients: { url: '/admin/crm/campaigns/{campaign_id}/recipients', method: HTTP_METHODS.GET },
         previewCampaignProspectImport: { url: '/admin/crm/campaigns/import-prospects/preview', method: HTTP_METHODS.POST },
         importCampaignProspects: { url: '/admin/crm/campaigns/import-prospects', method: HTTP_METHODS.POST },
+        previewFestivalSubmissionImport: { url: '/admin/crm/imports/festival-submissions/preview', method: HTTP_METHODS.POST },
+        importFestivalSubmissions: { url: '/admin/crm/imports/festival-submissions', method: HTTP_METHODS.POST },
+        listFestivalSubmissionSources: { url: '/admin/crm/imports/festival-submissions/sources', method: HTTP_METHODS.GET },
+        createFestivalSubmissionSource: { url: '/admin/crm/imports/festival-submissions/sources', method: HTTP_METHODS.POST },
+        updateFestivalSubmissionSource: { url: '/admin/crm/imports/festival-submissions/sources/{source_id}', method: HTTP_METHODS.PUT },
+        deleteFestivalSubmissionSource: { url: '/admin/crm/imports/festival-submissions/sources/{source_id}', method: HTTP_METHODS.DELETE },
         listEmailProviderAddresses: { url: '/admin/crm/email-provider-addresses', method: HTTP_METHODS.GET },
         getEmailProviderAddressOptions: { url: '/admin/crm/email-provider-addresses/options', method: HTTP_METHODS.GET },
         createEmailProviderAddress: { url: '/admin/crm/email-provider-addresses', method: HTTP_METHODS.POST },
@@ -30894,6 +30933,44 @@ var Crm = /** @class */ (function () {
         return Requests.processRoute(CrmRoute.routes.importCampaignProspects, __assign({ prospects: prospects }, options));
     };
     /**
+     * Preview uploaded festival submission sheets without writing External Game or CRM records.
+     */
+    Crm.previewFestivalSubmissionImport = function (files, options, onUploadProgress) {
+        if (options === void 0) { options = {}; }
+        return Requests.postFormData(CrmRoute.routes.previewFestivalSubmissionImport.url, Crm.festivalSubmissionFormData(files, options), undefined, onUploadProgress);
+    };
+    /**
+     * Import uploaded festival submission sheets into External Games and CRM leads/contacts.
+     */
+    Crm.importFestivalSubmissions = function (files, options, onUploadProgress) {
+        if (options === void 0) { options = {}; }
+        return Requests.postFormData(CrmRoute.routes.importFestivalSubmissions.url, Crm.festivalSubmissionFormData(files, options), undefined, onUploadProgress);
+    };
+    /**
+     * List saved recurring Google Sheet sources for festival submission imports.
+     */
+    Crm.listFestivalSubmissionSources = function () {
+        return Requests.processRoute(CrmRoute.routes.listFestivalSubmissionSources);
+    };
+    /**
+     * Save a recurring Google Sheet source for festival submission imports.
+     */
+    Crm.createFestivalSubmissionSource = function (data) {
+        return Requests.processRoute(CrmRoute.routes.createFestivalSubmissionSource, data);
+    };
+    /**
+     * Update a recurring Google Sheet source for festival submission imports.
+     */
+    Crm.updateFestivalSubmissionSource = function (source_id, data) {
+        return Requests.processRoute(CrmRoute.routes.updateFestivalSubmissionSource, data, { source_id: source_id });
+    };
+    /**
+     * Delete a recurring Google Sheet source for festival submission imports.
+     */
+    Crm.deleteFestivalSubmissionSource = function (source_id) {
+        return Requests.processRoute(CrmRoute.routes.deleteFestivalSubmissionSource, {}, { source_id: source_id });
+    };
+    /**
      * List provider-managed sender and reply-to addresses for CRM campaigns.
      */
     Crm.listEmailProviderAddresses = function (params) {
@@ -30922,6 +30999,25 @@ var Crm = /** @class */ (function () {
      */
     Crm.deactivateEmailProviderAddress = function (address_id) {
         return Requests.processRoute(CrmRoute.routes.deactivateEmailProviderAddress, {}, { address_id: address_id });
+    };
+    Crm.festivalSubmissionFormData = function (files, options) {
+        var formData = new FormData();
+        files.forEach(function (file, index) {
+            var candidate = file;
+            formData.append('files[]', file, (candidate === null || candidate === void 0 ? void 0 : candidate.name) || "festival-submission-".concat(index + 1));
+        });
+        Object.entries(options || {}).forEach(function (_a) {
+            var key = _a[0], value = _a[1];
+            if (value === undefined || value === null) {
+                return;
+            }
+            if (Array.isArray(value)) {
+                value.forEach(function (item) { return formData.append("".concat(key, "[]"), String(item)); });
+                return;
+            }
+            formData.append(key, typeof value === 'boolean' ? (value ? '1' : '0') : String(value));
+        });
+        return formData;
     };
     return Crm;
 }());

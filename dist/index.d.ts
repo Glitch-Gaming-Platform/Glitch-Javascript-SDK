@@ -8530,6 +8530,30 @@ declare class Crm {
      */
     static importCampaignProspects<T>(prospects: object[], options?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Preview uploaded festival submission sheets without writing External Game or CRM records.
+     */
+    static previewFestivalSubmissionImport<T>(files: Array<File | Blob>, options?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    /**
+     * Import uploaded festival submission sheets into External Games and CRM leads/contacts.
+     */
+    static importFestivalSubmissions<T>(files: Array<File | Blob>, options?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    /**
+     * List saved recurring Google Sheet sources for festival submission imports.
+     */
+    static listFestivalSubmissionSources<T>(): AxiosPromise<Response<T>>;
+    /**
+     * Save a recurring Google Sheet source for festival submission imports.
+     */
+    static createFestivalSubmissionSource<T>(data: object): AxiosPromise<Response<T>>;
+    /**
+     * Update a recurring Google Sheet source for festival submission imports.
+     */
+    static updateFestivalSubmissionSource<T>(source_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Delete a recurring Google Sheet source for festival submission imports.
+     */
+    static deleteFestivalSubmissionSource<T>(source_id: string): AxiosPromise<Response<T>>;
+    /**
      * List provider-managed sender and reply-to addresses for CRM campaigns.
      */
     static listEmailProviderAddresses<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
@@ -8549,6 +8573,7 @@ declare class Crm {
      * Deactivate a provider address while keeping the audit record.
      */
     static deactivateEmailProviderAddress<T>(address_id: string): AxiosPromise<Response<T>>;
+    private static festivalSubmissionFormData;
 }
 
 type MultiplayerLobbyType = 'public' | 'invisible' | 'friends_only' | 'private';
@@ -10370,6 +10395,7 @@ declare class Requests {
     static patch<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static delete<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static uploadFile<T>(url: string, filename: string, file: File | Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    static postFormData<T>(url: string, formData: FormData, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     static uploadBlob<T>(url: string, filename: string, blob: Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     static uploadFileInChunks<T>(file: File, uploadUrl: string, onProgress?: (totalSize: number, amountUploaded: number) => void, data?: any, chunkSize?: number): Promise<void>;
     static processRoute<T>(route: Route, data?: object, routeReplace?: {

@@ -271,6 +271,46 @@ class Requests {
     });
   }
 
+  public static postFormData<T>(
+    url: string,
+    formData: FormData,
+    params?: Record<string, any>,
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+  ): AxiosPromise<Response<T>> {
+    if (params && Object.keys(params).length > 0) {
+      const queryString = Object.entries(params)
+        .filter(([, value]) => value !== undefined && value !== null && value !== '')
+        .map(([key, value]) => {
+          if (Array.isArray(value)) {
+            return value.map((item) => `${key}[]=${encodeURIComponent(item)}`).join('&');
+          }
+          return `${key}=${encodeURIComponent(value)}`;
+        })
+        .filter(Boolean)
+        .join('&');
+
+      if (queryString) {
+        url = `${url}?${queryString}`;
+      }
+    }
+
+    let headers: { [key: string]: string } = {};
+
+    if (Requests.authToken) {
+      headers['Authorization'] = `Bearer ${Requests.authToken}`;
+    }
+
+    const uri = Requests.baseUrl.replace(/\/+$/, '') + '/' + url.replace(/^\/+/, '');
+
+    return axios({
+      method: 'POST',
+      url: uri,
+      data: formData,
+      headers,
+      onUploadProgress,
+    });
+  }
+
 
   public static uploadBlob<T>(
     url: string,

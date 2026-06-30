@@ -1,7 +1,7 @@
 import CrmRoute from "../routes/CrmRoute";
 import Requests from "../util/Requests";
 import Response from "../util/Response";
-import { AxiosPromise } from "axios";
+import { AxiosPromise, AxiosProgressEvent } from "axios";
 
 class Crm {
     /**
@@ -264,6 +264,66 @@ class Crm {
     }
 
     /**
+     * Preview uploaded festival submission sheets without writing External Game or CRM records.
+     */
+    public static previewFestivalSubmissionImport<T>(
+        files: Array<File | Blob>,
+        options: Record<string, any> = {},
+        onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+    ): AxiosPromise<Response<T>> {
+        return Requests.postFormData(
+            CrmRoute.routes.previewFestivalSubmissionImport.url,
+            Crm.festivalSubmissionFormData(files, options),
+            undefined,
+            onUploadProgress
+        );
+    }
+
+    /**
+     * Import uploaded festival submission sheets into External Games and CRM leads/contacts.
+     */
+    public static importFestivalSubmissions<T>(
+        files: Array<File | Blob>,
+        options: Record<string, any> = {},
+        onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+    ): AxiosPromise<Response<T>> {
+        return Requests.postFormData(
+            CrmRoute.routes.importFestivalSubmissions.url,
+            Crm.festivalSubmissionFormData(files, options),
+            undefined,
+            onUploadProgress
+        );
+    }
+
+    /**
+     * List saved recurring Google Sheet sources for festival submission imports.
+     */
+    public static listFestivalSubmissionSources<T>(): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.listFestivalSubmissionSources);
+    }
+
+    /**
+     * Save a recurring Google Sheet source for festival submission imports.
+     */
+    public static createFestivalSubmissionSource<T>(data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.createFestivalSubmissionSource, data);
+    }
+
+    /**
+     * Update a recurring Google Sheet source for festival submission imports.
+     */
+    public static updateFestivalSubmissionSource<T>(source_id: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.updateFestivalSubmissionSource, data, { source_id });
+    }
+
+    /**
+     * Delete a recurring Google Sheet source for festival submission imports.
+     */
+    public static deleteFestivalSubmissionSource<T>(source_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CrmRoute.routes.deleteFestivalSubmissionSource, {}, { source_id });
+    }
+
+    /**
      * List provider-managed sender and reply-to addresses for CRM campaigns.
      */
     public static listEmailProviderAddresses<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -296,6 +356,30 @@ class Crm {
      */
     public static deactivateEmailProviderAddress<T>(address_id: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(CrmRoute.routes.deactivateEmailProviderAddress, {}, { address_id });
+    }
+
+    private static festivalSubmissionFormData(files: Array<File | Blob>, options: Record<string, any>): FormData {
+        const formData = new FormData();
+
+        files.forEach((file, index) => {
+            const candidate = file as any;
+            formData.append('files[]', file as any, candidate?.name || `festival-submission-${index + 1}`);
+        });
+
+        Object.entries(options || {}).forEach(([key, value]) => {
+            if (value === undefined || value === null) {
+                return;
+            }
+
+            if (Array.isArray(value)) {
+                value.forEach((item) => formData.append(`${key}[]`, String(item)));
+                return;
+            }
+
+            formData.append(key, typeof value === 'boolean' ? (value ? '1' : '0') : String(value));
+        });
+
+        return formData;
     }
 
 }
