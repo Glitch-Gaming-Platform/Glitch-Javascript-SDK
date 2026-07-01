@@ -49,6 +49,7 @@ import { Agents } from './api';
 import { Mcp } from './api';
 import { PrDirectory } from './api';
 import { AdminReports } from './api';
+import { AdminUsers } from './api';
 import { MarketResearch } from './api';
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -120,6 +121,7 @@ declare class Glitch {
         Mcp: typeof Mcp;
         PrDirectory: typeof PrDirectory;
         AdminReports: typeof AdminReports;
+        AdminUsers: typeof AdminUsers;
         MarketResearch: typeof MarketResearch;
     };
     static util: {
