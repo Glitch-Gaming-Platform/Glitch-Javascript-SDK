@@ -39,6 +39,31 @@ class MultiplayerRoute {
     listFavorites: { url: '/titles/{title_id}/multiplayer/favorites', method: HTTP_METHODS.GET },
     addFavorite: { url: '/titles/{title_id}/multiplayer/favorites', method: HTTP_METHODS.POST },
     deleteFavorite: { url: '/titles/{title_id}/multiplayer/favorites/{favorite_id}', method: HTTP_METHODS.DELETE },
+
+    // MMO world layer: realms, zones, instances, presence.
+    listRealms: { url: '/titles/{title_id}/multiplayer/realms', method: HTTP_METHODS.GET },
+    createRealm: { url: '/titles/{title_id}/multiplayer/realms', method: HTTP_METHODS.POST },
+    showRealm: { url: '/titles/{title_id}/multiplayer/realms/{realm_id}', method: HTTP_METHODS.GET },
+    updateRealm: { url: '/titles/{title_id}/multiplayer/realms/{realm_id}', method: HTTP_METHODS.PUT },
+    listZones: { url: '/titles/{title_id}/multiplayer/realms/{realm_id}/zones', method: HTTP_METHODS.GET },
+    createZone: { url: '/titles/{title_id}/multiplayer/realms/{realm_id}/zones', method: HTTP_METHODS.POST },
+    listInstances: { url: '/titles/{title_id}/multiplayer/zones/{zone_id}/instances', method: HTTP_METHODS.GET },
+    showInstance: { url: '/titles/{title_id}/multiplayer/instances/{instance_id}', method: HTTP_METHODS.GET },
+    listInstancePresence: { url: '/titles/{title_id}/multiplayer/instances/{instance_id}/presence', method: HTTP_METHODS.GET },
+    enterZone: { url: '/titles/{title_id}/multiplayer/world/enter', method: HTTP_METHODS.POST },
+    updatePresence: { url: '/titles/{title_id}/multiplayer/world/presence', method: HTTP_METHODS.POST },
+    leaveWorld: { url: '/titles/{title_id}/multiplayer/world/leave', method: HTTP_METHODS.POST },
+
+    // Ticketed matchmaking.
+    enqueueTicket: { url: '/titles/{title_id}/multiplayer/matchmaking/tickets', method: HTTP_METHODS.POST },
+    showTicket: { url: '/titles/{title_id}/multiplayer/matchmaking/tickets/{ticket_id}', method: HTTP_METHODS.GET },
+    cancelTicket: { url: '/titles/{title_id}/multiplayer/matchmaking/tickets/{ticket_id}', method: HTTP_METHODS.DELETE },
+
+    // Real-time negotiate + trust/moderation.
+    negotiateRealtime: { url: '/titles/{title_id}/multiplayer/realtime/negotiate', method: HTTP_METHODS.POST },
+    listBans: { url: '/titles/{title_id}/multiplayer/bans', method: HTTP_METHODS.GET },
+    createBan: { url: '/titles/{title_id}/multiplayer/bans', method: HTTP_METHODS.POST },
+    deleteBan: { url: '/titles/{title_id}/multiplayer/bans/{ban_id}', method: HTTP_METHODS.DELETE },
   };
 
 }

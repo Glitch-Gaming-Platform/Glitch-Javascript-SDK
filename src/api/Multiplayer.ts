@@ -482,6 +482,276 @@ export interface MultiplayerVoicePollRequest {
     exclude_self?: boolean;
 }
 
+// ---------------------------------------------------------------------------
+// MMO world layer: realms (shards), zones, instances, presence, matchmaking,
+// trust/moderation bans, and real-time negotiate.
+// ---------------------------------------------------------------------------
+
+export type MultiplayerRealmStatus = 'active' | 'locked' | 'maintenance' | 'full' | 'offline';
+export type MultiplayerZoneType = 'overworld' | 'city' | 'dungeon' | 'raid' | 'arena' | 'instanced';
+export type MultiplayerInstanceKind = 'persistent' | 'dynamic' | 'dungeon' | 'raid' | 'arena';
+export type MultiplayerInstanceState = 'provisioning' | 'active' | 'draining' | 'closed';
+export type MultiplayerPresenceStatus = 'online' | 'in_queue' | 'in_world' | 'away' | 'offline';
+export type MultiplayerMatchmakingStatus = 'queued' | 'matched' | 'canceled' | 'expired' | 'timed_out';
+export type MultiplayerBanScope = 'title' | 'realm' | 'lobby' | 'server' | 'voice';
+export type MultiplayerBanSource = 'manual' | 'report' | 'anticheat' | 'automated';
+export type MultiplayerRealtimeScopeType = 'lobby' | 'voice' | 'zone' | 'instance';
+
+/** A persistent world copy (shard). */
+export interface MultiplayerRealm {
+    id: string;
+    title_id: string;
+    name: string;
+    slug?: string | null;
+    region?: string | null;
+    status: MultiplayerRealmStatus;
+    population_cap: number;
+    current_population: number;
+    recommended: boolean;
+    ruleset: MultiplayerMetadata;
+    metadata: MultiplayerMetadata;
+    last_activity_at?: string | null;
+    created_at?: string | null;
+    updated_at?: string | null;
+}
+
+/** A named area within a realm (map/continent/dungeon template). */
+export interface MultiplayerZone {
+    id: string;
+    title_id: string;
+    realm_id: string;
+    zone_key: string;
+    display_name: string;
+    zone_type: MultiplayerZoneType;
+    is_instanced: boolean;
+    max_players_per_instance: number;
+    min_instances: number;
+    grid_cell_size: number;
+    coordinates_bounds: MultiplayerMetadata;
+    metadata: MultiplayerMetadata;
+    created_at?: string | null;
+    updated_at?: string | null;
+}
+
+/** A runtime copy of a zone, optionally bound to a game server. */
+export interface MultiplayerInstance {
+    id: string;
+    title_id: string;
+    realm_id: string;
+    zone_id: string;
+    server_id?: string | null;
+    instance_kind: MultiplayerInstanceKind;
+    state: MultiplayerInstanceState;
+    layer: number;
+    difficulty?: string | null;
+    max_players: number;
+    current_players: number;
+    metadata: MultiplayerMetadata;
+    last_heartbeat_at?: string | null;
+    expires_at?: string | null;
+    created_at?: string | null;
+    updated_at?: string | null;
+    server?: MultiplayerServer | null;
+}
+
+/** Authoritative location of a player. */
+export interface MultiplayerPresence {
+    id: string;
+    title_id: string;
+    player_id: string;
+    user_id?: string | null;
+    realm_id?: string | null;
+    zone_id?: string | null;
+    instance_id?: string | null;
+    party_id?: string | null;
+    display_name?: string | null;
+    status: MultiplayerPresenceStatus;
+    rich_status?: string | null;
+    pos_x?: number | null;
+    pos_y?: number | null;
+    pos_z?: number | null;
+    heading?: number | null;
+    grid_cell?: string | null;
+    metadata: MultiplayerMetadata;
+    last_heartbeat_at?: string | null;
+    expires_at?: string | null;
+}
+
+export interface MultiplayerMatchmakingTicket {
+    id: string;
+    title_id: string;
+    queue: string;
+    player_id: string;
+    user_id?: string | null;
+    party: string[];
+    attributes: MultiplayerMetadata;
+    skill?: number | null;
+    region?: string | null;
+    status: MultiplayerMatchmakingStatus;
+    match_id?: string | null;
+    assignment?: MultiplayerMetadata | null;
+    queued_at?: string | null;
+    matched_at?: string | null;
+    expires_at?: string | null;
+}
+
+export interface MultiplayerBan {
+    id: string;
+    title_id: string;
+    scope: MultiplayerBanScope;
+    scope_id?: string | null;
+    player_id: string;
+    user_id?: string | null;
+    issued_by?: string | null;
+    source: MultiplayerBanSource;
+    reason?: string | null;
+    metadata: MultiplayerMetadata;
+    expires_at?: string | null;
+}
+
+export interface MultiplayerRealmListParams {
+    region?: string;
+    status?: MultiplayerRealmStatus;
+    recommended?: boolean;
+    limit?: number;
+}
+
+export interface MultiplayerCreateRealmRequest {
+    name: string;
+    slug?: string;
+    region?: string;
+    status?: MultiplayerRealmStatus;
+    population_cap?: number;
+    recommended?: boolean;
+    ruleset?: MultiplayerMetadata;
+    metadata?: MultiplayerMetadata;
+}
+
+export interface MultiplayerUpdateRealmRequest extends Partial<MultiplayerCreateRealmRequest> {}
+
+export interface MultiplayerZoneListParams {
+    zone_type?: MultiplayerZoneType;
+    limit?: number;
+}
+
+export interface MultiplayerCreateZoneRequest {
+    zone_key: string;
+    display_name: string;
+    zone_type?: MultiplayerZoneType;
+    is_instanced?: boolean;
+    max_players_per_instance?: number;
+    min_instances?: number;
+    grid_cell_size?: number;
+    coordinates_bounds?: MultiplayerMetadata;
+    metadata?: MultiplayerMetadata;
+}
+
+export interface MultiplayerInstanceListParams {
+    state?: MultiplayerInstanceState;
+    limit?: number;
+}
+
+export interface MultiplayerEnterZoneRequest {
+    player_id?: string;
+    realm_id: string;
+    zone_id: string;
+    server_id?: string;
+    party_id?: string;
+    instance_kind?: MultiplayerInstanceKind;
+    difficulty?: string;
+    display_name?: string;
+    rich_status?: string;
+    pos_x?: number;
+    pos_y?: number;
+    pos_z?: number;
+    heading?: number;
+    metadata?: MultiplayerMetadata;
+    instance_metadata?: MultiplayerMetadata;
+    ttl_minutes?: number;
+}
+
+export interface MultiplayerEnterZoneResponse {
+    instance: MultiplayerInstance;
+    presence: MultiplayerPresence;
+}
+
+export interface MultiplayerUpdatePresenceRequest {
+    player_id?: string;
+    status?: MultiplayerPresenceStatus;
+    rich_status?: string;
+    pos_x?: number;
+    pos_y?: number;
+    pos_z?: number;
+    heading?: number;
+    ttl_minutes?: number;
+}
+
+export interface MultiplayerLeaveWorldRequest {
+    player_id?: string;
+}
+
+export interface MultiplayerInstancePresenceParams {
+    grid_cell?: string;
+    radius?: number;
+    limit?: number;
+}
+
+export interface MultiplayerEnqueueTicketRequest {
+    player_id?: string;
+    queue: string;
+    party?: string[];
+    attributes?: MultiplayerMetadata;
+    skill?: number;
+    region?: string;
+    ttl_seconds?: number;
+}
+
+export interface MultiplayerCancelTicketParams {
+    player_id?: string;
+}
+
+export interface MultiplayerBanListParams {
+    scope?: MultiplayerBanScope;
+    player_id?: string;
+    source?: MultiplayerBanSource;
+    active_only?: boolean;
+    limit?: number;
+}
+
+export interface MultiplayerCreateBanRequest {
+    player_id: string;
+    scope?: MultiplayerBanScope;
+    scope_id?: string;
+    user_id?: string;
+    source?: MultiplayerBanSource;
+    reason?: string;
+    metadata?: MultiplayerMetadata;
+    expires_at?: string;
+}
+
+export interface MultiplayerDeleteBanResponse {
+    deleted: boolean;
+}
+
+export interface MultiplayerRealtimeScope {
+    type: MultiplayerRealtimeScopeType;
+    id: string;
+}
+
+export interface MultiplayerRealtimeNegotiateRequest {
+    player_id?: string;
+    scopes?: MultiplayerRealtimeScope[];
+}
+
+export interface MultiplayerRealtimeNegotiateResponse {
+    protocol: string;
+    url: string | null;
+    configured: boolean;
+    groups: string[];
+    access_token: string | null;
+    expires_at: string | null;
+}
+
 /**
  * Steam-style multiplayer APIs for Glitch titles.
  *
@@ -1005,6 +1275,253 @@ class Multiplayer {
      */
     public static deleteFavorite<T = MultiplayerDeleteFavoriteResponse>(title_id: string, favorite_id: string, params?: MultiplayerDeleteFavoriteParams): AxiosPromise<Response<T>> {
         return Requests.processRoute(MultiplayerRoute.routes.deleteFavorite, undefined, { title_id, favorite_id }, params);
+    }
+
+    // -----------------------------------------------------------------------
+    // MMO world layer
+    // -----------------------------------------------------------------------
+
+    /**
+     * List realms (persistent world shards) so a player can choose where to log in.
+     *
+     * @param title_id Title UUID.
+     * @param params Optional region/status filters; recommended realms sort first.
+     * @example
+     * Multiplayer.listRealms('title-uuid', { region: 'us-central', status: 'active' });
+     */
+    public static listRealms<T = MultiplayerRealm[]>(title_id: string, params?: MultiplayerRealmListParams): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.listRealms, undefined, { title_id }, params);
+    }
+
+    /**
+     * Create a realm. Requires a title administrator JWT.
+     *
+     * @param title_id Title UUID.
+     * @param data Realm configuration.
+     * @example
+     * Multiplayer.createRealm('title-uuid', { name: 'Aurora', region: 'us-central', population_cap: 5000, recommended: true });
+     */
+    public static createRealm<T = MultiplayerRealm>(title_id: string, data: MultiplayerCreateRealmRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.createRealm, data, { title_id });
+    }
+
+    /**
+     * Retrieve a single realm.
+     *
+     * @param title_id Title UUID.
+     * @param realm_id Realm UUID.
+     */
+    public static showRealm<T = MultiplayerRealm>(title_id: string, realm_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.showRealm, undefined, { title_id, realm_id });
+    }
+
+    /**
+     * Update a realm (status, population cap, ruleset). Requires a title admin JWT.
+     *
+     * @param title_id Title UUID.
+     * @param realm_id Realm UUID.
+     * @param data Fields to update.
+     */
+    public static updateRealm<T = MultiplayerRealm>(title_id: string, realm_id: string, data: MultiplayerUpdateRealmRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.updateRealm, data, { title_id, realm_id });
+    }
+
+    /**
+     * List the zones defined for a realm.
+     *
+     * @param title_id Title UUID.
+     * @param realm_id Realm UUID.
+     * @param params Optional zone_type filter.
+     */
+    public static listZones<T = MultiplayerZone[]>(title_id: string, realm_id: string, params?: MultiplayerZoneListParams): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.listZones, undefined, { title_id, realm_id }, params);
+    }
+
+    /**
+     * Create a zone in a realm. Requires a title administrator JWT.
+     *
+     * @param title_id Title UUID.
+     * @param realm_id Realm UUID.
+     * @param data Zone configuration, including interest-management grid cell size.
+     * @example
+     * Multiplayer.createZone('title-uuid', 'realm-uuid', {
+     *   zone_key: 'ashfall_valley',
+     *   display_name: 'Ashfall Valley',
+     *   zone_type: 'overworld',
+     *   max_players_per_instance: 100,
+     *   grid_cell_size: 64
+     * });
+     */
+    public static createZone<T = MultiplayerZone>(title_id: string, realm_id: string, data: MultiplayerCreateZoneRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.createZone, data, { title_id, realm_id });
+    }
+
+    /**
+     * List the active/other instances (runtime copies) of a zone.
+     *
+     * @param title_id Title UUID.
+     * @param zone_id Zone UUID.
+     * @param params Optional state filter.
+     */
+    public static listInstances<T = MultiplayerInstance[]>(title_id: string, zone_id: string, params?: MultiplayerInstanceListParams): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.listInstances, undefined, { title_id, zone_id }, params);
+    }
+
+    /**
+     * Retrieve a single instance.
+     *
+     * @param title_id Title UUID.
+     * @param instance_id Instance UUID.
+     */
+    public static showInstance<T = MultiplayerInstance>(title_id: string, instance_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.showInstance, undefined, { title_id, instance_id });
+    }
+
+    /**
+     * List players present in an instance. Pass grid_cell (and optional radius) to
+     * receive only players in the caller's area of interest — the key to keeping
+     * per-player fan-out bounded regardless of how populated the zone is.
+     *
+     * @param title_id Title UUID.
+     * @param instance_id Instance UUID.
+     * @param params grid_cell "cx:cy" and radius (0-4) to scope the query.
+     * @example
+     * Multiplayer.listInstancePresence('title-uuid', 'instance-uuid', { grid_cell: '12:8', radius: 1 });
+     */
+    public static listInstancePresence<T = MultiplayerPresence[]>(title_id: string, instance_id: string, params?: MultiplayerInstancePresenceParams): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.listInstancePresence, undefined, { title_id, instance_id }, params);
+    }
+
+    /**
+     * Enter a zone. The backend places the player into an active instance with
+     * capacity (creating a new layer if all are full), enforces bans and realm
+     * capacity, and upserts presence. Returns the instance and presence so the
+     * client can connect and subscribe to the instance's real-time group.
+     *
+     * @param title_id Title UUID.
+     * @param data Realm/zone target plus optional spawn position and metadata.
+     * @example
+     * Multiplayer.enterZone('title-uuid', {
+     *   player_id: 'steam:765...',
+     *   realm_id: 'realm-uuid',
+     *   zone_id: 'zone-uuid',
+     *   pos_x: 128.0, pos_z: 64.0
+     * });
+     */
+    public static enterZone<T = MultiplayerEnterZoneResponse>(title_id: string, data: MultiplayerEnterZoneRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.enterZone, data, { title_id });
+    }
+
+    /**
+     * Update presence (position, heading, rich status) and refresh the TTL. Call
+     * on a movement interval and on notable state changes.
+     *
+     * @param title_id Title UUID.
+     * @param data New position/status for the player.
+     */
+    public static updatePresence<T = MultiplayerPresence>(title_id: string, data: MultiplayerUpdatePresenceRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.updatePresence, data, { title_id });
+    }
+
+    /**
+     * Leave the world. Frees the player's instance slot and realm population.
+     *
+     * @param title_id Title UUID.
+     * @param data Optional player_id for title-token clients.
+     */
+    public static leaveWorld<T = MultiplayerPresence>(title_id: string, data?: MultiplayerLeaveWorldRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.leaveWorld, data, { title_id });
+    }
+
+    // -----------------------------------------------------------------------
+    // Matchmaking
+    // -----------------------------------------------------------------------
+
+    /**
+     * Enqueue a matchmaking ticket. Idempotent per (queue, player): an existing
+     * open ticket is returned rather than duplicated, so retries are safe. Poll
+     * the ticket or subscribe to `matchmaking.matched` for the assignment.
+     *
+     * @param title_id Title UUID.
+     * @param data Queue name plus optional party, skill, region, and attributes.
+     * @example
+     * Multiplayer.enqueueTicket('title-uuid', { player_id: 'steam:765...', queue: 'ranked_2v2', skill: 1840, region: 'us-central' });
+     */
+    public static enqueueTicket<T = MultiplayerMatchmakingTicket>(title_id: string, data: MultiplayerEnqueueTicketRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.enqueueTicket, data, { title_id });
+    }
+
+    /**
+     * Poll a matchmaking ticket. A queued ticket past its TTL is reported as
+     * `timed_out`; a matched ticket carries the connection `assignment`.
+     *
+     * @param title_id Title UUID.
+     * @param ticket_id Ticket UUID.
+     */
+    public static showTicket<T = MultiplayerMatchmakingTicket>(title_id: string, ticket_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.showTicket, undefined, { title_id, ticket_id });
+    }
+
+    /**
+     * Cancel a queued matchmaking ticket.
+     *
+     * @param title_id Title UUID.
+     * @param ticket_id Ticket UUID.
+     */
+    public static cancelTicket<T = MultiplayerMatchmakingTicket>(title_id: string, ticket_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.cancelTicket, undefined, { title_id, ticket_id });
+    }
+
+    // -----------------------------------------------------------------------
+    // Real-time negotiate + trust/moderation
+    // -----------------------------------------------------------------------
+
+    /**
+     * Negotiate a real-time push connection. Returns the authorized group names
+     * and the push endpoint. When SignalR/Web PubSub is configured, an
+     * access_token scoped to those groups is included; otherwise `configured` is
+     * false and the client should fall back to the polling endpoints.
+     *
+     * @param title_id Title UUID.
+     * @param data Optional player_id and the scopes (lobby/voice/zone/instance) to subscribe to.
+     * @example
+     * Multiplayer.negotiateRealtime('title-uuid', { player_id: 'steam:765...', scopes: [{ type: 'instance', id: 'instance-uuid' }] });
+     */
+    public static negotiateRealtime<T = MultiplayerRealtimeNegotiateResponse>(title_id: string, data?: MultiplayerRealtimeNegotiateRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.negotiateRealtime, data, { title_id });
+    }
+
+    /**
+     * List bans for a title. Requires a title administrator JWT.
+     *
+     * @param title_id Title UUID.
+     * @param params Optional scope/player/source filters and active_only.
+     */
+    public static listBans<T = MultiplayerBan[]>(title_id: string, params?: MultiplayerBanListParams): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.listBans, undefined, { title_id }, params);
+    }
+
+    /**
+     * Ban a player at a scope (title/realm/lobby/server/voice). Requires a title
+     * administrator JWT. Omit expires_at for a permanent ban.
+     *
+     * @param title_id Title UUID.
+     * @param data Ban target and scope.
+     * @example
+     * Multiplayer.createBan('title-uuid', { player_id: 'steam:765...', scope: 'title', reason: 'Cheating: aimbot' });
+     */
+    public static createBan<T = MultiplayerBan>(title_id: string, data: MultiplayerCreateBanRequest): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.createBan, data, { title_id });
+    }
+
+    /**
+     * Lift a ban. Requires a title administrator JWT.
+     *
+     * @param title_id Title UUID.
+     * @param ban_id Ban UUID.
+     */
+    public static deleteBan<T = MultiplayerDeleteBanResponse>(title_id: string, ban_id: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(MultiplayerRoute.routes.deleteBan, undefined, { title_id, ban_id });
     }
 
 }

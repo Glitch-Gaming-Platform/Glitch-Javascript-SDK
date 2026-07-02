@@ -19058,6 +19058,28 @@ var MultiplayerRoute = /** @class */ (function () {
         listFavorites: { url: '/titles/{title_id}/multiplayer/favorites', method: HTTP_METHODS.GET },
         addFavorite: { url: '/titles/{title_id}/multiplayer/favorites', method: HTTP_METHODS.POST },
         deleteFavorite: { url: '/titles/{title_id}/multiplayer/favorites/{favorite_id}', method: HTTP_METHODS.DELETE },
+        // MMO world layer: realms, zones, instances, presence.
+        listRealms: { url: '/titles/{title_id}/multiplayer/realms', method: HTTP_METHODS.GET },
+        createRealm: { url: '/titles/{title_id}/multiplayer/realms', method: HTTP_METHODS.POST },
+        showRealm: { url: '/titles/{title_id}/multiplayer/realms/{realm_id}', method: HTTP_METHODS.GET },
+        updateRealm: { url: '/titles/{title_id}/multiplayer/realms/{realm_id}', method: HTTP_METHODS.PUT },
+        listZones: { url: '/titles/{title_id}/multiplayer/realms/{realm_id}/zones', method: HTTP_METHODS.GET },
+        createZone: { url: '/titles/{title_id}/multiplayer/realms/{realm_id}/zones', method: HTTP_METHODS.POST },
+        listInstances: { url: '/titles/{title_id}/multiplayer/zones/{zone_id}/instances', method: HTTP_METHODS.GET },
+        showInstance: { url: '/titles/{title_id}/multiplayer/instances/{instance_id}', method: HTTP_METHODS.GET },
+        listInstancePresence: { url: '/titles/{title_id}/multiplayer/instances/{instance_id}/presence', method: HTTP_METHODS.GET },
+        enterZone: { url: '/titles/{title_id}/multiplayer/world/enter', method: HTTP_METHODS.POST },
+        updatePresence: { url: '/titles/{title_id}/multiplayer/world/presence', method: HTTP_METHODS.POST },
+        leaveWorld: { url: '/titles/{title_id}/multiplayer/world/leave', method: HTTP_METHODS.POST },
+        // Ticketed matchmaking.
+        enqueueTicket: { url: '/titles/{title_id}/multiplayer/matchmaking/tickets', method: HTTP_METHODS.POST },
+        showTicket: { url: '/titles/{title_id}/multiplayer/matchmaking/tickets/{ticket_id}', method: HTTP_METHODS.GET },
+        cancelTicket: { url: '/titles/{title_id}/multiplayer/matchmaking/tickets/{ticket_id}', method: HTTP_METHODS.DELETE },
+        // Real-time negotiate + trust/moderation.
+        negotiateRealtime: { url: '/titles/{title_id}/multiplayer/realtime/negotiate', method: HTTP_METHODS.POST },
+        listBans: { url: '/titles/{title_id}/multiplayer/bans', method: HTTP_METHODS.GET },
+        createBan: { url: '/titles/{title_id}/multiplayer/bans', method: HTTP_METHODS.POST },
+        deleteBan: { url: '/titles/{title_id}/multiplayer/bans/{ban_id}', method: HTTP_METHODS.DELETE },
     };
     return MultiplayerRoute;
 }());
@@ -19557,6 +19579,231 @@ var Multiplayer = /** @class */ (function () {
      */
     Multiplayer.deleteFavorite = function (title_id, favorite_id, params) {
         return Requests.processRoute(MultiplayerRoute.routes.deleteFavorite, undefined, { title_id: title_id, favorite_id: favorite_id }, params);
+    };
+    // -----------------------------------------------------------------------
+    // MMO world layer
+    // -----------------------------------------------------------------------
+    /**
+     * List realms (persistent world shards) so a player can choose where to log in.
+     *
+     * @param title_id Title UUID.
+     * @param params Optional region/status filters; recommended realms sort first.
+     * @example
+     * Multiplayer.listRealms('title-uuid', { region: 'us-central', status: 'active' });
+     */
+    Multiplayer.listRealms = function (title_id, params) {
+        return Requests.processRoute(MultiplayerRoute.routes.listRealms, undefined, { title_id: title_id }, params);
+    };
+    /**
+     * Create a realm. Requires a title administrator JWT.
+     *
+     * @param title_id Title UUID.
+     * @param data Realm configuration.
+     * @example
+     * Multiplayer.createRealm('title-uuid', { name: 'Aurora', region: 'us-central', population_cap: 5000, recommended: true });
+     */
+    Multiplayer.createRealm = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.createRealm, data, { title_id: title_id });
+    };
+    /**
+     * Retrieve a single realm.
+     *
+     * @param title_id Title UUID.
+     * @param realm_id Realm UUID.
+     */
+    Multiplayer.showRealm = function (title_id, realm_id) {
+        return Requests.processRoute(MultiplayerRoute.routes.showRealm, undefined, { title_id: title_id, realm_id: realm_id });
+    };
+    /**
+     * Update a realm (status, population cap, ruleset). Requires a title admin JWT.
+     *
+     * @param title_id Title UUID.
+     * @param realm_id Realm UUID.
+     * @param data Fields to update.
+     */
+    Multiplayer.updateRealm = function (title_id, realm_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.updateRealm, data, { title_id: title_id, realm_id: realm_id });
+    };
+    /**
+     * List the zones defined for a realm.
+     *
+     * @param title_id Title UUID.
+     * @param realm_id Realm UUID.
+     * @param params Optional zone_type filter.
+     */
+    Multiplayer.listZones = function (title_id, realm_id, params) {
+        return Requests.processRoute(MultiplayerRoute.routes.listZones, undefined, { title_id: title_id, realm_id: realm_id }, params);
+    };
+    /**
+     * Create a zone in a realm. Requires a title administrator JWT.
+     *
+     * @param title_id Title UUID.
+     * @param realm_id Realm UUID.
+     * @param data Zone configuration, including interest-management grid cell size.
+     * @example
+     * Multiplayer.createZone('title-uuid', 'realm-uuid', {
+     *   zone_key: 'ashfall_valley',
+     *   display_name: 'Ashfall Valley',
+     *   zone_type: 'overworld',
+     *   max_players_per_instance: 100,
+     *   grid_cell_size: 64
+     * });
+     */
+    Multiplayer.createZone = function (title_id, realm_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.createZone, data, { title_id: title_id, realm_id: realm_id });
+    };
+    /**
+     * List the active/other instances (runtime copies) of a zone.
+     *
+     * @param title_id Title UUID.
+     * @param zone_id Zone UUID.
+     * @param params Optional state filter.
+     */
+    Multiplayer.listInstances = function (title_id, zone_id, params) {
+        return Requests.processRoute(MultiplayerRoute.routes.listInstances, undefined, { title_id: title_id, zone_id: zone_id }, params);
+    };
+    /**
+     * Retrieve a single instance.
+     *
+     * @param title_id Title UUID.
+     * @param instance_id Instance UUID.
+     */
+    Multiplayer.showInstance = function (title_id, instance_id) {
+        return Requests.processRoute(MultiplayerRoute.routes.showInstance, undefined, { title_id: title_id, instance_id: instance_id });
+    };
+    /**
+     * List players present in an instance. Pass grid_cell (and optional radius) to
+     * receive only players in the caller's area of interest — the key to keeping
+     * per-player fan-out bounded regardless of how populated the zone is.
+     *
+     * @param title_id Title UUID.
+     * @param instance_id Instance UUID.
+     * @param params grid_cell "cx:cy" and radius (0-4) to scope the query.
+     * @example
+     * Multiplayer.listInstancePresence('title-uuid', 'instance-uuid', { grid_cell: '12:8', radius: 1 });
+     */
+    Multiplayer.listInstancePresence = function (title_id, instance_id, params) {
+        return Requests.processRoute(MultiplayerRoute.routes.listInstancePresence, undefined, { title_id: title_id, instance_id: instance_id }, params);
+    };
+    /**
+     * Enter a zone. The backend places the player into an active instance with
+     * capacity (creating a new layer if all are full), enforces bans and realm
+     * capacity, and upserts presence. Returns the instance and presence so the
+     * client can connect and subscribe to the instance's real-time group.
+     *
+     * @param title_id Title UUID.
+     * @param data Realm/zone target plus optional spawn position and metadata.
+     * @example
+     * Multiplayer.enterZone('title-uuid', {
+     *   player_id: 'steam:765...',
+     *   realm_id: 'realm-uuid',
+     *   zone_id: 'zone-uuid',
+     *   pos_x: 128.0, pos_z: 64.0
+     * });
+     */
+    Multiplayer.enterZone = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.enterZone, data, { title_id: title_id });
+    };
+    /**
+     * Update presence (position, heading, rich status) and refresh the TTL. Call
+     * on a movement interval and on notable state changes.
+     *
+     * @param title_id Title UUID.
+     * @param data New position/status for the player.
+     */
+    Multiplayer.updatePresence = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.updatePresence, data, { title_id: title_id });
+    };
+    /**
+     * Leave the world. Frees the player's instance slot and realm population.
+     *
+     * @param title_id Title UUID.
+     * @param data Optional player_id for title-token clients.
+     */
+    Multiplayer.leaveWorld = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.leaveWorld, data, { title_id: title_id });
+    };
+    // -----------------------------------------------------------------------
+    // Matchmaking
+    // -----------------------------------------------------------------------
+    /**
+     * Enqueue a matchmaking ticket. Idempotent per (queue, player): an existing
+     * open ticket is returned rather than duplicated, so retries are safe. Poll
+     * the ticket or subscribe to `matchmaking.matched` for the assignment.
+     *
+     * @param title_id Title UUID.
+     * @param data Queue name plus optional party, skill, region, and attributes.
+     * @example
+     * Multiplayer.enqueueTicket('title-uuid', { player_id: 'steam:765...', queue: 'ranked_2v2', skill: 1840, region: 'us-central' });
+     */
+    Multiplayer.enqueueTicket = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.enqueueTicket, data, { title_id: title_id });
+    };
+    /**
+     * Poll a matchmaking ticket. A queued ticket past its TTL is reported as
+     * `timed_out`; a matched ticket carries the connection `assignment`.
+     *
+     * @param title_id Title UUID.
+     * @param ticket_id Ticket UUID.
+     */
+    Multiplayer.showTicket = function (title_id, ticket_id) {
+        return Requests.processRoute(MultiplayerRoute.routes.showTicket, undefined, { title_id: title_id, ticket_id: ticket_id });
+    };
+    /**
+     * Cancel a queued matchmaking ticket.
+     *
+     * @param title_id Title UUID.
+     * @param ticket_id Ticket UUID.
+     */
+    Multiplayer.cancelTicket = function (title_id, ticket_id) {
+        return Requests.processRoute(MultiplayerRoute.routes.cancelTicket, undefined, { title_id: title_id, ticket_id: ticket_id });
+    };
+    // -----------------------------------------------------------------------
+    // Real-time negotiate + trust/moderation
+    // -----------------------------------------------------------------------
+    /**
+     * Negotiate a real-time push connection. Returns the authorized group names
+     * and the push endpoint. When SignalR/Web PubSub is configured, an
+     * access_token scoped to those groups is included; otherwise `configured` is
+     * false and the client should fall back to the polling endpoints.
+     *
+     * @param title_id Title UUID.
+     * @param data Optional player_id and the scopes (lobby/voice/zone/instance) to subscribe to.
+     * @example
+     * Multiplayer.negotiateRealtime('title-uuid', { player_id: 'steam:765...', scopes: [{ type: 'instance', id: 'instance-uuid' }] });
+     */
+    Multiplayer.negotiateRealtime = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.negotiateRealtime, data, { title_id: title_id });
+    };
+    /**
+     * List bans for a title. Requires a title administrator JWT.
+     *
+     * @param title_id Title UUID.
+     * @param params Optional scope/player/source filters and active_only.
+     */
+    Multiplayer.listBans = function (title_id, params) {
+        return Requests.processRoute(MultiplayerRoute.routes.listBans, undefined, { title_id: title_id }, params);
+    };
+    /**
+     * Ban a player at a scope (title/realm/lobby/server/voice). Requires a title
+     * administrator JWT. Omit expires_at for a permanent ban.
+     *
+     * @param title_id Title UUID.
+     * @param data Ban target and scope.
+     * @example
+     * Multiplayer.createBan('title-uuid', { player_id: 'steam:765...', scope: 'title', reason: 'Cheating: aimbot' });
+     */
+    Multiplayer.createBan = function (title_id, data) {
+        return Requests.processRoute(MultiplayerRoute.routes.createBan, data, { title_id: title_id });
+    };
+    /**
+     * Lift a ban. Requires a title administrator JWT.
+     *
+     * @param title_id Title UUID.
+     * @param ban_id Ban UUID.
+     */
+    Multiplayer.deleteBan = function (title_id, ban_id) {
+        return Requests.processRoute(MultiplayerRoute.routes.deleteBan, undefined, { title_id: title_id, ban_id: ban_id });
     };
     return Multiplayer;
 }());
