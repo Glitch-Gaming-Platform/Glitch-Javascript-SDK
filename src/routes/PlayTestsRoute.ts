@@ -16,6 +16,7 @@ class PlayTestsRoute {
     show: { url: '/playtests/{title_id}/view/{playtest_id}', method: HTTP_METHODS.GET },
     mine: { url: '/playtests/mine', method: HTTP_METHODS.GET },
     getResults: { url: '/playtests/{title_id}/{playtest_id}/results', method: HTTP_METHODS.GET },
+    uploadAnswer: { url: '/playtests/{title_id}/{playtest_id}/upload-answer', method: HTTP_METHODS.POST },
 
   };
 }

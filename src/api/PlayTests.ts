@@ -1,7 +1,7 @@
 import PlayTestsRoute from "../routes/PlayTestsRoute";
 import Requests from "../util/Requests";
 import Response from "../util/Response";
-import { AxiosPromise } from "axios";
+import { AxiosPromise, AxiosProgressEvent } from "axios";
 
 class PlayTests {
   /**
@@ -147,6 +147,34 @@ class PlayTests {
    */
   public static getResults<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(PlayTestsRoute.routes.getResults, {}, { title_id, playtest_id }, params);
+  }
+
+  /**
+   * Upload an audio/video answer file for a play test question. The file is
+   * stored by the Glitch backend (authenticated with the session token) and a
+   * media URL is returned that can then be passed to submitAnswers().
+   *
+   * @param title_id The ID of the title.
+   * @param playtest_id The ID of the play test.
+   * @param file The recorded audio/video file or blob.
+   * @param data Additional fields (question_id, media_type, title, description).
+   * @param params Optional query parameters.
+   * @param onUploadProgress Optional progress callback.
+   * @returns Promise
+   */
+  public static uploadAnswer<T>(
+    title_id: string,
+    playtest_id: string,
+    file: File | Blob,
+    data?: Record<string, any>,
+    params?: Record<string, any>,
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+  ): AxiosPromise<Response<T>> {
+    const url = PlayTestsRoute.routes.uploadAnswer.url
+      .replace('{title_id}', title_id)
+      .replace('{playtest_id}', playtest_id);
+
+    return Requests.uploadFile(url, 'file', file, data, params, onUploadProgress);
   }
 }
 
