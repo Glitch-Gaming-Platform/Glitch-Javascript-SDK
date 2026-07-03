@@ -19,6 +19,7 @@ class CampaignsRoute {
     createCampaignLink: { url: '/campaigns/{campaign_id}/links', method: HTTP_METHODS.POST },
     getCampaignLink: { url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.GET },
     updateCampaignLink: { url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.PUT },
+    deleteCampaignLink: { url: '/campaigns/{campaign_id}/links/{link_id}', method: HTTP_METHODS.DELETE },
     createInfluencerCampaign: { url: '/campaigns/{campaign_id}/influencers', method: HTTP_METHODS.POST },
     listInfluencerCampaigns: { url: '/campaigns/influencers', method: HTTP_METHODS.GET },
     getInfluencerCalendar: { url: '/campaigns/influencers/calendar', method: HTTP_METHODS.GET },

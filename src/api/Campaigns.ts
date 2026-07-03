@@ -202,6 +202,21 @@ class Campaigns {
     }
 
     /**
+     * Delete a campaign link.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/deleteCampaignLink
+     *
+     * @param campaign_id The id of the campaign to update.
+     * @param link_id The id of the campaign link to delete.
+     *
+     * @returns promise
+     */
+    public static deleteCampaignLink<T>(campaign_id: string, link_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+
+        return Requests.processRoute(CampaignsRoute.routes.deleteCampaignLink, {}, { campaign_id: campaign_id, link_id: link_id }, params);
+    }
+
+    /**
      * Retrieve the information for a single campaign.
      * 
      * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLink

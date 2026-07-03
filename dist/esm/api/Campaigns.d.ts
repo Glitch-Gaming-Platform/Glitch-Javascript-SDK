@@ -142,6 +142,17 @@ declare class Campaigns {
      */
     static updateCampaignLink<T>(campaign_id: string, link_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Delete a campaign link.
+     *
+     * @see https://api.glitch.fun/api/documentation#/Campaigns/deleteCampaignLink
+     *
+     * @param campaign_id The id of the campaign to update.
+     * @param link_id The id of the campaign link to delete.
+     *
+     * @returns promise
+     */
+    static deleteCampaignLink<T>(campaign_id: string, link_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Retrieve the information for a single campaign.
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/getCampaignLink
