@@ -137,6 +137,17 @@ class PlayTests {
   public static mine<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(PlayTestsRoute.routes.mine, {}, {}, params);
   }
+
+  /**
+   * Get aggregated results for a play test (publisher view).
+   *
+   * @param title_id The ID of the title.
+   * @param playtest_id The ID of the play test.
+   * @returns Promise
+   */
+  public static getResults<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(PlayTestsRoute.routes.getResults, {}, { title_id, playtest_id }, params);
+  }
 }
 
 export default PlayTests;

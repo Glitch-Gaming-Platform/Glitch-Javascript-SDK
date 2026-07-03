@@ -6483,6 +6483,14 @@ declare class PlayTests {
      * @returns Promise
      */
     static mine<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Get aggregated results for a play test (publisher view).
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @returns Promise
+     */
+    static getResults<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 interface SteamCapsuleCropRequest {

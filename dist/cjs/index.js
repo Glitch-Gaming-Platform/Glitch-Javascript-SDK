@@ -27474,6 +27474,7 @@ var PlayTestsRoute = /** @class */ (function () {
         cancelRequest: { url: '/playtests/{title_id}/cancel/{playtest_id}', method: HTTP_METHODS.POST },
         show: { url: '/playtests/{title_id}/view/{playtest_id}', method: HTTP_METHODS.GET },
         mine: { url: '/playtests/mine', method: HTTP_METHODS.GET },
+        getResults: { url: '/playtests/{title_id}/{playtest_id}/results', method: HTTP_METHODS.GET },
     };
     return PlayTestsRoute;
 }());
@@ -27602,6 +27603,16 @@ var PlayTests = /** @class */ (function () {
      */
     PlayTests.mine = function (params) {
         return Requests.processRoute(PlayTestsRoute.routes.mine, {}, {}, params);
+    };
+    /**
+     * Get aggregated results for a play test (publisher view).
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @returns Promise
+     */
+    PlayTests.getResults = function (title_id, playtest_id, params) {
+        return Requests.processRoute(PlayTestsRoute.routes.getResults, {}, { title_id: title_id, playtest_id: playtest_id }, params);
     };
     return PlayTests;
 }());
