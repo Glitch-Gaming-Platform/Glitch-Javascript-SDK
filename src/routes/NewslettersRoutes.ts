@@ -9,6 +9,7 @@ class NewslettersRoutes {
     joinRaffleWaitlist: { url: '/newsletters/joinRaffleWaitlist', method: HTTP_METHODS.POST },
     joinDiscordMarketplaceWaitlist: { url: '/newsletters/joinDiscordMarketplaceWaitlist', method: HTTP_METHODS.POST },
     joinNsfwWaitlist: { url: '/newsletters/joinNsfwWaitlist', method: HTTP_METHODS.POST },
+    joinCodexCreditWaitlist: { url: '/newsletters/joinCodexCreditWaitlist', method: HTTP_METHODS.POST },
 
     // --- Admin Campaign Management ---
     listCampaigns: { url: '/admin/newsletters/campaigns', method: HTTP_METHODS.GET },

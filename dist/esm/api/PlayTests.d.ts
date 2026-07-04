@@ -1,5 +1,5 @@
 import Response from "../util/Response";
-import { AxiosPromise } from "axios";
+import { AxiosPromise, AxiosProgressEvent } from "axios";
 declare class PlayTests {
     /**
      * Get a list of play tests associated with a title.
@@ -107,5 +107,19 @@ declare class PlayTests {
      * @returns Promise
      */
     static getResults<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Upload an audio/video answer file for a play test question. The file is
+     * stored by the Glitch backend (authenticated with the session token) and a
+     * media URL is returned that can then be passed to submitAnswers().
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @param file The recorded audio/video file or blob.
+     * @param data Additional fields (question_id, media_type, title, description).
+     * @param params Optional query parameters.
+     * @param onUploadProgress Optional progress callback.
+     * @returns Promise
+     */
+    static uploadAnswer<T>(title_id: string, playtest_id: string, file: File | Blob, data?: Record<string, any>, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
 }
 export default PlayTests;

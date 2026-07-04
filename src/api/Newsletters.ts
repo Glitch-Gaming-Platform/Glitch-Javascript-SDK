@@ -58,6 +58,15 @@ class Newsletters {
         return Requests.processRoute(NewslettersRoutes.routes.joinNsfwWaitlist, data, undefined, params);
     }
 
+    /**
+     * Apply for Codex credit support for a playable AI game.
+     *
+     * @param data { name, email, game, game_description, game_url }
+     */
+    public static joinCodexCreditWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(NewslettersRoutes.routes.joinCodexCreditWaitlist, data, undefined, params);
+    }
+
     // --- ADMINISTRATIVE CAMPAIGN METHODS ---
 
     /**

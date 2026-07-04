@@ -15281,6 +15281,7 @@ var NewslettersRoutes = /** @class */ (function () {
         joinRaffleWaitlist: { url: '/newsletters/joinRaffleWaitlist', method: HTTP_METHODS.POST },
         joinDiscordMarketplaceWaitlist: { url: '/newsletters/joinDiscordMarketplaceWaitlist', method: HTTP_METHODS.POST },
         joinNsfwWaitlist: { url: '/newsletters/joinNsfwWaitlist', method: HTTP_METHODS.POST },
+        joinCodexCreditWaitlist: { url: '/newsletters/joinCodexCreditWaitlist', method: HTTP_METHODS.POST },
         // --- Admin Campaign Management ---
         listCampaigns: { url: '/admin/newsletters/campaigns', method: HTTP_METHODS.GET },
         createCampaign: { url: '/admin/newsletters/campaigns', method: HTTP_METHODS.POST },
@@ -15351,6 +15352,14 @@ var Newsletters = /** @class */ (function () {
      */
     Newsletters.joinNsfwWaitlist = function (data, params) {
         return Requests.processRoute(NewslettersRoutes.routes.joinNsfwWaitlist, data, undefined, params);
+    };
+    /**
+     * Apply for Codex credit support for a playable AI game.
+     *
+     * @param data { name, email, game, game_description, game_url }
+     */
+    Newsletters.joinCodexCreditWaitlist = function (data, params) {
+        return Requests.processRoute(NewslettersRoutes.routes.joinCodexCreditWaitlist, data, undefined, params);
     };
     // --- ADMINISTRATIVE CAMPAIGN METHODS ---
     /**
@@ -15477,6 +15486,7 @@ var PlayTestsRoute = /** @class */ (function () {
         show: { url: '/playtests/{title_id}/view/{playtest_id}', method: HTTP_METHODS.GET },
         mine: { url: '/playtests/mine', method: HTTP_METHODS.GET },
         getResults: { url: '/playtests/{title_id}/{playtest_id}/results', method: HTTP_METHODS.GET },
+        uploadAnswer: { url: '/playtests/{title_id}/{playtest_id}/upload-answer', method: HTTP_METHODS.POST },
     };
     return PlayTestsRoute;
 }());
@@ -15615,6 +15625,25 @@ var PlayTests = /** @class */ (function () {
      */
     PlayTests.getResults = function (title_id, playtest_id, params) {
         return Requests.processRoute(PlayTestsRoute.routes.getResults, {}, { title_id: title_id, playtest_id: playtest_id }, params);
+    };
+    /**
+     * Upload an audio/video answer file for a play test question. The file is
+     * stored by the Glitch backend (authenticated with the session token) and a
+     * media URL is returned that can then be passed to submitAnswers().
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @param file The recorded audio/video file or blob.
+     * @param data Additional fields (question_id, media_type, title, description).
+     * @param params Optional query parameters.
+     * @param onUploadProgress Optional progress callback.
+     * @returns Promise
+     */
+    PlayTests.uploadAnswer = function (title_id, playtest_id, file, data, params, onUploadProgress) {
+        var url = PlayTestsRoute.routes.uploadAnswer.url
+            .replace('{title_id}', title_id)
+            .replace('{playtest_id}', playtest_id);
+        return Requests.uploadFile(url, 'file', file, data, params, onUploadProgress);
     };
     return PlayTests;
 }());

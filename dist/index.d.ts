@@ -6312,6 +6312,12 @@ declare class Newsletters {
      */
     static joinNsfwWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Apply for Codex credit support for a playable AI game.
+     *
+     * @param data { name, email, game, game_description, game_url }
+     */
+    static joinCodexCreditWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List all newsletter campaigns (Admin only).
      */
     static listCampaigns<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
@@ -6491,6 +6497,20 @@ declare class PlayTests {
      * @returns Promise
      */
     static getResults<T>(title_id: string, playtest_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Upload an audio/video answer file for a play test question. The file is
+     * stored by the Glitch backend (authenticated with the session token) and a
+     * media URL is returned that can then be passed to submitAnswers().
+     *
+     * @param title_id The ID of the title.
+     * @param playtest_id The ID of the play test.
+     * @param file The recorded audio/video file or blob.
+     * @param data Additional fields (question_id, media_type, title, description).
+     * @param params Optional query parameters.
+     * @param onUploadProgress Optional progress callback.
+     * @returns Promise
+     */
+    static uploadAnswer<T>(title_id: string, playtest_id: string, file: File | Blob, data?: Record<string, any>, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
 }
 
 interface SteamCapsuleCropRequest {

@@ -37,6 +37,12 @@ declare class Newsletters {
      */
     static joinNsfwWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Apply for Codex credit support for a playable AI game.
+     *
+     * @param data { name, email, game, game_description, game_url }
+     */
+    static joinCodexCreditWaitlist<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List all newsletter campaigns (Admin only).
      */
     static listCampaigns<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
