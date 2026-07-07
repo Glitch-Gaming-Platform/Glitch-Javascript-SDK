@@ -398,6 +398,14 @@ declare class Campaigns {
      */
     static sendInfluencerInvite<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Get creator context used when preparing a personalized invite.
+     */
+    static creatorInviteContext<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send a personalized creator invite after review.
+     */
+    static sendCreatorInvite<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Invites an influencer to join this campaign.
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInvite

@@ -5201,6 +5201,14 @@ declare class Campaigns {
      */
     static sendInfluencerInvite<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Get creator context used when preparing a personalized invite.
+     */
+    static creatorInviteContext<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Send a personalized creator invite after review.
+     */
+    static sendCreatorInvite<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Invites an influencer to join this campaign.
      *
      * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInvite
@@ -9915,7 +9923,20 @@ interface AgentRunRequest {
     agent_run_id?: string | null;
     [key: string]: any;
 }
+interface AgentStreamAnswerRequest {
+    prompt: string;
+    [key: string]: any;
+}
+interface AgentFetchOptions {
+    params?: Record<string, any>;
+    signal?: AbortSignal;
+    headers?: Record<string, string>;
+    fetcher?: typeof fetch;
+}
+interface AgentStreamAnswerOptions extends AgentFetchOptions {
+}
 declare class Agents {
+    private static fetchWithAuth;
     /**
      * List game titles that can be managed in the Agents section.
      */
@@ -9961,6 +9982,15 @@ declare class Agents {
      */
     static runAgent<T>(title_id: string, agent_id: string, data?: AgentRunRequest, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Stream a quick advisory answer for the agent workspace.
+     *
+     * This returns the native Fetch API Response so callers can consume the
+     * ReadableStream body incrementally. A 409 response means streaming is
+     * disabled server-side and the caller should fall back to the normal run
+     * flow.
+     */
+    static streamAnswer(title_id: string, agent_id: string, data: AgentStreamAnswerRequest | string, options?: AgentStreamAnswerOptions): Promise<globalThis.Response>;
+    /**
      * Upload one file for an agent run. data can include { agent_run_id }.
      */
     static uploadAgentFile<T>(title_id: string, agent_id: string, file: File | Blob, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
@@ -9968,6 +9998,25 @@ declare class Agents {
      * Alias for callers that use plural naming while uploading one file at a time.
      */
     static uploadAgentFiles<T>(title_id: string, agent_id: string, file: File | Blob, data?: object, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    /**
+     * List Google Drive files/folders available to attach to a title agent.
+     */
+    static listGoogleDriveFiles<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Attach a Google Drive file as a reference file for an agent.
+     */
+    static attachGoogleDriveFile<T>(title_id: string, agent_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Download a protected agent file through the authenticated API route.
+     *
+     * Returns the native Fetch API Response so callers can inspect headers such
+     * as Content-Disposition before creating a browser download or preview blob.
+     */
+    static downloadAgentFile(title_id: string, file_id: string, options?: AgentFetchOptions): Promise<globalThis.Response>;
+    /**
+     * Export a generated agent artifact to Google Drive.
+     */
+    static exportAgentFileToGoogleDrive<T>(title_id: string, file_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List agent runs for a title.
      */
@@ -10022,9 +10071,40 @@ declare class Agents {
      */
     static rewriteAgentDraft<T>(title_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Agent workflow convenience wrapper for creator invite context.
+     */
+    static creatorInviteContext<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Agent workflow convenience wrapper for sending a reviewed creator invite.
+     */
+    static sendCreatorInvite<T>(campaign_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Agent workflow convenience wrapper for updating a drafted social post.
+     */
+    static updateSocialPost<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Agent workflow convenience wrapper for updating campaign settings.
+     */
+    static updateCampaign<T>(campaign_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Agent workflow convenience wrapper for saving manual access keys.
+     */
+    static createAccessKeys<T>(title_id: string, data: {
+        platform: string;
+        codes: string;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List structured agent memories for a title.
      */
     static listMemories<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update one structured agent memory.
+     */
+    static updateMemory<T>(title_id: string, memory_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Deactivate one structured agent memory.
+     */
+    static deactivateMemory<T>(title_id: string, memory_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Get results and outcome summary for title agents. Returns 402 until subscription or prepaid credits are active.
      */

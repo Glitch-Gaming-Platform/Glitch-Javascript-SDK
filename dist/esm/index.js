@@ -13259,6 +13259,8 @@ var CampaignsRoute = /** @class */ (function () {
         addType: { url: '/campaigns/{campaign_id}/addType', method: HTTP_METHODS.POST },
         removeType: { url: '/campaigns/{campaign_id}/removeType/{type_id}', method: HTTP_METHODS.DELETE },
         inviteInfluencer: { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
+        influencerInviteProfileContext: { url: '/campaigns/{campaign_id}/influencers/invites/profile-context', method: HTTP_METHODS.GET },
+        influencerInviteProfileSend: { url: '/campaigns/{campaign_id}/influencers/invites/profile-send', method: HTTP_METHODS.POST },
         viewInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}', method: HTTP_METHODS.GET },
         updateInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}', method: HTTP_METHODS.PUT },
         updateInfluencerCompensationInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/compensation', method: HTTP_METHODS.PUT },
@@ -13812,6 +13814,18 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.sendInfluencerInvite = function (campaign_id, data, params) {
         return Requests.processRoute(CampaignsRoute.routes.sendInfluencerInvite, data, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Get creator context used when preparing a personalized invite.
+     */
+    Campaigns.creatorInviteContext = function (campaign_id, params) {
+        return Requests.processRoute(CampaignsRoute.routes.influencerInviteProfileContext, {}, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Send a personalized creator invite after review.
+     */
+    Campaigns.sendCreatorInvite = function (campaign_id, data, params) {
+        return Requests.processRoute(CampaignsRoute.routes.influencerInviteProfileSend, data, { campaign_id: campaign_id }, params);
     };
     /**
      * Invites an influencer to join this campaign.
@@ -19905,7 +19919,12 @@ var AgentsRoute = /** @class */ (function () {
         updateAgent: { url: "/agents/titles/{title_id}/agents/{agent_id}", method: HTTP_METHODS.PUT },
         deleteAgent: { url: "/agents/titles/{title_id}/agents/{agent_id}", method: HTTP_METHODS.DELETE },
         runAgent: { url: "/agents/titles/{title_id}/agents/{agent_id}/run", method: HTTP_METHODS.POST },
+        streamAnswer: { url: "/agents/titles/{title_id}/agents/{agent_id}/stream-answer", method: HTTP_METHODS.POST },
         uploadAgentFiles: { url: "/agents/titles/{title_id}/agents/{agent_id}/files", method: HTTP_METHODS.POST },
+        listGoogleDriveFiles: { url: "/agents/titles/{title_id}/gmail/drive/files", method: HTTP_METHODS.GET },
+        attachGoogleDriveFile: { url: "/agents/titles/{title_id}/agents/{agent_id}/drive/files", method: HTTP_METHODS.POST },
+        downloadAgentFile: { url: "/agents/titles/{title_id}/files/{file_id}/download", method: HTTP_METHODS.GET },
+        exportAgentFileToGoogleDrive: { url: "/agents/titles/{title_id}/files/{file_id}/export/google-drive", method: HTTP_METHODS.POST },
         listRuns: { url: "/agents/titles/{title_id}/runs", method: HTTP_METHODS.GET },
         viewRun: { url: "/agents/titles/{title_id}/runs/{run_id}", method: HTTP_METHODS.GET },
         listRunEvents: { url: "/agents/titles/{title_id}/runs/{run_id}/events", method: HTTP_METHODS.GET },
@@ -19920,6 +19939,8 @@ var AgentsRoute = /** @class */ (function () {
         answerGuidance: { url: "/agents/titles/{title_id}/guidance/{guidance_id}/answer", method: HTTP_METHODS.POST },
         rewriteAgentDraft: { url: "/agents/titles/{title_id}/drafts/rewrite", method: HTTP_METHODS.POST },
         listMemories: { url: "/agents/titles/{title_id}/memories", method: HTTP_METHODS.GET },
+        updateMemory: { url: "/agents/titles/{title_id}/memories/{memory_id}", method: HTTP_METHODS.PATCH },
+        deactivateMemory: { url: "/agents/titles/{title_id}/memories/{memory_id}", method: HTTP_METHODS.DELETE },
         results: { url: "/agents/titles/{title_id}/results", method: HTTP_METHODS.GET },
         usage: { url: "/agents/titles/{title_id}/usage", method: HTTP_METHODS.GET },
         credits: { url: "/agents/titles/{title_id}/credits", method: HTTP_METHODS.GET },
@@ -19936,6 +19957,22 @@ var AgentsRoute = /** @class */ (function () {
 var Agents = /** @class */ (function () {
     function Agents() {
     }
+    Agents.fetchWithAuth = function (path, init, options) {
+        var _a;
+        if (options === void 0) { options = {}; }
+        var url = Requests.buildUrl(path, options.params);
+        var token = (_a = Config.getAuthToken) === null || _a === void 0 ? void 0 : _a.call(Config);
+        var headers = __assign({}, (init.headers || {}));
+        if (token && !headers.Authorization) {
+            headers.Authorization = "Bearer ".concat(token);
+        }
+        Object.assign(headers, options.headers || {});
+        var fetcher = options.fetcher || (typeof globalThis !== "undefined" ? globalThis.fetch : undefined);
+        if (!fetcher) {
+            return Promise.reject(new Error("Fetch API is not available in this environment."));
+        }
+        return fetcher(url, __assign(__assign({}, init), { headers: headers, signal: options.signal }));
+    };
     /**
      * List game titles that can be managed in the Agents section.
      */
@@ -20003,6 +20040,29 @@ var Agents = /** @class */ (function () {
         return Requests.processRoute(AgentsRoute.routes.runAgent, data, { title_id: title_id, agent_id: agent_id }, params);
     };
     /**
+     * Stream a quick advisory answer for the agent workspace.
+     *
+     * This returns the native Fetch API Response so callers can consume the
+     * ReadableStream body incrementally. A 409 response means streaming is
+     * disabled server-side and the caller should fall back to the normal run
+     * flow.
+     */
+    Agents.streamAnswer = function (title_id, agent_id, data, options) {
+        if (options === void 0) { options = {}; }
+        var body = typeof data === "string" ? { prompt: data } : data;
+        var path = AgentsRoute.routes.streamAnswer.url
+            .replace("{title_id}", title_id)
+            .replace("{agent_id}", agent_id);
+        return Agents.fetchWithAuth(path, {
+            method: AgentsRoute.routes.streamAnswer.method,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "text/event-stream",
+            },
+            body: JSON.stringify(body),
+        }, options);
+    };
+    /**
      * Upload one file for an agent run. data can include { agent_run_id }.
      */
     Agents.uploadAgentFile = function (title_id, agent_id, file, data, params, onUploadProgress) {
@@ -20016,6 +20076,42 @@ var Agents = /** @class */ (function () {
      */
     Agents.uploadAgentFiles = function (title_id, agent_id, file, data, params, onUploadProgress) {
         return Agents.uploadAgentFile(title_id, agent_id, file, data, params, onUploadProgress);
+    };
+    /**
+     * List Google Drive files/folders available to attach to a title agent.
+     */
+    Agents.listGoogleDriveFiles = function (title_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.listGoogleDriveFiles, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Attach a Google Drive file as a reference file for an agent.
+     */
+    Agents.attachGoogleDriveFile = function (title_id, agent_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.attachGoogleDriveFile, data || {}, { title_id: title_id, agent_id: agent_id }, params);
+    };
+    /**
+     * Download a protected agent file through the authenticated API route.
+     *
+     * Returns the native Fetch API Response so callers can inspect headers such
+     * as Content-Disposition before creating a browser download or preview blob.
+     */
+    Agents.downloadAgentFile = function (title_id, file_id, options) {
+        if (options === void 0) { options = {}; }
+        var path = AgentsRoute.routes.downloadAgentFile.url
+            .replace("{title_id}", title_id)
+            .replace("{file_id}", file_id);
+        return Agents.fetchWithAuth(path, {
+            method: AgentsRoute.routes.downloadAgentFile.method,
+            headers: {
+                Accept: "application/octet-stream",
+            },
+        }, options);
+    };
+    /**
+     * Export a generated agent artifact to Google Drive.
+     */
+    Agents.exportAgentFileToGoogleDrive = function (title_id, file_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.exportAgentFileToGoogleDrive, data || {}, { title_id: title_id, file_id: file_id }, params);
     };
     /**
      * List agent runs for a title.
@@ -20097,10 +20193,52 @@ var Agents = /** @class */ (function () {
         return Requests.processRoute(AgentsRoute.routes.rewriteAgentDraft, data, { title_id: title_id }, params);
     };
     /**
+     * Agent workflow convenience wrapper for creator invite context.
+     */
+    Agents.creatorInviteContext = function (campaign_id, params) {
+        return Campaigns.creatorInviteContext(campaign_id, params);
+    };
+    /**
+     * Agent workflow convenience wrapper for sending a reviewed creator invite.
+     */
+    Agents.sendCreatorInvite = function (campaign_id, data, params) {
+        return Campaigns.sendCreatorInvite(campaign_id, data || {}, params);
+    };
+    /**
+     * Agent workflow convenience wrapper for updating a drafted social post.
+     */
+    Agents.updateSocialPost = function (post_id, data, params) {
+        return SocialPosts.update(post_id, data || {}, params);
+    };
+    /**
+     * Agent workflow convenience wrapper for updating campaign settings.
+     */
+    Agents.updateCampaign = function (campaign_id, data, params) {
+        return Campaigns.update(campaign_id, data || {}, params);
+    };
+    /**
+     * Agent workflow convenience wrapper for saving manual access keys.
+     */
+    Agents.createAccessKeys = function (title_id, data, params) {
+        return AccessKeys.store(title_id, data, params);
+    };
+    /**
      * List structured agent memories for a title.
      */
     Agents.listMemories = function (title_id, params) {
         return Requests.processRoute(AgentsRoute.routes.listMemories, {}, { title_id: title_id }, params);
+    };
+    /**
+     * Update one structured agent memory.
+     */
+    Agents.updateMemory = function (title_id, memory_id, data, params) {
+        return Requests.processRoute(AgentsRoute.routes.updateMemory, data || {}, { title_id: title_id, memory_id: memory_id }, params);
+    };
+    /**
+     * Deactivate one structured agent memory.
+     */
+    Agents.deactivateMemory = function (title_id, memory_id, params) {
+        return Requests.processRoute(AgentsRoute.routes.deactivateMemory, {}, { title_id: title_id, memory_id: memory_id }, params);
     };
     /**
      * Get results and outcome summary for title agents. Returns 402 until subscription or prepaid credits are active.

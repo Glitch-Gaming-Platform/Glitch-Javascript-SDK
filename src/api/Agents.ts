@@ -1,6 +1,10 @@
 import AgentsRoute from "../routes/AgentsRoute";
+import AccessKeys from "./AccessKeys";
+import Campaigns from "./Campaigns";
+import Config from "../config/Config";
 import Requests from "../util/Requests";
 import Response from "../util/Response";
+import SocialPosts from "./SocialPosts";
 import { AxiosPromise, AxiosProgressEvent } from "axios";
 
 export interface AgentRunRequest {
@@ -15,7 +19,51 @@ export interface AgentRunRequest {
   [key: string]: any;
 }
 
+export interface AgentStreamAnswerRequest {
+  prompt: string;
+  [key: string]: any;
+}
+
+export interface AgentFetchOptions {
+  params?: Record<string, any>;
+  signal?: AbortSignal;
+  headers?: Record<string, string>;
+  fetcher?: typeof fetch;
+}
+
+export interface AgentStreamAnswerOptions extends AgentFetchOptions {}
+
 class Agents {
+  private static fetchWithAuth(
+    path: string,
+    init: RequestInit,
+    options: AgentFetchOptions = {}
+  ): Promise<globalThis.Response> {
+    const url = Requests.buildUrl(path, options.params);
+    const token = Config.getAuthToken?.();
+    const headers: Record<string, string> = {
+      ...((init.headers || {}) as Record<string, string>),
+    };
+
+    if (token && !headers.Authorization) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    Object.assign(headers, options.headers || {});
+
+    const fetcher = options.fetcher || (typeof globalThis !== "undefined" ? globalThis.fetch : undefined);
+
+    if (!fetcher) {
+      return Promise.reject(new Error("Fetch API is not available in this environment."));
+    }
+
+    return fetcher(url, {
+      ...init,
+      headers,
+      signal: options.signal,
+    });
+  }
+
   /**
    * List game titles that can be managed in the Agents section.
    */
@@ -94,6 +142,35 @@ class Agents {
   }
 
   /**
+   * Stream a quick advisory answer for the agent workspace.
+   *
+   * This returns the native Fetch API Response so callers can consume the
+   * ReadableStream body incrementally. A 409 response means streaming is
+   * disabled server-side and the caller should fall back to the normal run
+   * flow.
+   */
+  public static streamAnswer(
+    title_id: string,
+    agent_id: string,
+    data: AgentStreamAnswerRequest | string,
+    options: AgentStreamAnswerOptions = {}
+  ): Promise<globalThis.Response> {
+    const body = typeof data === "string" ? { prompt: data } : data;
+    const path = AgentsRoute.routes.streamAnswer.url
+      .replace("{title_id}", title_id)
+      .replace("{agent_id}", agent_id);
+
+    return Agents.fetchWithAuth(path, {
+      method: AgentsRoute.routes.streamAnswer.method,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "text/event-stream",
+      },
+      body: JSON.stringify(body),
+    }, options);
+  }
+
+  /**
    * Upload one file for an agent run. data can include { agent_run_id }.
    */
   public static uploadAgentFile<T>(
@@ -123,6 +200,50 @@ class Agents {
     onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
   ): AxiosPromise<Response<T>> {
     return Agents.uploadAgentFile(title_id, agent_id, file, data, params, onUploadProgress);
+  }
+
+  /**
+   * List Google Drive files/folders available to attach to a title agent.
+   */
+  public static listGoogleDriveFiles<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.listGoogleDriveFiles, {}, { title_id }, params);
+  }
+
+  /**
+   * Attach a Google Drive file as a reference file for an agent.
+   */
+  public static attachGoogleDriveFile<T>(title_id: string, agent_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.attachGoogleDriveFile, data || {}, { title_id, agent_id }, params);
+  }
+
+  /**
+   * Download a protected agent file through the authenticated API route.
+   *
+   * Returns the native Fetch API Response so callers can inspect headers such
+   * as Content-Disposition before creating a browser download or preview blob.
+   */
+  public static downloadAgentFile(
+    title_id: string,
+    file_id: string,
+    options: AgentFetchOptions = {}
+  ): Promise<globalThis.Response> {
+    const path = AgentsRoute.routes.downloadAgentFile.url
+      .replace("{title_id}", title_id)
+      .replace("{file_id}", file_id);
+
+    return Agents.fetchWithAuth(path, {
+      method: AgentsRoute.routes.downloadAgentFile.method,
+      headers: {
+        Accept: "application/octet-stream",
+      },
+    }, options);
+  }
+
+  /**
+   * Export a generated agent artifact to Google Drive.
+   */
+  public static exportAgentFileToGoogleDrive<T>(title_id: string, file_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.exportAgentFileToGoogleDrive, data || {}, { title_id, file_id }, params);
   }
 
   /**
@@ -218,10 +339,59 @@ class Agents {
   }
 
   /**
+   * Agent workflow convenience wrapper for creator invite context.
+   */
+  public static creatorInviteContext<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Campaigns.creatorInviteContext<T>(campaign_id, params);
+  }
+
+  /**
+   * Agent workflow convenience wrapper for sending a reviewed creator invite.
+   */
+  public static sendCreatorInvite<T>(campaign_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Campaigns.sendCreatorInvite<T>(campaign_id, data || {}, params);
+  }
+
+  /**
+   * Agent workflow convenience wrapper for updating a drafted social post.
+   */
+  public static updateSocialPost<T>(post_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return SocialPosts.update<T>(post_id, data || {}, params);
+  }
+
+  /**
+   * Agent workflow convenience wrapper for updating campaign settings.
+   */
+  public static updateCampaign<T>(campaign_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Campaigns.update<T>(campaign_id, data || {}, params);
+  }
+
+  /**
+   * Agent workflow convenience wrapper for saving manual access keys.
+   */
+  public static createAccessKeys<T>(title_id: string, data: { platform: string, codes: string }, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return AccessKeys.store<T>(title_id, data, params);
+  }
+
+  /**
    * List structured agent memories for a title.
    */
   public static listMemories<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(AgentsRoute.routes.listMemories, {}, { title_id }, params);
+  }
+
+  /**
+   * Update one structured agent memory.
+   */
+  public static updateMemory<T>(title_id: string, memory_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.updateMemory, data || {}, { title_id, memory_id }, params);
+  }
+
+  /**
+   * Deactivate one structured agent memory.
+   */
+  public static deactivateMemory<T>(title_id: string, memory_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(AgentsRoute.routes.deactivateMemory, {}, { title_id, memory_id }, params);
   }
 
   /**

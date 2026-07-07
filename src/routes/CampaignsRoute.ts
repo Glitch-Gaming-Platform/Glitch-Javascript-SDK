@@ -45,6 +45,8 @@ class CampaignsRoute {
     addType: { url: '/campaigns/{campaign_id}/addType', method: HTTP_METHODS.POST },
     removeType: { url: '/campaigns/{campaign_id}/removeType/{type_id}', method: HTTP_METHODS.DELETE },
     inviteInfluencer: { url: '/campaigns/{campaign_id}/influencers/invites', method: HTTP_METHODS.POST },
+    influencerInviteProfileContext: { url: '/campaigns/{campaign_id}/influencers/invites/profile-context', method: HTTP_METHODS.GET },
+    influencerInviteProfileSend: { url: '/campaigns/{campaign_id}/influencers/invites/profile-send', method: HTTP_METHODS.POST },
     viewInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}', method: HTTP_METHODS.GET },
     updateInfluencerInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}', method: HTTP_METHODS.PUT },
     updateInfluencerCompensationInvite: { url: '/campaigns/{campaign_id}/influencers/invites/{influencer_id}/compensation', method: HTTP_METHODS.PUT },

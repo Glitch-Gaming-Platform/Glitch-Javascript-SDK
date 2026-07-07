@@ -561,6 +561,20 @@ class Campaigns {
     }
 
     /**
+     * Get creator context used when preparing a personalized invite.
+     */
+    public static creatorInviteContext<T>(campaign_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.influencerInviteProfileContext, {}, { campaign_id: campaign_id }, params);
+    }
+
+    /**
+     * Send a personalized creator invite after review.
+     */
+    public static sendCreatorInvite<T>(campaign_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.influencerInviteProfileSend, data, { campaign_id: campaign_id }, params);
+    }
+
+    /**
      * Invites an influencer to join this campaign.
      * 
      * @see https://api.glitch.fun/api/documentation#/Campaigns/getInfluencerInvite
