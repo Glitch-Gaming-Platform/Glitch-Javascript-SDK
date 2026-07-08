@@ -20659,6 +20659,11 @@ var AdminUsersRoute = /** @class */ (function () {
             url: '/admin/users',
             method: HTTP_METHODS.GET
         },
+        // Aggregated user analytics for charts on the admin directory.
+        analytics: {
+            url: '/admin/users/analytics',
+            method: HTTP_METHODS.GET
+        },
         // Full profile for a single user (site admin only).
         view: {
             url: '/admin/users/{user_id}',
@@ -20695,6 +20700,19 @@ var AdminUsers = /** @class */ (function () {
      */
     AdminUsers.list = function (params) {
         return Requests.processRoute(AdminUsersRoute.routes.list, undefined, undefined, params);
+    };
+    /**
+     * Retrieve aggregated user analytics for the admin directory.
+     *
+     * Supported params include `search`, `is_site_admin`, `is_verified`,
+     * `user_type`, `start_date`, `end_date`, `period`, `sort_by`, and
+     * `sort_order`.
+     *
+     * @param params Optional query parameters.
+     * @returns promise
+     */
+    AdminUsers.analytics = function (params) {
+        return Requests.processRoute(AdminUsersRoute.routes.analytics, undefined, undefined, params);
     };
     /**
      * Retrieve a comprehensive profile for a single user, including communities,

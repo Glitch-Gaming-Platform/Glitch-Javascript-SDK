@@ -8,6 +8,11 @@ class AdminUsersRoute {
       url: '/admin/users',
       method: HTTP_METHODS.GET
     },
+    // Aggregated user analytics for charts on the admin directory.
+    analytics: {
+      url: '/admin/users/analytics',
+      method: HTTP_METHODS.GET
+    },
     // Full profile for a single user (site admin only).
     view: {
       url: '/admin/users/{user_id}',

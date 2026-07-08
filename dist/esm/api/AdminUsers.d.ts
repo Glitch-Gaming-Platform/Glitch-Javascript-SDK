@@ -20,6 +20,17 @@ declare class AdminUsers {
      */
     static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Retrieve aggregated user analytics for the admin directory.
+     *
+     * Supported params include `search`, `is_site_admin`, `is_verified`,
+     * `user_type`, `start_date`, `end_date`, `period`, `sort_by`, and
+     * `sort_order`.
+     *
+     * @param params Optional query parameters.
+     * @returns promise
+     */
+    static analytics<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * Retrieve a comprehensive profile for a single user, including communities,
      * administered titles, games played, roles, billing status, social presence,
      * and activity counts.
