@@ -154,6 +154,19 @@ class GameShows {
         return Requests.processRoute(GameShowsRoute.routes.addTitle, data, { show_id: show_id }, params);
     }
 
+    /** Preview CSV/TSV/TXT/ZIP registrations without writing showcase data. */
+    public static previewExternalTitles<T>(show_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        // Multipart helpers require the concrete URL before uploading.
+        const url = GameShowsRoute.routes.previewExternalTitles.url.replace('{show_id}', show_id);
+        return Requests.uploadFile(url, 'file', file, data, params);
+    }
+
+    /** Import valid external registrations after organizer preview. */
+    public static importExternalTitles<T>(show_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        const url = GameShowsRoute.routes.importExternalTitles.url.replace('{show_id}', show_id);
+        return Requests.uploadFile(url, 'file', file, data, params);
+    }
+
     /**
      * List all titles for a game show.
      */
@@ -285,6 +298,83 @@ class GameShows {
      */
     public static listForTitle<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(GameShowsRoute.routes.listForTitle, {}, { title_id: title_id }, params);
+    }
+
+    /** List private sponsor workflow, contact, billing, media, and placements. */
+    public static listSponsors<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listSponsors, {}, { show_id }, params);
+    }
+
+    /** Create a manual sponsor or send a self-service invitation. */
+    public static createSponsor<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.createSponsor, data, { show_id }, params);
+    }
+
+    /** Retrieve one organizer-authorized festival sponsor. */
+    public static getSponsor<T>(show_id: string, sponsor_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.getSponsor, {}, { show_id, sponsor_id }, params);
+    }
+
+    /** Update sponsor workflow, creative metadata, schedule, or billing terms. */
+    public static updateSponsor<T>(show_id: string, sponsor_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.updateSponsor, data, { show_id, sponsor_id }, params);
+    }
+
+    /** Delete an unpaid sponsor and its placements. */
+    public static deleteSponsor<T>(show_id: string, sponsor_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.deleteSponsor, {}, { show_id, sponsor_id }, params);
+    }
+
+    /** Replace the private token and resend the sponsor invitation. */
+    public static resendSponsorInvitation<T>(show_id: string, sponsor_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.resendSponsorInvitation, {}, { show_id, sponsor_id }, params);
+    }
+
+    /** Add another festival, game, session, or event placement. */
+    public static createSponsorPlacement<T>(show_id: string, sponsor_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.createSponsorPlacement, data, { show_id, sponsor_id }, params);
+    }
+
+    /** Partially update an existing sponsor placement. */
+    public static updateSponsorPlacement<T>(show_id: string, sponsor_id: string, placement_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.updateSponsorPlacement, data, { show_id, sponsor_id, placement_id }, params);
+    }
+
+    /** Delete one placement without deleting the sponsor creative. */
+    public static deleteSponsorPlacement<T>(show_id: string, sponsor_id: string, placement_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.deleteSponsorPlacement, {}, { show_id, sponsor_id, placement_id }, params);
+    }
+
+    /** List privacy-limited, publicly eligible creatives and placements. */
+    public static listPublicSponsors<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listPublicSponsors, {}, { show_id }, params);
+    }
+
+    /** Open a token-protected sponsor portal without a user session. */
+    public static sponsorInvitation<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitation, {}, { token }, params);
+    }
+
+    /** Upload sponsor image/video through the shared Media pipeline. */
+    public static uploadSponsorInvitationMedia<T>(token: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        // Sponsor uploads use the `media` multipart field documented by API.
+        const url = GameShowsRoute.routes.sponsorInvitationUpload.url.replace('{token}', token);
+        return Requests.uploadFile(url, 'media', file, data, params);
+    }
+
+    /** Submit sponsor identity, destination, and accessibility metadata. */
+    public static submitSponsorInvitation<T>(token: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationSubmit, data, { token }, params);
+    }
+
+    /** Create/confirm a destination PaymentIntent from a PaymentMethod ID. */
+    public static paySponsorInvitation<T>(token: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationPayment, data, { token }, params);
+    }
+
+    /** Synchronize the same intent after Stripe.js completes required 3DS. */
+    public static confirmSponsorInvitationPayment<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationConfirmPayment, {}, { token }, params);
     }
 
 }

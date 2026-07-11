@@ -15007,6 +15007,10 @@ var Publications = /** @class */ (function () {
 var GameShowsRoute = /** @class */ (function () {
     function GameShowsRoute() {
     }
+    /**
+     * Canonical API route templates. JSON routes are substituted by
+     * Requests.processRoute; multipart methods replace tokens before upload.
+     */
     GameShowsRoute.routes = {
         list: { url: '/gameshows', method: HTTP_METHODS.GET },
         create: { url: '/gameshows', method: HTTP_METHODS.POST },
@@ -15018,6 +15022,9 @@ var GameShowsRoute = /** @class */ (function () {
         registerTitle: { url: '/gameshows/{show_id}/registerTitle', method: HTTP_METHODS.POST },
         listTitles: { url: '/gameshows/{show_id}/titles', method: HTTP_METHODS.GET },
         addTitle: { url: '/gameshows/{show_id}/addTitle', method: HTTP_METHODS.POST },
+        // External registration file preview/import endpoints.
+        previewExternalTitles: { url: '/gameshows/{show_id}/external-titles/preview', method: HTTP_METHODS.POST },
+        importExternalTitles: { url: '/gameshows/{show_id}/external-titles/import', method: HTTP_METHODS.POST },
         viewTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.GET },
         updateTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.PUT },
         deleteTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.DELETE },
@@ -15036,6 +15043,24 @@ var GameShowsRoute = /** @class */ (function () {
         joinWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.POST },
         listWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.GET },
         listForTitle: { url: '/titles/{title_id}/gameshows', method: HTTP_METHODS.GET },
+        // Organizer sponsor lifecycle and placement administration.
+        listSponsors: { url: '/gameshows/{show_id}/sponsors', method: HTTP_METHODS.GET },
+        createSponsor: { url: '/gameshows/{show_id}/sponsors', method: HTTP_METHODS.POST },
+        getSponsor: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}', method: HTTP_METHODS.GET },
+        updateSponsor: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}', method: HTTP_METHODS.PUT },
+        deleteSponsor: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}', method: HTTP_METHODS.DELETE },
+        resendSponsorInvitation: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}/invite', method: HTTP_METHODS.POST },
+        createSponsorPlacement: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}/placements', method: HTTP_METHODS.POST },
+        updateSponsorPlacement: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}/placements/{placement_id}', method: HTTP_METHODS.PUT },
+        deleteSponsorPlacement: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}/placements/{placement_id}', method: HTTP_METHODS.DELETE },
+        // Privacy-limited anonymous sponsor inventory.
+        listPublicSponsors: { url: '/gameshows/{show_id}/sponsors/public', method: HTTP_METHODS.GET },
+        // Token-protected sponsor self-service; backend applies per-route limits.
+        sponsorInvitation: { url: '/gameshow-sponsor-invitations/{token}', method: HTTP_METHODS.GET },
+        sponsorInvitationUpload: { url: '/gameshow-sponsor-invitations/{token}/media', method: HTTP_METHODS.POST },
+        sponsorInvitationSubmit: { url: '/gameshow-sponsor-invitations/{token}/submit', method: HTTP_METHODS.POST },
+        sponsorInvitationPayment: { url: '/gameshow-sponsor-invitations/{token}/payment', method: HTTP_METHODS.POST },
+        sponsorInvitationConfirmPayment: { url: '/gameshow-sponsor-invitations/{token}/payment/confirm', method: HTTP_METHODS.POST },
     };
     return GameShowsRoute;
 }());
@@ -15169,6 +15194,17 @@ var GameShows = /** @class */ (function () {
     GameShows.addTitle = function (show_id, data, params) {
         return Requests.processRoute(GameShowsRoute.routes.addTitle, data, { show_id: show_id }, params);
     };
+    /** Preview CSV/TSV/TXT/ZIP registrations without writing showcase data. */
+    GameShows.previewExternalTitles = function (show_id, file, data, params) {
+        // Multipart helpers require the concrete URL before uploading.
+        var url = GameShowsRoute.routes.previewExternalTitles.url.replace('{show_id}', show_id);
+        return Requests.uploadFile(url, 'file', file, data, params);
+    };
+    /** Import valid external registrations after organizer preview. */
+    GameShows.importExternalTitles = function (show_id, file, data, params) {
+        var url = GameShowsRoute.routes.importExternalTitles.url.replace('{show_id}', show_id);
+        return Requests.uploadFile(url, 'file', file, data, params);
+    };
     /**
      * List all titles for a game show.
      */
@@ -15282,6 +15318,68 @@ var GameShows = /** @class */ (function () {
      */
     GameShows.listForTitle = function (title_id, params) {
         return Requests.processRoute(GameShowsRoute.routes.listForTitle, {}, { title_id: title_id }, params);
+    };
+    /** List private sponsor workflow, contact, billing, media, and placements. */
+    GameShows.listSponsors = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listSponsors, {}, { show_id: show_id }, params);
+    };
+    /** Create a manual sponsor or send a self-service invitation. */
+    GameShows.createSponsor = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.createSponsor, data, { show_id: show_id }, params);
+    };
+    /** Retrieve one organizer-authorized festival sponsor. */
+    GameShows.getSponsor = function (show_id, sponsor_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.getSponsor, {}, { show_id: show_id, sponsor_id: sponsor_id }, params);
+    };
+    /** Update sponsor workflow, creative metadata, schedule, or billing terms. */
+    GameShows.updateSponsor = function (show_id, sponsor_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.updateSponsor, data, { show_id: show_id, sponsor_id: sponsor_id }, params);
+    };
+    /** Delete an unpaid sponsor and its placements. */
+    GameShows.deleteSponsor = function (show_id, sponsor_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.deleteSponsor, {}, { show_id: show_id, sponsor_id: sponsor_id }, params);
+    };
+    /** Replace the private token and resend the sponsor invitation. */
+    GameShows.resendSponsorInvitation = function (show_id, sponsor_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.resendSponsorInvitation, {}, { show_id: show_id, sponsor_id: sponsor_id }, params);
+    };
+    /** Add another festival, game, session, or event placement. */
+    GameShows.createSponsorPlacement = function (show_id, sponsor_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.createSponsorPlacement, data, { show_id: show_id, sponsor_id: sponsor_id }, params);
+    };
+    /** Partially update an existing sponsor placement. */
+    GameShows.updateSponsorPlacement = function (show_id, sponsor_id, placement_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.updateSponsorPlacement, data, { show_id: show_id, sponsor_id: sponsor_id, placement_id: placement_id }, params);
+    };
+    /** Delete one placement without deleting the sponsor creative. */
+    GameShows.deleteSponsorPlacement = function (show_id, sponsor_id, placement_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.deleteSponsorPlacement, {}, { show_id: show_id, sponsor_id: sponsor_id, placement_id: placement_id }, params);
+    };
+    /** List privacy-limited, publicly eligible creatives and placements. */
+    GameShows.listPublicSponsors = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listPublicSponsors, {}, { show_id: show_id }, params);
+    };
+    /** Open a token-protected sponsor portal without a user session. */
+    GameShows.sponsorInvitation = function (token, params) {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitation, {}, { token: token }, params);
+    };
+    /** Upload sponsor image/video through the shared Media pipeline. */
+    GameShows.uploadSponsorInvitationMedia = function (token, file, data, params) {
+        // Sponsor uploads use the `media` multipart field documented by API.
+        var url = GameShowsRoute.routes.sponsorInvitationUpload.url.replace('{token}', token);
+        return Requests.uploadFile(url, 'media', file, data, params);
+    };
+    /** Submit sponsor identity, destination, and accessibility metadata. */
+    GameShows.submitSponsorInvitation = function (token, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationSubmit, data, { token: token }, params);
+    };
+    /** Create/confirm a destination PaymentIntent from a PaymentMethod ID. */
+    GameShows.paySponsorInvitation = function (token, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationPayment, data, { token: token }, params);
+    };
+    /** Synchronize the same intent after Stripe.js completes required 3DS. */
+    GameShows.confirmSponsorInvitationPayment = function (token, params) {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationConfirmPayment, {}, { token: token }, params);
     };
     return GameShows;
 }());

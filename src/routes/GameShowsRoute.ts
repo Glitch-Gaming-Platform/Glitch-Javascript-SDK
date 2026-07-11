@@ -2,7 +2,10 @@ import Route from "./interface";
 import HTTP_METHODS from "../constants/HttpMethods";
 
 class GameShowsRoute {
-    
+    /**
+     * Canonical API route templates. JSON routes are substituted by
+     * Requests.processRoute; multipart methods replace tokens before upload.
+     */
     public static routes: { [key: string]: Route } = {
       list: { url: '/gameshows', method: HTTP_METHODS.GET },
       create: { url: '/gameshows', method: HTTP_METHODS.POST  },
@@ -14,6 +17,9 @@ class GameShowsRoute {
       registerTitle: { url: '/gameshows/{show_id}/registerTitle', method: HTTP_METHODS.POST },
         listTitles: { url: '/gameshows/{show_id}/titles', method: HTTP_METHODS.GET },
         addTitle: { url: '/gameshows/{show_id}/addTitle', method: HTTP_METHODS.POST },
+        // External registration file preview/import endpoints.
+        previewExternalTitles: { url: '/gameshows/{show_id}/external-titles/preview', method: HTTP_METHODS.POST },
+        importExternalTitles: { url: '/gameshows/{show_id}/external-titles/import', method: HTTP_METHODS.POST },
         viewTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.GET },
         updateTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.PUT },
         deleteTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.DELETE },
@@ -32,6 +38,24 @@ class GameShowsRoute {
         joinWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.POST },
         listWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.GET },
         listForTitle: { url: '/titles/{title_id}/gameshows', method: HTTP_METHODS.GET },
+        // Organizer sponsor lifecycle and placement administration.
+        listSponsors: { url: '/gameshows/{show_id}/sponsors', method: HTTP_METHODS.GET },
+        createSponsor: { url: '/gameshows/{show_id}/sponsors', method: HTTP_METHODS.POST },
+        getSponsor: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}', method: HTTP_METHODS.GET },
+        updateSponsor: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}', method: HTTP_METHODS.PUT },
+        deleteSponsor: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}', method: HTTP_METHODS.DELETE },
+        resendSponsorInvitation: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}/invite', method: HTTP_METHODS.POST },
+        createSponsorPlacement: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}/placements', method: HTTP_METHODS.POST },
+        updateSponsorPlacement: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}/placements/{placement_id}', method: HTTP_METHODS.PUT },
+        deleteSponsorPlacement: { url: '/gameshows/{show_id}/sponsors/{sponsor_id}/placements/{placement_id}', method: HTTP_METHODS.DELETE },
+        // Privacy-limited anonymous sponsor inventory.
+        listPublicSponsors: { url: '/gameshows/{show_id}/sponsors/public', method: HTTP_METHODS.GET },
+        // Token-protected sponsor self-service; backend applies per-route limits.
+        sponsorInvitation: { url: '/gameshow-sponsor-invitations/{token}', method: HTTP_METHODS.GET },
+        sponsorInvitationUpload: { url: '/gameshow-sponsor-invitations/{token}/media', method: HTTP_METHODS.POST },
+        sponsorInvitationSubmit: { url: '/gameshow-sponsor-invitations/{token}/submit', method: HTTP_METHODS.POST },
+        sponsorInvitationPayment: { url: '/gameshow-sponsor-invitations/{token}/payment', method: HTTP_METHODS.POST },
+        sponsorInvitationConfirmPayment: { url: '/gameshow-sponsor-invitations/{token}/payment/confirm', method: HTTP_METHODS.POST },
     };
 
   }

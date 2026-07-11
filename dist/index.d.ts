@@ -6205,6 +6205,10 @@ declare class GameShows {
      * Add a title to a game show by admin.
      */
     static addTitle<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Preview CSV/TSV/TXT/ZIP registrations without writing showcase data. */
+    static previewExternalTitles<T>(show_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Import valid external registrations after organizer preview. */
+    static importExternalTitles<T>(show_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List all titles for a game show.
      */
@@ -6281,6 +6285,36 @@ declare class GameShows {
      * List public game shows that include a title. Useful for game-page festival banners.
      */
     static listForTitle<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List private sponsor workflow, contact, billing, media, and placements. */
+    static listSponsors<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Create a manual sponsor or send a self-service invitation. */
+    static createSponsor<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Retrieve one organizer-authorized festival sponsor. */
+    static getSponsor<T>(show_id: string, sponsor_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Update sponsor workflow, creative metadata, schedule, or billing terms. */
+    static updateSponsor<T>(show_id: string, sponsor_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Delete an unpaid sponsor and its placements. */
+    static deleteSponsor<T>(show_id: string, sponsor_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Replace the private token and resend the sponsor invitation. */
+    static resendSponsorInvitation<T>(show_id: string, sponsor_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Add another festival, game, session, or event placement. */
+    static createSponsorPlacement<T>(show_id: string, sponsor_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Partially update an existing sponsor placement. */
+    static updateSponsorPlacement<T>(show_id: string, sponsor_id: string, placement_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Delete one placement without deleting the sponsor creative. */
+    static deleteSponsorPlacement<T>(show_id: string, sponsor_id: string, placement_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List privacy-limited, publicly eligible creatives and placements. */
+    static listPublicSponsors<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Open a token-protected sponsor portal without a user session. */
+    static sponsorInvitation<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Upload sponsor image/video through the shared Media pipeline. */
+    static uploadSponsorInvitationMedia<T>(token: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Submit sponsor identity, destination, and accessibility metadata. */
+    static submitSponsorInvitation<T>(token: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Create/confirm a destination PaymentIntent from a PaymentMethod ID. */
+    static paySponsorInvitation<T>(token: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Synchronize the same intent after Stripe.js completes required 3DS. */
+    static confirmSponsorInvitationPayment<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Newsletters {
