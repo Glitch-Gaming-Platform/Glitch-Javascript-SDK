@@ -197,6 +197,23 @@ declare class GameShows {
      * List public game shows that include a title. Useful for game-page festival banners.
      */
     static listForTitle<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List organizer-visible developer claim and completion workflows. */
+    static listTitleClaims<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Invite or remind a developer to claim and complete a festival game. */
+    static inviteTitleClaim<T>(show_id: string, title_id: string, data: {
+        email: string;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Open a private festival game claim before authentication. */
+    static viewTitleClaim<T>(show_id: string, token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Bind the invited game to the current user and one administered business. */
+    static claimTitle<T>(show_id: string, token: string, data: {
+        community_id: string;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Finish required game information and record the optional build choice. */
+    static completeTitleClaim<T>(show_id: string, token: string, data: {
+        build_choice: 'upload' | 'skip';
+        build_completed?: boolean;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** List private sponsor workflow, contact, billing, media, and placements. */
     static listSponsors<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** Create a manual sponsor or send a self-service invitation. */

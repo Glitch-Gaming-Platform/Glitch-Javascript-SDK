@@ -27032,6 +27032,11 @@ var GameShowsRoute = /** @class */ (function () {
         // External registration file preview/import endpoints.
         previewExternalTitles: { url: '/gameshows/{show_id}/external-titles/preview', method: HTTP_METHODS.POST },
         importExternalTitles: { url: '/gameshows/{show_id}/external-titles/import', method: HTTP_METHODS.POST },
+        listTitleClaims: { url: '/gameshows/{show_id}/title-claims', method: HTTP_METHODS.GET },
+        inviteTitleClaim: { url: '/gameshows/{show_id}/titles/{title_id}/claim-invitation', method: HTTP_METHODS.POST },
+        viewTitleClaim: { url: '/gameshows/{show_id}/title-claims/{token}', method: HTTP_METHODS.GET },
+        claimTitle: { url: '/gameshows/{show_id}/title-claims/{token}/claim', method: HTTP_METHODS.POST },
+        completeTitleClaim: { url: '/gameshows/{show_id}/title-claims/{token}/complete', method: HTTP_METHODS.POST },
         viewTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.GET },
         updateTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.PUT },
         deleteTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.DELETE },
@@ -27357,6 +27362,26 @@ var GameShows = /** @class */ (function () {
      */
     GameShows.listForTitle = function (title_id, params) {
         return Requests.processRoute(GameShowsRoute.routes.listForTitle, {}, { title_id: title_id }, params);
+    };
+    /** List organizer-visible developer claim and completion workflows. */
+    GameShows.listTitleClaims = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listTitleClaims, {}, { show_id: show_id }, params);
+    };
+    /** Invite or remind a developer to claim and complete a festival game. */
+    GameShows.inviteTitleClaim = function (show_id, title_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.inviteTitleClaim, data, { show_id: show_id, title_id: title_id }, params);
+    };
+    /** Open a private festival game claim before authentication. */
+    GameShows.viewTitleClaim = function (show_id, token, params) {
+        return Requests.processRoute(GameShowsRoute.routes.viewTitleClaim, {}, { show_id: show_id, token: token }, params);
+    };
+    /** Bind the invited game to the current user and one administered business. */
+    GameShows.claimTitle = function (show_id, token, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.claimTitle, data, { show_id: show_id, token: token }, params);
+    };
+    /** Finish required game information and record the optional build choice. */
+    GameShows.completeTitleClaim = function (show_id, token, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.completeTitleClaim, data, { show_id: show_id, token: token }, params);
     };
     /** List private sponsor workflow, contact, billing, media, and placements. */
     GameShows.listSponsors = function (show_id, params) {

@@ -340,6 +340,31 @@ class GameShows {
         return Requests.processRoute(GameShowsRoute.routes.listForTitle, {}, { title_id: title_id }, params);
     }
 
+    /** List organizer-visible developer claim and completion workflows. */
+    public static listTitleClaims<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listTitleClaims, {}, { show_id }, params);
+    }
+
+    /** Invite or remind a developer to claim and complete a festival game. */
+    public static inviteTitleClaim<T>(show_id: string, title_id: string, data: { email: string }, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.inviteTitleClaim, data, { show_id, title_id }, params);
+    }
+
+    /** Open a private festival game claim before authentication. */
+    public static viewTitleClaim<T>(show_id: string, token: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.viewTitleClaim, {}, { show_id, token }, params);
+    }
+
+    /** Bind the invited game to the current user and one administered business. */
+    public static claimTitle<T>(show_id: string, token: string, data: { community_id: string }, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.claimTitle, data, { show_id, token }, params);
+    }
+
+    /** Finish required game information and record the optional build choice. */
+    public static completeTitleClaim<T>(show_id: string, token: string, data: { build_choice: 'upload' | 'skip'; build_completed?: boolean }, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.completeTitleClaim, data, { show_id, token }, params);
+    }
+
     /** List private sponsor workflow, contact, billing, media, and placements. */
     public static listSponsors<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(GameShowsRoute.routes.listSponsors, {}, { show_id }, params);

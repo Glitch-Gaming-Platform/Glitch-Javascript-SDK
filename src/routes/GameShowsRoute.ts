@@ -29,6 +29,11 @@ class GameShowsRoute {
         // External registration file preview/import endpoints.
         previewExternalTitles: { url: '/gameshows/{show_id}/external-titles/preview', method: HTTP_METHODS.POST },
         importExternalTitles: { url: '/gameshows/{show_id}/external-titles/import', method: HTTP_METHODS.POST },
+        listTitleClaims: { url: '/gameshows/{show_id}/title-claims', method: HTTP_METHODS.GET },
+        inviteTitleClaim: { url: '/gameshows/{show_id}/titles/{title_id}/claim-invitation', method: HTTP_METHODS.POST },
+        viewTitleClaim: { url: '/gameshows/{show_id}/title-claims/{token}', method: HTTP_METHODS.GET },
+        claimTitle: { url: '/gameshows/{show_id}/title-claims/{token}/claim', method: HTTP_METHODS.POST },
+        completeTitleClaim: { url: '/gameshows/{show_id}/title-claims/{token}/complete', method: HTTP_METHODS.POST },
         viewTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.GET },
         updateTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.PUT },
         deleteTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.DELETE },
