@@ -97,6 +97,22 @@ declare class GameShows {
      * Register a title to a game show.
      */
     static registerTitle<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List the active ordered custom-question schema used by public registration. */
+    static listRegistrationQuestions<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List active, inactive, and archived custom questions for organizers. */
+    static manageRegistrationQuestions<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Create one schema-driven custom developer-registration question. */
+    static createRegistrationQuestion<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Update wording, validation, visibility, ordering, or stable choices. */
+    static updateRegistrationQuestion<T>(show_id: string, question_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Archive a question while preserving historical answers and reporting. */
+    static deleteRegistrationQuestion<T>(show_id: string, question_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Apply the organizer's exact ordered list of question UUIDs. */
+    static reorderRegistrationQuestions<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Review custom answers grouped by submitted game. */
+    static listRegistrationResponses<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Retrieve type-aware aggregate reports without exposing free-text values. */
+    static registrationQuestionReports<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Add a title to a game show by admin.
      */

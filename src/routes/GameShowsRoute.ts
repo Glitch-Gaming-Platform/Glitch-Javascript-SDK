@@ -15,6 +15,15 @@ class GameShowsRoute {
       uploadLogo : {url : '/gameshows/{show_id}/uploadLogo', method: HTTP_METHODS.POST},
       uploadBannerImage : {url : '/gameshows/{show_id}/uploadBannerImage', method: HTTP_METHODS.POST},
       registerTitle: { url: '/gameshows/{show_id}/registerTitle', method: HTTP_METHODS.POST },
+        // Schema-driven developer registration questions and organizer reports.
+        listRegistrationQuestions: { url: '/gameshows/{show_id}/registration-questions', method: HTTP_METHODS.GET },
+        manageRegistrationQuestions: { url: '/gameshows/{show_id}/registration-form/questions', method: HTTP_METHODS.GET },
+        createRegistrationQuestion: { url: '/gameshows/{show_id}/registration-form/questions', method: HTTP_METHODS.POST },
+        updateRegistrationQuestion: { url: '/gameshows/{show_id}/registration-form/questions/{question_id}', method: HTTP_METHODS.PUT },
+        deleteRegistrationQuestion: { url: '/gameshows/{show_id}/registration-form/questions/{question_id}', method: HTTP_METHODS.DELETE },
+        reorderRegistrationQuestions: { url: '/gameshows/{show_id}/registration-form/questions/reorder', method: HTTP_METHODS.POST },
+        listRegistrationResponses: { url: '/gameshows/{show_id}/registration-form/responses', method: HTTP_METHODS.GET },
+        registrationQuestionReports: { url: '/gameshows/{show_id}/registration-form/reports', method: HTTP_METHODS.GET },
         listTitles: { url: '/gameshows/{show_id}/titles', method: HTTP_METHODS.GET },
         addTitle: { url: '/gameshows/{show_id}/addTitle', method: HTTP_METHODS.POST },
         // External registration file preview/import endpoints.

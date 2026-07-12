@@ -27018,6 +27018,15 @@ var GameShowsRoute = /** @class */ (function () {
         uploadLogo: { url: '/gameshows/{show_id}/uploadLogo', method: HTTP_METHODS.POST },
         uploadBannerImage: { url: '/gameshows/{show_id}/uploadBannerImage', method: HTTP_METHODS.POST },
         registerTitle: { url: '/gameshows/{show_id}/registerTitle', method: HTTP_METHODS.POST },
+        // Schema-driven developer registration questions and organizer reports.
+        listRegistrationQuestions: { url: '/gameshows/{show_id}/registration-questions', method: HTTP_METHODS.GET },
+        manageRegistrationQuestions: { url: '/gameshows/{show_id}/registration-form/questions', method: HTTP_METHODS.GET },
+        createRegistrationQuestion: { url: '/gameshows/{show_id}/registration-form/questions', method: HTTP_METHODS.POST },
+        updateRegistrationQuestion: { url: '/gameshows/{show_id}/registration-form/questions/{question_id}', method: HTTP_METHODS.PUT },
+        deleteRegistrationQuestion: { url: '/gameshows/{show_id}/registration-form/questions/{question_id}', method: HTTP_METHODS.DELETE },
+        reorderRegistrationQuestions: { url: '/gameshows/{show_id}/registration-form/questions/reorder', method: HTTP_METHODS.POST },
+        listRegistrationResponses: { url: '/gameshows/{show_id}/registration-form/responses', method: HTTP_METHODS.GET },
+        registrationQuestionReports: { url: '/gameshows/{show_id}/registration-form/reports', method: HTTP_METHODS.GET },
         listTitles: { url: '/gameshows/{show_id}/titles', method: HTTP_METHODS.GET },
         addTitle: { url: '/gameshows/{show_id}/addTitle', method: HTTP_METHODS.POST },
         // External registration file preview/import endpoints.
@@ -27185,6 +27194,38 @@ var GameShows = /** @class */ (function () {
      */
     GameShows.registerTitle = function (show_id, data, params) {
         return Requests.processRoute(GameShowsRoute.routes.registerTitle, data, { show_id: show_id }, params);
+    };
+    /** List the active ordered custom-question schema used by public registration. */
+    GameShows.listRegistrationQuestions = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listRegistrationQuestions, {}, { show_id: show_id }, params);
+    };
+    /** List active, inactive, and archived custom questions for organizers. */
+    GameShows.manageRegistrationQuestions = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.manageRegistrationQuestions, {}, { show_id: show_id }, params);
+    };
+    /** Create one schema-driven custom developer-registration question. */
+    GameShows.createRegistrationQuestion = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.createRegistrationQuestion, data, { show_id: show_id }, params);
+    };
+    /** Update wording, validation, visibility, ordering, or stable choices. */
+    GameShows.updateRegistrationQuestion = function (show_id, question_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.updateRegistrationQuestion, data, { show_id: show_id, question_id: question_id }, params);
+    };
+    /** Archive a question while preserving historical answers and reporting. */
+    GameShows.deleteRegistrationQuestion = function (show_id, question_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.deleteRegistrationQuestion, {}, { show_id: show_id, question_id: question_id }, params);
+    };
+    /** Apply the organizer's exact ordered list of question UUIDs. */
+    GameShows.reorderRegistrationQuestions = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.reorderRegistrationQuestions, data, { show_id: show_id }, params);
+    };
+    /** Review custom answers grouped by submitted game. */
+    GameShows.listRegistrationResponses = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listRegistrationResponses, {}, { show_id: show_id }, params);
+    };
+    /** Retrieve type-aware aggregate reports without exposing free-text values. */
+    GameShows.registrationQuestionReports = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.registrationQuestionReports, {}, { show_id: show_id }, params);
     };
     /**
      * Add a title to a game show by admin.

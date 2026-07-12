@@ -147,6 +147,46 @@ class GameShows {
         return Requests.processRoute(GameShowsRoute.routes.registerTitle, data, { show_id: show_id }, params);
     }
 
+    /** List the active ordered custom-question schema used by public registration. */
+    public static listRegistrationQuestions<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listRegistrationQuestions, {}, { show_id: show_id }, params);
+    }
+
+    /** List active, inactive, and archived custom questions for organizers. */
+    public static manageRegistrationQuestions<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.manageRegistrationQuestions, {}, { show_id: show_id }, params);
+    }
+
+    /** Create one schema-driven custom developer-registration question. */
+    public static createRegistrationQuestion<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.createRegistrationQuestion, data, { show_id: show_id }, params);
+    }
+
+    /** Update wording, validation, visibility, ordering, or stable choices. */
+    public static updateRegistrationQuestion<T>(show_id: string, question_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.updateRegistrationQuestion, data, { show_id: show_id, question_id: question_id }, params);
+    }
+
+    /** Archive a question while preserving historical answers and reporting. */
+    public static deleteRegistrationQuestion<T>(show_id: string, question_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.deleteRegistrationQuestion, {}, { show_id: show_id, question_id: question_id }, params);
+    }
+
+    /** Apply the organizer's exact ordered list of question UUIDs. */
+    public static reorderRegistrationQuestions<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.reorderRegistrationQuestions, data, { show_id: show_id }, params);
+    }
+
+    /** Review custom answers grouped by submitted game. */
+    public static listRegistrationResponses<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listRegistrationResponses, {}, { show_id: show_id }, params);
+    }
+
+    /** Retrieve type-aware aggregate reports without exposing free-text values. */
+    public static registrationQuestionReports<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.registrationQuestionReports, {}, { show_id: show_id }, params);
+    }
+
     /**
      * Add a title to a game show by admin.
      */
