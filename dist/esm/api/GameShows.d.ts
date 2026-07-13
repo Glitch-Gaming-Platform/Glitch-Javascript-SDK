@@ -190,6 +190,13 @@ declare class GameShows {
      */
     static joinWishlist<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
+     * Confirm the double-opt-in token from a festival reminder email.
+     * The response contains confirmation state and festival identity only.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/confirmGameShowWishlist
+     */
+    static confirmWishlist<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
      * List notification signups for a game show. Requires organizer permissions.
      */
     static listWishlist<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;

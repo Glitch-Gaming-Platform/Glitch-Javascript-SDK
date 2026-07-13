@@ -327,6 +327,16 @@ class GameShows {
     }
 
     /**
+     * Confirm the double-opt-in token from a festival reminder email.
+     * The response contains confirmation state and festival identity only.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/confirmGameShowWishlist
+     */
+    public static confirmWishlist<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.confirmWishlist, {}, { token }, params);
+    }
+
+    /**
      * List notification signups for a game show. Requires organizer permissions.
      */
     public static listWishlist<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {

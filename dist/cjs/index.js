@@ -27053,6 +27053,7 @@ var GameShowsRoute = /** @class */ (function () {
         trackAnalytics: { url: '/gameshows/{show_id}/analytics', method: HTTP_METHODS.POST },
         analyticsReport: { url: '/gameshows/{show_id}/analytics/report', method: HTTP_METHODS.GET },
         joinWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.POST },
+        confirmWishlist: { url: '/gameshows/wishlist/confirm/{token}', method: HTTP_METHODS.GET },
         listWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.GET },
         listForTitle: { url: '/titles/{title_id}/gameshows', method: HTTP_METHODS.GET },
         // Organizer sponsor lifecycle and placement administration.
@@ -27350,6 +27351,15 @@ var GameShows = /** @class */ (function () {
      */
     GameShows.joinWishlist = function (show_id, data, params) {
         return Requests.processRoute(GameShowsRoute.routes.joinWishlist, data, { show_id: show_id }, params);
+    };
+    /**
+     * Confirm the double-opt-in token from a festival reminder email.
+     * The response contains confirmation state and festival identity only.
+     *
+     * @see https://api.glitch.fun/api/documentation#/GameShows/confirmGameShowWishlist
+     */
+    GameShows.confirmWishlist = function (token, params) {
+        return Requests.processRoute(GameShowsRoute.routes.confirmWishlist, {}, { token: token }, params);
     };
     /**
      * List notification signups for a game show. Requires organizer permissions.

@@ -50,6 +50,7 @@ class GameShowsRoute {
         trackAnalytics: { url: '/gameshows/{show_id}/analytics', method: HTTP_METHODS.POST },
         analyticsReport: { url: '/gameshows/{show_id}/analytics/report', method: HTTP_METHODS.GET },
         joinWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.POST },
+        confirmWishlist: { url: '/gameshows/wishlist/confirm/{token}', method: HTTP_METHODS.GET },
         listWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.GET },
         listForTitle: { url: '/titles/{title_id}/gameshows', method: HTTP_METHODS.GET },
         // Organizer sponsor lifecycle and placement administration.
