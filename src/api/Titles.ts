@@ -1316,7 +1316,7 @@ class Titles {
     }
 
     /**
-     * Get a consolidated report of all earnings for a title, including 
+     * Get a consolidated report of all earnings for a title, including
      * playtime payouts, direct premium purchases, and rentals (minus refunds).
      * 
      * @param title_id The UUID of the title.

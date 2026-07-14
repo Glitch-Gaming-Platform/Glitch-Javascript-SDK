@@ -43,6 +43,7 @@ class GameShowsRoute {
         deleteBlock: { url: '/gameshows/{show_id}/blocks/{block_id}', method: HTTP_METHODS.DELETE },
         reorderBlocks: { url: '/gameshows/{show_id}/blocks/reorder', method: HTTP_METHODS.POST },
         listSchedule: { url: '/gameshows/{show_id}/schedule', method: HTTP_METHODS.GET },
+        getScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.GET },
         createScheduleItem: { url: '/gameshows/{show_id}/schedule', method: HTTP_METHODS.POST },
         updateScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.PUT },
         deleteScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.DELETE },

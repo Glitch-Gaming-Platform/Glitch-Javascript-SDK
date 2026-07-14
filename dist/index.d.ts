@@ -6265,6 +6265,8 @@ declare class GameShows {
      * List livestream and programming schedule items for a game show.
      */
     static listSchedule<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Fetch one public or organizer-visible festival schedule item. */
+    static getScheduleItem<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a schedule item for a game show. Requires organizer permissions.
      */

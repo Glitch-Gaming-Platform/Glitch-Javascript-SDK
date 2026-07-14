@@ -277,6 +277,11 @@ class GameShows {
         return Requests.processRoute(GameShowsRoute.routes.listSchedule, {}, { show_id: show_id }, params);
     }
 
+    /** Fetch one public or organizer-visible festival schedule item. */
+    public static getScheduleItem<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.getScheduleItem, {}, { show_id: show_id, schedule_id: schedule_id }, params);
+    }
+
     /**
      * Create a schedule item for a game show. Requires organizer permissions.
      */

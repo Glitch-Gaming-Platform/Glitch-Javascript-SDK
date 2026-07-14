@@ -15048,6 +15048,7 @@ var GameShowsRoute = /** @class */ (function () {
         deleteBlock: { url: '/gameshows/{show_id}/blocks/{block_id}', method: HTTP_METHODS.DELETE },
         reorderBlocks: { url: '/gameshows/{show_id}/blocks/reorder', method: HTTP_METHODS.POST },
         listSchedule: { url: '/gameshows/{show_id}/schedule', method: HTTP_METHODS.GET },
+        getScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.GET },
         createScheduleItem: { url: '/gameshows/{show_id}/schedule', method: HTTP_METHODS.POST },
         updateScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.PUT },
         deleteScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.DELETE },
@@ -15311,6 +15312,10 @@ var GameShows = /** @class */ (function () {
      */
     GameShows.listSchedule = function (show_id, params) {
         return Requests.processRoute(GameShowsRoute.routes.listSchedule, {}, { show_id: show_id }, params);
+    };
+    /** Fetch one public or organizer-visible festival schedule item. */
+    GameShows.getScheduleItem = function (show_id, schedule_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.getScheduleItem, {}, { show_id: show_id, schedule_id: schedule_id }, params);
     };
     /**
      * Create a schedule item for a game show. Requires organizer permissions.
