@@ -1,6 +1,6 @@
 {
   "name": "glitch-javascript-sdk",
-  "version": "3.5.3",
+  "version": "3.6.0",
   "description": "Javascript SDK for Glitch",
   "publishConfig": {
     "access": "public"
@@ -13,7 +13,7 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node scripts/test-game-advertising-routes.cjs",
     "build": "rm -Rf dist && rollup -c --bundleConfigAsCjs",
     "build-docs": "rm  -rf docs && typedoc  --tsconfig tsconfig.json src/"
   },

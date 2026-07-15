@@ -1,5 +1,49 @@
 import Response from "../util/Response";
 import { AxiosPromise } from "axios";
+/** Human-readable earning categories returned by influencer payout APIs. */
+export type InfluencerPayoutSourceType = "campaign_compensation" | "ad_revenue_share" | "subscription_residual" | "manual_adjustment";
+/** Auditable metrics and creator-content attribution attached to a payout. */
+export interface InfluencerPayoutBreakdown {
+    label?: string;
+    payment_method?: "flat" | "performance" | "hybrid";
+    provider?: string;
+    period_start?: string;
+    period_end?: string;
+    impressions?: number;
+    clicks?: number;
+    short_link_id?: string | null;
+    short_link_click_id?: string | null;
+    social_media_post_id?: string | null;
+    tracking_link_label?: string | null;
+    social_platform?: string | null;
+    social_post_url?: string | null;
+}
+/** One campaign or advertising earning payable to the authenticated influencer. */
+export interface InfluencerPayout {
+    id: string;
+    user_id: string;
+    campaign_id: string;
+    amount: number;
+    currency: string;
+    status: "pending" | "completed" | "failed";
+    payout_date?: string | null;
+    source_type: InfluencerPayoutSourceType;
+    source_label: string;
+    source_reference_id?: string | null;
+    breakdown?: InfluencerPayoutBreakdown;
+    campaign?: Record<string, any>;
+}
+/** Optional filters for the authenticated influencer's payout history. */
+export interface InfluencerPayoutQuery {
+    campaign_id?: string;
+    month?: number;
+    year?: number;
+    amount?: number;
+    status?: "pending" | "completed" | "failed";
+    source_type?: InfluencerPayoutSourceType;
+    orderBy?: "created_at" | "amount";
+    orderDirection?: "asc" | "desc";
+}
 declare class Users {
     /**
      * List all the users.
@@ -42,16 +86,17 @@ declare class Users {
      */
     static getCampaignInvites<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-     * Gets payouts from past campaings
+     * Gets the authenticated influencer's payouts from campaigns and attributed
+     * game advertising. Advertising revenue is returned as a separate additive
+     * source with provider-period metrics and tracking-link/social-post IDs.
      *
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
      *
-     * @param user_id The id of the user to update.
-     * @param data The data to update.
+     * @param params Optional campaign, date, status, source, and ordering filters.
      *
      * @returns promise
      */
-    static getPayouts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static getPayouts<T = InfluencerPayout[]>(params?: InfluencerPayoutQuery): AxiosPromise<Response<T>>;
     /**
      * Sync the current influencer's information.
      *

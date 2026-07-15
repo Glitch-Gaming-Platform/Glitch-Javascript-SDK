@@ -21043,12 +21043,13 @@ var Users = /** @class */ (function () {
         return Requests.processRoute(UserRoutes.routes.getCampaignInvites, {}, undefined, params);
     };
     /**
-     * Gets payouts from past campaings
+     * Gets the authenticated influencer's payouts from campaigns and attributed
+     * game advertising. Advertising revenue is returned as a separate additive
+     * source with provider-period metrics and tracking-link/social-post IDs.
      *
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
      *
-     * @param user_id The id of the user to update.
-     * @param data The data to update.
+     * @param params Optional campaign, date, status, source, and ordering filters.
      *
      * @returns promise
      */
@@ -32956,6 +32957,70 @@ var MarketResearch = /** @class */ (function () {
     return MarketResearch;
 }());
 
+var GameAdvertisingRoute = /** @class */ (function () {
+    function GameAdvertisingRoute() {
+    }
+    /**
+     * Route templates for publisher game-ad inventory, telemetry, earnings, and
+     * site administration. Placeholders are expanded by Requests.processRoute.
+     */
+    GameAdvertisingRoute.routes = {
+        settings: { url: '/titles/{title_id}/advertising/settings', method: HTTP_METHODS.GET },
+        updateSettings: { url: '/titles/{title_id}/advertising/settings', method: HTTP_METHODS.PUT },
+        createSession: { url: '/titles/{title_id}/advertising/sessions', method: HTTP_METHODS.POST },
+        storeEvent: { url: '/titles/{title_id}/advertising/sessions/{session_id}/events', method: HTTP_METHODS.POST },
+        revenueSummary: { url: '/titles/{title_id}/advertising/revenue-summary', method: HTTP_METHODS.GET },
+        adminDashboard: { url: '/admin/game-advertising', method: HTTP_METHODS.GET },
+        adminUpdateSettings: { url: '/admin/game-advertising/settings', method: HTTP_METHODS.PUT },
+        adminStoreRevenue: { url: '/admin/game-advertising/revenue', method: HTTP_METHODS.POST },
+    };
+    return GameAdvertisingRoute;
+}());
+
+/**
+ * Typed client for platform-served game advertising.
+ *
+ * These endpoints manage publisher inventory displayed around playable games;
+ * they are intentionally separate from APIs used to buy advertising campaigns.
+ */
+var GameAdvertising = /** @class */ (function () {
+    function GameAdvertising() {
+    }
+    /** Return developer-visible ad-earnings settings for a title. */
+    GameAdvertising.settings = function (title_id) {
+        return Requests.processRoute(GameAdvertisingRoute.routes.settings, undefined, { title_id: title_id });
+    };
+    /** Update developer ad-earnings activation and optional title provider ID. */
+    GameAdvertising.updateSettings = function (title_id, data) {
+        return Requests.processRoute(GameAdvertisingRoute.routes.updateSettings, data, { title_id: title_id });
+    };
+    /** Resolve ad eligibility and create an expiring provider manifest/session. */
+    GameAdvertising.createSession = function (title_id, data) {
+        return Requests.processRoute(GameAdvertisingRoute.routes.createSession, data, { title_id: title_id });
+    };
+    /** Store one normalized, idempotent event for an advertising session. */
+    GameAdvertising.storeEvent = function (title_id, session_id, data) {
+        return Requests.processRoute(GameAdvertisingRoute.routes.storeEvent, data, { title_id: title_id, session_id: session_id });
+    };
+    /** Return developer-visible estimated/finalized earnings and delivery totals. */
+    GameAdvertising.revenueSummary = function (title_id, params) {
+        return Requests.processRoute(GameAdvertisingRoute.routes.revenueSummary, undefined, { title_id: title_id }, params);
+    };
+    /** Return site-admin delivery settings, aggregate metrics, and recent revenue. */
+    GameAdvertising.adminDashboard = function () {
+        return Requests.processRoute(GameAdvertisingRoute.routes.adminDashboard);
+    };
+    /** Partially update platform-wide providers and delivery frequency. */
+    GameAdvertising.adminUpdateSettings = function (data) {
+        return Requests.processRoute(GameAdvertisingRoute.routes.adminUpdateSettings, data);
+    };
+    /** Import or reconcile one provider revenue report row. */
+    GameAdvertising.adminStoreRevenue = function (data) {
+        return Requests.processRoute(GameAdvertisingRoute.routes.adminStoreRevenue, data);
+    };
+    return GameAdvertising;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -33505,6 +33570,7 @@ var Glitch = /** @class */ (function () {
         AdminReports: AdminReports,
         AdminUsers: AdminUsers,
         MarketResearch: MarketResearch,
+        GameAdvertising: GameAdvertising,
     };
     Glitch.util = {
         Requests: Requests,

@@ -51,6 +51,7 @@ import PrDirectory from "./PrDirectory";
 import AdminReports from "./AdminReports";
 import AdminUsers from "./AdminUsers";
 import MarketResearch from "./MarketResearch";
+import GameAdvertising from './GameAdvertising';
 
 export {Ads};
 export {AccessKeys};
@@ -105,3 +106,4 @@ export {PrDirectory};
 export {AdminReports};
 export {AdminUsers};
 export {MarketResearch};
+export {GameAdvertising};

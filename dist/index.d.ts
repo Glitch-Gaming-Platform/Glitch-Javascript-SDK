@@ -1893,6 +1893,50 @@ declare class Communities {
     static saveInfluencerToPool<T>(community_id: string, data: object): AxiosPromise<Response<T>>;
 }
 
+/** Human-readable earning categories returned by influencer payout APIs. */
+type InfluencerPayoutSourceType = "campaign_compensation" | "ad_revenue_share" | "subscription_residual" | "manual_adjustment";
+/** Auditable metrics and creator-content attribution attached to a payout. */
+interface InfluencerPayoutBreakdown {
+    label?: string;
+    payment_method?: "flat" | "performance" | "hybrid";
+    provider?: string;
+    period_start?: string;
+    period_end?: string;
+    impressions?: number;
+    clicks?: number;
+    short_link_id?: string | null;
+    short_link_click_id?: string | null;
+    social_media_post_id?: string | null;
+    tracking_link_label?: string | null;
+    social_platform?: string | null;
+    social_post_url?: string | null;
+}
+/** One campaign or advertising earning payable to the authenticated influencer. */
+interface InfluencerPayout {
+    id: string;
+    user_id: string;
+    campaign_id: string;
+    amount: number;
+    currency: string;
+    status: "pending" | "completed" | "failed";
+    payout_date?: string | null;
+    source_type: InfluencerPayoutSourceType;
+    source_label: string;
+    source_reference_id?: string | null;
+    breakdown?: InfluencerPayoutBreakdown;
+    campaign?: Record<string, any>;
+}
+/** Optional filters for the authenticated influencer's payout history. */
+interface InfluencerPayoutQuery {
+    campaign_id?: string;
+    month?: number;
+    year?: number;
+    amount?: number;
+    status?: "pending" | "completed" | "failed";
+    source_type?: InfluencerPayoutSourceType;
+    orderBy?: "created_at" | "amount";
+    orderDirection?: "asc" | "desc";
+}
 declare class Users {
     /**
      * List all the users.
@@ -1935,16 +1979,17 @@ declare class Users {
      */
     static getCampaignInvites<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-     * Gets payouts from past campaings
+     * Gets the authenticated influencer's payouts from campaigns and attributed
+     * game advertising. Advertising revenue is returned as a separate additive
+     * source with provider-period metrics and tracking-link/social-post IDs.
      *
      * @see https://api.glitch.fun/api/documentation#/Users%20Route/showMe
      *
-     * @param user_id The id of the user to update.
-     * @param data The data to update.
+     * @param params Optional campaign, date, status, source, and ordering filters.
      *
      * @returns promise
      */
-    static getPayouts<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static getPayouts<T = InfluencerPayout[]>(params?: InfluencerPayoutQuery): AxiosPromise<Response<T>>;
     /**
      * Sync the current influencer's information.
      *
@@ -11027,6 +11072,51 @@ declare class MarketResearch {
     static exportGame(game_id: string, params?: Record<string, any>): AxiosPromise<Blob>;
 }
 
+interface GameAdEventPayload {
+    /** Opaque token returned by the server-created advertising manifest. */
+    token: string;
+    /** Client idempotency UUID. Reuse is valid only within the same ad session. */
+    event_uuid?: string;
+    /** Provider that produced or attempted the event. */
+    provider: string;
+    /** Stable Glitch placement name, such as game_banner or game_video. */
+    placement: string;
+    /** Normalized creative/ad format. */
+    format: 'banner' | 'video' | 'interstitial' | 'rewarded' | 'other';
+    /** Normalized SDK/ad lifecycle event. */
+    event_type: 'sdk_ready' | 'request_started' | 'loaded' | 'no_fill' | 'started' | 'impression' | 'viewable' | 'clicked' | 'completed' | 'skipped' | 'closed' | 'paused_game' | 'resumed_game' | 'error';
+    /** Optional provider-native event or impression identifier. */
+    provider_event_id?: string;
+    /** Non-sensitive provider diagnostics and event context. */
+    metadata?: Record<string, any>;
+    /** ISO 8601 client-observed timestamp. Defaults to server receipt time. */
+    occurred_at?: string;
+}
+/**
+ * Typed client for platform-served game advertising.
+ *
+ * These endpoints manage publisher inventory displayed around playable games;
+ * they are intentionally separate from APIs used to buy advertising campaigns.
+ */
+declare class GameAdvertising {
+    /** Return developer-visible ad-earnings settings for a title. */
+    static settings<T>(title_id: string): AxiosPromise<Response<T>>;
+    /** Update developer ad-earnings activation and optional title provider ID. */
+    static updateSettings<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    /** Resolve ad eligibility and create an expiring provider manifest/session. */
+    static createSession<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    /** Store one normalized, idempotent event for an advertising session. */
+    static storeEvent<T>(title_id: string, session_id: string, data: GameAdEventPayload): AxiosPromise<Response<T>>;
+    /** Return developer-visible estimated/finalized earnings and delivery totals. */
+    static revenueSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Return site-admin delivery settings, aggregate metrics, and recent revenue. */
+    static adminDashboard<T>(): AxiosPromise<Response<T>>;
+    /** Partially update platform-wide providers and delivery frequency. */
+    static adminUpdateSettings<T>(data: object): AxiosPromise<Response<T>>;
+    /** Import or reconcile one provider revenue report row. */
+    static adminStoreRevenue<T>(data: object): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -11397,6 +11487,7 @@ declare class Glitch {
         AdminReports: typeof AdminReports;
         AdminUsers: typeof AdminUsers;
         MarketResearch: typeof MarketResearch;
+        GameAdvertising: typeof GameAdvertising;
     };
     static util: {
         Requests: typeof Requests;

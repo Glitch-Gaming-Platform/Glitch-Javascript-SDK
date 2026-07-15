@@ -51,6 +51,7 @@ import { PrDirectory } from './api';
 import { AdminReports } from './api';
 import { AdminUsers } from './api';
 import { MarketResearch } from './api';
+import { GameAdvertising } from './api';
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -123,6 +124,7 @@ declare class Glitch {
         AdminReports: typeof AdminReports;
         AdminUsers: typeof AdminUsers;
         MarketResearch: typeof MarketResearch;
+        GameAdvertising: typeof GameAdvertising;
     };
     static util: {
         Requests: typeof Requests;
