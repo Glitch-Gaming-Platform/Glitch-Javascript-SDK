@@ -53,6 +53,19 @@ class GameShowsRoute {
         joinWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.POST },
         confirmWishlist: { url: '/gameshows/wishlist/confirm/{token}', method: HTTP_METHODS.GET },
         listWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.GET },
+        // Festival awards, prizes, swag, metric leaderboards, and recipients.
+        listPublicRewards: { url: '/gameshows/{show_id}/rewards', method: HTTP_METHODS.GET },
+        getPublicReward: { url: '/gameshows/{show_id}/rewards/{reward_id}', method: HTTP_METHODS.GET },
+        getPublicRewardLeaderboard: { url: '/gameshows/{show_id}/rewards/{reward_id}/leaderboard/public', method: HTTP_METHODS.GET },
+        manageRewards: { url: '/gameshows/{show_id}/rewards/manage', method: HTTP_METHODS.GET },
+        claimReward: { url: '/gameshows/{show_id}/rewards/{reward_id}/claim', method: HTTP_METHODS.POST },
+        createReward: { url: '/gameshows/{show_id}/rewards', method: HTTP_METHODS.POST },
+        updateReward: { url: '/gameshows/{show_id}/rewards/{reward_id}', method: HTTP_METHODS.PUT },
+        deleteReward: { url: '/gameshows/{show_id}/rewards/{reward_id}', method: HTTP_METHODS.DELETE },
+        rewardLeaderboard: { url: '/gameshows/{show_id}/rewards/{reward_id}/leaderboard', method: HTTP_METHODS.GET },
+        autoAwardReward: { url: '/gameshows/{show_id}/rewards/{reward_id}/auto-award', method: HTTP_METHODS.POST },
+        addRewardRecipient: { url: '/gameshows/{show_id}/rewards/{reward_id}/recipients', method: HTTP_METHODS.POST },
+        updateRewardRecipient: { url: '/gameshows/{show_id}/rewards/{reward_id}/recipients/{recipient_id}', method: HTTP_METHODS.PUT },
         listForTitle: { url: '/titles/{title_id}/gameshows', method: HTTP_METHODS.GET },
         // Organizer sponsor lifecycle and placement administration.
         listSponsors: { url: '/gameshows/{show_id}/sponsors', method: HTTP_METHODS.GET },
@@ -72,6 +85,10 @@ class GameShowsRoute {
         sponsorInvitationSubmit: { url: '/gameshow-sponsor-invitations/{token}/submit', method: HTTP_METHODS.POST },
         sponsorInvitationPayment: { url: '/gameshow-sponsor-invitations/{token}/payment', method: HTTP_METHODS.POST },
         sponsorInvitationConfirmPayment: { url: '/gameshow-sponsor-invitations/{token}/payment/confirm', method: HTTP_METHODS.POST },
+        sponsorInvitationRewards: { url: '/gameshow-sponsor-invitations/{token}/rewards', method: HTTP_METHODS.GET },
+        sponsorInvitationCreateReward: { url: '/gameshow-sponsor-invitations/{token}/rewards', method: HTTP_METHODS.POST },
+        sponsorInvitationUpdateReward: { url: '/gameshow-sponsor-invitations/{token}/rewards/{reward_id}', method: HTTP_METHODS.PUT },
+        sponsorInvitationDeleteReward: { url: '/gameshow-sponsor-invitations/{token}/rewards/{reward_id}', method: HTTP_METHODS.DELETE },
     };
 
   }

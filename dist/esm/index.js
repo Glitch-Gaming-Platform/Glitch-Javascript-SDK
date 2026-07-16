@@ -15059,6 +15059,19 @@ var GameShowsRoute = /** @class */ (function () {
         joinWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.POST },
         confirmWishlist: { url: '/gameshows/wishlist/confirm/{token}', method: HTTP_METHODS.GET },
         listWishlist: { url: '/gameshows/{show_id}/wishlist', method: HTTP_METHODS.GET },
+        // Festival awards, prizes, swag, metric leaderboards, and recipients.
+        listPublicRewards: { url: '/gameshows/{show_id}/rewards', method: HTTP_METHODS.GET },
+        getPublicReward: { url: '/gameshows/{show_id}/rewards/{reward_id}', method: HTTP_METHODS.GET },
+        getPublicRewardLeaderboard: { url: '/gameshows/{show_id}/rewards/{reward_id}/leaderboard/public', method: HTTP_METHODS.GET },
+        manageRewards: { url: '/gameshows/{show_id}/rewards/manage', method: HTTP_METHODS.GET },
+        claimReward: { url: '/gameshows/{show_id}/rewards/{reward_id}/claim', method: HTTP_METHODS.POST },
+        createReward: { url: '/gameshows/{show_id}/rewards', method: HTTP_METHODS.POST },
+        updateReward: { url: '/gameshows/{show_id}/rewards/{reward_id}', method: HTTP_METHODS.PUT },
+        deleteReward: { url: '/gameshows/{show_id}/rewards/{reward_id}', method: HTTP_METHODS.DELETE },
+        rewardLeaderboard: { url: '/gameshows/{show_id}/rewards/{reward_id}/leaderboard', method: HTTP_METHODS.GET },
+        autoAwardReward: { url: '/gameshows/{show_id}/rewards/{reward_id}/auto-award', method: HTTP_METHODS.POST },
+        addRewardRecipient: { url: '/gameshows/{show_id}/rewards/{reward_id}/recipients', method: HTTP_METHODS.POST },
+        updateRewardRecipient: { url: '/gameshows/{show_id}/rewards/{reward_id}/recipients/{recipient_id}', method: HTTP_METHODS.PUT },
         listForTitle: { url: '/titles/{title_id}/gameshows', method: HTTP_METHODS.GET },
         // Organizer sponsor lifecycle and placement administration.
         listSponsors: { url: '/gameshows/{show_id}/sponsors', method: HTTP_METHODS.GET },
@@ -15078,6 +15091,10 @@ var GameShowsRoute = /** @class */ (function () {
         sponsorInvitationSubmit: { url: '/gameshow-sponsor-invitations/{token}/submit', method: HTTP_METHODS.POST },
         sponsorInvitationPayment: { url: '/gameshow-sponsor-invitations/{token}/payment', method: HTTP_METHODS.POST },
         sponsorInvitationConfirmPayment: { url: '/gameshow-sponsor-invitations/{token}/payment/confirm', method: HTTP_METHODS.POST },
+        sponsorInvitationRewards: { url: '/gameshow-sponsor-invitations/{token}/rewards', method: HTTP_METHODS.GET },
+        sponsorInvitationCreateReward: { url: '/gameshow-sponsor-invitations/{token}/rewards', method: HTTP_METHODS.POST },
+        sponsorInvitationUpdateReward: { url: '/gameshow-sponsor-invitations/{token}/rewards/{reward_id}', method: HTTP_METHODS.PUT },
+        sponsorInvitationDeleteReward: { url: '/gameshow-sponsor-invitations/{token}/rewards/{reward_id}', method: HTTP_METHODS.DELETE },
     };
     return GameShowsRoute;
 }());
@@ -15375,6 +15392,55 @@ var GameShows = /** @class */ (function () {
     GameShows.listWishlist = function (show_id, params) {
         return Requests.processRoute(GameShowsRoute.routes.listWishlist, {}, { show_id: show_id }, params);
     };
+    /** List the anonymous, published festival award/prize/swag catalog. */
+    GameShows.listPublicRewards = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listPublicRewards, {}, { show_id: show_id }, params);
+    };
+    /** Retrieve one SSR-ready public festival reward. */
+    GameShows.getPublicReward = function (show_id, reward_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.getPublicReward, {}, { show_id: show_id, reward_id: reward_id }, params);
+    };
+    /** Retrieve a privacy-safe public game leaderboard for one reward. */
+    GameShows.getPublicRewardLeaderboard = function (show_id, reward_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.getPublicRewardLeaderboard, {}, { show_id: show_id, reward_id: reward_id }, params);
+    };
+    /** List drafts, sponsor items, inventory, recipients, and fulfillment for organizers. */
+    GameShows.manageRewards = function (show_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.manageRewards, {}, { show_id: show_id }, params);
+    };
+    /** Claim an eligible attendee, entrant, points, or previously awarded festival reward. */
+    GameShows.claimReward = function (show_id, reward_id, data, params) {
+        if (data === void 0) { data = {}; }
+        return Requests.processRoute(GameShowsRoute.routes.claimReward, data, { show_id: show_id, reward_id: reward_id }, params);
+    };
+    /** Create an organizer-controlled festival award, prize, swag item, or reward. */
+    GameShows.createReward = function (show_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.createReward, data, { show_id: show_id }, params);
+    };
+    /** Update publication, eligibility, metrics, inventory, or rich content. */
+    GameShows.updateReward = function (show_id, reward_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.updateReward, data, { show_id: show_id, reward_id: reward_id }, params);
+    };
+    /** Soft-delete one festival reward. */
+    GameShows.deleteReward = function (show_id, reward_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.deleteReward, {}, { show_id: show_id, reward_id: reward_id }, params);
+    };
+    /** Preview the organizer-only game or attendee performance leaderboard. */
+    GameShows.rewardLeaderboard = function (show_id, reward_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.rewardLeaderboard, {}, { show_id: show_id, reward_id: reward_id }, params);
+    };
+    /** Snapshot current metric leaders as reward recipients. */
+    GameShows.autoAwardReward = function (show_id, reward_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.autoAwardReward, {}, { show_id: show_id, reward_id: reward_id }, params);
+    };
+    /** Add a manual nominee, winner, honoree, claimant, or fulfillment record. */
+    GameShows.addRewardRecipient = function (show_id, reward_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.addRewardRecipient, data, { show_id: show_id, reward_id: reward_id }, params);
+    };
+    /** Update judging, claim, revocation, rank, or fulfillment state. */
+    GameShows.updateRewardRecipient = function (show_id, reward_id, recipient_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.updateRewardRecipient, data, { show_id: show_id, reward_id: reward_id, recipient_id: recipient_id }, params);
+    };
     /**
      * List public game shows that include a title. Useful for game-page festival banners.
      */
@@ -15462,6 +15528,22 @@ var GameShows = /** @class */ (function () {
     /** Synchronize the same intent after Stripe.js completes required 3DS. */
     GameShows.confirmSponsorInvitationPayment = function (token, params) {
         return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationConfirmPayment, {}, { token: token }, params);
+    };
+    /** List awards, prizes, and swag owned by a sponsor invitation. */
+    GameShows.sponsorInvitationRewards = function (token, params) {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationRewards, {}, { token: token }, params);
+    };
+    /** Create a draft sponsor-owned award, prize, or swag item. */
+    GameShows.createSponsorInvitationReward = function (token, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationCreateReward, data, { token: token }, params);
+    };
+    /** Update sponsor-owned reward content and eligibility. */
+    GameShows.updateSponsorInvitationReward = function (token, reward_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationUpdateReward, data, { token: token, reward_id: reward_id }, params);
+    };
+    /** Remove a sponsor-owned draft reward. */
+    GameShows.deleteSponsorInvitationReward = function (token, reward_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationDeleteReward, {}, { token: token, reward_id: reward_id }, params);
     };
     return GameShows;
 }());
@@ -20972,9 +21054,13 @@ var GameAdvertisingRoute = /** @class */ (function () {
         createSession: { url: '/titles/{title_id}/advertising/sessions', method: HTTP_METHODS.POST },
         storeEvent: { url: '/titles/{title_id}/advertising/sessions/{session_id}/events', method: HTTP_METHODS.POST },
         revenueSummary: { url: '/titles/{title_id}/advertising/revenue-summary', method: HTTP_METHODS.GET },
+        inGamePlacements: { url: '/titles/{title_id}/advertising/in-game/placements', method: HTTP_METHODS.GET },
+        replaceInGamePlacements: { url: '/titles/{title_id}/advertising/in-game/placements', method: HTTP_METHODS.PUT },
         adminDashboard: { url: '/admin/game-advertising', method: HTTP_METHODS.GET },
         adminUpdateSettings: { url: '/admin/game-advertising/settings', method: HTTP_METHODS.PUT },
         adminStoreRevenue: { url: '/admin/game-advertising/revenue', method: HTTP_METHODS.POST },
+        adminProviderApps: { url: '/admin/game-advertising/provider-apps', method: HTTP_METHODS.GET },
+        adminUpsertProviderApp: { url: '/admin/game-advertising/provider-apps', method: HTTP_METHODS.PUT },
     };
     return GameAdvertisingRoute;
 }());
@@ -21008,6 +21094,14 @@ var GameAdvertising = /** @class */ (function () {
     GameAdvertising.revenueSummary = function (title_id, params) {
         return Requests.processRoute(GameAdvertisingRoute.routes.revenueSummary, undefined, { title_id: title_id }, params);
     };
+    /** Return every intrinsic-ad surface configured for a title. */
+    GameAdvertising.inGamePlacements = function (title_id) {
+        return Requests.processRoute(GameAdvertisingRoute.routes.inGamePlacements, undefined, { title_id: title_id });
+    };
+    /** Atomically replace a title's provider-neutral intrinsic-ad surfaces. */
+    GameAdvertising.replaceInGamePlacements = function (title_id, placements) {
+        return Requests.processRoute(GameAdvertisingRoute.routes.replaceInGamePlacements, { placements: placements }, { title_id: title_id });
+    };
     /** Return site-admin delivery settings, aggregate metrics, and recent revenue. */
     GameAdvertising.adminDashboard = function () {
         return Requests.processRoute(GameAdvertisingRoute.routes.adminDashboard);
@@ -21019,6 +21113,14 @@ var GameAdvertising = /** @class */ (function () {
     /** Import or reconcile one provider revenue report row. */
     GameAdvertising.adminStoreRevenue = function (data) {
         return Requests.processRoute(GameAdvertisingRoute.routes.adminStoreRevenue, data);
+    };
+    /** Return public provider app keys and platform mappings for site admins. */
+    GameAdvertising.adminProviderApps = function () {
+        return Requests.processRoute(GameAdvertisingRoute.routes.adminProviderApps);
+    };
+    /** Create or update a provider app mapping without accepting report secrets. */
+    GameAdvertising.adminUpsertProviderApp = function (data) {
+        return Requests.processRoute(GameAdvertisingRoute.routes.adminUpsertProviderApp, data);
     };
     return GameAdvertising;
 }());

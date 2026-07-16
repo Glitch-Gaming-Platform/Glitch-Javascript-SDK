@@ -202,6 +202,32 @@ declare class GameShows {
      * List notification signups for a game show. Requires organizer permissions.
      */
     static listWishlist<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List the anonymous, published festival award/prize/swag catalog. */
+    static listPublicRewards<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Retrieve one SSR-ready public festival reward. */
+    static getPublicReward<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Retrieve a privacy-safe public game leaderboard for one reward. */
+    static getPublicRewardLeaderboard<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List drafts, sponsor items, inventory, recipients, and fulfillment for organizers. */
+    static manageRewards<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Claim an eligible attendee, entrant, points, or previously awarded festival reward. */
+    static claimReward<T>(show_id: string, reward_id: string, data?: {
+        title_id?: string;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Create an organizer-controlled festival award, prize, swag item, or reward. */
+    static createReward<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Update publication, eligibility, metrics, inventory, or rich content. */
+    static updateReward<T>(show_id: string, reward_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Soft-delete one festival reward. */
+    static deleteReward<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Preview the organizer-only game or attendee performance leaderboard. */
+    static rewardLeaderboard<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Snapshot current metric leaders as reward recipients. */
+    static autoAwardReward<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Add a manual nominee, winner, honoree, claimant, or fulfillment record. */
+    static addRewardRecipient<T>(show_id: string, reward_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Update judging, claim, revocation, rank, or fulfillment state. */
+    static updateRewardRecipient<T>(show_id: string, reward_id: string, recipient_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List public game shows that include a title. Useful for game-page festival banners.
      */
@@ -253,5 +279,13 @@ declare class GameShows {
     static paySponsorInvitation<T>(token: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** Synchronize the same intent after Stripe.js completes required 3DS. */
     static confirmSponsorInvitationPayment<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List awards, prizes, and swag owned by a sponsor invitation. */
+    static sponsorInvitationRewards<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Create a draft sponsor-owned award, prize, or swag item. */
+    static createSponsorInvitationReward<T>(token: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Update sponsor-owned reward content and eligibility. */
+    static updateSponsorInvitationReward<T>(token: string, reward_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Remove a sponsor-owned draft reward. */
+    static deleteSponsorInvitationReward<T>(token: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 export default GameShows;

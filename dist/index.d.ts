@@ -6351,6 +6351,32 @@ declare class GameShows {
      * List notification signups for a game show. Requires organizer permissions.
      */
     static listWishlist<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List the anonymous, published festival award/prize/swag catalog. */
+    static listPublicRewards<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Retrieve one SSR-ready public festival reward. */
+    static getPublicReward<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Retrieve a privacy-safe public game leaderboard for one reward. */
+    static getPublicRewardLeaderboard<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List drafts, sponsor items, inventory, recipients, and fulfillment for organizers. */
+    static manageRewards<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Claim an eligible attendee, entrant, points, or previously awarded festival reward. */
+    static claimReward<T>(show_id: string, reward_id: string, data?: {
+        title_id?: string;
+    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Create an organizer-controlled festival award, prize, swag item, or reward. */
+    static createReward<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Update publication, eligibility, metrics, inventory, or rich content. */
+    static updateReward<T>(show_id: string, reward_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Soft-delete one festival reward. */
+    static deleteReward<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Preview the organizer-only game or attendee performance leaderboard. */
+    static rewardLeaderboard<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Snapshot current metric leaders as reward recipients. */
+    static autoAwardReward<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Add a manual nominee, winner, honoree, claimant, or fulfillment record. */
+    static addRewardRecipient<T>(show_id: string, reward_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Update judging, claim, revocation, rank, or fulfillment state. */
+    static updateRewardRecipient<T>(show_id: string, reward_id: string, recipient_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * List public game shows that include a title. Useful for game-page festival banners.
      */
@@ -6402,6 +6428,14 @@ declare class GameShows {
     static paySponsorInvitation<T>(token: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** Synchronize the same intent after Stripe.js completes required 3DS. */
     static confirmSponsorInvitationPayment<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List awards, prizes, and swag owned by a sponsor invitation. */
+    static sponsorInvitationRewards<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Create a draft sponsor-owned award, prize, or swag item. */
+    static createSponsorInvitationReward<T>(token: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Update sponsor-owned reward content and eligibility. */
+    static updateSponsorInvitationReward<T>(token: string, reward_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Remove a sponsor-owned draft reward. */
+    static deleteSponsorInvitationReward<T>(token: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
 }
 
 declare class Newsletters {
@@ -11082,15 +11116,48 @@ interface GameAdEventPayload {
     /** Stable Glitch placement name, such as game_banner or game_video. */
     placement: string;
     /** Normalized creative/ad format. */
-    format: 'banner' | 'video' | 'interstitial' | 'rewarded' | 'other';
+    format: 'banner' | 'video' | 'interstitial' | 'rewarded' | 'in_game_image' | 'in_game_video' | 'other';
     /** Normalized SDK/ad lifecycle event. */
-    event_type: 'sdk_ready' | 'request_started' | 'loaded' | 'no_fill' | 'started' | 'impression' | 'viewable' | 'clicked' | 'completed' | 'skipped' | 'closed' | 'paused_game' | 'resumed_game' | 'error';
+    event_type: 'sdk_ready' | 'request_started' | 'loaded' | 'channel_registered' | 'measurement' | 'no_fill' | 'fallback_shown' | 'started' | 'impression' | 'viewable' | 'clicked' | 'completed' | 'skipped' | 'closed' | 'paused_game' | 'resumed_game' | 'error';
     /** Optional provider-native event or impression identifier. */
     provider_event_id?: string;
     /** Non-sensitive provider diagnostics and event context. */
     metadata?: Record<string, any>;
     /** ISO 8601 client-observed timestamp. Defaults to server receipt time. */
     occurred_at?: string;
+}
+/** Provider-neutral intrinsic-ad surface declared by a game developer. */
+interface GameInGameAdPlacement {
+    id?: string;
+    title_id?: string;
+    provider?: 'anzu';
+    placement_key: string;
+    channel_name: string;
+    surface_type: 'mesh' | 'sprite' | 'ui_image' | 'raw_image' | 'html' | 'electron_shell';
+    scene_name?: string | null;
+    aspect_ratio: number;
+    allow_images: boolean;
+    allow_videos: boolean;
+    allow_audio?: boolean;
+    is_dynamic: boolean;
+    is_clickable: boolean;
+    shrink_to_fit: boolean;
+    fallback_media_url?: string | null;
+    status: 'active' | 'disabled';
+    metadata?: Record<string, any> | null;
+}
+/** Public delivery identity for a provider and runtime platform. */
+interface GameAdProviderApp {
+    id?: string;
+    title_id?: string | null;
+    provider: 'anzu';
+    platform: 'web' | 'electron_macos' | 'electron_windows' | 'electron_linux' | 'unity_webgl' | 'cocos_web' | 'construct_web';
+    app_key: string;
+    bundle_id?: string | null;
+    mode: 'integration' | 'production';
+    integration_type: 'managed' | 'direct';
+    status: 'active' | 'disabled' | 'pending';
+    metadata?: Record<string, any> | null;
 }
 /**
  * Typed client for platform-served game advertising.
@@ -11109,12 +11176,20 @@ declare class GameAdvertising {
     static storeEvent<T>(title_id: string, session_id: string, data: GameAdEventPayload): AxiosPromise<Response<T>>;
     /** Return developer-visible estimated/finalized earnings and delivery totals. */
     static revenueSummary<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Return every intrinsic-ad surface configured for a title. */
+    static inGamePlacements<T>(title_id: string): AxiosPromise<Response<T>>;
+    /** Atomically replace a title's provider-neutral intrinsic-ad surfaces. */
+    static replaceInGamePlacements<T>(title_id: string, placements: GameInGameAdPlacement[]): AxiosPromise<Response<T>>;
     /** Return site-admin delivery settings, aggregate metrics, and recent revenue. */
     static adminDashboard<T>(): AxiosPromise<Response<T>>;
     /** Partially update platform-wide providers and delivery frequency. */
     static adminUpdateSettings<T>(data: object): AxiosPromise<Response<T>>;
     /** Import or reconcile one provider revenue report row. */
     static adminStoreRevenue<T>(data: object): AxiosPromise<Response<T>>;
+    /** Return public provider app keys and platform mappings for site admins. */
+    static adminProviderApps<T>(): AxiosPromise<Response<T>>;
+    /** Create or update a provider app mapping without accepting report secrets. */
+    static adminUpsertProviderApp<T>(data: GameAdProviderApp): AxiosPromise<Response<T>>;
 }
 
 interface Route {

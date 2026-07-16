@@ -348,6 +348,66 @@ class GameShows {
         return Requests.processRoute(GameShowsRoute.routes.listWishlist, {}, { show_id: show_id }, params);
     }
 
+    /** List the anonymous, published festival award/prize/swag catalog. */
+    public static listPublicRewards<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listPublicRewards, {}, { show_id }, params);
+    }
+
+    /** Retrieve one SSR-ready public festival reward. */
+    public static getPublicReward<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.getPublicReward, {}, { show_id, reward_id }, params);
+    }
+
+    /** Retrieve a privacy-safe public game leaderboard for one reward. */
+    public static getPublicRewardLeaderboard<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.getPublicRewardLeaderboard, {}, { show_id, reward_id }, params);
+    }
+
+    /** List drafts, sponsor items, inventory, recipients, and fulfillment for organizers. */
+    public static manageRewards<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.manageRewards, {}, { show_id }, params);
+    }
+
+    /** Claim an eligible attendee, entrant, points, or previously awarded festival reward. */
+    public static claimReward<T>(show_id: string, reward_id: string, data: { title_id?: string } = {}, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.claimReward, data, { show_id, reward_id }, params);
+    }
+
+    /** Create an organizer-controlled festival award, prize, swag item, or reward. */
+    public static createReward<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.createReward, data, { show_id }, params);
+    }
+
+    /** Update publication, eligibility, metrics, inventory, or rich content. */
+    public static updateReward<T>(show_id: string, reward_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.updateReward, data, { show_id, reward_id }, params);
+    }
+
+    /** Soft-delete one festival reward. */
+    public static deleteReward<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.deleteReward, {}, { show_id, reward_id }, params);
+    }
+
+    /** Preview the organizer-only game or attendee performance leaderboard. */
+    public static rewardLeaderboard<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.rewardLeaderboard, {}, { show_id, reward_id }, params);
+    }
+
+    /** Snapshot current metric leaders as reward recipients. */
+    public static autoAwardReward<T>(show_id: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.autoAwardReward, {}, { show_id, reward_id }, params);
+    }
+
+    /** Add a manual nominee, winner, honoree, claimant, or fulfillment record. */
+    public static addRewardRecipient<T>(show_id: string, reward_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.addRewardRecipient, data, { show_id, reward_id }, params);
+    }
+
+    /** Update judging, claim, revocation, rank, or fulfillment state. */
+    public static updateRewardRecipient<T>(show_id: string, reward_id: string, recipient_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.updateRewardRecipient, data, { show_id, reward_id, recipient_id }, params);
+    }
+
     /**
      * List public game shows that include a title. Useful for game-page festival banners.
      */
@@ -455,6 +515,26 @@ class GameShows {
     /** Synchronize the same intent after Stripe.js completes required 3DS. */
     public static confirmSponsorInvitationPayment<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationConfirmPayment, {}, { token }, params);
+    }
+
+    /** List awards, prizes, and swag owned by a sponsor invitation. */
+    public static sponsorInvitationRewards<T>(token: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationRewards, {}, { token }, params);
+    }
+
+    /** Create a draft sponsor-owned award, prize, or swag item. */
+    public static createSponsorInvitationReward<T>(token: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationCreateReward, data, { token }, params);
+    }
+
+    /** Update sponsor-owned reward content and eligibility. */
+    public static updateSponsorInvitationReward<T>(token: string, reward_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationUpdateReward, data, { token, reward_id }, params);
+    }
+
+    /** Remove a sponsor-owned draft reward. */
+    public static deleteSponsorInvitationReward<T>(token: string, reward_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.sponsorInvitationDeleteReward, {}, { token, reward_id }, params);
     }
 
 }
