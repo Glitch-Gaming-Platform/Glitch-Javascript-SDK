@@ -7066,6 +7066,14 @@ interface DiscordUserCommandStatus {
     command_name: string;
     setup_path: string;
     configured: boolean;
+    command_ready: boolean;
+    credentials_configured: boolean;
+    user_install_enabled: boolean;
+    interactions_endpoint_configured: boolean;
+    command_registered: boolean;
+    command_id?: string | null;
+    configuration_error?: string | null;
+    checked_at?: string | null;
 }
 type DiscordMediaCaptureStatus = 'processing' | 'ready' | 'complete' | 'failed' | 'expired';
 type DiscordMediaCaptureAttachmentStatus = 'processing' | 'ready' | 'duplicate' | 'unsupported' | 'failed' | 'imported';
