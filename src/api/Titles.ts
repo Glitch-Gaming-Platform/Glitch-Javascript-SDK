@@ -372,7 +372,13 @@ class Titles {
     }
 
     /**
-     * Create a new game install record.
+     * Create or update a game install record.
+     *
+     * `user_install_id` is required. `game_build_id` is optional: send the
+     * exact Glitch build UUID returned as `build_id` by a play session when it
+     * is available, and omit it for external/legacy/unknown builds. Do not
+     * guess a build id. `game_version`, `build_type`, `device_id`, platform,
+     * device type, and operating system may be sent independently.
      */
     public static createInstall<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.createInstall, data, { title_id: title_id }, params);
@@ -392,6 +398,7 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.retentionSummary, {}, { title_id: title_id }, params);
     }
 
+    /** Filter/group by platform, device_type, operating_system, game_version, optional game_build_id, or optional device_id. */
     public static activeRetentions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.activeRetentions, {}, { title_id }, params);
     }
@@ -400,13 +407,17 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.retentionAnalysis, {}, { title_id }, params);
     }
 
+    /** Returns string dimensions plus labeled `builds` and `devices` options for report filters. */
     public static distinctDimensions<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.distinctDimensions, {}, { title_id }, params);
     }
 
     /**
      * List sessions for a specific title, with optional filters and pagination.
-     * Returns a paginated list of sessions with start/end times, session_length, user info, etc.
+     * Returns a paginated list of sessions with start/end times, session_length,
+     * build/version/device snapshots, and user info. `game_build_id` and
+     * `device_id` filters are optional; unattributed/unknown options are exposed
+     * by distinctDimensions.
      */
     public static listSessions<T>(
         title_id: string,
@@ -422,7 +433,8 @@ class Titles {
 
     /**
      * Get aggregated average session length data (daily/weekly/monthly) for a title.
-     * Optionally filter by platform/device_type/OS/version and group by one dimension.
+     * Optionally filter/group by platform, device type, OS, version, exact
+     * build id, or device id.
      */
     public static sessionsAverage<T>(
         title_id: string,
@@ -915,6 +927,10 @@ class Titles {
 
     /**
      * Record a single in-game action.
+     *
+     * Keep step_key and action_key stable. Optional step_label,
+     * step_description, event_label, and event_description fields are
+     * canonical display text for those keys within the title.
      */
     public static createEvent<T>(title_id: string, data: object): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.createEvent, data, { title_id });
@@ -922,7 +938,7 @@ class Titles {
 
     /**
      * Record multiple events in one request (Batching).
-     * @param data { events: Array<{game_install_id, step_key, action_key, metadata?}> }
+     * @param data { events: Array<{game_install_id, step_key, step_label?, step_description?, action_key, event_label?, event_description?, previous_step_key?, metadata?, event_timestamp?}> }
      */
     public static bulkCreateEvents<T>(title_id: string, data: { events: object[] }): AxiosPromise<Response<T>> {
         return Requests.processRoute(TitlesRoute.routes.bulkCreateEvents, data, { title_id });
