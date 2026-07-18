@@ -1,6 +1,6 @@
 {
   "name": "glitch-javascript-sdk",
-  "version": "3.8.0",
+  "version": "3.8.2",
   "description": "Javascript SDK for Glitch",
   "publishConfig": {
     "access": "public"
@@ -13,7 +13,7 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "node scripts/test-game-advertising-routes.cjs",
+    "test": "node scripts/test-game-advertising-routes.cjs && node scripts/test-discord-media-routes.cjs",
     "build": "rm -Rf dist && rollup -c --bundleConfigAsCjs",
     "build-docs": "rm  -rf docs && typedoc  --tsconfig tsconfig.json src/"
   },

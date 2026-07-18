@@ -6966,6 +6966,155 @@ declare class Media {
     static process<T>(media_id: string, data: VideoProcessRequest): AxiosPromise<Response<T>>;
 }
 
+type DiscordMediaType = 'all' | 'image' | 'video' | 'gif';
+type DiscordMediaAuthorType = 'all' | 'user' | 'bot' | 'webhook';
+interface DiscordMediaSearchParams {
+    cursor?: string;
+    channel_id?: string;
+    search?: string;
+    search_scope?: 'content' | 'filename';
+    media_type?: DiscordMediaType;
+    author_type?: DiscordMediaAuthorType;
+    date_from?: string;
+    date_to?: string;
+    sort_order?: 'asc' | 'desc';
+    include_imported?: boolean;
+    include_unsupported?: boolean;
+    include_nsfw?: boolean;
+}
+interface DiscordMediaAttachment {
+    id: string;
+    filename: string;
+    title?: string | null;
+    description?: string | null;
+    mime_type: string;
+    media_type: 'image' | 'video';
+    size: number;
+    url?: string | null;
+    proxy_url?: string | null;
+    width?: number | null;
+    height?: number | null;
+    duration_secs?: number | null;
+    supported: boolean;
+    unsupported_reason?: string | null;
+    already_imported: boolean;
+    imported_title_update_id?: string | null;
+    imported_media_id?: string | null;
+    duplicate_import: boolean;
+}
+interface DiscordMediaMessage {
+    id: string;
+    channel_id: string;
+    content: string;
+    timestamp?: string | null;
+    edited_timestamp?: string | null;
+    jump_url: string;
+    author: {
+        id?: string | null;
+        username: string;
+        avatar?: string | null;
+        bot: boolean;
+    };
+    webhook_id?: string | null;
+    attachments: DiscordMediaAttachment[];
+}
+interface DiscordMediaSearchResponse {
+    items: DiscordMediaMessage[];
+    total_results: number;
+    next_cursor?: string | null;
+    indexing: boolean;
+    retry_after?: number | null;
+}
+interface DiscordMediaImportGroup {
+    channel_id: string;
+    message_id: string;
+    attachment_ids: string[];
+}
+interface DiscordMediaImportRequest {
+    groups: DiscordMediaImportGroup[];
+}
+interface DiscordMediaImportAttachmentResult {
+    status: 'imported' | 'duplicate' | 'failed';
+    channel_id: string;
+    message_id: string;
+    attachment_id: string;
+    media_id?: string;
+    title_update_id?: string;
+    reason?: string;
+}
+interface DiscordMediaImportResponse {
+    imported_count: number;
+    duplicate_count: number;
+    failed_count: number;
+    updates: Array<{
+        id: string;
+        title?: string | null;
+        scheduled_status: 'pending';
+        schedule_for_social: false;
+        media_count: number;
+    }>;
+    attachments: DiscordMediaImportAttachmentResult[];
+}
+interface DiscordUserCommandStatus {
+    linked: boolean;
+    linked_to_this_scheduler: boolean;
+    discord_username?: string | null;
+    destination_scheduler_id?: string | null;
+    destination_scheduler_name?: string | null;
+    installed_at?: string | null;
+    pending_count: number;
+    command_name: string;
+    setup_path: string;
+    configured: boolean;
+}
+type DiscordMediaCaptureStatus = 'processing' | 'ready' | 'complete' | 'failed' | 'expired';
+type DiscordMediaCaptureAttachmentStatus = 'processing' | 'ready' | 'duplicate' | 'unsupported' | 'failed' | 'imported';
+interface DiscordMediaCaptureAttachment {
+    id: string;
+    discord_attachment_id: string;
+    filename: string;
+    mime_type?: string | null;
+    media_type: 'image' | 'video';
+    size: number;
+    width?: number | null;
+    height?: number | null;
+    duration_secs?: number | null;
+    description?: string | null;
+    status: DiscordMediaCaptureAttachmentStatus;
+    failure_reason?: string | null;
+    preview_url?: string | null;
+    media_id?: string | null;
+    title_update_id?: string | null;
+}
+interface DiscordMediaCapture {
+    id: string;
+    status: DiscordMediaCaptureStatus;
+    content?: string | null;
+    author?: {
+        id?: string | null;
+        username: string;
+        avatar?: string | null;
+        bot: boolean;
+    } | null;
+    timestamp?: string | null;
+    jump_url?: string | null;
+    expires_at: string;
+    failure_reason?: string | null;
+    attachments: DiscordMediaCaptureAttachment[];
+}
+interface DiscordMediaCaptureListParams {
+    cursor?: string;
+    search?: string;
+    limit?: number;
+}
+interface DiscordMediaCaptureListResponse {
+    items: DiscordMediaCapture[];
+    next_cursor?: string | null;
+}
+interface DiscordMediaCaptureImportRequest {
+    capture_id: string;
+    attachment_ids: string[];
+}
 declare class Scheduler {
     /**
      * List promotion schedules.
@@ -7276,6 +7425,27 @@ declare class Scheduler {
     * @returns promise
     */
     static getDiscordChannels<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Search image and video attachments in the connected Discord server.
+     * This call only returns remote candidates; it does not copy files into the
+     * Library and does not create or schedule social posts.
+     */
+    static searchDiscordMedia<T = DiscordMediaSearchResponse>(scheduler_id: string, params?: DiscordMediaSearchParams): AxiosPromise<Response<T>>;
+    /**
+     * Import explicitly selected Discord attachments as pending, unscheduled
+     * Library updates. Attachments selected from one message stay grouped.
+     */
+    static importDiscordMedia<T = DiscordMediaImportResponse>(scheduler_id: string, data: DiscordMediaImportRequest, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Get the current user's personal Save to Glitch command setup state. */
+    static getDiscordUserCommandStatus<T = DiscordUserCommandStatus>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Disconnect the current user's personal command from this Library. */
+    static disconnectDiscordUserCommand<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List messages saved through the user-installed Discord command. */
+    static listDiscordMediaCaptures<T = DiscordMediaCaptureListResponse>(scheduler_id: string, params?: DiscordMediaCaptureListParams): AxiosPromise<Response<T>>;
+    /** Import selected staged attachments into pending Library content. */
+    static importDiscordMediaCapture<T = DiscordMediaImportResponse>(scheduler_id: string, data: DiscordMediaCaptureImportRequest, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Dismiss one saved Discord message and delete its temporary staged files. */
+    static dismissDiscordMediaCapture<T>(scheduler_id: string, capture_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Clear Google Ads OAuth credentials from a promotion schedule.
      *

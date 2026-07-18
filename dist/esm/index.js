@@ -16257,6 +16257,13 @@ var SchedulerRoute = /** @class */ (function () {
         getRedditSubredditFlairs: { url: '/schedulers/{scheduler_id}/reddit/subreddits/{subreddit}/flairs', method: HTTP_METHODS.GET },
         getRedditSubredditRules: { url: '/schedulers/{scheduler_id}/reddit/subreddits/{subreddit}/rules', method: HTTP_METHODS.GET },
         getDiscordChannels: { url: '/schedulers/{scheduler_id}/discord/channels', method: HTTP_METHODS.GET },
+        searchDiscordMedia: { url: '/schedulers/{scheduler_id}/discord/media', method: HTTP_METHODS.GET },
+        importDiscordMedia: { url: '/schedulers/{scheduler_id}/discord/media/import', method: HTTP_METHODS.POST },
+        getDiscordUserCommandStatus: { url: '/schedulers/{scheduler_id}/discord/user-command', method: HTTP_METHODS.GET },
+        disconnectDiscordUserCommand: { url: '/schedulers/{scheduler_id}/discord/user-command', method: HTTP_METHODS.DELETE },
+        listDiscordMediaCaptures: { url: '/schedulers/{scheduler_id}/discord/captures', method: HTTP_METHODS.GET },
+        importDiscordMediaCapture: { url: '/schedulers/{scheduler_id}/discord/captures/import', method: HTTP_METHODS.POST },
+        dismissDiscordMediaCapture: { url: '/schedulers/{scheduler_id}/discord/captures/{capture_id}', method: HTTP_METHODS.DELETE },
         crossPromoteListRelationships: {
             url: '/schedulers/{scheduler_id}/crosspromote/relationships',
             method: HTTP_METHODS.GET
@@ -16752,6 +16759,41 @@ var Scheduler = /** @class */ (function () {
     */
     Scheduler.getDiscordChannels = function (scheduler_id, params) {
         return Requests.processRoute(SchedulerRoute.routes.getDiscordChannels, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Search image and video attachments in the connected Discord server.
+     * This call only returns remote candidates; it does not copy files into the
+     * Library and does not create or schedule social posts.
+     */
+    Scheduler.searchDiscordMedia = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.searchDiscordMedia, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /**
+     * Import explicitly selected Discord attachments as pending, unscheduled
+     * Library updates. Attachments selected from one message stay grouped.
+     */
+    Scheduler.importDiscordMedia = function (scheduler_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.importDiscordMedia, data, { scheduler_id: scheduler_id }, params);
+    };
+    /** Get the current user's personal Save to Glitch command setup state. */
+    Scheduler.getDiscordUserCommandStatus = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.getDiscordUserCommandStatus, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /** Disconnect the current user's personal command from this Library. */
+    Scheduler.disconnectDiscordUserCommand = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.disconnectDiscordUserCommand, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /** List messages saved through the user-installed Discord command. */
+    Scheduler.listDiscordMediaCaptures = function (scheduler_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.listDiscordMediaCaptures, {}, { scheduler_id: scheduler_id }, params);
+    };
+    /** Import selected staged attachments into pending Library content. */
+    Scheduler.importDiscordMediaCapture = function (scheduler_id, data, params) {
+        return Requests.processRoute(SchedulerRoute.routes.importDiscordMediaCapture, data, { scheduler_id: scheduler_id }, params);
+    };
+    /** Dismiss one saved Discord message and delete its temporary staged files. */
+    Scheduler.dismissDiscordMediaCapture = function (scheduler_id, capture_id, params) {
+        return Requests.processRoute(SchedulerRoute.routes.dismissDiscordMediaCapture, {}, { scheduler_id: scheduler_id, capture_id: capture_id }, params);
     };
     /**
      * Clear Google Ads OAuth credentials from a promotion schedule.

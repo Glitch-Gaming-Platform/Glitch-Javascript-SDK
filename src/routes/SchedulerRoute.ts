@@ -50,6 +50,13 @@ class SchedulerRoute {
         getRedditSubredditFlairs: { url: '/schedulers/{scheduler_id}/reddit/subreddits/{subreddit}/flairs', method: HTTP_METHODS.GET },
         getRedditSubredditRules: { url: '/schedulers/{scheduler_id}/reddit/subreddits/{subreddit}/rules', method: HTTP_METHODS.GET },
         getDiscordChannels: { url: '/schedulers/{scheduler_id}/discord/channels', method: HTTP_METHODS.GET },
+        searchDiscordMedia: { url: '/schedulers/{scheduler_id}/discord/media', method: HTTP_METHODS.GET },
+        importDiscordMedia: { url: '/schedulers/{scheduler_id}/discord/media/import', method: HTTP_METHODS.POST },
+        getDiscordUserCommandStatus: { url: '/schedulers/{scheduler_id}/discord/user-command', method: HTTP_METHODS.GET },
+        disconnectDiscordUserCommand: { url: '/schedulers/{scheduler_id}/discord/user-command', method: HTTP_METHODS.DELETE },
+        listDiscordMediaCaptures: { url: '/schedulers/{scheduler_id}/discord/captures', method: HTTP_METHODS.GET },
+        importDiscordMediaCapture: { url: '/schedulers/{scheduler_id}/discord/captures/import', method: HTTP_METHODS.POST },
+        dismissDiscordMediaCapture: { url: '/schedulers/{scheduler_id}/discord/captures/{capture_id}', method: HTTP_METHODS.DELETE },
 
         crossPromoteListRelationships: {
             url: '/schedulers/{scheduler_id}/crosspromote/relationships',
