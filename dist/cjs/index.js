@@ -28784,7 +28784,8 @@ var Scheduler = /** @class */ (function () {
     };
     /**
      * Import explicitly selected Discord attachments as pending, unscheduled
-     * Library updates. Attachments selected from one message stay grouped.
+     * Library updates. Callers can group files by message or create one item
+     * per file through title_update_mode.
      */
     Scheduler.importDiscordMedia = function (scheduler_id, data, params) {
         return Requests.processRoute(SchedulerRoute.routes.importDiscordMedia, data, { scheduler_id: scheduler_id }, params);

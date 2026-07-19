@@ -7046,8 +7046,11 @@ interface DiscordMediaImportGroup {
     message_id: string;
     attachment_ids: string[];
 }
+type DiscordTitleUpdateMode = 'grouped' | 'separate';
 interface DiscordMediaImportRequest {
     groups: DiscordMediaImportGroup[];
+    /** Group files by Discord message or create one pending Library item per file. */
+    title_update_mode?: DiscordTitleUpdateMode;
 }
 interface DiscordMediaImportAttachmentResult {
     status: 'imported' | 'duplicate' | 'failed';
@@ -7078,6 +7081,8 @@ interface DiscordUserCommandStatus {
     destination_scheduler_id?: string | null;
     destination_scheduler_name?: string | null;
     installed_at?: string | null;
+    destination_count?: number;
+    linked_account_count?: number;
     pending_count: number;
     command_name: string;
     setup_path: string;
@@ -7138,6 +7143,8 @@ interface DiscordMediaCaptureListResponse {
 interface DiscordMediaCaptureImportRequest {
     capture_id: string;
     attachment_ids: string[];
+    /** Group selected files together or create one pending Library item per file. */
+    title_update_mode?: DiscordTitleUpdateMode;
 }
 declare class Scheduler {
     /**
@@ -7457,7 +7464,8 @@ declare class Scheduler {
     static searchDiscordMedia<T = DiscordMediaSearchResponse>(scheduler_id: string, params?: DiscordMediaSearchParams): AxiosPromise<Response<T>>;
     /**
      * Import explicitly selected Discord attachments as pending, unscheduled
-     * Library updates. Attachments selected from one message stay grouped.
+     * Library updates. Callers can group files by message or create one item
+     * per file through title_update_mode.
      */
     static importDiscordMedia<T = DiscordMediaImportResponse>(scheduler_id: string, data: DiscordMediaImportRequest, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** Get the current user's personal Save to Glitch command setup state. */

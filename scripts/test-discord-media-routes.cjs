@@ -17,6 +17,8 @@ assert(api.includes('static importDiscordMediaCapture<T'), 'Missing Discord capt
 assert(api.includes('static dismissDiscordMediaCapture<T'), 'Missing Discord capture dismiss method');
 assert(api.includes('DiscordMediaImportRequest'), 'Missing Discord import request type');
 assert(api.includes('DiscordMediaSearchResponse'), 'Missing Discord search response type');
+assert(api.includes("DiscordTitleUpdateMode = 'grouped' | 'separate'"), 'Missing Discord TitleUpdate layout type');
+assert(api.includes('title_update_mode?: DiscordTitleUpdateMode'), 'Missing Discord TitleUpdate layout request field');
 
 const importMethod = api.slice(api.indexOf('static importDiscordMedia<T'), api.indexOf('static importDiscordMedia<T') + 700);
 assert(importMethod.includes('SchedulerRoute.routes.importDiscordMedia'), 'Discord import method uses the wrong route');
