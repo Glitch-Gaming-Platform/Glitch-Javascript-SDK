@@ -44,6 +44,35 @@ export interface InfluencerPayoutQuery {
     orderBy?: "created_at" | "amount";
     orderDirection?: "asc" | "desc";
 }
+/** Delivery state for the authenticated user's registered email address. */
+export type EmailDeliveryState = "healthy" | "suppressed";
+/** Recovery action selected by the API for the current suppression category. */
+export type EmailDeliveryRecoveryAction = "none" | "self_service" | "change_email" | "contact_support";
+/** Self-service and fallback actions available for an email-delivery state. */
+export interface EmailDeliveryRecovery {
+    allowed: boolean;
+    action: EmailDeliveryRecoveryAction;
+    requires_acknowledgement: boolean;
+    account_verified?: boolean;
+    change_email_path?: string;
+    support_path?: string;
+}
+/** Current delivery state for the authenticated user's registered email. */
+export interface EmailDeliveryStatus {
+    state: EmailDeliveryState;
+    action_required: boolean;
+    email: string | null;
+    category: string | null;
+    provider: string | null;
+    suppressed_at: string | null;
+    display_reason: string | null;
+    recovery: EmailDeliveryRecovery;
+    restored_now?: boolean;
+}
+/** Explicit confirmation required to remove an eligible active suppression. */
+export interface RestoreEmailDeliveryRequest {
+    acknowledged: true;
+}
 declare class Users {
     /**
      * List all the users.
@@ -74,6 +103,16 @@ declare class Users {
      * @returns promise
      */
     static me<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Gets the delivery and suppression state for the authenticated user's
+     * current registered email address.
+     */
+    static emailDeliveryStatus(): AxiosPromise<Response<EmailDeliveryStatus>>;
+    /**
+     * Removes an eligible active suppression for the authenticated user's
+     * current verified email address.
+     */
+    static restoreEmailDelivery(data: RestoreEmailDeliveryRequest): AxiosPromise<Response<EmailDeliveryStatus>>;
     /**
      * Gets the campaigns the users has been invited too.
      *

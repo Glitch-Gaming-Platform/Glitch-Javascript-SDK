@@ -1937,6 +1937,35 @@ interface InfluencerPayoutQuery {
     orderBy?: "created_at" | "amount";
     orderDirection?: "asc" | "desc";
 }
+/** Delivery state for the authenticated user's registered email address. */
+type EmailDeliveryState = "healthy" | "suppressed";
+/** Recovery action selected by the API for the current suppression category. */
+type EmailDeliveryRecoveryAction = "none" | "self_service" | "change_email" | "contact_support";
+/** Self-service and fallback actions available for an email-delivery state. */
+interface EmailDeliveryRecovery {
+    allowed: boolean;
+    action: EmailDeliveryRecoveryAction;
+    requires_acknowledgement: boolean;
+    account_verified?: boolean;
+    change_email_path?: string;
+    support_path?: string;
+}
+/** Current delivery state for the authenticated user's registered email. */
+interface EmailDeliveryStatus {
+    state: EmailDeliveryState;
+    action_required: boolean;
+    email: string | null;
+    category: string | null;
+    provider: string | null;
+    suppressed_at: string | null;
+    display_reason: string | null;
+    recovery: EmailDeliveryRecovery;
+    restored_now?: boolean;
+}
+/** Explicit confirmation required to remove an eligible active suppression. */
+interface RestoreEmailDeliveryRequest {
+    acknowledged: true;
+}
 declare class Users {
     /**
      * List all the users.
@@ -1967,6 +1996,16 @@ declare class Users {
      * @returns promise
      */
     static me<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Gets the delivery and suppression state for the authenticated user's
+     * current registered email address.
+     */
+    static emailDeliveryStatus(): AxiosPromise<Response<EmailDeliveryStatus>>;
+    /**
+     * Removes an eligible active suppression for the authenticated user's
+     * current verified email address.
+     */
+    static restoreEmailDelivery(data: RestoreEmailDeliveryRequest): AxiosPromise<Response<EmailDeliveryStatus>>;
     /**
      * Gets the campaigns the users has been invited too.
      *
@@ -10266,7 +10305,36 @@ declare class Multiplayer {
 
 declare class ServerOperations {
     static listDeployments<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Update the warm/spare/ceiling shape of a matchmaker managed instance pool.
+     * Rejected for any build whose capacity model is not "pooled".
+     */
     static updatePolicy<T>(title_id: string, build_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Resize the Container App behind a build. Replica bounds are enforced
+     * server side against the build's capacity model, so a singleton world
+     * cannot be given a second replica. Pass acknowledge_outage when
+     * deliberately setting min replicas to 0 on a singleton or replicated
+     * deployment, which takes the game offline.
+     */
+    static updateContainerAppResources<T>(title_id: string, build_id: string, data: object): AxiosPromise<Response<T>>;
+    /**
+     * Declare how many server processes a build may run at once: singleton,
+     * replicated, pooled, serverless, or static. Re-clamps the stored replica
+     * shape and is honored by the next deployment.
+     */
+    static updateCapacityModel<T>(title_id: string, build_id: string, data: {
+        capacity_model: string;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Realms are how a singleton world scales: one process per realm, all
+     * sharing a database. These are the site-admin views of the multiplayer
+     * realm records.
+     */
+    static listRealms<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static createRealm<T>(title_id: string, data: object): AxiosPromise<Response<T>>;
+    static updateRealm<T>(title_id: string, realm_id: string, data: object): AxiosPromise<Response<T>>;
+    static deleteRealm<T>(title_id: string, realm_id: string): AxiosPromise<Response<T>>;
 }
 
 interface AgentRunRequest {

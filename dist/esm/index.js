@@ -8935,6 +8935,8 @@ var UserRoutes = /** @class */ (function () {
         follow: { url: '/users/{user_id}/follow', method: HTTP_METHODS.POST },
         profile: { url: '/users/{user_id}/profile', method: HTTP_METHODS.GET },
         me: { url: '/users/me', method: HTTP_METHODS.GET },
+        emailDeliveryStatus: { url: '/users/me/email-delivery', method: HTTP_METHODS.GET },
+        restoreEmailDelivery: { url: '/users/me/email-delivery/restore', method: HTTP_METHODS.POST },
         syncInfluencer: { url: '/users/syncInfluencer', method: HTTP_METHODS.POST },
         generateInfluencerProfile: { url: '/users/generateInfluencerProfile', method: HTTP_METHODS.POST },
         oneTimeToken: { url: '/users/oneTimeToken', method: HTTP_METHODS.GET },
@@ -9030,6 +9032,20 @@ var Users = /** @class */ (function () {
      */
     Users.me = function (params) {
         return Requests.processRoute(UserRoutes.routes.me, {}, undefined, params);
+    };
+    /**
+     * Gets the delivery and suppression state for the authenticated user's
+     * current registered email address.
+     */
+    Users.emailDeliveryStatus = function () {
+        return Requests.processRoute(UserRoutes.routes.emailDeliveryStatus);
+    };
+    /**
+     * Removes an eligible active suppression for the authenticated user's
+     * current verified email address.
+     */
+    Users.restoreEmailDelivery = function (data) {
+        return Requests.processRoute(UserRoutes.routes.restoreEmailDelivery, data);
     };
     /**
      * Gets the campaigns the users has been invited too.
@@ -20209,6 +20225,30 @@ var ServerOperationsRoute = /** @class */ (function () {
             url: '/admin/server-operations/titles/{title_id}/builds/{build_id}/policy',
             method: HTTP_METHODS.PUT
         },
+        updateContainerAppResources: {
+            url: '/admin/server-operations/titles/{title_id}/builds/{build_id}/container-app',
+            method: HTTP_METHODS.PUT
+        },
+        updateCapacityModel: {
+            url: '/admin/server-operations/titles/{title_id}/builds/{build_id}/capacity-model',
+            method: HTTP_METHODS.PUT
+        },
+        listRealms: {
+            url: '/admin/server-operations/titles/{title_id}/realms',
+            method: HTTP_METHODS.GET
+        },
+        createRealm: {
+            url: '/admin/server-operations/titles/{title_id}/realms',
+            method: HTTP_METHODS.POST
+        },
+        updateRealm: {
+            url: '/admin/server-operations/titles/{title_id}/realms/{realm_id}',
+            method: HTTP_METHODS.PUT
+        },
+        deleteRealm: {
+            url: '/admin/server-operations/titles/{title_id}/realms/{realm_id}',
+            method: HTTP_METHODS.DELETE
+        },
     };
     return ServerOperationsRoute;
 }());
@@ -20219,8 +20259,47 @@ var ServerOperations = /** @class */ (function () {
     ServerOperations.listDeployments = function (params) {
         return Requests.processRoute(ServerOperationsRoute.routes.listDeployments, undefined, undefined, params);
     };
+    /**
+     * Update the warm/spare/ceiling shape of a matchmaker managed instance pool.
+     * Rejected for any build whose capacity model is not "pooled".
+     */
     ServerOperations.updatePolicy = function (title_id, build_id, data) {
         return Requests.processRoute(ServerOperationsRoute.routes.updatePolicy, data, { title_id: title_id, build_id: build_id });
+    };
+    /**
+     * Resize the Container App behind a build. Replica bounds are enforced
+     * server side against the build's capacity model, so a singleton world
+     * cannot be given a second replica. Pass acknowledge_outage when
+     * deliberately setting min replicas to 0 on a singleton or replicated
+     * deployment, which takes the game offline.
+     */
+    ServerOperations.updateContainerAppResources = function (title_id, build_id, data) {
+        return Requests.processRoute(ServerOperationsRoute.routes.updateContainerAppResources, data, { title_id: title_id, build_id: build_id });
+    };
+    /**
+     * Declare how many server processes a build may run at once: singleton,
+     * replicated, pooled, serverless, or static. Re-clamps the stored replica
+     * shape and is honored by the next deployment.
+     */
+    ServerOperations.updateCapacityModel = function (title_id, build_id, data) {
+        return Requests.processRoute(ServerOperationsRoute.routes.updateCapacityModel, data, { title_id: title_id, build_id: build_id });
+    };
+    /**
+     * Realms are how a singleton world scales: one process per realm, all
+     * sharing a database. These are the site-admin views of the multiplayer
+     * realm records.
+     */
+    ServerOperations.listRealms = function (title_id, params) {
+        return Requests.processRoute(ServerOperationsRoute.routes.listRealms, undefined, { title_id: title_id }, params);
+    };
+    ServerOperations.createRealm = function (title_id, data) {
+        return Requests.processRoute(ServerOperationsRoute.routes.createRealm, data, { title_id: title_id });
+    };
+    ServerOperations.updateRealm = function (title_id, realm_id, data) {
+        return Requests.processRoute(ServerOperationsRoute.routes.updateRealm, data, { title_id: title_id, realm_id: realm_id });
+    };
+    ServerOperations.deleteRealm = function (title_id, realm_id) {
+        return Requests.processRoute(ServerOperationsRoute.routes.deleteRealm, undefined, { title_id: title_id, realm_id: realm_id });
     };
     return ServerOperations;
 }());

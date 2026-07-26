@@ -52,6 +52,40 @@ export interface InfluencerPayoutQuery {
     orderDirection?: "asc" | "desc";
 }
 
+/** Delivery state for the authenticated user's registered email address. */
+export type EmailDeliveryState = "healthy" | "suppressed";
+
+/** Recovery action selected by the API for the current suppression category. */
+export type EmailDeliveryRecoveryAction = "none" | "self_service" | "change_email" | "contact_support";
+
+/** Self-service and fallback actions available for an email-delivery state. */
+export interface EmailDeliveryRecovery {
+    allowed: boolean;
+    action: EmailDeliveryRecoveryAction;
+    requires_acknowledgement: boolean;
+    account_verified?: boolean;
+    change_email_path?: string;
+    support_path?: string;
+}
+
+/** Current delivery state for the authenticated user's registered email. */
+export interface EmailDeliveryStatus {
+    state: EmailDeliveryState;
+    action_required: boolean;
+    email: string | null;
+    category: string | null;
+    provider: string | null;
+    suppressed_at: string | null;
+    display_reason: string | null;
+    recovery: EmailDeliveryRecovery;
+    restored_now?: boolean;
+}
+
+/** Explicit confirmation required to remove an eligible active suppression. */
+export interface RestoreEmailDeliveryRequest {
+    acknowledged: true;
+}
+
 class Users {
 
     /**
@@ -92,6 +126,22 @@ class Users {
     public static me<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
 
         return Requests.processRoute(UserRoutes.routes.me, {}, undefined, params);
+    }
+
+    /**
+     * Gets the delivery and suppression state for the authenticated user's
+     * current registered email address.
+     */
+    public static emailDeliveryStatus(): AxiosPromise<Response<EmailDeliveryStatus>> {
+        return Requests.processRoute(UserRoutes.routes.emailDeliveryStatus);
+    }
+
+    /**
+     * Removes an eligible active suppression for the authenticated user's
+     * current verified email address.
+     */
+    public static restoreEmailDelivery(data: RestoreEmailDeliveryRequest): AxiosPromise<Response<EmailDeliveryStatus>> {
+        return Requests.processRoute(UserRoutes.routes.restoreEmailDelivery, data);
     }
 
     /**

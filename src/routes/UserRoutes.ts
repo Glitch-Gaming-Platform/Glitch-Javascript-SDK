@@ -9,6 +9,8 @@ class UserRoutes {
     follow: { url: '/users/{user_id}/follow', method: HTTP_METHODS.POST },
     profile: { url: '/users/{user_id}/profile', method: HTTP_METHODS.GET },
     me: { url: '/users/me', method: HTTP_METHODS.GET },
+    emailDeliveryStatus: { url: '/users/me/email-delivery', method: HTTP_METHODS.GET },
+    restoreEmailDelivery: { url: '/users/me/email-delivery/restore', method: HTTP_METHODS.POST },
     syncInfluencer: { url: '/users/syncInfluencer', method: HTTP_METHODS.POST },
     generateInfluencerProfile: { url: '/users/generateInfluencerProfile', method: HTTP_METHODS.POST },
     oneTimeToken: { url: '/users/oneTimeToken', method: HTTP_METHODS.GET },
