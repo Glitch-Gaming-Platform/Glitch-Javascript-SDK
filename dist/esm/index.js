@@ -15076,6 +15076,7 @@ var GameShowsRoute = /** @class */ (function () {
         updateTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.PUT },
         deleteTitle: { url: '/gameshows/{show_id}/titles/{title_id}', method: HTTP_METHODS.DELETE },
         listBlocks: { url: '/gameshows/{show_id}/blocks', method: HTTP_METHODS.GET },
+        listBlockTitles: { url: '/gameshows/{show_id}/blocks/{block_id}/titles', method: HTTP_METHODS.GET },
         createBlock: { url: '/gameshows/{show_id}/blocks', method: HTTP_METHODS.POST },
         updateBlock: { url: '/gameshows/{show_id}/blocks/{block_id}', method: HTTP_METHODS.PUT },
         deleteBlock: { url: '/gameshows/{show_id}/blocks/{block_id}', method: HTTP_METHODS.DELETE },
@@ -15085,6 +15086,16 @@ var GameShowsRoute = /** @class */ (function () {
         createScheduleItem: { url: '/gameshows/{show_id}/schedule', method: HTTP_METHODS.POST },
         updateScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.PUT },
         deleteScheduleItem: { url: '/gameshows/{show_id}/schedule/{schedule_id}', method: HTTP_METHODS.DELETE },
+        listScheduleTicketTypes: { url: '/gameshows/{show_id}/schedule/{schedule_id}/ticket-types', method: HTTP_METHODS.GET },
+        manageScheduleTicketTypes: { url: '/gameshows/{show_id}/schedule/{schedule_id}/ticket-types/manage', method: HTTP_METHODS.GET },
+        createScheduleTicketType: { url: '/gameshows/{show_id}/schedule/{schedule_id}/ticket-types', method: HTTP_METHODS.POST },
+        updateScheduleTicketType: { url: '/gameshows/{show_id}/schedule/{schedule_id}/ticket-types/{ticket_type_id}', method: HTTP_METHODS.PUT },
+        deleteScheduleTicketType: { url: '/gameshows/{show_id}/schedule/{schedule_id}/ticket-types/{ticket_type_id}', method: HTTP_METHODS.DELETE },
+        purchaseScheduleTickets: { url: '/gameshows/{show_id}/schedule/{schedule_id}/ticket-purchases', method: HTTP_METHODS.POST },
+        confirmScheduleTicketPurchase: { url: '/gameshows/{show_id}/schedule/{schedule_id}/ticket-purchases/{purchase_id}/confirm', method: HTTP_METHODS.POST },
+        getScheduleTicketReceipt: { url: '/gameshows/{show_id}/schedule/{schedule_id}/ticket-purchases/{purchase_id}/receipt', method: HTTP_METHODS.GET },
+        listScheduleTicketPurchases: { url: '/gameshows/{show_id}/schedule/{schedule_id}/ticket-purchases', method: HTTP_METHODS.GET },
+        refundScheduleTicketPurchase: { url: '/gameshows/{show_id}/schedule/{schedule_id}/ticket-purchases/{purchase_id}/refund', method: HTTP_METHODS.POST },
         discoveryQueue: { url: '/gameshows/{show_id}/discovery', method: HTTP_METHODS.GET },
         trackAnalytics: { url: '/gameshows/{show_id}/analytics', method: HTTP_METHODS.POST },
         analyticsReport: { url: '/gameshows/{show_id}/analytics/report', method: HTTP_METHODS.GET },
@@ -15333,6 +15344,10 @@ var GameShows = /** @class */ (function () {
     GameShows.listBlocks = function (show_id, params) {
         return Requests.processRoute(GameShowsRoute.routes.listBlocks, {}, { show_id: show_id }, params);
     };
+    /** Paginate one Page Builder game section without downloading its full catalog. */
+    GameShows.listBlockTitles = function (show_id, block_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listBlockTitles, {}, { show_id: show_id, block_id: block_id }, params);
+    };
     /**
      * Create a page-builder block for a game show. Requires organizer permissions.
      */
@@ -15384,6 +15399,46 @@ var GameShows = /** @class */ (function () {
      */
     GameShows.deleteScheduleItem = function (show_id, schedule_id, params) {
         return Requests.processRoute(GameShowsRoute.routes.deleteScheduleItem, {}, { show_id: show_id, schedule_id: schedule_id }, params);
+    };
+    /** List public early-bird, regular, and other ticket tiers for one session. */
+    GameShows.listScheduleTicketTypes = function (show_id, schedule_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listScheduleTicketTypes, {}, { show_id: show_id, schedule_id: schedule_id }, params);
+    };
+    /** List every ticket tier, including archived tiers, for festival organizers. */
+    GameShows.manageScheduleTicketTypes = function (show_id, schedule_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.manageScheduleTicketTypes, {}, { show_id: show_id, schedule_id: schedule_id }, params);
+    };
+    /** Create one session ticket price tier. */
+    GameShows.createScheduleTicketType = function (show_id, schedule_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.createScheduleTicketType, data, { show_id: show_id, schedule_id: schedule_id }, params);
+    };
+    /** Update ticket price, inventory, availability window, or publication state. */
+    GameShows.updateScheduleTicketType = function (show_id, schedule_id, ticket_type_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.updateScheduleTicketType, data, { show_id: show_id, schedule_id: schedule_id, ticket_type_id: ticket_type_id }, params);
+    };
+    /** Archive a ticket tier while retaining historical purchases. */
+    GameShows.deleteScheduleTicketType = function (show_id, schedule_id, ticket_type_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.deleteScheduleTicketType, {}, { show_id: show_id, schedule_id: schedule_id, ticket_type_id: ticket_type_id }, params);
+    };
+    /** Reserve inventory and create/confirm the session ticket PaymentIntent. */
+    GameShows.purchaseScheduleTickets = function (show_id, schedule_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.purchaseScheduleTickets, data, { show_id: show_id, schedule_id: schedule_id }, params);
+    };
+    /** Synchronize the same ticket PaymentIntent after Stripe.js completes 3DS. */
+    GameShows.confirmScheduleTicketPurchase = function (show_id, schedule_id, purchase_id, access_token, params) {
+        return Requests.processRoute(GameShowsRoute.routes.confirmScheduleTicketPurchase, { access_token: access_token }, { show_id: show_id, schedule_id: schedule_id, purchase_id: purchase_id }, params);
+    };
+    /** Retrieve a token-protected customer receipt. */
+    GameShows.getScheduleTicketReceipt = function (show_id, schedule_id, purchase_id, access_token, params) {
+        return Requests.processRoute(GameShowsRoute.routes.getScheduleTicketReceipt, {}, { show_id: show_id, schedule_id: schedule_id, purchase_id: purchase_id }, __assign(__assign({}, params), { access_token: access_token }));
+    };
+    /** List ticket purchasers and refund state for festival organizers. */
+    GameShows.listScheduleTicketPurchases = function (show_id, schedule_id, params) {
+        return Requests.processRoute(GameShowsRoute.routes.listScheduleTicketPurchases, {}, { show_id: show_id, schedule_id: schedule_id }, params);
+    };
+    /** Issue a partial or full destination-charge refund at organizer discretion. */
+    GameShows.refundScheduleTicketPurchase = function (show_id, schedule_id, purchase_id, data, params) {
+        return Requests.processRoute(GameShowsRoute.routes.refundScheduleTicketPurchase, data, { show_id: show_id, schedule_id: schedule_id, purchase_id: purchase_id }, params);
     };
     /**
      * Get the game show discovery queue.

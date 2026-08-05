@@ -1,5 +1,29 @@
 import Response from "../util/Response";
 import { AxiosPromise } from "axios";
+export interface GameShowScheduleTicketTypeInput {
+    name: string;
+    description?: string | null;
+    kind: 'early_bird' | 'regular' | 'other';
+    price_cents: number;
+    currency: string;
+    quantity_available?: number | null;
+    sales_start_at?: string | null;
+    sales_end_at?: string | null;
+    sort_order?: number;
+    is_active?: boolean;
+}
+export interface GameShowScheduleTicketPurchaseInput {
+    ticket_type_id: string;
+    email: string;
+    first_name?: string;
+    last_name?: string;
+    quantity: number;
+    payment_method_id?: string;
+}
+export interface GameShowScheduleTicketRefundInput {
+    amount_cents: number;
+    reason?: string;
+}
 declare class GameShows {
     /**
      * List all the GameShows.
@@ -141,6 +165,8 @@ declare class GameShows {
      * List public page-builder blocks for a game show.
      */
     static listBlocks<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Paginate one Page Builder game section without downloading its full catalog. */
+    static listBlockTitles<T>(show_id: string, block_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Create a page-builder block for a game show. Requires organizer permissions.
      */
@@ -175,6 +201,26 @@ declare class GameShows {
      * Delete a schedule item from a game show. Requires organizer permissions.
      */
     static deleteScheduleItem<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List public early-bird, regular, and other ticket tiers for one session. */
+    static listScheduleTicketTypes<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List every ticket tier, including archived tiers, for festival organizers. */
+    static manageScheduleTicketTypes<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Create one session ticket price tier. */
+    static createScheduleTicketType<T>(show_id: string, schedule_id: string, data: GameShowScheduleTicketTypeInput, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Update ticket price, inventory, availability window, or publication state. */
+    static updateScheduleTicketType<T>(show_id: string, schedule_id: string, ticket_type_id: string, data: Partial<GameShowScheduleTicketTypeInput>, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Archive a ticket tier while retaining historical purchases. */
+    static deleteScheduleTicketType<T>(show_id: string, schedule_id: string, ticket_type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Reserve inventory and create/confirm the session ticket PaymentIntent. */
+    static purchaseScheduleTickets<T>(show_id: string, schedule_id: string, data: GameShowScheduleTicketPurchaseInput, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Synchronize the same ticket PaymentIntent after Stripe.js completes 3DS. */
+    static confirmScheduleTicketPurchase<T>(show_id: string, schedule_id: string, purchase_id: string, access_token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Retrieve a token-protected customer receipt. */
+    static getScheduleTicketReceipt<T>(show_id: string, schedule_id: string, purchase_id: string, access_token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List ticket purchasers and refund state for festival organizers. */
+    static listScheduleTicketPurchases<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Issue a partial or full destination-charge refund at organizer discretion. */
+    static refundScheduleTicketPurchase<T>(show_id: string, schedule_id: string, purchase_id: string, data: GameShowScheduleTicketRefundInput, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Get the game show discovery queue.
      */

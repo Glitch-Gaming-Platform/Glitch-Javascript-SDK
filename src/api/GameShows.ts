@@ -3,6 +3,33 @@ import Requests from "../util/Requests";
 import Response from "../util/Response";
 import { AxiosPromise } from "axios";
 
+export interface GameShowScheduleTicketTypeInput {
+    name: string;
+    description?: string | null;
+    kind: 'early_bird' | 'regular' | 'other';
+    price_cents: number;
+    currency: string;
+    quantity_available?: number | null;
+    sales_start_at?: string | null;
+    sales_end_at?: string | null;
+    sort_order?: number;
+    is_active?: boolean;
+}
+
+export interface GameShowScheduleTicketPurchaseInput {
+    ticket_type_id: string;
+    email: string;
+    first_name?: string;
+    last_name?: string;
+    quantity: number;
+    payment_method_id?: string;
+}
+
+export interface GameShowScheduleTicketRefundInput {
+    amount_cents: number;
+    reason?: string;
+}
+
 class GameShows {
 
     /**
@@ -242,6 +269,11 @@ class GameShows {
         return Requests.processRoute(GameShowsRoute.routes.listBlocks, {}, { show_id: show_id }, params);
     }
 
+    /** Paginate one Page Builder game section without downloading its full catalog. */
+    public static listBlockTitles<T>(show_id: string, block_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listBlockTitles, {}, { show_id, block_id }, params);
+    }
+
     /**
      * Create a page-builder block for a game show. Requires organizer permissions.
      */
@@ -301,6 +333,56 @@ class GameShows {
      */
     public static deleteScheduleItem<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(GameShowsRoute.routes.deleteScheduleItem, {}, { show_id: show_id, schedule_id: schedule_id }, params);
+    }
+
+    /** List public early-bird, regular, and other ticket tiers for one session. */
+    public static listScheduleTicketTypes<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listScheduleTicketTypes, {}, { show_id, schedule_id }, params);
+    }
+
+    /** List every ticket tier, including archived tiers, for festival organizers. */
+    public static manageScheduleTicketTypes<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.manageScheduleTicketTypes, {}, { show_id, schedule_id }, params);
+    }
+
+    /** Create one session ticket price tier. */
+    public static createScheduleTicketType<T>(show_id: string, schedule_id: string, data: GameShowScheduleTicketTypeInput, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.createScheduleTicketType, data, { show_id, schedule_id }, params);
+    }
+
+    /** Update ticket price, inventory, availability window, or publication state. */
+    public static updateScheduleTicketType<T>(show_id: string, schedule_id: string, ticket_type_id: string, data: Partial<GameShowScheduleTicketTypeInput>, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.updateScheduleTicketType, data, { show_id, schedule_id, ticket_type_id }, params);
+    }
+
+    /** Archive a ticket tier while retaining historical purchases. */
+    public static deleteScheduleTicketType<T>(show_id: string, schedule_id: string, ticket_type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.deleteScheduleTicketType, {}, { show_id, schedule_id, ticket_type_id }, params);
+    }
+
+    /** Reserve inventory and create/confirm the session ticket PaymentIntent. */
+    public static purchaseScheduleTickets<T>(show_id: string, schedule_id: string, data: GameShowScheduleTicketPurchaseInput, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.purchaseScheduleTickets, data, { show_id, schedule_id }, params);
+    }
+
+    /** Synchronize the same ticket PaymentIntent after Stripe.js completes 3DS. */
+    public static confirmScheduleTicketPurchase<T>(show_id: string, schedule_id: string, purchase_id: string, access_token: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.confirmScheduleTicketPurchase, { access_token }, { show_id, schedule_id, purchase_id }, params);
+    }
+
+    /** Retrieve a token-protected customer receipt. */
+    public static getScheduleTicketReceipt<T>(show_id: string, schedule_id: string, purchase_id: string, access_token: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.getScheduleTicketReceipt, {}, { show_id, schedule_id, purchase_id }, { ...params, access_token });
+    }
+
+    /** List ticket purchasers and refund state for festival organizers. */
+    public static listScheduleTicketPurchases<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listScheduleTicketPurchases, {}, { show_id, schedule_id }, params);
+    }
+
+    /** Issue a partial or full destination-charge refund at organizer discretion. */
+    public static refundScheduleTicketPurchase<T>(show_id: string, schedule_id: string, purchase_id: string, data: GameShowScheduleTicketRefundInput, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.refundScheduleTicketPurchase, data, { show_id, schedule_id, purchase_id }, params);
     }
 
     /**
