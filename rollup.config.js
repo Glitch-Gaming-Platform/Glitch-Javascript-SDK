@@ -22,7 +22,13 @@ export default [
     plugins: [
       json(),
       commonjs(),
-      resolve({ preferBuiltins: true }),
+      // The frontend intentionally consumes the CommonJS artifact so Webpack
+      // retains the SDK's static API surface. Keep that artifact browser-safe
+      // instead of leaking Node-only path/fs/http imports into production apps.
+      resolve({ browser: true, preferBuiltins: false }),
+      globals(),
+      builtins(),
+      polyfillNode(),
       typescript({ tsconfig: "./tsconfig.cjs.json" })
     ],
   },
