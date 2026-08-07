@@ -357,6 +357,13 @@ declare class Ads {
     static deleteTwitterTargetingCriterion<T>(criterion_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static twitterBatchTargetingCriteria<T>(data: object[], params?: Record<string, any>): AxiosPromise<Response<T>>;
     static lookupTwitterTargeting<T>(resource: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Look up Twitter location targeting options.
+     *
+     * Kept as a named convenience method for frontend compatibility while the
+     * generic lookupTwitterTargeting method remains the canonical route helper.
+     */
+    static listTwitterTargetingLocations<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     static twitterTargetingSuggestions<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deep-sync a campaign tree (campaign → groups → ads) with its remote platform.

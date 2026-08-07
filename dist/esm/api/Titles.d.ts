@@ -680,6 +680,8 @@ declare class Titles {
     static submitProgressionRun<T>(title_id: string, install_id: string, data: object): AxiosPromise<Response<T>>;
     static getProgressionPlayerStats<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
     static getProgressionPlayerAchievements<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
+    /** Compatibility alias matching the list-style naming used by the frontend. */
+    static listProgressionPlayerAchievements<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
     /**
      * View leaderboard rankings.
      * @param params Optional filters like { around_me: true, install_id: 'uuid', season_id: 'uuid' }

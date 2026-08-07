@@ -97,9 +97,9 @@ class TitlesRoute {
     importKeys: { url: '/titles/{title_id}/import-keys', method: HTTP_METHODS.POST },
 
 
-    // ─────────────────────────────────────────────────────────────────  
-    // Purchase/Revenue Endpoints  
-    // ─────────────────────────────────────────────────────────────────  
+    // ─────────────────────────────────────────────────────────────────
+    // Purchase/Revenue Endpoints
+    // ─────────────────────────────────────────────────────────────────
     purchasesList: {
       url: "/titles/{title_id}/purchases",
       method: HTTP_METHODS.GET,
@@ -117,7 +117,7 @@ class TitlesRoute {
       method: HTTP_METHODS.GET,
     },
 
-    // Advanced analytics sub-routes  
+    // Advanced analytics sub-routes
     purchasesTimeReport: {
       url: "/titles/{title_id}/purchases/reports/time",
       method: HTTP_METHODS.GET,
@@ -288,9 +288,9 @@ class TitlesRoute {
      */
     swipeFeed: { url: '/titles/discovery/swipe', method: HTTP_METHODS.GET },
 
-    developerPayoutConsolidatedSummary: { 
-      url: '/titles/{title_id}/payouts/consolidated-summary', 
-      method: HTTP_METHODS.GET 
+    developerPayoutConsolidatedSummary: {
+      url: '/titles/{title_id}/payouts/consolidated-summary',
+      method: HTTP_METHODS.GET
     },
 
     wishlistHistory: { url: '/titles/{title_id}/wishlist/history', method: HTTP_METHODS.GET },

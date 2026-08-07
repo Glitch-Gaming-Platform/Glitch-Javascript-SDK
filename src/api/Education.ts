@@ -214,8 +214,20 @@ class Education {
     }
 
     // --- 10. TEMPLATES & UPLOADS ---
-    public static listTemplates<T>(): AxiosPromise<Response<T>> {
-        return Requests.processRoute(EducationRoute.routes.listTemplates);
+    public static listTemplates<T>(params?: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.listTemplates, undefined, undefined, params);
+    }
+    public static createTemplate<T>(data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.createTemplate, data);
+    }
+    public static viewTemplate<T>(uuid: string, params?: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.viewTemplate, undefined, { uuid }, params);
+    }
+    public static updateTemplate<T>(uuid: string, data: object): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.updateTemplate, data, { uuid });
+    }
+    public static deleteTemplate<T>(uuid: string): AxiosPromise<Response<T>> {
+        return Requests.processRoute(EducationRoute.routes.deleteTemplate, undefined, { uuid });
     }
     public static uploadTemplateSignature<T>(uuid: string, file: File): AxiosPromise<Response<T>> {
         const url = EducationRoute.routes.uploadTemplateSignature.url.replace('{uuid}', uuid);

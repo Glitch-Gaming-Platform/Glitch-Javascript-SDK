@@ -1058,6 +1058,13 @@ declare class Ads {
     static deleteTwitterTargetingCriterion<T>(criterion_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static twitterBatchTargetingCriteria<T>(data: object[], params?: Record<string, any>): AxiosPromise<Response<T>>;
     static lookupTwitterTargeting<T>(resource: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Look up Twitter location targeting options.
+     *
+     * Kept as a named convenience method for frontend compatibility while the
+     * generic lookupTwitterTargeting method remains the canonical route helper.
+     */
+    static listTwitterTargetingLocations<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     static twitterTargetingSuggestions<T>(params: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Deep-sync a campaign tree (campaign → groups → ads) with its remote platform.
@@ -1412,6 +1419,8 @@ declare class Communities {
      * @returns promise
      */
     static updatetUser<T>(community_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Correctly-spelled alias retained alongside the legacy method name. */
+    static updateUser<T>(community_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Removes a user from a community.
      *
@@ -4774,6 +4783,8 @@ declare class Titles {
     static submitProgressionRun<T>(title_id: string, install_id: string, data: object): AxiosPromise<Response<T>>;
     static getProgressionPlayerStats<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
     static getProgressionPlayerAchievements<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
+    /** Compatibility alias matching the list-style naming used by the frontend. */
+    static listProgressionPlayerAchievements<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
     /**
      * View leaderboard rankings.
      * @param params Optional filters like { around_me: true, install_id: 'uuid', season_id: 'uuid' }
@@ -5368,6 +5379,8 @@ declare class Campaigns {
      * @returns promise
      */
     static widthdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Correctly-spelled alias retained alongside the legacy method name. */
+    static withdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
     * The route to mark an influencer reachout and finished, and it will no longer send reachouts.
     *
@@ -8864,7 +8877,11 @@ declare class Education {
     static awardBadge<T>(data: object): AxiosPromise<Response<T>>;
     static myCertificates<T>(): AxiosPromise<Response<T>>;
     static downloadCertificate<T>(uuid: string): AxiosPromise<Response<T>>;
-    static listTemplates<T>(): AxiosPromise<Response<T>>;
+    static listTemplates<T>(params?: object): AxiosPromise<Response<T>>;
+    static createTemplate<T>(data: object): AxiosPromise<Response<T>>;
+    static viewTemplate<T>(uuid: string, params?: object): AxiosPromise<Response<T>>;
+    static updateTemplate<T>(uuid: string, data: object): AxiosPromise<Response<T>>;
+    static deleteTemplate<T>(uuid: string): AxiosPromise<Response<T>>;
     static uploadTemplateSignature<T>(uuid: string, file: File): AxiosPromise<Response<T>>;
     static uploadTemplateBackground<T>(uuid: string, file: File): AxiosPromise<Response<T>>;
 }
@@ -11508,6 +11525,67 @@ declare class GameAdvertising {
     static adminUpsertProviderApp<T>(data: GameAdProviderApp): AxiosPromise<Response<T>>;
 }
 
+type HostingPlanKey = 'free' | 'launch' | 'growth' | 'scale' | 'studio';
+type HostingMode = 'static' | 'server';
+type HostingDatabaseEngine = 'postgresql' | 'mysql' | 'azure_sql' | 'cosmos_nosql';
+type HostingDatabasePlan = 'sandbox' | 'launch' | 'growth' | 'scale' | 'dedicated';
+interface CreateHostingSiteRequest {
+    name: string;
+    slug: string;
+    mode: HostingMode;
+    azure_region?: string;
+}
+interface CreateHostingReleaseRequest {
+    version: string;
+    source_type: 'upload' | 'cli' | 'game_build';
+    blob_path?: string;
+    game_build_id?: string;
+    entry_point?: string;
+}
+interface CreateHostingDatabaseRequest {
+    name: string;
+    engine: HostingDatabaseEngine;
+    plan: HostingDatabasePlan;
+    azure_region: string;
+    auto_grow_enabled?: boolean;
+    high_availability_enabled?: boolean;
+}
+/**
+ * Typed SDK for game website hosting, Azure database add-ons, domains, usage,
+ * deployment instructions, and hosted-play attribution.
+ */
+declare class Hosting {
+    static catalog<T>(): AxiosPromise<Response<T>>;
+    static dashboard<T>(title_id: string): AxiosPromise<Response<T>>;
+    static channelAnalytics<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Start or apply a bandwidth-based Hosting plan, separate from Store distribution. */
+    static billingCheckout<T>(title_id: string, plan: HostingPlanKey): AxiosPromise<Response<T>>;
+    /** Confirm a paid Stripe Checkout session before provisioning its Azure resource. */
+    static confirmBillingCheckout<T>(title_id: string, checkout_session_id: string): AxiosPromise<Response<T>>;
+    static createSite<T>(title_id: string, data: CreateHostingSiteRequest): AxiosPromise<Response<T>>;
+    static updateSite<T>(title_id: string, site_id: string, data: Partial<CreateHostingSiteRequest> & Record<string, any>): AxiosPromise<Response<T>>;
+    static createUploadUrl<T>(title_id: string, site_id: string): AxiosPromise<Response<T>>;
+    /** Upload directly to the short-lived Azure URL returned by createUploadUrl. */
+    static uploadBuild(uploadUrl: string, file: Blob, requiredHeaders?: Record<string, string>, onUploadProgress?: (event: AxiosProgressEvent) => void): AxiosPromise<void>;
+    static releases<T>(title_id: string, site_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static createRelease<T>(title_id: string, site_id: string, data: CreateHostingReleaseRequest): AxiosPromise<Response<T>>;
+    static promoteRelease<T>(title_id: string, site_id: string, release_id: string): AxiosPromise<Response<T>>;
+    static connectDomain<T>(title_id: string, site_id: string, hostname: string): AxiosPromise<Response<T>>;
+    static verifyDomain<T>(title_id: string, site_id: string, domain_id: string): AxiosPromise<Response<T>>;
+    static checkDomain<T>(hostname: string): AxiosPromise<Response<T>>;
+    static purchaseDomain<T>(title_id: string, site_id: string, data: Record<string, any>): AxiosPromise<Response<T>>;
+    static aiInstructions<T>(title_id: string, site_id: string, data?: Record<string, any>): AxiosPromise<Response<T>>;
+    static resolve<T>(hostname: string, gatewayToken?: string): AxiosPromise<Response<T>>;
+    static startPlaySession<T>(data: Record<string, any>): AxiosPromise<Response<T>>;
+    static heartbeatPlaySession<T>(session_id: string, sessionToken: string): AxiosPromise<Response<T>>;
+    static databases<T>(title_id: string, site_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static createDatabase<T>(title_id: string, site_id: string, data: CreateHostingDatabaseRequest): AxiosPromise<Response<T>>;
+    static database<T>(title_id: string, site_id: string, database_id: string): AxiosPromise<Response<T>>;
+    static updateDatabase<T>(title_id: string, site_id: string, database_id: string, data: Record<string, any>): AxiosPromise<Response<T>>;
+    static retryDatabase<T>(title_id: string, site_id: string, database_id: string): AxiosPromise<Response<T>>;
+    static deleteDatabase<T>(title_id: string, site_id: string, database_id: string, confirmation: string): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -11879,6 +11957,7 @@ declare class Glitch {
         AdminUsers: typeof AdminUsers;
         MarketResearch: typeof MarketResearch;
         GameAdvertising: typeof GameAdvertising;
+        Hosting: typeof Hosting;
     };
     static util: {
         Requests: typeof Requests;

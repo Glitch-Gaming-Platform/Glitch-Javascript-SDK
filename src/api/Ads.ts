@@ -985,6 +985,16 @@ class Ads {
         return Requests.processRoute(AdsRoute.routes.twitterTargetingDiscovery, undefined, { resource }, params);
     }
 
+    /**
+     * Look up Twitter location targeting options.
+     *
+     * Kept as a named convenience method for frontend compatibility while the
+     * generic lookupTwitterTargeting method remains the canonical route helper.
+     */
+    public static listTwitterTargetingLocations<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return this.lookupTwitterTargeting<T>('locations', params);
+    }
+
     public static twitterTargetingSuggestions<T>(params: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(AdsRoute.routes.twitterTargetingSuggestions, undefined, undefined, params);
     }

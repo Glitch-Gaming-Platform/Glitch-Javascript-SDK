@@ -297,6 +297,11 @@ class Communities {
         return Requests.processRoute(CommunitiesRoute.routes.updateUser, data, { community_id: community_id, user_id: user_id }, params);
     }
 
+    /** Correctly-spelled alias retained alongside the legacy method name. */
+    public static updateUser<T>(community_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return this.updatetUser<T>(community_id, user_id, data, params);
+    }
+
     /**
      * Removes a user from a community.
      * 

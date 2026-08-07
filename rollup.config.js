@@ -22,13 +22,7 @@ export default [
     plugins: [
       json(),
       commonjs(),
-      // The frontend intentionally consumes the CommonJS artifact so Webpack
-      // retains the SDK's static API surface. Keep that artifact browser-safe
-      // instead of leaking Node-only path/fs/http imports into production apps.
-      resolve({ browser: true, preferBuiltins: false }),
-      globals(),
-      builtins(),
-      polyfillNode(),
+      resolve({ preferBuiltins: true }),
       typescript({ tsconfig: "./tsconfig.cjs.json" })
     ],
   },
@@ -58,5 +52,21 @@ export default [
     input: "dist/esm/index.d.ts",
     output: [{  file: "dist/index.d.ts", format: "esm" }],
     plugins: [dts.default()],
+  },
+  {
+    input: "src/hosting-runtime.ts",
+    output: [{ file: "dist/browser/hosting-runtime.js", format: "iife", name: "GlitchHostingRuntime", sourcemap: true }],
+    plugins: [
+      json(),
+      commonjs(),
+      resolve({ browser: true, preferBuiltins: false }),
+      globals(),
+      builtins(),
+      polyfillNode(),
+      typescript({
+        tsconfig: "./tsconfig.runtime.json",
+        compilerOptions: { sourceRoot: '../../src' },
+      }),
+    ],
   },
 ];

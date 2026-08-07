@@ -668,6 +668,11 @@ class Campaigns {
         return Requests.processRoute(CampaignsRoute.routes.widthdrawInfluencerInvite, data, { campaign_id: campaign_id, influencer_id: influencer_id }, params);
     }
 
+    /** Correctly-spelled alias retained alongside the legacy method name. */
+    public static withdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return this.widthdrawInfluencerInvite<T>(campaign_id, influencer_id, data, params);
+    }
+
     /**
     * The route to mark an influencer reachout and finished, and it will no longer send reachouts.
     * 

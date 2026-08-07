@@ -211,6 +211,8 @@ declare class Communities {
      * @returns promise
      */
     static updatetUser<T>(community_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Correctly-spelled alias retained alongside the legacy method name. */
+    static updateUser<T>(community_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
      * Removes a user from a community.
      *

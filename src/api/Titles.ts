@@ -1263,6 +1263,11 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.progressionPlayerAchievements, undefined, { title_id, install_id });
     }
 
+    /** Compatibility alias matching the list-style naming used by the frontend. */
+    public static listProgressionPlayerAchievements<T>(title_id: string, install_id: string): AxiosPromise<Response<T>> {
+        return this.getProgressionPlayerAchievements<T>(title_id, install_id);
+    }
+
     /**
      * View leaderboard rankings.
      * @param params Optional filters like { around_me: true, install_id: 'uuid', season_id: 'uuid' }

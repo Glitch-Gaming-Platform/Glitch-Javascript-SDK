@@ -465,6 +465,8 @@ declare class Campaigns {
      * @returns promise
      */
     static widthdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Correctly-spelled alias retained alongside the legacy method name. */
+    static withdrawInfluencerInvite<T>(campaign_id: string, influencer_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
     * The route to mark an influencer reachout and finished, and it will no longer send reachouts.
     *

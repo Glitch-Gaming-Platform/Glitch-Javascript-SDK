@@ -66,7 +66,11 @@ declare class Education {
     static awardBadge<T>(data: object): AxiosPromise<Response<T>>;
     static myCertificates<T>(): AxiosPromise<Response<T>>;
     static downloadCertificate<T>(uuid: string): AxiosPromise<Response<T>>;
-    static listTemplates<T>(): AxiosPromise<Response<T>>;
+    static listTemplates<T>(params?: object): AxiosPromise<Response<T>>;
+    static createTemplate<T>(data: object): AxiosPromise<Response<T>>;
+    static viewTemplate<T>(uuid: string, params?: object): AxiosPromise<Response<T>>;
+    static updateTemplate<T>(uuid: string, data: object): AxiosPromise<Response<T>>;
+    static deleteTemplate<T>(uuid: string): AxiosPromise<Response<T>>;
     static uploadTemplateSignature<T>(uuid: string, file: File): AxiosPromise<Response<T>>;
     static uploadTemplateBackground<T>(uuid: string, file: File): AxiosPromise<Response<T>>;
 }
