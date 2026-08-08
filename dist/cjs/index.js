@@ -39397,6 +39397,9 @@ var HostingRoute = /** @class */ (function () {
         resolveMarketplacePurchase: { url: '/hosting/marketplace/resolve', method: HTTP_METHODS.POST },
         activateMarketplaceSubscription: { url: '/hosting/marketplace/subscriptions/{subscription_id}/activate', method: HTTP_METHODS.POST },
         marketplaceSubscription: { url: '/hosting/marketplace/subscriptions/{subscription_id}', method: HTTP_METHODS.GET },
+        resolveAwsMarketplacePurchase: { url: '/hosting/aws-marketplace/resolve', method: HTTP_METHODS.POST },
+        activateAwsMarketplaceSubscription: { url: '/hosting/aws-marketplace/subscriptions/{subscription_id}/activate', method: HTTP_METHODS.POST },
+        awsMarketplaceSubscription: { url: '/hosting/aws-marketplace/subscriptions/{subscription_id}', method: HTTP_METHODS.GET },
         createSite: { url: '/titles/{title_id}/hosting/sites', method: HTTP_METHODS.POST },
         updateSite: { url: '/titles/{title_id}/hosting/sites/{site_id}', method: HTTP_METHODS.PUT },
         uploadUrl: { url: '/titles/{title_id}/hosting/sites/{site_id}/upload-url', method: HTTP_METHODS.POST },
@@ -39414,6 +39417,7 @@ var HostingRoute = /** @class */ (function () {
         databases: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases', method: HTTP_METHODS.GET },
         createDatabase: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases', method: HTTP_METHODS.POST },
         database: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}', method: HTTP_METHODS.GET },
+        databaseCredentials: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}/credentials', method: HTTP_METHODS.POST },
         updateDatabase: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}', method: HTTP_METHODS.PUT },
         retryDatabase: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}/retry', method: HTTP_METHODS.POST },
         deleteDatabase: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}', method: HTTP_METHODS.DELETE },
@@ -39456,6 +39460,18 @@ var Hosting = /** @class */ (function () {
     /** Retrieve safe Microsoft Marketplace entitlement and lifecycle status. */
     Hosting.marketplaceSubscription = function (subscription_id) {
         return Requests.processRoute(HostingRoute.routes.marketplaceSubscription, undefined, { subscription_id: subscription_id });
+    };
+    /** Claim the one-time Glitch code created after AWS ResolveCustomer succeeds. */
+    Hosting.resolveAwsMarketplacePurchase = function (activation_code) {
+        return Requests.processRoute(HostingRoute.routes.resolveAwsMarketplacePurchase, { activation_code: activation_code });
+    };
+    /** Connect a paid AWS Marketplace contract to one Glitch business account. */
+    Hosting.activateAwsMarketplaceSubscription = function (subscription_id, community_id) {
+        return Requests.processRoute(HostingRoute.routes.activateAwsMarketplaceSubscription, { community_id: community_id }, { subscription_id: subscription_id });
+    };
+    /** Refresh and retrieve the safe AWS Marketplace entitlement state. */
+    Hosting.awsMarketplaceSubscription = function (subscription_id) {
+        return Requests.processRoute(HostingRoute.routes.awsMarketplaceSubscription, undefined, { subscription_id: subscription_id });
     };
     Hosting.createSite = function (title_id, data) {
         return Requests.processRoute(HostingRoute.routes.createSite, data, { title_id: title_id });
@@ -39526,6 +39542,13 @@ var Hosting = /** @class */ (function () {
     };
     Hosting.database = function (title_id, site_id, database_id) {
         return Requests.processRoute(HostingRoute.routes.database, undefined, { title_id: title_id, site_id: site_id, database_id: database_id });
+    };
+    /**
+     * Reveal credentials to a signed-in business billing administrator after an
+     * exact database-name confirmation. Hosting and MCP tokens are rejected.
+     */
+    Hosting.databaseCredentials = function (title_id, site_id, database_id, confirmation) {
+        return Requests.processRoute(HostingRoute.routes.databaseCredentials, { confirmation: confirmation }, { title_id: title_id, site_id: site_id, database_id: database_id });
     };
     Hosting.updateDatabase = function (title_id, site_id, database_id, data) {
         return Requests.processRoute(HostingRoute.routes.updateDatabase, data, { title_id: title_id, site_id: site_id, database_id: database_id });

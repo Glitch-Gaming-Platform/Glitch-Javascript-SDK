@@ -21327,6 +21327,9 @@ HostingRoute.routes = {
     resolveMarketplacePurchase: { url: '/hosting/marketplace/resolve', method: HTTP_METHODS.POST },
     activateMarketplaceSubscription: { url: '/hosting/marketplace/subscriptions/{subscription_id}/activate', method: HTTP_METHODS.POST },
     marketplaceSubscription: { url: '/hosting/marketplace/subscriptions/{subscription_id}', method: HTTP_METHODS.GET },
+    resolveAwsMarketplacePurchase: { url: '/hosting/aws-marketplace/resolve', method: HTTP_METHODS.POST },
+    activateAwsMarketplaceSubscription: { url: '/hosting/aws-marketplace/subscriptions/{subscription_id}/activate', method: HTTP_METHODS.POST },
+    awsMarketplaceSubscription: { url: '/hosting/aws-marketplace/subscriptions/{subscription_id}', method: HTTP_METHODS.GET },
     createSite: { url: '/titles/{title_id}/hosting/sites', method: HTTP_METHODS.POST },
     updateSite: { url: '/titles/{title_id}/hosting/sites/{site_id}', method: HTTP_METHODS.PUT },
     uploadUrl: { url: '/titles/{title_id}/hosting/sites/{site_id}/upload-url', method: HTTP_METHODS.POST },
@@ -21344,6 +21347,7 @@ HostingRoute.routes = {
     databases: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases', method: HTTP_METHODS.GET },
     createDatabase: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases', method: HTTP_METHODS.POST },
     database: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}', method: HTTP_METHODS.GET },
+    databaseCredentials: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}/credentials', method: HTTP_METHODS.POST },
     updateDatabase: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}', method: HTTP_METHODS.PUT },
     retryDatabase: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}/retry', method: HTTP_METHODS.POST },
     deleteDatabase: { url: '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}', method: HTTP_METHODS.DELETE },
@@ -21382,6 +21386,18 @@ class Hosting {
     /** Retrieve safe Microsoft Marketplace entitlement and lifecycle status. */
     static marketplaceSubscription(subscription_id) {
         return Requests.processRoute(HostingRoute.routes.marketplaceSubscription, undefined, { subscription_id });
+    }
+    /** Claim the one-time Glitch code created after AWS ResolveCustomer succeeds. */
+    static resolveAwsMarketplacePurchase(activation_code) {
+        return Requests.processRoute(HostingRoute.routes.resolveAwsMarketplacePurchase, { activation_code });
+    }
+    /** Connect a paid AWS Marketplace contract to one Glitch business account. */
+    static activateAwsMarketplaceSubscription(subscription_id, community_id) {
+        return Requests.processRoute(HostingRoute.routes.activateAwsMarketplaceSubscription, { community_id }, { subscription_id });
+    }
+    /** Refresh and retrieve the safe AWS Marketplace entitlement state. */
+    static awsMarketplaceSubscription(subscription_id) {
+        return Requests.processRoute(HostingRoute.routes.awsMarketplaceSubscription, undefined, { subscription_id });
     }
     static createSite(title_id, data) {
         return Requests.processRoute(HostingRoute.routes.createSite, data, { title_id });
@@ -21450,6 +21466,13 @@ class Hosting {
     }
     static database(title_id, site_id, database_id) {
         return Requests.processRoute(HostingRoute.routes.database, undefined, { title_id, site_id, database_id });
+    }
+    /**
+     * Reveal credentials to a signed-in business billing administrator after an
+     * exact database-name confirmation. Hosting and MCP tokens are rejected.
+     */
+    static databaseCredentials(title_id, site_id, database_id, confirmation) {
+        return Requests.processRoute(HostingRoute.routes.databaseCredentials, { confirmation }, { title_id, site_id, database_id });
     }
     static updateDatabase(title_id, site_id, database_id, data) {
         return Requests.processRoute(HostingRoute.routes.updateDatabase, data, { title_id, site_id, database_id });

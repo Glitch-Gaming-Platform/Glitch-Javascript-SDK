@@ -11552,6 +11552,27 @@ type HostingPlanKey = 'free' | 'launch' | 'growth' | 'scale' | 'studio';
 type HostingMode = 'static' | 'server';
 type HostingDatabaseEngine = 'postgresql' | 'mysql' | 'azure_sql' | 'cosmos_nosql';
 type HostingDatabasePlan = 'sandbox' | 'launch' | 'growth' | 'scale' | 'dedicated';
+interface HostingDatabaseCredentials {
+    database_id: string;
+    name: string;
+    engine: HostingDatabaseEngine;
+    binding_name: string;
+    connection_string: string;
+    connection: {
+        driver?: string;
+        host?: string;
+        endpoint?: string;
+        port?: number;
+        database?: string;
+        username?: string;
+        password?: string;
+        key?: string;
+        tls: boolean;
+    };
+    revealed_at: string;
+    /** UI safety timer only; the database credential itself does not expire after this interval. */
+    hide_after_seconds: number;
+}
 interface CreateHostingSiteRequest {
     name: string;
     slug: string;
@@ -11591,6 +11612,12 @@ declare class Hosting {
     static activateMarketplaceSubscription<T>(subscription_id: string, community_id: string): AxiosPromise<Response<T>>;
     /** Retrieve safe Microsoft Marketplace entitlement and lifecycle status. */
     static marketplaceSubscription<T>(subscription_id: string): AxiosPromise<Response<T>>;
+    /** Claim the one-time Glitch code created after AWS ResolveCustomer succeeds. */
+    static resolveAwsMarketplacePurchase<T>(activation_code: string): AxiosPromise<Response<T>>;
+    /** Connect a paid AWS Marketplace contract to one Glitch business account. */
+    static activateAwsMarketplaceSubscription<T>(subscription_id: string, community_id: string): AxiosPromise<Response<T>>;
+    /** Refresh and retrieve the safe AWS Marketplace entitlement state. */
+    static awsMarketplaceSubscription<T>(subscription_id: string): AxiosPromise<Response<T>>;
     static createSite<T>(title_id: string, data: CreateHostingSiteRequest): AxiosPromise<Response<T>>;
     static updateSite<T>(title_id: string, site_id: string, data: Partial<CreateHostingSiteRequest> & Record<string, any>): AxiosPromise<Response<T>>;
     static createUploadUrl<T>(title_id: string, site_id: string): AxiosPromise<Response<T>>;
@@ -11610,6 +11637,11 @@ declare class Hosting {
     static databases<T>(title_id: string, site_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static createDatabase<T>(title_id: string, site_id: string, data: CreateHostingDatabaseRequest): AxiosPromise<Response<T>>;
     static database<T>(title_id: string, site_id: string, database_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Reveal credentials to a signed-in business billing administrator after an
+     * exact database-name confirmation. Hosting and MCP tokens are rejected.
+     */
+    static databaseCredentials<T = HostingDatabaseCredentials>(title_id: string, site_id: string, database_id: string, confirmation: string): AxiosPromise<Response<T>>;
     static updateDatabase<T>(title_id: string, site_id: string, database_id: string, data: Record<string, any>): AxiosPromise<Response<T>>;
     static retryDatabase<T>(title_id: string, site_id: string, database_id: string): AxiosPromise<Response<T>>;
     static deleteDatabase<T>(title_id: string, site_id: string, database_id: string, confirmation: string): AxiosPromise<Response<T>>;

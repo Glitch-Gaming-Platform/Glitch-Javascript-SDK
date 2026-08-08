@@ -9,7 +9,7 @@ export type HostingMode = 'static' | 'server';
 export type HostingDatabaseEngine = 'postgresql' | 'mysql' | 'azure_sql' | 'cosmos_nosql';
 export type HostingDatabasePlan = 'sandbox' | 'launch' | 'growth' | 'scale' | 'dedicated';
 export type HostingDeliveryChannel = 'glitch_store' | 'glitch_hosted_subdomain' | 'glitch_hosted_custom_domain' | 'external';
-export type HostingBillingProvider = 'direct' | 'microsoft_marketplace';
+export type HostingBillingProvider = 'direct' | 'microsoft_marketplace' | 'aws_marketplace';
 
 export interface HostingAccount {
   id: string;
@@ -19,6 +19,7 @@ export interface HostingAccount {
   status: string;
   billing_provider: HostingBillingProvider;
   microsoft_marketplace_subscription_id?: string | null;
+  aws_marketplace_subscription_id?: string | null;
   included_bandwidth_bytes: number;
   used_bandwidth_bytes: number;
   remaining_bandwidth_bytes: number;
@@ -75,6 +76,28 @@ export interface HostingDatabase {
   billing_provider: HostingBillingProvider;
   billing_active: boolean;
   last_error?: string | null;
+}
+
+export interface HostingDatabaseCredentials {
+  database_id: string;
+  name: string;
+  engine: HostingDatabaseEngine;
+  binding_name: string;
+  connection_string: string;
+  connection: {
+    driver?: string;
+    host?: string;
+    endpoint?: string;
+    port?: number;
+    database?: string;
+    username?: string;
+    password?: string;
+    key?: string;
+    tls: boolean;
+  };
+  revealed_at: string;
+  /** UI safety timer only; the database credential itself does not expire after this interval. */
+  hide_after_seconds: number;
 }
 
 export interface HostingSite {
@@ -138,6 +161,21 @@ export interface HostingMarketplaceSubscription {
   activated_at?: string | null;
 }
 
+export interface HostingAwsMarketplaceSubscription {
+  id: string;
+  customer_aws_account_id?: string | null;
+  plan_dimension?: string | null;
+  plan_key?: Exclude<HostingPlanKey, 'free'> | null;
+  status: 'PendingRegistration' | 'PendingEntitlement' | 'Subscribed' | 'Unsubscribed';
+  entitlement_value: number;
+  entitlement_expires_at?: string | null;
+  community_id?: string | null;
+  hosting_account_id?: string | null;
+  activated_at?: string | null;
+  last_synced_at?: string | null;
+  manage_url: string;
+}
+
 /**
  * Typed SDK for game website hosting, Azure database add-ons, domains, usage,
  * deployment instructions, and hosted-play attribution.
@@ -178,6 +216,21 @@ class Hosting {
   /** Retrieve safe Microsoft Marketplace entitlement and lifecycle status. */
   public static marketplaceSubscription<T>(subscription_id: string): AxiosPromise<Response<T>> {
     return Requests.processRoute(HostingRoute.routes.marketplaceSubscription, undefined, { subscription_id });
+  }
+
+  /** Claim the one-time Glitch code created after AWS ResolveCustomer succeeds. */
+  public static resolveAwsMarketplacePurchase<T>(activation_code: string): AxiosPromise<Response<T>> {
+    return Requests.processRoute(HostingRoute.routes.resolveAwsMarketplacePurchase, { activation_code });
+  }
+
+  /** Connect a paid AWS Marketplace contract to one Glitch business account. */
+  public static activateAwsMarketplaceSubscription<T>(subscription_id: string, community_id: string): AxiosPromise<Response<T>> {
+    return Requests.processRoute(HostingRoute.routes.activateAwsMarketplaceSubscription, { community_id }, { subscription_id });
+  }
+
+  /** Refresh and retrieve the safe AWS Marketplace entitlement state. */
+  public static awsMarketplaceSubscription<T>(subscription_id: string): AxiosPromise<Response<T>> {
+    return Requests.processRoute(HostingRoute.routes.awsMarketplaceSubscription, undefined, { subscription_id });
   }
 
   public static createSite<T>(title_id: string, data: CreateHostingSiteRequest): AxiosPromise<Response<T>> {
@@ -265,6 +318,14 @@ class Hosting {
 
   public static database<T>(title_id: string, site_id: string, database_id: string): AxiosPromise<Response<T>> {
     return Requests.processRoute(HostingRoute.routes.database, undefined, { title_id, site_id, database_id });
+  }
+
+  /**
+   * Reveal credentials to a signed-in business billing administrator after an
+   * exact database-name confirmation. Hosting and MCP tokens are rejected.
+   */
+  public static databaseCredentials<T = HostingDatabaseCredentials>(title_id: string, site_id: string, database_id: string, confirmation: string): AxiosPromise<Response<T>> {
+    return Requests.processRoute(HostingRoute.routes.databaseCredentials, { confirmation }, { title_id, site_id, database_id });
   }
 
   public static updateDatabase<T>(title_id: string, site_id: string, database_id: string, data: Record<string, any>): AxiosPromise<Response<T>> {
