@@ -13188,7 +13188,7 @@ var mimeDb = require$$0;
 	      types[extension] = type;
 	    }
 	  });
-	}
+	} 
 } (mimeTypes));
 
 var defer_1 = defer$1;
@@ -16882,7 +16882,7 @@ function requireBrowser () {
 			} catch (error) {
 				return '[UnexpectedJSONParseError]: ' + error.message;
 			}
-		};
+		}; 
 	} (browser, browser.exports));
 	return browser.exports;
 }
@@ -17312,7 +17312,7 @@ function requireNode () {
 		formatters.O = function (v) {
 			this.inspectOpts.colors = this.useColors;
 			return util.inspect(v, this.inspectOpts);
-		};
+		}; 
 	} (node, node.exports));
 	return node.exports;
 }
@@ -35999,8 +35999,8 @@ var WebsiteAnalytics = /** @class */ (function () {
      * @returns Promise with a unified timeline of the user’s journey, in chronological order.
      */
     WebsiteAnalytics.userJourney = function (params) {
-        return Requests.processRoute(WebsiteAnalyticsRoute.routes.journey, // references our new route definition
-        {}, // no body data (GET request)
+        return Requests.processRoute(WebsiteAnalyticsRoute.routes.journey, // references our new route definition  
+        {}, // no body data (GET request)  
         undefined, params);
     };
     /**
@@ -39384,7 +39384,7 @@ var GameAdvertising = /** @class */ (function () {
     return GameAdvertising;
 }());
 
-/** Route catalog for Azure-backed game website hosting. */
+/** Route catalog for game website hosting and its direct or Marketplace billing. */
 var HostingRoute = /** @class */ (function () {
     function HostingRoute() {
     }
@@ -39394,6 +39394,9 @@ var HostingRoute = /** @class */ (function () {
         channelAnalytics: { url: '/titles/{title_id}/hosting/analytics/channels', method: HTTP_METHODS.GET },
         billingCheckout: { url: '/titles/{title_id}/hosting/billing/checkout', method: HTTP_METHODS.POST },
         confirmBillingCheckout: { url: '/titles/{title_id}/hosting/billing/confirm', method: HTTP_METHODS.POST },
+        resolveMarketplacePurchase: { url: '/hosting/marketplace/resolve', method: HTTP_METHODS.POST },
+        activateMarketplaceSubscription: { url: '/hosting/marketplace/subscriptions/{subscription_id}/activate', method: HTTP_METHODS.POST },
+        marketplaceSubscription: { url: '/hosting/marketplace/subscriptions/{subscription_id}', method: HTTP_METHODS.GET },
         createSite: { url: '/titles/{title_id}/hosting/sites', method: HTTP_METHODS.POST },
         updateSite: { url: '/titles/{title_id}/hosting/sites/{site_id}', method: HTTP_METHODS.PUT },
         uploadUrl: { url: '/titles/{title_id}/hosting/sites/{site_id}/upload-url', method: HTTP_METHODS.POST },
@@ -39441,6 +39444,18 @@ var Hosting = /** @class */ (function () {
     /** Confirm a paid Stripe Checkout session before provisioning its Azure resource. */
     Hosting.confirmBillingCheckout = function (title_id, checkout_session_id) {
         return Requests.processRoute(HostingRoute.routes.confirmBillingCheckout, { checkout_session_id: checkout_session_id }, { title_id: title_id });
+    };
+    /** Resolve the one-hour purchase token passed to Glitch by Microsoft Marketplace. */
+    Hosting.resolveMarketplacePurchase = function (token) {
+        return Requests.processRoute(HostingRoute.routes.resolveMarketplacePurchase, { token: token });
+    };
+    /** Link a resolved Microsoft Marketplace subscription to a billable Glitch business account. */
+    Hosting.activateMarketplaceSubscription = function (subscription_id, community_id) {
+        return Requests.processRoute(HostingRoute.routes.activateMarketplaceSubscription, { community_id: community_id }, { subscription_id: subscription_id });
+    };
+    /** Retrieve safe Microsoft Marketplace entitlement and lifecycle status. */
+    Hosting.marketplaceSubscription = function (subscription_id) {
+        return Requests.processRoute(HostingRoute.routes.marketplaceSubscription, undefined, { subscription_id: subscription_id });
     };
     Hosting.createSite = function (title_id, data) {
         return Requests.processRoute(HostingRoute.routes.createSite, data, { title_id: title_id });

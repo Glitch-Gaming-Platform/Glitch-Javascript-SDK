@@ -10,6 +10,8 @@ const index = fs.readFileSync('src/index.ts', 'utf8');
   '/titles/{title_id}/hosting',
   '/titles/{title_id}/hosting/billing/checkout',
   '/titles/{title_id}/hosting/billing/confirm',
+  '/hosting/marketplace/resolve',
+  '/hosting/marketplace/subscriptions/{subscription_id}/activate',
   '/titles/{title_id}/hosting/sites/{site_id}/upload-url',
   '/titles/{title_id}/hosting/sites/{site_id}/releases/{release_id}/promote',
   '/titles/{title_id}/hosting/sites/{site_id}/domains/purchase',
@@ -19,7 +21,8 @@ const index = fs.readFileSync('src/index.ts', 'utf8');
 ].forEach((route) => assert(routes.includes(route), `Missing hosting route: ${route}`));
 
 [
-  'catalog', 'dashboard', 'channelAnalytics', 'billingCheckout', 'confirmBillingCheckout', 'createSite', 'updateSite',
+  'catalog', 'dashboard', 'channelAnalytics', 'billingCheckout', 'confirmBillingCheckout',
+  'resolveMarketplacePurchase', 'activateMarketplaceSubscription', 'marketplaceSubscription', 'createSite', 'updateSite',
   'createUploadUrl', 'uploadBuild', 'releases', 'createRelease', 'promoteRelease',
   'connectDomain', 'verifyDomain', 'checkDomain', 'purchaseDomain', 'aiInstructions',
   'resolve', 'startPlaySession', 'heartbeatPlaySession', 'databases',

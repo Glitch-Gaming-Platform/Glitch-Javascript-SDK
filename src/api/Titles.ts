@@ -8,6 +8,43 @@ export type GameReviewSentiment = 'positive' | 'mixed' | 'negative';
 export type GameReviewVoteType = 'helpful' | 'funny' | 'detailed' | 'not_helpful';
 export type GameReviewReportReason = 'abuse' | 'spam' | 'off_topic' | 'manipulation' | 'hate' | 'personal_info' | 'other';
 
+export type TitleTokenPurpose = 'install' | 'deploy' | 'hosting';
+export type TitleTokenAbility =
+    | 'deployments:*'
+    | 'deployments:create'
+    | 'deployments:read'
+    | 'deployments:activate'
+    | 'hosting:*'
+    | 'hosting:read'
+    | 'hosting:deploy'
+    | 'hosting:promote';
+
+export interface CreateTitleTokenRequest {
+    expires_at?: string;
+    name?: string;
+    purpose?: TitleTokenPurpose;
+    abilities?: TitleTokenAbility[];
+}
+
+export interface TitleToken {
+    id: string;
+    title_id: string;
+    name?: string | null;
+    purpose: TitleTokenPurpose;
+    token_prefix: string;
+    abilities: TitleTokenAbility[];
+    expires_at?: string | null;
+    revoked: boolean;
+    last_used_at?: string | null;
+    created_at?: string;
+}
+
+export interface CreatedTitleToken {
+    /** Full secret value. Returned once and never retrievable again. */
+    full_token: string;
+    token: TitleToken;
+}
+
 export interface GameReviewRatings {
     gameplay?: GameReviewSentiment;
     performance?: GameReviewSentiment;
@@ -305,9 +342,9 @@ class Titles {
    * Create a new API token for a title.
    * Returns { full_token: string, token: TitleToken }.
    */
-    public static createTitleToken<T>(
+    public static createTitleToken<T = CreatedTitleToken>(
         title_id: string,
-        data?: { expires_at?: string }
+        data?: CreateTitleTokenRequest
     ): AxiosPromise<Response<T>> {
         return Requests.processRoute(
             TitlesRoute.routes.createToken,
@@ -319,7 +356,7 @@ class Titles {
     /**
      * List all tokens for a title.
      */
-    public static listTitleTokens<T>(
+    public static listTitleTokens<T = TitleToken[]>(
         title_id: string
     ): AxiosPromise<Response<T>> {
         return Requests.processRoute(
@@ -332,7 +369,7 @@ class Titles {
     /**
      * Revoke a specific token by ID.
      */
-    public static revokeTitleToken<T>(
+    public static revokeTitleToken<T = TitleToken>(
         title_id: string,
         token_id: string
     ): AxiosPromise<Response<T>> {

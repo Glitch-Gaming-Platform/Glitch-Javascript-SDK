@@ -4,6 +4,31 @@ export type GameReviewRecommendation = 'recommended' | 'not_recommended' | 'neut
 export type GameReviewSentiment = 'positive' | 'mixed' | 'negative';
 export type GameReviewVoteType = 'helpful' | 'funny' | 'detailed' | 'not_helpful';
 export type GameReviewReportReason = 'abuse' | 'spam' | 'off_topic' | 'manipulation' | 'hate' | 'personal_info' | 'other';
+export type TitleTokenPurpose = 'install' | 'deploy' | 'hosting';
+export type TitleTokenAbility = 'deployments:*' | 'deployments:create' | 'deployments:read' | 'deployments:activate' | 'hosting:*' | 'hosting:read' | 'hosting:deploy' | 'hosting:promote';
+export interface CreateTitleTokenRequest {
+    expires_at?: string;
+    name?: string;
+    purpose?: TitleTokenPurpose;
+    abilities?: TitleTokenAbility[];
+}
+export interface TitleToken {
+    id: string;
+    title_id: string;
+    name?: string | null;
+    purpose: TitleTokenPurpose;
+    token_prefix: string;
+    abilities: TitleTokenAbility[];
+    expires_at?: string | null;
+    revoked: boolean;
+    last_used_at?: string | null;
+    created_at?: string;
+}
+export interface CreatedTitleToken {
+    /** Full secret value. Returned once and never retrievable again. */
+    full_token: string;
+    token: TitleToken;
+}
 export interface GameReviewRatings {
     gameplay?: GameReviewSentiment;
     performance?: GameReviewSentiment;
@@ -212,17 +237,15 @@ declare class Titles {
    * Create a new API token for a title.
    * Returns { full_token: string, token: TitleToken }.
    */
-    static createTitleToken<T>(title_id: string, data?: {
-        expires_at?: string;
-    }): AxiosPromise<Response<T>>;
+    static createTitleToken<T = CreatedTitleToken>(title_id: string, data?: CreateTitleTokenRequest): AxiosPromise<Response<T>>;
     /**
      * List all tokens for a title.
      */
-    static listTitleTokens<T>(title_id: string): AxiosPromise<Response<T>>;
+    static listTitleTokens<T = TitleToken[]>(title_id: string): AxiosPromise<Response<T>>;
     /**
      * Revoke a specific token by ID.
      */
-    static revokeTitleToken<T>(title_id: string, token_id: string): AxiosPromise<Response<T>>;
+    static revokeTitleToken<T = TitleToken>(title_id: string, token_id: string): AxiosPromise<Response<T>>;
     /**
      * Search for Titles using Meilisearch or fallback based on the query and filters.
      *

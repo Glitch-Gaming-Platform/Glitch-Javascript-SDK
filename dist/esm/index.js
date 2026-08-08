@@ -18042,8 +18042,8 @@ class WebsiteAnalytics {
      * @returns Promise with a unified timeline of the user’s journey, in chronological order.
      */
     static userJourney(params) {
-        return Requests.processRoute(WebsiteAnalyticsRoute.routes.journey, // references our new route definition
-        {}, // no body data (GET request)
+        return Requests.processRoute(WebsiteAnalyticsRoute.routes.journey, // references our new route definition  
+        {}, // no body data (GET request)  
         undefined, params);
     }
     /**
@@ -21315,7 +21315,7 @@ class GameAdvertising {
     }
 }
 
-/** Route catalog for Azure-backed game website hosting. */
+/** Route catalog for game website hosting and its direct or Marketplace billing. */
 class HostingRoute {
 }
 HostingRoute.routes = {
@@ -21324,6 +21324,9 @@ HostingRoute.routes = {
     channelAnalytics: { url: '/titles/{title_id}/hosting/analytics/channels', method: HTTP_METHODS.GET },
     billingCheckout: { url: '/titles/{title_id}/hosting/billing/checkout', method: HTTP_METHODS.POST },
     confirmBillingCheckout: { url: '/titles/{title_id}/hosting/billing/confirm', method: HTTP_METHODS.POST },
+    resolveMarketplacePurchase: { url: '/hosting/marketplace/resolve', method: HTTP_METHODS.POST },
+    activateMarketplaceSubscription: { url: '/hosting/marketplace/subscriptions/{subscription_id}/activate', method: HTTP_METHODS.POST },
+    marketplaceSubscription: { url: '/hosting/marketplace/subscriptions/{subscription_id}', method: HTTP_METHODS.GET },
     createSite: { url: '/titles/{title_id}/hosting/sites', method: HTTP_METHODS.POST },
     updateSite: { url: '/titles/{title_id}/hosting/sites/{site_id}', method: HTTP_METHODS.PUT },
     uploadUrl: { url: '/titles/{title_id}/hosting/sites/{site_id}/upload-url', method: HTTP_METHODS.POST },
@@ -21367,6 +21370,18 @@ class Hosting {
     /** Confirm a paid Stripe Checkout session before provisioning its Azure resource. */
     static confirmBillingCheckout(title_id, checkout_session_id) {
         return Requests.processRoute(HostingRoute.routes.confirmBillingCheckout, { checkout_session_id }, { title_id });
+    }
+    /** Resolve the one-hour purchase token passed to Glitch by Microsoft Marketplace. */
+    static resolveMarketplacePurchase(token) {
+        return Requests.processRoute(HostingRoute.routes.resolveMarketplacePurchase, { token });
+    }
+    /** Link a resolved Microsoft Marketplace subscription to a billable Glitch business account. */
+    static activateMarketplaceSubscription(subscription_id, community_id) {
+        return Requests.processRoute(HostingRoute.routes.activateMarketplaceSubscription, { community_id }, { subscription_id });
+    }
+    /** Retrieve safe Microsoft Marketplace entitlement and lifecycle status. */
+    static marketplaceSubscription(subscription_id) {
+        return Requests.processRoute(HostingRoute.routes.marketplaceSubscription, undefined, { subscription_id });
     }
     static createSite(title_id, data) {
         return Requests.processRoute(HostingRoute.routes.createSite, data, { title_id });

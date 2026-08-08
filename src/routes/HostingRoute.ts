@@ -1,7 +1,7 @@
 import Route from './interface';
 import HTTP_METHODS from '../constants/HttpMethods';
 
-/** Route catalog for Azure-backed game website hosting. */
+/** Route catalog for game website hosting and its direct or Marketplace billing. */
 class HostingRoute {
   public static routes: { [key: string]: Route } = {
     catalog: { url: '/hosting/catalog', method: HTTP_METHODS.GET },
@@ -9,6 +9,9 @@ class HostingRoute {
     channelAnalytics: { url: '/titles/{title_id}/hosting/analytics/channels', method: HTTP_METHODS.GET },
     billingCheckout: { url: '/titles/{title_id}/hosting/billing/checkout', method: HTTP_METHODS.POST },
     confirmBillingCheckout: { url: '/titles/{title_id}/hosting/billing/confirm', method: HTTP_METHODS.POST },
+    resolveMarketplacePurchase: { url: '/hosting/marketplace/resolve', method: HTTP_METHODS.POST },
+    activateMarketplaceSubscription: { url: '/hosting/marketplace/subscriptions/{subscription_id}/activate', method: HTTP_METHODS.POST },
+    marketplaceSubscription: { url: '/hosting/marketplace/subscriptions/{subscription_id}', method: HTTP_METHODS.GET },
     createSite: { url: '/titles/{title_id}/hosting/sites', method: HTTP_METHODS.POST },
     updateSite: { url: '/titles/{title_id}/hosting/sites/{site_id}', method: HTTP_METHODS.PUT },
     uploadUrl: { url: '/titles/{title_id}/hosting/sites/{site_id}/upload-url', method: HTTP_METHODS.POST },

@@ -5,12 +5,15 @@ export type HostingMode = 'static' | 'server';
 export type HostingDatabaseEngine = 'postgresql' | 'mysql' | 'azure_sql' | 'cosmos_nosql';
 export type HostingDatabasePlan = 'sandbox' | 'launch' | 'growth' | 'scale' | 'dedicated';
 export type HostingDeliveryChannel = 'glitch_store' | 'glitch_hosted_subdomain' | 'glitch_hosted_custom_domain' | 'external';
+export type HostingBillingProvider = 'direct' | 'microsoft_marketplace';
 export interface HostingAccount {
     id: string;
     community_id: string;
     plan: HostingPlanKey;
     pending_plan?: HostingPlanKey | null;
     status: string;
+    billing_provider: HostingBillingProvider;
+    microsoft_marketplace_subscription_id?: string | null;
     included_bandwidth_bytes: number;
     used_bandwidth_bytes: number;
     remaining_bandwidth_bytes: number;
@@ -61,6 +64,7 @@ export interface HostingDatabase {
     port?: number | null;
     binding_name: string;
     billing_status: 'awaiting_payment' | 'active' | 'past_due' | 'unpaid' | 'cancelled' | 'expired' | 'failed';
+    billing_provider: HostingBillingProvider;
     billing_active: boolean;
     last_error?: string | null;
 }
@@ -103,6 +107,23 @@ export interface CreateHostingDatabaseRequest {
     auto_grow_enabled?: boolean;
     high_availability_enabled?: boolean;
 }
+export interface HostingMarketplaceSubscription {
+    id: string;
+    marketplace_subscription_id: string;
+    subscription_name?: string | null;
+    offer_id: string;
+    plan_id: string;
+    plan_key: HostingPlanKey;
+    status: 'PendingFulfillmentStart' | 'Subscribed' | 'Suspended' | 'Unsubscribed';
+    quantity: number;
+    community_id?: string | null;
+    is_test: boolean;
+    is_free_trial: boolean;
+    auto_renew: boolean;
+    term_starts_at?: string | null;
+    term_ends_at?: string | null;
+    activated_at?: string | null;
+}
 /**
  * Typed SDK for game website hosting, Azure database add-ons, domains, usage,
  * deployment instructions, and hosted-play attribution.
@@ -115,6 +136,12 @@ declare class Hosting {
     static billingCheckout<T>(title_id: string, plan: HostingPlanKey): AxiosPromise<Response<T>>;
     /** Confirm a paid Stripe Checkout session before provisioning its Azure resource. */
     static confirmBillingCheckout<T>(title_id: string, checkout_session_id: string): AxiosPromise<Response<T>>;
+    /** Resolve the one-hour purchase token passed to Glitch by Microsoft Marketplace. */
+    static resolveMarketplacePurchase<T>(token: string): AxiosPromise<Response<T>>;
+    /** Link a resolved Microsoft Marketplace subscription to a billable Glitch business account. */
+    static activateMarketplaceSubscription<T>(subscription_id: string, community_id: string): AxiosPromise<Response<T>>;
+    /** Retrieve safe Microsoft Marketplace entitlement and lifecycle status. */
+    static marketplaceSubscription<T>(subscription_id: string): AxiosPromise<Response<T>>;
     static createSite<T>(title_id: string, data: CreateHostingSiteRequest): AxiosPromise<Response<T>>;
     static updateSite<T>(title_id: string, site_id: string, data: Partial<CreateHostingSiteRequest> & Record<string, any>): AxiosPromise<Response<T>>;
     static createUploadUrl<T>(title_id: string, site_id: string): AxiosPromise<Response<T>>;
