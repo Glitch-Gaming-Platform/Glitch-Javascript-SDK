@@ -38,7 +38,7 @@ const index = fs.readFileSync('src/index.ts', 'utf8');
 ].forEach((method) => assert(api.includes(`static ${method}<`) || api.includes(`static ${method}(`), `Missing Hosting API method: ${method}`));
 
 ['postgresql', 'mysql', 'azure_sql', 'cosmos_nosql', 'redis'].forEach((engine) => assert(api.includes(`'${engine}'`), `Missing managed database engine: ${engine}`));
-['single_server', 'web_and_api', 'authoritative_world', 'biomes_style'].forEach((preset) => assert(api.includes(`'${preset}'`), `Missing service stack preset: ${preset}`));
+['single_server', 'stateful_game_server', 'web_and_api', 'authoritative_world', 'large_realtime_world'].forEach((preset) => assert(api.includes(`'${preset}'`), `Missing service stack preset: ${preset}`));
 assert(!api.includes('mongodb_atlas'), 'Marketplace databases must not be included');
 assert(api.includes("'X-Glitch-Hosting-Gateway': gatewayToken"), 'Hosted origin resolution must support the private SSR gateway header');
 assert(api.includes("'aws_marketplace'"), 'Hosting billing providers must include AWS Marketplace');

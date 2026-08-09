@@ -210,7 +210,7 @@ export interface HostingServiceDefinition {
 }
 
 export interface HostingServiceStackRequest {
-  preset?: 'single_server' | 'world_of_claudecraft' | 'web_and_api' | 'authoritative_world' | 'biomes_style';
+  preset?: 'single_server' | 'stateful_game_server' | 'web_and_api' | 'authoritative_world' | 'large_realtime_world';
   game_build_id?: string;
   builds?: Record<string, string>;
   services?: HostingServiceDefinition[];
