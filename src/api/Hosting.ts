@@ -6,8 +6,11 @@ import Response from '../util/Response';
 
 export type HostingPlanKey = 'free' | 'launch' | 'growth' | 'scale' | 'studio';
 export type HostingMode = 'static' | 'server';
-export type HostingDatabaseEngine = 'postgresql' | 'mysql' | 'azure_sql' | 'cosmos_nosql';
-export type HostingDatabasePlan = 'sandbox' | 'launch' | 'growth' | 'scale' | 'dedicated';
+export type HostingDatabaseEngine = 'postgresql' | 'mysql' | 'azure_sql' | 'cosmos_nosql' | 'redis';
+export type HostingDatabasePlan = 'sandbox' | 'launch' | 'growth' | 'scale' | 'dedicated' | 'cache_sandbox' | 'cache_launch' | 'cache_growth' | 'cache_scale';
+export type HostingServiceRole = 'web' | 'api' | 'game' | 'realtime' | 'simulation' | 'worker' | 'scheduled';
+export type HostingServiceVisibility = 'public' | 'internal' | 'none';
+export type HostingCapacityModel = 'singleton' | 'replicated' | 'serverless';
 export type HostingDeliveryChannel = 'glitch_store' | 'glitch_hosted_subdomain' | 'glitch_hosted_custom_domain' | 'external';
 export type HostingBillingProvider = 'direct' | 'microsoft_marketplace' | 'aws_marketplace';
 
@@ -33,12 +36,13 @@ export interface HostingRelease {
   game_build_id?: string | null;
   version: string;
   status: 'uploading' | 'processing' | 'ready' | 'failed' | 'active' | 'inactive';
-  source_type: 'upload' | 'cli' | 'game_build';
+  source_type: 'upload' | 'cli' | 'game_build' | 'service_stack';
   entry_point: string;
   size_bytes: number;
   checksum?: string | null;
   error_message?: string | null;
   promoted_at?: string | null;
+  service_deployments?: HostingServiceDeployment[];
 }
 
 export interface HostingDomain {
@@ -62,7 +66,7 @@ export interface HostingDatabase {
   engine: HostingDatabaseEngine;
   plan: HostingDatabasePlan;
   status: 'awaiting_payment' | 'requested' | 'provisioning' | 'ready' | 'resizing' | 'restoring' | 'failed' | 'deleting' | 'deleted';
-  deployment_model: 'shared' | 'dedicated' | 'serverless';
+  deployment_model: 'shared' | 'dedicated' | 'serverless' | 'managed_cache';
   azure_region: string;
   included_storage_bytes: number;
   current_storage_bytes: number;
@@ -117,6 +121,119 @@ export interface HostingSite {
   active_release?: HostingRelease | null;
   domains?: HostingDomain[];
   databases?: HostingDatabase[];
+  services?: HostingService[];
+  runtime_routes?: Array<{ path_prefix: string; service: string; runtime_origin: string }>;
+}
+
+export interface HostingServiceVolume {
+  name: string;
+  mount_path: string;
+  size_gb: number;
+  access_mode?: 'ReadOnly' | 'ReadWrite';
+}
+
+export interface HostingServiceDeployment {
+  id: string;
+  hosting_service_id: string;
+  hosting_release_id: string;
+  game_build_id?: string | null;
+  version: string;
+  status: 'queued' | 'deploying' | 'ready' | 'active' | 'inactive' | 'failed';
+  image?: string | null;
+  public_url?: string | null;
+  error_message?: string | null;
+  ready_at?: string | null;
+  promoted_at?: string | null;
+}
+
+export interface HostingService {
+  id: string;
+  hosting_site_id: string;
+  name: string;
+  slug: string;
+  role: HostingServiceRole;
+  runtime: 'node' | 'python' | 'rust' | 'container';
+  visibility: HostingServiceVisibility;
+  status: 'draft' | 'deploying' | 'active' | 'disabled' | 'failed';
+  is_primary: boolean;
+  target_port?: number | null;
+  transport: 'http' | 'http2' | 'tcp';
+  health_check_path?: string | null;
+  startup_check_path?: string | null;
+  readiness_check_path?: string | null;
+  liveness_check_path?: string | null;
+  capacity_model: HostingCapacityModel;
+  container_cpu: number;
+  container_memory_mb: number;
+  min_replicas: number;
+  max_replicas: number;
+  schedule_cron?: string | null;
+  termination_grace_seconds: number;
+  depends_on: string[];
+  public_paths: string[];
+  volumes: HostingServiceVolume[];
+  database_bindings: string[];
+  secret_names: string[];
+  active_deployment?: HostingServiceDeployment | null;
+  deployments?: HostingServiceDeployment[];
+}
+
+export interface HostingServiceDefinition {
+  name?: string;
+  slug: string;
+  role?: HostingServiceRole;
+  runtime?: 'node' | 'python' | 'rust' | 'container';
+  visibility?: HostingServiceVisibility;
+  is_primary?: boolean;
+  target_port?: number;
+  transport?: 'http' | 'http2' | 'tcp';
+  health_check_path?: string;
+  startup_check_path?: string;
+  readiness_check_path?: string;
+  liveness_check_path?: string;
+  capacity_model?: HostingCapacityModel;
+  container_cpu?: number;
+  container_memory_mb?: number;
+  min_replicas?: number;
+  max_replicas?: number;
+  schedule_cron?: string;
+  termination_grace_seconds?: number;
+  depends_on?: string[];
+  public_paths?: string[];
+  volumes?: HostingServiceVolume[];
+  environment?: Record<string, string | number | boolean | null>;
+  database_bindings?: string[];
+  configuration?: Record<string, unknown>;
+  command?: string[];
+  arguments?: string[];
+  game_build_id?: string;
+}
+
+export interface HostingServiceStackRequest {
+  preset?: 'single_server' | 'world_of_claudecraft' | 'web_and_api' | 'authoritative_world' | 'biomes_style';
+  game_build_id?: string;
+  builds?: Record<string, string>;
+  services?: HostingServiceDefinition[];
+}
+
+export interface ApplyHostingServiceStackRequest extends HostingServiceStackRequest {
+  version: string;
+  test?: { service: string; command: string[] };
+  migration?: { service: string; command: string[] };
+}
+
+export interface HostingServiceEstimate {
+  billing_provider: HostingBillingProvider;
+  estimated_monthly_floor_cents: number;
+  estimated_monthly_floor_dollars: number;
+  services: Array<Record<string, unknown>>;
+  rates: {
+    vcpu_hour_cents: number;
+    memory_gib_hour_cents: number;
+    requests_million_cents: number;
+    persistent_storage_gib_month_cents: number;
+  };
+  note: string;
 }
 
 export interface CreateHostingSiteRequest {
@@ -283,6 +400,29 @@ class Hosting {
 
   public static aiInstructions<T>(title_id: string, site_id: string, data: Record<string, any> = {}): AxiosPromise<Response<T>> {
     return Requests.processRoute(HostingRoute.routes.aiInstructions, data, { title_id, site_id });
+  }
+
+  public static services<T = HostingService[]>(title_id: string, site_id: string): AxiosPromise<Response<T>> {
+    return Requests.processRoute(HostingRoute.routes.services, undefined, { title_id, site_id });
+  }
+
+  /** Calculate the always-on floor without creating resources or charges. */
+  public static estimateServices<T = HostingServiceEstimate>(title_id: string, site_id: string, data: HostingServiceStackRequest): AxiosPromise<Response<T>> {
+    return Requests.processRoute(HostingRoute.routes.estimateServices, data, { title_id, site_id });
+  }
+
+  /** Queue an immutable multi-service release. Publishing remains a separate operation. */
+  public static applyServices<T>(title_id: string, site_id: string, data: ApplyHostingServiceStackRequest): AxiosPromise<Response<T>> {
+    return Requests.processRoute(HostingRoute.routes.applyServices, data, { title_id, site_id });
+  }
+
+  /** Store or rotate a secret. The API never returns the value. Interactive administrators only. */
+  public static putServiceSecret<T>(title_id: string, site_id: string, service_id: string, name: string, value: string): AxiosPromise<Response<T>> {
+    return Requests.processRoute(HostingRoute.routes.putServiceSecret, { value }, { title_id, site_id, service_id, name });
+  }
+
+  public static deleteServiceSecret<T>(title_id: string, site_id: string, service_id: string, name: string): AxiosPromise<Response<T>> {
+    return Requests.processRoute(HostingRoute.routes.deleteServiceSecret, undefined, { title_id, site_id, service_id, name });
   }
 
   public static resolve<T>(hostname: string, gatewayToken?: string): AxiosPromise<Response<T>> {

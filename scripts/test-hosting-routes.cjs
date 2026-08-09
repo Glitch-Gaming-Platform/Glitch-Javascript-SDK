@@ -20,6 +20,9 @@ const index = fs.readFileSync('src/index.ts', 'utf8');
   '/titles/{title_id}/hosting/sites/{site_id}/databases',
   '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}',
   '/titles/{title_id}/hosting/sites/{site_id}/databases/{database_id}/credentials',
+  '/titles/{title_id}/hosting/sites/{site_id}/services/estimate',
+  '/titles/{title_id}/hosting/sites/{site_id}/services/apply',
+  '/titles/{title_id}/hosting/sites/{site_id}/services/{service_id}/secrets/{name}',
   '/hosting/play-sessions',
 ].forEach((route) => assert(routes.includes(route), `Missing hosting route: ${route}`));
 
@@ -31,9 +34,11 @@ const index = fs.readFileSync('src/index.ts', 'utf8');
   'connectDomain', 'verifyDomain', 'checkDomain', 'purchaseDomain', 'aiInstructions',
   'resolve', 'startPlaySession', 'heartbeatPlaySession', 'databases',
   'createDatabase', 'database', 'databaseCredentials', 'updateDatabase', 'retryDatabase', 'deleteDatabase',
+  'services', 'estimateServices', 'applyServices', 'putServiceSecret', 'deleteServiceSecret',
 ].forEach((method) => assert(api.includes(`static ${method}<`) || api.includes(`static ${method}(`), `Missing Hosting API method: ${method}`));
 
-['postgresql', 'mysql', 'azure_sql', 'cosmos_nosql'].forEach((engine) => assert(api.includes(`'${engine}'`), `Missing Azure database engine: ${engine}`));
+['postgresql', 'mysql', 'azure_sql', 'cosmos_nosql', 'redis'].forEach((engine) => assert(api.includes(`'${engine}'`), `Missing managed database engine: ${engine}`));
+['single_server', 'web_and_api', 'authoritative_world', 'biomes_style'].forEach((preset) => assert(api.includes(`'${preset}'`), `Missing service stack preset: ${preset}`));
 assert(!api.includes('mongodb_atlas'), 'Marketplace databases must not be included');
 assert(api.includes("'X-Glitch-Hosting-Gateway': gatewayToken"), 'Hosted origin resolution must support the private SSR gateway header');
 assert(api.includes("'aws_marketplace'"), 'Hosting billing providers must include AWS Marketplace');

@@ -11550,8 +11550,12 @@ declare class GameAdvertising {
 
 type HostingPlanKey = 'free' | 'launch' | 'growth' | 'scale' | 'studio';
 type HostingMode = 'static' | 'server';
-type HostingDatabaseEngine = 'postgresql' | 'mysql' | 'azure_sql' | 'cosmos_nosql';
-type HostingDatabasePlan = 'sandbox' | 'launch' | 'growth' | 'scale' | 'dedicated';
+type HostingDatabaseEngine = 'postgresql' | 'mysql' | 'azure_sql' | 'cosmos_nosql' | 'redis';
+type HostingDatabasePlan = 'sandbox' | 'launch' | 'growth' | 'scale' | 'dedicated' | 'cache_sandbox' | 'cache_launch' | 'cache_growth' | 'cache_scale';
+type HostingServiceRole = 'web' | 'api' | 'game' | 'realtime' | 'simulation' | 'worker' | 'scheduled';
+type HostingServiceVisibility = 'public' | 'internal' | 'none';
+type HostingCapacityModel = 'singleton' | 'replicated' | 'serverless';
+type HostingBillingProvider = 'direct' | 'microsoft_marketplace' | 'aws_marketplace';
 interface HostingDatabaseCredentials {
     database_id: string;
     name: string;
@@ -11572,6 +11576,116 @@ interface HostingDatabaseCredentials {
     revealed_at: string;
     /** UI safety timer only; the database credential itself does not expire after this interval. */
     hide_after_seconds: number;
+}
+interface HostingServiceVolume {
+    name: string;
+    mount_path: string;
+    size_gb: number;
+    access_mode?: 'ReadOnly' | 'ReadWrite';
+}
+interface HostingServiceDeployment {
+    id: string;
+    hosting_service_id: string;
+    hosting_release_id: string;
+    game_build_id?: string | null;
+    version: string;
+    status: 'queued' | 'deploying' | 'ready' | 'active' | 'inactive' | 'failed';
+    image?: string | null;
+    public_url?: string | null;
+    error_message?: string | null;
+    ready_at?: string | null;
+    promoted_at?: string | null;
+}
+interface HostingService {
+    id: string;
+    hosting_site_id: string;
+    name: string;
+    slug: string;
+    role: HostingServiceRole;
+    runtime: 'node' | 'python' | 'rust' | 'container';
+    visibility: HostingServiceVisibility;
+    status: 'draft' | 'deploying' | 'active' | 'disabled' | 'failed';
+    is_primary: boolean;
+    target_port?: number | null;
+    transport: 'http' | 'http2' | 'tcp';
+    health_check_path?: string | null;
+    startup_check_path?: string | null;
+    readiness_check_path?: string | null;
+    liveness_check_path?: string | null;
+    capacity_model: HostingCapacityModel;
+    container_cpu: number;
+    container_memory_mb: number;
+    min_replicas: number;
+    max_replicas: number;
+    schedule_cron?: string | null;
+    termination_grace_seconds: number;
+    depends_on: string[];
+    public_paths: string[];
+    volumes: HostingServiceVolume[];
+    database_bindings: string[];
+    secret_names: string[];
+    active_deployment?: HostingServiceDeployment | null;
+    deployments?: HostingServiceDeployment[];
+}
+interface HostingServiceDefinition {
+    name?: string;
+    slug: string;
+    role?: HostingServiceRole;
+    runtime?: 'node' | 'python' | 'rust' | 'container';
+    visibility?: HostingServiceVisibility;
+    is_primary?: boolean;
+    target_port?: number;
+    transport?: 'http' | 'http2' | 'tcp';
+    health_check_path?: string;
+    startup_check_path?: string;
+    readiness_check_path?: string;
+    liveness_check_path?: string;
+    capacity_model?: HostingCapacityModel;
+    container_cpu?: number;
+    container_memory_mb?: number;
+    min_replicas?: number;
+    max_replicas?: number;
+    schedule_cron?: string;
+    termination_grace_seconds?: number;
+    depends_on?: string[];
+    public_paths?: string[];
+    volumes?: HostingServiceVolume[];
+    environment?: Record<string, string | number | boolean | null>;
+    database_bindings?: string[];
+    configuration?: Record<string, unknown>;
+    command?: string[];
+    arguments?: string[];
+    game_build_id?: string;
+}
+interface HostingServiceStackRequest {
+    preset?: 'single_server' | 'world_of_claudecraft' | 'web_and_api' | 'authoritative_world' | 'biomes_style';
+    game_build_id?: string;
+    builds?: Record<string, string>;
+    services?: HostingServiceDefinition[];
+}
+interface ApplyHostingServiceStackRequest extends HostingServiceStackRequest {
+    version: string;
+    test?: {
+        service: string;
+        command: string[];
+    };
+    migration?: {
+        service: string;
+        command: string[];
+    };
+}
+interface HostingServiceEstimate {
+    billing_provider: HostingBillingProvider;
+    estimated_monthly_floor_cents: number;
+    estimated_monthly_floor_dollars: number;
+    services: Array<Record<string, unknown>>;
+    rates: {
+        vcpu_hour_cents: number;
+        memory_gib_hour_cents: number;
+        requests_million_cents: number;
+        persistent_storage_gib_month_cents: number;
+    };
+    note: string;
 }
 interface CreateHostingSiteRequest {
     name: string;
@@ -11631,6 +11745,14 @@ declare class Hosting {
     static checkDomain<T>(hostname: string): AxiosPromise<Response<T>>;
     static purchaseDomain<T>(title_id: string, site_id: string, data: Record<string, any>): AxiosPromise<Response<T>>;
     static aiInstructions<T>(title_id: string, site_id: string, data?: Record<string, any>): AxiosPromise<Response<T>>;
+    static services<T = HostingService[]>(title_id: string, site_id: string): AxiosPromise<Response<T>>;
+    /** Calculate the always-on floor without creating resources or charges. */
+    static estimateServices<T = HostingServiceEstimate>(title_id: string, site_id: string, data: HostingServiceStackRequest): AxiosPromise<Response<T>>;
+    /** Queue an immutable multi-service release. Publishing remains a separate operation. */
+    static applyServices<T>(title_id: string, site_id: string, data: ApplyHostingServiceStackRequest): AxiosPromise<Response<T>>;
+    /** Store or rotate a secret. The API never returns the value. Interactive administrators only. */
+    static putServiceSecret<T>(title_id: string, site_id: string, service_id: string, name: string, value: string): AxiosPromise<Response<T>>;
+    static deleteServiceSecret<T>(title_id: string, site_id: string, service_id: string, name: string): AxiosPromise<Response<T>>;
     static resolve<T>(hostname: string, gatewayToken?: string): AxiosPromise<Response<T>>;
     static startPlaySession<T>(data: Record<string, any>): AxiosPromise<Response<T>>;
     static heartbeatPlaySession<T>(session_id: string, sessionToken: string): AxiosPromise<Response<T>>;

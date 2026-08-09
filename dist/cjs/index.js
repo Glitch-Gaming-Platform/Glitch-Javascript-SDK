@@ -39411,6 +39411,11 @@ var HostingRoute = /** @class */ (function () {
         checkDomain: { url: '/hosting/domains/check', method: HTTP_METHODS.POST },
         purchaseDomain: { url: '/titles/{title_id}/hosting/sites/{site_id}/domains/purchase', method: HTTP_METHODS.POST },
         aiInstructions: { url: '/titles/{title_id}/hosting/sites/{site_id}/ai-instructions', method: HTTP_METHODS.POST },
+        services: { url: '/titles/{title_id}/hosting/sites/{site_id}/services', method: HTTP_METHODS.GET },
+        estimateServices: { url: '/titles/{title_id}/hosting/sites/{site_id}/services/estimate', method: HTTP_METHODS.POST },
+        applyServices: { url: '/titles/{title_id}/hosting/sites/{site_id}/services/apply', method: HTTP_METHODS.POST },
+        putServiceSecret: { url: '/titles/{title_id}/hosting/sites/{site_id}/services/{service_id}/secrets/{name}', method: HTTP_METHODS.PUT },
+        deleteServiceSecret: { url: '/titles/{title_id}/hosting/sites/{site_id}/services/{service_id}/secrets/{name}', method: HTTP_METHODS.DELETE },
         resolve: { url: '/hosting/resolve', method: HTTP_METHODS.GET },
         startPlaySession: { url: '/hosting/play-sessions', method: HTTP_METHODS.POST },
         heartbeatPlaySession: { url: '/hosting/play-sessions/{session_id}/heartbeat', method: HTTP_METHODS.POST },
@@ -39514,6 +39519,24 @@ var Hosting = /** @class */ (function () {
     Hosting.aiInstructions = function (title_id, site_id, data) {
         if (data === void 0) { data = {}; }
         return Requests.processRoute(HostingRoute.routes.aiInstructions, data, { title_id: title_id, site_id: site_id });
+    };
+    Hosting.services = function (title_id, site_id) {
+        return Requests.processRoute(HostingRoute.routes.services, undefined, { title_id: title_id, site_id: site_id });
+    };
+    /** Calculate the always-on floor without creating resources or charges. */
+    Hosting.estimateServices = function (title_id, site_id, data) {
+        return Requests.processRoute(HostingRoute.routes.estimateServices, data, { title_id: title_id, site_id: site_id });
+    };
+    /** Queue an immutable multi-service release. Publishing remains a separate operation. */
+    Hosting.applyServices = function (title_id, site_id, data) {
+        return Requests.processRoute(HostingRoute.routes.applyServices, data, { title_id: title_id, site_id: site_id });
+    };
+    /** Store or rotate a secret. The API never returns the value. Interactive administrators only. */
+    Hosting.putServiceSecret = function (title_id, site_id, service_id, name, value) {
+        return Requests.processRoute(HostingRoute.routes.putServiceSecret, { value: value }, { title_id: title_id, site_id: site_id, service_id: service_id, name: name });
+    };
+    Hosting.deleteServiceSecret = function (title_id, site_id, service_id, name) {
+        return Requests.processRoute(HostingRoute.routes.deleteServiceSecret, undefined, { title_id: title_id, site_id: site_id, service_id: service_id, name: name });
     };
     Hosting.resolve = function (hostname, gatewayToken) {
         if (!gatewayToken) {

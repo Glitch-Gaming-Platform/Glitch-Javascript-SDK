@@ -5677,6 +5677,11 @@
       checkDomain: { url: '/hosting/domains/check', method: HTTP_METHODS.POST },
       purchaseDomain: { url: '/titles/{title_id}/hosting/sites/{site_id}/domains/purchase', method: HTTP_METHODS.POST },
       aiInstructions: { url: '/titles/{title_id}/hosting/sites/{site_id}/ai-instructions', method: HTTP_METHODS.POST },
+      services: { url: '/titles/{title_id}/hosting/sites/{site_id}/services', method: HTTP_METHODS.GET },
+      estimateServices: { url: '/titles/{title_id}/hosting/sites/{site_id}/services/estimate', method: HTTP_METHODS.POST },
+      applyServices: { url: '/titles/{title_id}/hosting/sites/{site_id}/services/apply', method: HTTP_METHODS.POST },
+      putServiceSecret: { url: '/titles/{title_id}/hosting/sites/{site_id}/services/{service_id}/secrets/{name}', method: HTTP_METHODS.PUT },
+      deleteServiceSecret: { url: '/titles/{title_id}/hosting/sites/{site_id}/services/{service_id}/secrets/{name}', method: HTTP_METHODS.DELETE },
       resolve: { url: '/hosting/resolve', method: HTTP_METHODS.GET },
       startPlaySession: { url: '/hosting/play-sessions', method: HTTP_METHODS.POST },
       heartbeatPlaySession: { url: '/hosting/play-sessions/{session_id}/heartbeat', method: HTTP_METHODS.POST },
@@ -6251,6 +6256,24 @@
       }
       static aiInstructions(title_id, site_id, data = {}) {
           return Requests.processRoute(HostingRoute.routes.aiInstructions, data, { title_id, site_id });
+      }
+      static services(title_id, site_id) {
+          return Requests.processRoute(HostingRoute.routes.services, undefined, { title_id, site_id });
+      }
+      /** Calculate the always-on floor without creating resources or charges. */
+      static estimateServices(title_id, site_id, data) {
+          return Requests.processRoute(HostingRoute.routes.estimateServices, data, { title_id, site_id });
+      }
+      /** Queue an immutable multi-service release. Publishing remains a separate operation. */
+      static applyServices(title_id, site_id, data) {
+          return Requests.processRoute(HostingRoute.routes.applyServices, data, { title_id, site_id });
+      }
+      /** Store or rotate a secret. The API never returns the value. Interactive administrators only. */
+      static putServiceSecret(title_id, site_id, service_id, name, value) {
+          return Requests.processRoute(HostingRoute.routes.putServiceSecret, { value }, { title_id, site_id, service_id, name });
+      }
+      static deleteServiceSecret(title_id, site_id, service_id, name) {
+          return Requests.processRoute(HostingRoute.routes.deleteServiceSecret, undefined, { title_id, site_id, service_id, name });
       }
       static resolve(hostname, gatewayToken) {
           if (!gatewayToken) {
