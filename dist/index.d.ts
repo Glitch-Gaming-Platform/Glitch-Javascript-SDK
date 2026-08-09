@@ -11769,6 +11769,50 @@ declare class Hosting {
     static deleteDatabase<T>(title_id: string, site_id: string, database_id: string, confirmation: string): AxiosPromise<Response<T>>;
 }
 
+type GameDesignGenre = 'action' | 'adventure' | 'rpg' | 'strategy' | 'simulation' | 'puzzle' | 'survival' | 'platformer' | 'racing' | 'sports' | 'cozy' | 'horror' | 'card' | 'sandbox';
+type GameDesignPlayMode = 'single-player' | 'cooperative' | 'competitive multiplayer' | 'asynchronous multiplayer';
+type GameDesignSessionLength = '5–10 minute' | '15–30 minute' | '30–60 minute' | 'open-ended';
+interface GameDesignBlueprintInput {
+    gameName?: string;
+    /** Primary deterministic fallback profile retained for older clients. */
+    genre?: GameDesignGenre;
+    /** Exact genre names selected from Utility.listGenres(). */
+    genres?: string[];
+    playMode: GameDesignPlayMode;
+    sessionLength: GameDesignSessionLength;
+    playerFantasy: string;
+    setting: string;
+    primaryGoal: string;
+    mainPressure: string;
+    signatureTwist: string;
+    progression?: string;
+    preferredActivities?: string;
+}
+interface GameDesignBlueprintItem {
+    title: string;
+    description: string;
+}
+interface GameDesignBlueprint {
+    gameName: string;
+    descriptor: string;
+    shortPitch: string;
+    coreFantasy: string;
+    coreVerbs: string[];
+    pillars: GameDesignBlueprintItem[];
+    mechanics: GameDesignBlueprintItem[];
+    coreLoop: GameDesignBlueprintItem[];
+    sessionLoop: string[];
+    coreTest: string;
+    scopeRules: string[];
+    documentationInstruction: string;
+    ai_used: boolean;
+}
+/** Public AI-assisted tools for turning an early game idea into testable design documentation. */
+declare class GameDesign {
+    /** Generate a mechanics and core-loop blueprint without requiring authentication. */
+    static generateBlueprint<T = GameDesignBlueprint>(input: GameDesignBlueprintInput): AxiosPromise<Response<T>>;
+}
+
 interface Route {
     url: string;
     method: string;
@@ -12141,6 +12185,7 @@ declare class Glitch {
         MarketResearch: typeof MarketResearch;
         GameAdvertising: typeof GameAdvertising;
         Hosting: typeof Hosting;
+        GameDesign: typeof GameDesign;
     };
     static util: {
         Requests: typeof Requests;

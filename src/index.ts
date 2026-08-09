@@ -57,6 +57,7 @@ import {AdminUsers} from './api';
 import {MarketResearch} from './api';
 import {GameAdvertising} from './api';
 import {Hosting} from './api';
+import {GameDesign} from './api';
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -143,6 +144,7 @@ class Glitch {
         MarketResearch : MarketResearch,
         GameAdvertising: GameAdvertising,
         Hosting: Hosting,
+        GameDesign: GameDesign,
     }
 
     public static util = {

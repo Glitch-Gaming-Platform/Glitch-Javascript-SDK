@@ -53,6 +53,7 @@ import AdminUsers from "./AdminUsers";
 import MarketResearch from "./MarketResearch";
 import GameAdvertising from './GameAdvertising';
 import Hosting from './Hosting';
+import GameDesign from './GameDesign';
 
 export {Ads};
 export {AccessKeys};
@@ -109,3 +110,4 @@ export {AdminUsers};
 export {MarketResearch};
 export {GameAdvertising};
 export {Hosting};
+export {GameDesign};

@@ -39585,6 +39585,29 @@ var Hosting = /** @class */ (function () {
     return Hosting;
 }());
 
+var GameDesignRoute = /** @class */ (function () {
+    function GameDesignRoute() {
+    }
+    GameDesignRoute.routes = {
+        generateBlueprint: {
+            url: '/tools/game-design/blueprint',
+            method: HTTP_METHODS.POST,
+        },
+    };
+    return GameDesignRoute;
+}());
+
+/** Public AI-assisted tools for turning an early game idea into testable design documentation. */
+var GameDesign = /** @class */ (function () {
+    function GameDesign() {
+    }
+    /** Generate a mechanics and core-loop blueprint without requiring authentication. */
+    GameDesign.generateBlueprint = function (input) {
+        return Requests.processRoute(GameDesignRoute.routes.generateBlueprint, input);
+    };
+    return GameDesign;
+}());
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -40136,6 +40159,7 @@ var Glitch = /** @class */ (function () {
         MarketResearch: MarketResearch,
         GameAdvertising: GameAdvertising,
         Hosting: Hosting,
+        GameDesign: GameDesign,
     };
     Glitch.util = {
         Requests: Requests,

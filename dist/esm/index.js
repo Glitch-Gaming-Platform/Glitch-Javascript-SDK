@@ -21508,6 +21508,23 @@ class Hosting {
     }
 }
 
+class GameDesignRoute {
+}
+GameDesignRoute.routes = {
+    generateBlueprint: {
+        url: '/tools/game-design/blueprint',
+        method: HTTP_METHODS.POST,
+    },
+};
+
+/** Public AI-assisted tools for turning an early game idea into testable design documentation. */
+class GameDesign {
+    /** Generate a mechanics and core-loop blueprint without requiring authentication. */
+    static generateBlueprint(input) {
+        return Requests.processRoute(GameDesignRoute.routes.generateBlueprint, input);
+    }
+}
+
 class Parser {
     /**
      * To be used inside a catch close, this function will parse out any JSON in a error response from the api.
@@ -22046,6 +22063,7 @@ Glitch.api = {
     MarketResearch: MarketResearch,
     GameAdvertising: GameAdvertising,
     Hosting: Hosting,
+    GameDesign: GameDesign,
 };
 Glitch.util = {
     Requests: Requests,

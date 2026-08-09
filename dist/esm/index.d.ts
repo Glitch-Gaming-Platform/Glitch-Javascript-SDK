@@ -53,6 +53,7 @@ import { AdminUsers } from './api';
 import { MarketResearch } from './api';
 import { GameAdvertising } from './api';
 import { Hosting } from './api';
+import { GameDesign } from './api';
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -127,6 +128,7 @@ declare class Glitch {
         MarketResearch: typeof MarketResearch;
         GameAdvertising: typeof GameAdvertising;
         Hosting: typeof Hosting;
+        GameDesign: typeof GameDesign;
     };
     static util: {
         Requests: typeof Requests;
