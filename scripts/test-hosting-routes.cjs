@@ -42,6 +42,9 @@ const index = fs.readFileSync('src/index.ts', 'utf8');
 assert(!api.includes('mongodb_atlas'), 'Marketplace databases must not be included');
 assert(api.includes("'X-Glitch-Hosting-Gateway': gatewayToken"), 'Hosted origin resolution must support the private SSR gateway header');
 assert(api.includes("'aws_marketplace'"), 'Hosting billing providers must include AWS Marketplace');
+assert(api.includes('entry_point: string;'), 'Hosting releases must require a proven entry point');
+assert(api.includes('checkout_client_secret?: string | null;'), 'Hosting database checkout must expose embedded Checkout safely');
+assert(api.includes('incident_id?: string | null;'), 'Hosting domain failures must expose a safe support reference');
 assert(index.includes('Hosting: Hosting'), 'Glitch.api.Hosting is not exported');
 
 console.log('Hosting SDK route tests passed.');

@@ -39431,7 +39431,7 @@ var HostingRoute = /** @class */ (function () {
 }());
 
 /**
- * Typed SDK for game website hosting, Azure database add-ons, domains, usage,
+ * Typed SDK for game website hosting, managed database add-ons, domains, usage,
  * deployment instructions, and hosted-play attribution.
  */
 var Hosting = /** @class */ (function () {
@@ -39450,7 +39450,7 @@ var Hosting = /** @class */ (function () {
     Hosting.billingCheckout = function (title_id, plan) {
         return Requests.processRoute(HostingRoute.routes.billingCheckout, { plan: plan }, { title_id: title_id });
     };
-    /** Confirm a paid Stripe Checkout session before provisioning its Azure resource. */
+    /** Confirm a paid Stripe Checkout session before provisioning its add-on. */
     Hosting.confirmBillingCheckout = function (title_id, checkout_session_id) {
         return Requests.processRoute(HostingRoute.routes.confirmBillingCheckout, { checkout_session_id: checkout_session_id }, { title_id: title_id });
     };
@@ -39487,7 +39487,7 @@ var Hosting = /** @class */ (function () {
     Hosting.createUploadUrl = function (title_id, site_id) {
         return Requests.processRoute(HostingRoute.routes.uploadUrl, {}, { title_id: title_id, site_id: site_id });
     };
-    /** Upload directly to the short-lived Azure URL returned by createUploadUrl. */
+    /** Upload directly to the short-lived signed URL returned by createUploadUrl. */
     Hosting.uploadBuild = function (uploadUrl, file, requiredHeaders, onUploadProgress) {
         if (requiredHeaders === void 0) { requiredHeaders = {}; }
         return axios.put(uploadUrl, file, {

@@ -21359,7 +21359,7 @@ HostingRoute.routes = {
 };
 
 /**
- * Typed SDK for game website hosting, Azure database add-ons, domains, usage,
+ * Typed SDK for game website hosting, managed database add-ons, domains, usage,
  * deployment instructions, and hosted-play attribution.
  */
 class Hosting {
@@ -21376,7 +21376,7 @@ class Hosting {
     static billingCheckout(title_id, plan) {
         return Requests.processRoute(HostingRoute.routes.billingCheckout, { plan }, { title_id });
     }
-    /** Confirm a paid Stripe Checkout session before provisioning its Azure resource. */
+    /** Confirm a paid Stripe Checkout session before provisioning its add-on. */
     static confirmBillingCheckout(title_id, checkout_session_id) {
         return Requests.processRoute(HostingRoute.routes.confirmBillingCheckout, { checkout_session_id }, { title_id });
     }
@@ -21413,7 +21413,7 @@ class Hosting {
     static createUploadUrl(title_id, site_id) {
         return Requests.processRoute(HostingRoute.routes.uploadUrl, {}, { title_id, site_id });
     }
-    /** Upload directly to the short-lived Azure URL returned by createUploadUrl. */
+    /** Upload directly to the short-lived signed URL returned by createUploadUrl. */
     static uploadBuild(uploadUrl, file, requiredHeaders = {}, onUploadProgress) {
         return axios.put(uploadUrl, file, {
             headers: Object.assign({ 'x-ms-blob-type': 'BlockBlob', 'Content-Type': 'application/zip' }, requiredHeaders),

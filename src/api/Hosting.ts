@@ -54,6 +54,9 @@ export interface HostingDomain {
   verification_record_name?: string | null;
   verification_record_value?: string | null;
   certificate_status?: string | null;
+  error_code?: string | null;
+  incident_id?: string | null;
+  last_error?: string | null;
   billing_status?: 'active' | 'past_due' | 'unpaid' | 'cancelled' | null;
   annual_price_cents?: number | null;
   auto_renew: boolean;
@@ -118,6 +121,7 @@ export interface HostingSite {
   status: 'draft' | 'provisioning' | 'live' | 'limited' | 'failed' | 'disabled';
   server_mode_enabled: boolean;
   azure_region?: string | null;
+  active_release_id?: string | null;
   active_release?: HostingRelease | null;
   domains?: HostingDomain[];
   databases?: HostingDatabase[];
@@ -248,6 +252,28 @@ export interface CreateHostingReleaseRequest {
   source_type: 'upload' | 'cli' | 'game_build';
   blob_path?: string;
   game_build_id?: string;
+  /** Proven relative path in the finished artifact. Never guess index.html or package.json. */
+  entry_point: string;
+}
+
+export interface HostingCheckoutResult {
+  database?: HostingDatabase;
+  action?: string;
+  checkout_url?: string | null;
+  /** Stripe Embedded Checkout client secret for same-page card collection and 3DS. */
+  checkout_client_secret?: string | null;
+  checkout_mode?: 'embedded' | 'hosted' | null;
+  checkout_session_id?: string | null;
+  billing_provider?: HostingBillingProvider;
+  message?: string;
+}
+
+export interface HostingAiInstructionsRequest extends HostingServiceStackRequest {
+  framework?: string;
+  custom_domain?: string;
+  databases?: Array<Pick<HostingDatabase, 'name' | 'engine' | 'plan'>>;
+  version?: string;
+  /** Candidate only; the generated instructions require proof from the finished artifact. */
   entry_point?: string;
 }
 
@@ -294,7 +320,7 @@ export interface HostingAwsMarketplaceSubscription {
 }
 
 /**
- * Typed SDK for game website hosting, Azure database add-ons, domains, usage,
+ * Typed SDK for game website hosting, managed database add-ons, domains, usage,
  * deployment instructions, and hosted-play attribution.
  */
 class Hosting {
@@ -315,7 +341,7 @@ class Hosting {
     return Requests.processRoute(HostingRoute.routes.billingCheckout, { plan }, { title_id });
   }
 
-  /** Confirm a paid Stripe Checkout session before provisioning its Azure resource. */
+  /** Confirm a paid Stripe Checkout session before provisioning its add-on. */
   public static confirmBillingCheckout<T>(title_id: string, checkout_session_id: string): AxiosPromise<Response<T>> {
     return Requests.processRoute(HostingRoute.routes.confirmBillingCheckout, { checkout_session_id }, { title_id });
   }
@@ -362,7 +388,7 @@ class Hosting {
     return Requests.processRoute(HostingRoute.routes.uploadUrl, {}, { title_id, site_id });
   }
 
-  /** Upload directly to the short-lived Azure URL returned by createUploadUrl. */
+  /** Upload directly to the short-lived signed URL returned by createUploadUrl. */
   public static uploadBuild(uploadUrl: string, file: Blob, requiredHeaders: Record<string, string> = {}, onUploadProgress?: (event: AxiosProgressEvent) => void): AxiosPromise<void> {
     return axios.put(uploadUrl, file, {
       headers: { 'x-ms-blob-type': 'BlockBlob', 'Content-Type': 'application/zip', ...requiredHeaders },
@@ -398,7 +424,7 @@ class Hosting {
     return Requests.processRoute(HostingRoute.routes.purchaseDomain, data, { title_id, site_id });
   }
 
-  public static aiInstructions<T>(title_id: string, site_id: string, data: Record<string, any> = {}): AxiosPromise<Response<T>> {
+  public static aiInstructions<T>(title_id: string, site_id: string, data: HostingAiInstructionsRequest = {}): AxiosPromise<Response<T>> {
     return Requests.processRoute(HostingRoute.routes.aiInstructions, data, { title_id, site_id });
   }
 
@@ -452,7 +478,7 @@ class Hosting {
     return Requests.processRoute(HostingRoute.routes.databases, undefined, { title_id, site_id }, params);
   }
 
-  public static createDatabase<T>(title_id: string, site_id: string, data: CreateHostingDatabaseRequest): AxiosPromise<Response<T>> {
+  public static createDatabase<T = HostingCheckoutResult>(title_id: string, site_id: string, data: CreateHostingDatabaseRequest): AxiosPromise<Response<T>> {
     return Requests.processRoute(HostingRoute.routes.createDatabase, data, { title_id, site_id });
   }
 
@@ -472,7 +498,7 @@ class Hosting {
     return Requests.processRoute(HostingRoute.routes.updateDatabase, data, { title_id, site_id, database_id });
   }
 
-  public static retryDatabase<T>(title_id: string, site_id: string, database_id: string): AxiosPromise<Response<T>> {
+  public static retryDatabase<T = HostingCheckoutResult>(title_id: string, site_id: string, database_id: string): AxiosPromise<Response<T>> {
     return Requests.processRoute(HostingRoute.routes.retryDatabase, {}, { title_id, site_id, database_id });
   }
 
