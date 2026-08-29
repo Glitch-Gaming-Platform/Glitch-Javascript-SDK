@@ -628,6 +628,8 @@ declare class Titles {
      * @param params Optional pagination parameters (?page=1&per_page=25)
      */
     static myWishlists<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Look up the current user's wishlist rows for up to 100 title UUIDs. */
+    static lookupMyWishlists<T>(title_ids: string[]): AxiosPromise<Response<T>>;
     /**
      * Get Wishlist Intelligence statistics for a title.
      * Includes funnel data and predictive revenue forecasting.

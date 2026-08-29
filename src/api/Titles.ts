@@ -1148,6 +1148,11 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.myWishlists, undefined, undefined, params);
     }
 
+    /** Look up the current user's wishlist rows for up to 100 title UUIDs. */
+    public static lookupMyWishlists<T>(title_ids: string[]): AxiosPromise<Response<T>> {
+        return Requests.processRoute(TitlesRoute.routes.lookupMyWishlists, { title_ids });
+    }
+
     /**
      * Get Wishlist Intelligence statistics for a title.
      * Includes funnel data and predictive revenue forecasting.

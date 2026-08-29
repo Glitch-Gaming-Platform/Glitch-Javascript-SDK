@@ -225,6 +225,10 @@ class TitlesRoute {
       url: '/users/me/wishlists',
       method: HTTP_METHODS.GET
     },
+    lookupMyWishlists: {
+      url: '/users/me/wishlists/lookup',
+      method: HTTP_METHODS.POST
+    },
 
     wishlistMe: {
       url: '/titles/{title_id}/wishlist/me',

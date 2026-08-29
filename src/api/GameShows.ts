@@ -16,6 +16,13 @@ export interface GameShowScheduleTicketTypeInput {
     is_active?: boolean;
 }
 
+export interface GameShowFestivalTicketTypeInput extends GameShowScheduleTicketTypeInput {
+    scope: 'session' | 'festival' | 'track' | 'bundle';
+    schedule_item_id?: string | null;
+    track_block_id?: string | null;
+    schedule_item_ids?: string[] | null;
+}
+
 export interface GameShowScheduleTicketPurchaseInput {
     ticket_type_id: string;
     email: string;
@@ -28,6 +35,25 @@ export interface GameShowScheduleTicketPurchaseInput {
 export interface GameShowScheduleTicketRefundInput {
     amount_cents: number;
     reason?: string;
+}
+
+export interface GameShowTitleCandidate {
+    id: string;
+    name: string;
+    developer?: string | null;
+    publisher?: string | null;
+    short_description?: string | null;
+    image_main?: string | null;
+    image_banner?: string | null;
+    is_live: boolean;
+    already_in_showcase: boolean;
+    community?: { id: string; name: string } | null;
+}
+
+export interface GameShowTitleCandidateSearchParams {
+    q: string;
+    page?: number;
+    per_page?: number;
 }
 
 class GameShows {
@@ -221,6 +247,11 @@ class GameShows {
         return Requests.processRoute(GameShowsRoute.routes.addTitle, data, { show_id: show_id }, params);
     }
 
+    /** Search privacy-safe registered Glitch games that an organizer may attach to a festival. */
+    public static searchTitleCandidates<T>(show_id: string, params: GameShowTitleCandidateSearchParams): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.searchTitleCandidates, {}, { show_id: show_id }, params);
+    }
+
     /** Preview CSV/TSV/TXT/ZIP registrations without writing showcase data. */
     public static previewExternalTitles<T>(show_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
         // Multipart helpers require the concrete URL before uploading.
@@ -333,6 +364,56 @@ class GameShows {
      */
     public static deleteScheduleItem<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
         return Requests.processRoute(GameShowsRoute.routes.deleteScheduleItem, {}, { show_id: show_id, schedule_id: schedule_id }, params);
+    }
+
+    /** List public festival, track, bundle, and single-session ticket products. */
+    public static listFestivalTicketTypes<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listFestivalTicketTypes, {}, { show_id }, params);
+    }
+
+    /** List all festival ticket products, including archived products, for organizers. */
+    public static manageFestivalTicketTypes<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.manageFestivalTicketTypes, {}, { show_id }, params);
+    }
+
+    /** Create a whole-festival pass, track pass, event bundle, or session ticket. */
+    public static createFestivalTicketType<T>(show_id: string, data: GameShowFestivalTicketTypeInput, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.createFestivalTicketType, data, { show_id }, params);
+    }
+
+    /** Update the coverage, price, inventory, sales window, or visibility of a festival ticket product. */
+    public static updateFestivalTicketType<T>(show_id: string, ticket_type_id: string, data: Partial<GameShowFestivalTicketTypeInput>, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.updateFestivalTicketType, data, { show_id, ticket_type_id }, params);
+    }
+
+    /** Archive a festival ticket product while retaining purchase history. */
+    public static deleteFestivalTicketType<T>(show_id: string, ticket_type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.deleteFestivalTicketType, {}, { show_id, ticket_type_id }, params);
+    }
+
+    /** Reserve inventory and create or confirm a festival-level ticket payment. */
+    public static purchaseFestivalTickets<T>(show_id: string, data: GameShowScheduleTicketPurchaseInput, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.purchaseFestivalTickets, data, { show_id }, params);
+    }
+
+    /** Synchronize a festival-level ticket purchase after Stripe.js completes 3DS. */
+    public static confirmFestivalTicketPurchase<T>(show_id: string, purchase_id: string, access_token: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.confirmFestivalTicketPurchase, { access_token }, { show_id, purchase_id }, params);
+    }
+
+    /** Retrieve a token-protected receipt for any festival ticket scope. */
+    public static getFestivalTicketReceipt<T>(show_id: string, purchase_id: string, access_token: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.getFestivalTicketReceipt, {}, { show_id, purchase_id }, { ...params, access_token });
+    }
+
+    /** List purchasers across festival, track, bundle, and session ticket products. */
+    public static listFestivalTicketPurchases<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.listFestivalTicketPurchases, {}, { show_id }, params);
+    }
+
+    /** Issue a partial or full refund for a festival ticket purchase. */
+    public static refundFestivalTicketPurchase<T>(show_id: string, purchase_id: string, data: GameShowScheduleTicketRefundInput, params?: Record<string, any>): AxiosPromise<Response<T>> {
+        return Requests.processRoute(GameShowsRoute.routes.refundFestivalTicketPurchase, data, { show_id, purchase_id }, params);
     }
 
     /** List public early-bird, regular, and other ticket tiers for one session. */

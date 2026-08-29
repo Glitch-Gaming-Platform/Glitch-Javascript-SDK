@@ -12,6 +12,12 @@ export interface GameShowScheduleTicketTypeInput {
     sort_order?: number;
     is_active?: boolean;
 }
+export interface GameShowFestivalTicketTypeInput extends GameShowScheduleTicketTypeInput {
+    scope: 'session' | 'festival' | 'track' | 'bundle';
+    schedule_item_id?: string | null;
+    track_block_id?: string | null;
+    schedule_item_ids?: string[] | null;
+}
 export interface GameShowScheduleTicketPurchaseInput {
     ticket_type_id: string;
     email: string;
@@ -23,6 +29,26 @@ export interface GameShowScheduleTicketPurchaseInput {
 export interface GameShowScheduleTicketRefundInput {
     amount_cents: number;
     reason?: string;
+}
+export interface GameShowTitleCandidate {
+    id: string;
+    name: string;
+    developer?: string | null;
+    publisher?: string | null;
+    short_description?: string | null;
+    image_main?: string | null;
+    image_banner?: string | null;
+    is_live: boolean;
+    already_in_showcase: boolean;
+    community?: {
+        id: string;
+        name: string;
+    } | null;
+}
+export interface GameShowTitleCandidateSearchParams {
+    q: string;
+    page?: number;
+    per_page?: number;
 }
 declare class GameShows {
     /**
@@ -141,6 +167,8 @@ declare class GameShows {
      * Add a title to a game show by admin.
      */
     static addTitle<T>(show_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Search privacy-safe registered Glitch games that an organizer may attach to a festival. */
+    static searchTitleCandidates<T>(show_id: string, params: GameShowTitleCandidateSearchParams): AxiosPromise<Response<T>>;
     /** Preview CSV/TSV/TXT/ZIP registrations without writing showcase data. */
     static previewExternalTitles<T>(show_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** Import valid external registrations after organizer preview. */
@@ -201,6 +229,26 @@ declare class GameShows {
      * Delete a schedule item from a game show. Requires organizer permissions.
      */
     static deleteScheduleItem<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List public festival, track, bundle, and single-session ticket products. */
+    static listFestivalTicketTypes<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List all festival ticket products, including archived products, for organizers. */
+    static manageFestivalTicketTypes<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Create a whole-festival pass, track pass, event bundle, or session ticket. */
+    static createFestivalTicketType<T>(show_id: string, data: GameShowFestivalTicketTypeInput, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Update the coverage, price, inventory, sales window, or visibility of a festival ticket product. */
+    static updateFestivalTicketType<T>(show_id: string, ticket_type_id: string, data: Partial<GameShowFestivalTicketTypeInput>, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Archive a festival ticket product while retaining purchase history. */
+    static deleteFestivalTicketType<T>(show_id: string, ticket_type_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Reserve inventory and create or confirm a festival-level ticket payment. */
+    static purchaseFestivalTickets<T>(show_id: string, data: GameShowScheduleTicketPurchaseInput, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Synchronize a festival-level ticket purchase after Stripe.js completes 3DS. */
+    static confirmFestivalTicketPurchase<T>(show_id: string, purchase_id: string, access_token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Retrieve a token-protected receipt for any festival ticket scope. */
+    static getFestivalTicketReceipt<T>(show_id: string, purchase_id: string, access_token: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** List purchasers across festival, track, bundle, and session ticket products. */
+    static listFestivalTicketPurchases<T>(show_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Issue a partial or full refund for a festival ticket purchase. */
+    static refundFestivalTicketPurchase<T>(show_id: string, purchase_id: string, data: GameShowScheduleTicketRefundInput, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** List public early-bird, regular, and other ticket tiers for one session. */
     static listScheduleTicketTypes<T>(show_id: string, schedule_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** List every ticket tier, including archived tiers, for festival organizers. */
