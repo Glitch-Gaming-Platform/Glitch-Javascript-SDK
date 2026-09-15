@@ -17,7 +17,10 @@ class Messages {
     }
 
     /**
-     * Send a new message that will be added to a thread
+     * Send a new message that will be added to a thread. Festival-scoped threads
+     * enforce current admission, blocking and read-only state server-side.
+     * Include an optional client_message_id UUID and reuse it when retrying a
+     * timed-out request to prevent duplicate messages and notifications.
      * 
      * @see https://api.glitch.fun/api/documentation#/Messages/storeMessage
      * 

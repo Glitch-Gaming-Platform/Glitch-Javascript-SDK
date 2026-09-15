@@ -1,4 +1,4 @@
-import { AxiosPromise, AxiosProgressEvent } from 'axios';
+import { AxiosPromise, AxiosRequestConfig, AxiosProgressEvent } from 'axios';
 import Config from '../config/Config';
 import Route from '../routes/interface';
 import Response from './Response';
@@ -25,12 +25,14 @@ declare class Requests {
     static put<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static patch<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static delete<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
-    static uploadFile<T>(url: string, filename: string, file: File | Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    static uploadFile<T>(url: string, filename: string, file: File | Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void, options?: Pick<AxiosRequestConfig, 'signal' | 'timeout'>): AxiosPromise<Response<T>>;
     static postFormData<T>(url: string, formData: FormData, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     static uploadBlob<T>(url: string, filename: string, blob: Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     static uploadFileInChunks<T>(file: File, uploadUrl: string, onProgress?: (totalSize: number, amountUploaded: number) => void, data?: any, chunkSize?: number): Promise<void>;
     static processRoute<T>(route: Route, data?: object, routeReplace?: {
         [key: string]: any;
-    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    }, params?: Record<string, any>, options?: Pick<AxiosRequestConfig, 'signal' | 'timeout' | 'headers'> & {
+        excludeCommunityContext?: boolean;
+    }): AxiosPromise<Response<T>>;
 }
 export default Requests;

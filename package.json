@@ -1,6 +1,6 @@
 {
   "name": "glitch-javascript-sdk",
-  "version": "3.10.8",
+  "version": "3.15.0",
   "description": "Javascript SDK for Glitch",
   "publishConfig": {
     "access": "public"
@@ -9,13 +9,15 @@
   "module": "dist/esm/index.js",
   "files": [
     "dist",
-    "src"
+    "src",
+    "guides"
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "node scripts/test-hosting-routes.cjs && node scripts/test-game-advertising-routes.cjs && node scripts/test-game-design-routes.cjs && node scripts/test-discord-media-routes.cjs && node scripts/test-user-email-delivery-routes.cjs && node scripts/test-game-show-ticket-routes.cjs",
+    "test": "node scripts/test-hosting-routes.cjs && node scripts/test-game-advertising-routes.cjs && node scripts/test-game-design-routes.cjs && node scripts/test-discord-media-routes.cjs && node scripts/test-user-email-delivery-routes.cjs && node scripts/test-game-show-ticket-routes.cjs && node scripts/test-festival-networking-routes.cjs && node scripts/test-microtransaction-routes.cjs && node scripts/test-microtransaction-overlay.cjs && node scripts/test-microtransaction-tutorial.cjs",
     "build": "rm -Rf dist && rollup -c --bundleConfigAsCjs",
-    "build-docs": "rm  -rf docs && typedoc  --tsconfig tsconfig.json src/"
+    "build-docs": "rm  -rf docs && typedoc  --tsconfig tsconfig.json src/",
+    "test:package": "node scripts/test-package-exports.cjs"
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +29,7 @@
     "@types/isomorphic-form-data": "^2.0.4",
     "@types/node": "^20.10.5",
     "get-file-object-from-local-path": "^1.0.2",
+    "jsdom": "^26.1.0",
     "rollup": "^4.9.1",
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-node-builtins": "^2.1.2",

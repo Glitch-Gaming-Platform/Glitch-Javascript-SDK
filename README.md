@@ -65,3 +65,9 @@ Glitch.api.Auth.login("john@example.com", "abc123").then(()=> {
 Documentation is produced via typedoc as the code comments are extensive and turned in readable documentation.
 
 [https://glitch-gaming-platform.github.io/Glitch-Javascript-SDK/](https://glitch-gaming-platform.github.io/Glitch-Javascript-SDK/)
+# Game microtransactions
+
+Use `Glitch.api.Microtransactions` for title-scoped products, existing Media uploads,
+game-branded hosted checkout, verified account handoff, inventory and refunds.
+Read [the integration guide](guides/microtransactions.md) before handling purchases.
+Never treat a browser message as payment proof or ship an administrative token.

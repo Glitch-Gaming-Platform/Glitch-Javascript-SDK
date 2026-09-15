@@ -226,7 +226,8 @@ class Requests {
     file: File | Blob,
     data?: any,
     params?: Record<string, any>,
-    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void,
+    options?: Pick<AxiosRequestConfig, 'signal' | 'timeout'>
   ): AxiosPromise<Response<T>> {
     // Process URL and params
     if (params && Object.keys(params).length > 0) {
@@ -268,6 +269,8 @@ class Requests {
       data: formData,
       headers,
       onUploadProgress,
+      signal: options?.signal,
+      timeout: options?.timeout,
     });
   }
 
@@ -435,13 +438,22 @@ class Requests {
 
 
 
-  public static processRoute<T>(route: Route, data?: object, routeReplace?: { [key: string]: any }, params?: Record<string, any>): AxiosPromise<Response<T>> {
+  public static processRoute<T>(route: Route, data?: object, routeReplace?: { [key: string]: any }, params?: Record<string, any>, options?: Pick<AxiosRequestConfig, 'signal' | 'timeout' | 'headers'> & { excludeCommunityContext?: boolean }): AxiosPromise<Response<T>> {
     let url = route.url;
 
     if (routeReplace) {
       for (let key in routeReplace) {
         url = url.replace("{" + key + "}", routeReplace[key]);
       }
+    }
+
+    if (options) {
+      const query = { ...params, ...(Requests.community_id && !options.excludeCommunityContext ? { community_id: Requests.community_id } : {}) };
+      return axios({
+        method: route.method, url: Requests.buildUrl(url, query), data,
+        headers: { 'Content-Type': 'application/json', ...(Requests.authToken ? { Authorization: `Bearer ${Requests.authToken}` } : {}), ...options.headers },
+        signal: options.signal, timeout: options.timeout,
+      });
     }
 
     if (route.method == HTTP_METHODS.GET) {

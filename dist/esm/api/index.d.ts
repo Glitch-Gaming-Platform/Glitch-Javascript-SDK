@@ -110,3 +110,5 @@ export { MarketResearch };
 export { GameAdvertising };
 export { Hosting };
 export { GameDesign };
+export { default as FestivalNetworking } from './FestivalNetworking';
+export { default as Microtransactions } from './Microtransactions';

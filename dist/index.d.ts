@@ -1,4 +1,4 @@
-import { AxiosPromise, AxiosProgressEvent } from 'axios';
+import { AxiosPromise, AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 
 /**
  * Config
@@ -5916,7 +5916,10 @@ declare class Messages {
      */
     static listMessageThreads<T>(params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-     * Send a new message that will be added to a thread
+     * Send a new message that will be added to a thread. Festival-scoped threads
+     * enforce current admission, blocking and read-only state server-side.
+     * Include an optional client_message_id UUID and reuse it when retrying a
+     * timed-out request to prevent duplicate messages and notifications.
      *
      * @see https://api.glitch.fun/api/documentation#/Messages/storeMessage
      *
@@ -11890,6 +11893,997 @@ declare class GameDesign {
     static generateBlueprint<T = GameDesignBlueprint>(input: GameDesignBlueprintInput): AxiosPromise<Response<T>>;
 }
 
+type FestivalPostKind = 'discussion' | 'job' | 'talent';
+type FestivalPostState = 'active' | 'locked' | 'archived' | 'hidden' | 'deleted' | 'removed' | 'paused' | 'filled' | 'expired' | 'closed';
+type FestivalApplicationState = 'submitted' | 'viewed' | 'shortlisted' | 'interview' | 'accepted' | 'rejected' | 'withdrawn' | 'closed';
+type FestivalWorkType = 'full_time' | 'part_time' | 'contract' | 'gig';
+type FestivalRequestOptions = Pick<AxiosRequestConfig, 'signal' | 'timeout'>;
+interface FestivalNetworkingSettings {
+    discussions_enabled: boolean;
+    jobs_enabled: boolean;
+    employer_posts_enabled: boolean;
+    talent_posts_enabled: boolean;
+    matching_enabled: boolean;
+    voting_enabled: boolean;
+    comments_enabled: boolean;
+    media_enabled: boolean;
+    /** Registration or a valid ticket is mandatory; cannot be disabled. */
+    require_registration: true;
+    public_viewing: false;
+    anonymous_enabled: false;
+    categories: string[];
+    skills: string[];
+}
+interface FestivalPostInput {
+    kind: FestivalPostKind;
+    title: string;
+    /** Sanitized HTML from the shared WYSIWYG editor. */
+    content: string;
+    visibility?: 'public' | 'unlisted' | 'private';
+    category?: string | null;
+    tags?: string[];
+    skills?: string[];
+    preferred_skills?: string[];
+    job_types?: FestivalWorkType[];
+    company?: string | null;
+    organization_id?: string | null;
+    work_arrangement?: 'remote' | 'onsite' | 'hybrid' | null;
+    experience?: 'any' | 'entry' | 'junior' | 'mid' | 'senior' | 'lead' | null;
+    location?: string | null;
+    availability?: 'immediately' | 'within_30_days' | 'specific_date' | 'flexible' | 'unavailable';
+    availability_date?: string | null;
+    deadline?: string | null;
+    expires_at?: string | null;
+    compensation_type?: 'negotiable' | 'yearly' | 'monthly' | 'hourly' | 'flat_fee';
+    compensation_min?: number | null;
+    compensation_max?: number | null;
+    currency?: string | null;
+    portfolio_url?: string | null;
+    application_method?: 'internal' | 'external';
+    application_url?: string | null;
+    /** UserMedia IDs returned by uploadMedia, NOT Media IDs or clip-library selections. Max 8. */
+    media_ids?: string[];
+    public_compensation?: boolean;
+    public_location?: boolean;
+    public_availability?: boolean;
+    public_portfolio?: boolean;
+}
+interface FestivalNetworkingFilters {
+    kind?: FestivalPostKind;
+    view?: 'all' | 'mine' | 'saved' | 'hidden' | 'comments';
+    sort?: 'new' | 'hot' | 'top' | 'discussed' | 'compensation' | 'deadline';
+    window?: 'today' | 'week' | 'month' | 'festival' | 'all';
+    q?: string;
+    category?: string;
+    skill?: string;
+    job_type?: FestivalWorkType;
+    arrangement?: 'remote' | 'onsite' | 'hybrid';
+    experience?: string;
+    location?: string;
+    company?: string;
+    availability?: string;
+    currency?: string;
+    compensation_type?: string;
+    min_compensation?: number;
+    tag?: string;
+    author?: string;
+    has_comments?: boolean;
+    has_portfolio?: boolean;
+    media_type?: 'image' | 'video';
+    page?: number;
+    per_page?: number;
+}
+interface FestivalMediaUpload {
+    id: string;
+    user_media_id: string;
+    media_id: string;
+    url: string;
+    mime_type: string;
+    size: number;
+    title: string;
+    processing_status: 'completed' | 'pending' | 'processing' | 'failed';
+}
+interface FestivalNetworkingProfile {
+    id: string | null;
+    name: string;
+}
+interface FestivalNetworkingResponse<T> {
+    data: T;
+    message?: string;
+    meta?: {
+        current_page: number;
+        last_page: number;
+        total?: number;
+    };
+    has_access?: boolean;
+    can_manage?: boolean;
+    can_moderate?: boolean;
+    user?: FestivalNetworkingProfile | null;
+    show?: {
+        id: string;
+        name: string;
+    };
+    audit?: Array<Record<string, unknown>>;
+}
+interface FestivalPost {
+    id: string;
+    game_show_id: string;
+    parent_id: string | null;
+    kind: FestivalPostKind | 'comment';
+    title: string;
+    content: string;
+    state: FestivalPostState;
+    visibility: 'public' | 'unlisted' | 'private';
+    details: Partial<FestivalPostInput>;
+    author: FestivalNetworkingProfile | null;
+    created_at: string;
+    updated_at: string;
+    score: number;
+    my_vote: -1 | 0 | 1;
+    saved: boolean;
+    is_owner: boolean;
+    can_edit: boolean;
+    comment_count: number;
+    media: Array<{
+        id: string;
+        user_media_id?: string | null;
+        url: string;
+        mime_type: string;
+        title: string | null;
+    }>;
+    my_application?: {
+        id: string;
+        status: FestivalApplicationState;
+    } | null;
+    match?: {
+        score: number;
+        reasons: string[];
+        missing_required_skills: string[];
+        disclaimer: string;
+    };
+}
+interface FestivalApplicationInput {
+    message?: string;
+    portfolio?: string[];
+}
+interface FestivalConversation {
+    id: string;
+    festival_application_id: string;
+    can_send: boolean;
+    read_only_reason: string | null;
+    festival_context: {
+        game_show_id: string;
+        post_id: string | null;
+        title: string;
+        kind: FestivalPostKind;
+        application_status: FestivalApplicationState;
+    } | null;
+    users: Array<{
+        id: string | null;
+        display_name: string;
+        avatar: string | null;
+    }>;
+    messages: Array<{
+        id: string;
+        thread_id: string;
+        user_id: string | null;
+        message: string;
+        client_message_id: string | null;
+        created_at: string;
+        updated_at: string;
+        user: {
+            id: string | null;
+            display_name: string;
+            avatar: string | null;
+        };
+    }>;
+}
+interface FestivalPreferences {
+    notifications?: boolean;
+    blocked_users?: string[];
+    blocked_companies?: string[];
+}
+interface FestivalReportInput {
+    reason: 'spam' | 'harassment' | 'hate' | 'sexual_content' | 'scam' | 'job_scam' | 'copyright' | 'malicious_link' | 'misleading' | 'other';
+    explanation?: string;
+}
+/** Festival-scoped discussions, talent, jobs, moderation and new owned media uploads. */
+declare class FestivalNetworking {
+    private static request;
+    /** Read enabled tools and the current account's registration/ticket access. */
+    static settings<T = FestivalNetworkingSettings>(id: string, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Organizer-only settings update; admission remains mandatory. */
+    static updateSettings<T = FestivalNetworkingSettings>(id: string, data: Partial<FestivalNetworkingSettings>): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Search posts; compensation comparisons require currency and period. */
+    static listPosts<T = FestivalPost[]>(id: string, params?: FestivalNetworkingFilters, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Create a post with rich HTML and optional newly uploaded UserMedia IDs. */
+    static createPost<T = FestivalPost>(id: string, data: FestivalPostInput): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Direct links still require admission and content visibility permission. */
+    static getPost<T = FestivalPost>(id: string, post_id: string, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Edit or soft-delete via state; omit media_ids to preserve current attachments. */
+    static updatePost<T = FestivalPost>(id: string, post_id: string, data: Partial<FestivalPostInput> & {
+        state?: FestivalPostState;
+    }): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Paginated direct replies; fetch children to expand a thread. */
+    static listComments<T = FestivalPost[]>(id: string, post_id: string, params?: {
+        page?: number;
+    }, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Add a rich-text reply, subject to locking and five-level nesting. */
+    static createComment<T = FestivalPost>(id: string, post_id: string, data: {
+        content: string;
+    }): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Set, replace, or remove a vote/save/hide idempotently. */
+    static setInteraction<T = FestivalPost>(id: string, post_id: string, data: {
+        action: 'vote' | 'saved' | 'hidden';
+        value: -1 | 0 | 1;
+    }): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Apply or express interest once; the original listing is snapshotted. */
+    static apply<T = Record<string, unknown>>(id: string, post_id: string, data: FestivalApplicationInput): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Discovery matches for the current user's own job/talent listing. */
+    static matches<T = FestivalPost[]>(id: string, post_id: string, params?: {
+        page?: number;
+    }, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Report suspicious content privately to festival moderators. */
+    static report<T = never>(id: string, post_id: string, data: FestivalReportInput): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Only the applicant and listing owner receive application records. */
+    static applications<T = Array<Record<string, unknown>>>(id: string, params?: {
+        page?: number;
+    }, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Applicant withdrawal or owner-managed status changes. */
+    static updateApplication<T = Record<string, unknown>>(id: string, application_id: string, data: {
+        status: Exclude<FestivalApplicationState, 'submitted'>;
+    }): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Open the application/talent inquiry's private shared-inbox conversation, creating it once for legacy applications. Only the applicant and original listing owner may call this. Use Messages.getThread/sendMessage for subsequent conversation activity. */
+    static conversation<T = FestivalConversation>(id: string, application_id: string): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Moderator-only report queue and audit history. */
+    static moderation<T = Array<Record<string, unknown>>>(id: string, params?: {
+        page?: number;
+    }, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Moderation remains available even while the board is disabled. */
+    static moderatePost<T = FestivalPost>(id: string, post_id: string, data: {
+        state?: 'active' | 'hidden' | 'locked' | 'deleted' | 'removed';
+        remove_media?: true;
+    }): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Resolve, dismiss or begin reviewing a report. */
+    static resolveReport<T = never>(id: string, report_id: string, data: {
+        status: 'under_review' | 'resolved' | 'dismissed';
+    }): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Moderator-only participant restrictions. */
+    static restrictMember<T = never>(id: string, user_id: string, data: {
+        banned: boolean;
+    }): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Current user's privacy and notification preferences. */
+    static preferences<T = FestivalPreferences>(id: string, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Set notification opt-out and blocked participants/companies. */
+    static updatePreferences<T = FestivalPreferences>(id: string, data: FestivalPreferences): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Uploaded festival attachments only; not the gameplay clip library. */
+    static media<T = Array<Record<string, unknown>>>(id: string, params?: {
+        page?: number;
+    }, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /**
+     * Upload a new image (10 MB max) or video (100 MB max), using the existing media pipeline.
+     * The response ID is an owned UserMedia ID for createPost/updatePost media_ids.
+     * @param file New file selected by the attendee; supported images exclude SVG.
+     * @param data Which enabled board the upload is for.
+     * @param onUploadProgress Transfer progress; 100% may still require conversion before completion.
+     */
+    static uploadMedia<T = FestivalMediaUpload>(id: string, file: File | Blob, data: {
+        kind: FestivalPostKind;
+    }, onUploadProgress?: (event: AxiosProgressEvent) => void, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Organizations the authenticated user is authorized to represent. */
+    static organizations<T = Array<{
+        id: string;
+        name: string;
+    }>>(id: string, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+    /** Organizer-only aggregate participation metrics. */
+    static analytics<T = Record<string, unknown>>(id: string, options?: FestivalRequestOptions): AxiosPromise<FestivalNetworkingResponse<T>>;
+}
+
+type MicrotransactionEnvironment = 'sandbox' | 'live';
+type MicrotransactionProductType = 'durable' | 'consumable' | 'currency' | 'bundle' | 'pass';
+type MicrotransactionCurrency = 'USD' | 'EUR' | 'GBP' | 'CAD' | 'AUD' | 'JPY' | 'BRL' | 'INR' | 'KRW';
+type MicrotransactionProductStatus = 'draft' | 'active' | 'archived';
+type MicrotransactionPaymentStatus = 'created' | 'action_required' | 'pending' | 'unknown' | 'paid' | 'failed' | 'canceled' | 'refund_pending' | 'partially_refunded' | 'refunded' | 'disputed' | 'quarantined';
+type MicrotransactionFulfillmentStatus = 'not_ready' | 'pending' | 'delivered' | 'retrying' | 'failed' | 'revoked' | 'partially_recovered';
+type MicrotransactionAbility = 'commerce:read' | 'commerce:write' | 'commerce:finance' | 'commerce:fulfill';
+type MicrotransactionErrorCode = 'authentication_required' | 'permission_denied' | 'human_approval_required' | 'not_found' | 'not_eligible' | 'quote_expired' | 'already_owned' | 'idempotency_conflict' | 'payment_unknown' | 'rate_limited' | 'invalid_revenue_configuration' | 'fulfillment_pending' | 'provider_unavailable';
+/** The backend's JSON envelope; Axios returns this envelope in response.data. */
+interface MicrotransactionResponse<T> {
+    data: T;
+    message?: string;
+    success?: boolean;
+}
+interface MicrotransactionError {
+    message: string;
+    code?: MicrotransactionErrorCode | string;
+    errors?: Record<string, string[]>;
+}
+interface MicrotransactionRequestOptions extends Pick<AxiosRequestConfig, 'signal' | 'timeout'> {
+    /** Optional short-lived commerce-only player token. Never a shipped developer/title token. */
+    playerToken?: string;
+}
+interface MicrotransactionSessionOptions extends MicrotransactionRequestOptions {
+    /** Required limited checkout capability; sent only in X-Checkout-Token, never a query. */
+    checkoutToken: string;
+}
+interface MicrotransactionEnvironmentFilter {
+    environment?: MicrotransactionEnvironment;
+}
+/** Self-only purchase-history filters. Identity comes from authentication, never a user_id argument. */
+interface MicrotransactionMyPurchasesFilters extends MicrotransactionEnvironmentFilter {
+    /** Page number, integer 1–10000. Defaults to 1; ordering is created_at DESC, id DESC. */
+    page?: number;
+    /** Integer 1–100. Defaults to 20. No cursor or product filter is supported. */
+    per_page?: number;
+}
+interface MicrotransactionCatalogFilter extends MicrotransactionEnvironmentFilter {
+    country?: string;
+    currency?: string;
+    channel?: 'web';
+}
+interface MicrotransactionMedia {
+    id: string;
+    url: string;
+    mime_type: string;
+    poster?: string | null;
+}
+interface MicrotransactionBranding {
+    display_name?: string | null;
+    accent_color?: string | null;
+    /** Existing authorized title Media ID, not an external URL or UserMedia ID. */
+    logo_media_id?: string | null;
+    /** Resolved public Media returned for display; not a writable branding input. */
+    logo_media?: MicrotransactionMedia | null;
+}
+interface MicrotransactionPrice {
+    /** Uppercase ISO 4217 currency. Not all currencies have two decimal places. */
+    currency: MicrotransactionCurrency;
+    /** Uppercase ISO 3166-1 alpha-2 buyer country, or '*' default. */
+    country: string;
+    /** Integer 1–100000 in currency minor units: USD 499 means $4.99; JPY 499 means ¥499. Provider minima apply separately. */
+    amount_minor: number;
+}
+interface MicrotransactionGrant {
+    /** Stable per-title inventory key; never a client-supplied grant at checkout. */
+    key: string;
+    quantity: number;
+    kind: 'durable' | 'consumable' | 'pass';
+    /** Required for pass grants; 60–31536000 seconds. Durable quantity must be one. */
+    duration_seconds?: number | null;
+}
+interface MicrotransactionProductInput {
+    sku: string;
+    name: string;
+    description?: string;
+    type: MicrotransactionProductType;
+    status?: MicrotransactionProductStatus;
+    /** Attach IDs from the existing title-authorized Media pipeline. No arbitrary media URLs. */
+    media_ids?: string[];
+    prices: MicrotransactionPrice[];
+    grants: MicrotransactionGrant[];
+    localizations?: Record<string, {
+        name: string;
+        description?: string | null;
+    }>;
+    starts_at?: string | null;
+    ends_at?: string | null;
+    max_per_order?: number;
+    /** Required for publishing/changing published goods; live approvals also enforced server-side. */
+    confirm?: boolean;
+}
+interface MicrotransactionProduct extends Omit<MicrotransactionProductInput, 'confirm' | 'status' | 'media_ids'> {
+    id: string;
+    title_id: string;
+    status: MicrotransactionProductStatus;
+    version: number;
+    media_ids: string[];
+    media: MicrotransactionMedia[];
+    created_at: string;
+    updated_at: string;
+}
+interface MicrotransactionProvider {
+    provider: 'stripe' | 'xsolla';
+    environment: MicrotransactionEnvironment;
+    configured: boolean;
+    approved: boolean;
+    countries: string[];
+    currencies: string[];
+    channels: string[];
+    reason?: string;
+}
+interface MicrotransactionReadiness {
+    status: 'disabled' | 'draft' | 'sandbox' | 'ready' | 'live' | 'degraded' | 'suspended';
+    ready: boolean;
+    blockers: string[];
+    providers: MicrotransactionProvider[];
+    commission_basis_points: 1200;
+}
+interface MicrotransactionFramePolicy {
+    frame_ancestors: string[];
+    expires_at: string | null;
+}
+interface MicrotransactionSettingsInput {
+    enabled?: boolean;
+    environment?: MicrotransactionEnvironment;
+    /** Actual title-wide ad-delivery policy, distinct from ad revenue sharing. */
+    ads_enabled?: boolean;
+    fulfillment_mode?: 'glitch' | 'server';
+    allowed_origins?: string[];
+    countries?: string[];
+    currencies?: MicrotransactionCurrency[];
+    branding?: Omit<MicrotransactionBranding, 'logo_media'>;
+    support_email?: string | null;
+    webhook_url?: string | null;
+    /** Required for policy/live changes; cannot replace recorded platform approval. */
+    confirm?: boolean;
+}
+interface MicrotransactionSettings extends Omit<Required<MicrotransactionSettingsInput>, 'confirm'> {
+    title_id: string;
+    branding: MicrotransactionBranding;
+    integration_verified: boolean;
+    /** 12% of discounted pre-tax subtotal; no second commission for in-game currency spending. */
+    commission_basis_points: 1200;
+    fee_policy: 'developer_pays_provider_costs';
+    readiness: MicrotransactionReadiness;
+}
+interface MicrotransactionCatalog {
+    title: {
+        id: string;
+        name: string;
+    };
+    branding: MicrotransactionBranding;
+    products: MicrotransactionProduct[];
+    environment: MicrotransactionEnvironment;
+    available: boolean;
+    blockers: string[];
+}
+interface MicrotransactionPurchaseInput {
+    product_id: string;
+    quantity: number;
+    country: string;
+    currency: string;
+    environment: MicrotransactionEnvironment;
+    channel: 'web';
+}
+interface MicrotransactionCheckoutSessionInput extends MicrotransactionPurchaseInput {
+    /** Exact game origin previously allowlisted by its owner. */
+    return_origin: string;
+    /** Random per-purchase state; retain locally and compare before claiming a handoff. */
+    nonce: string;
+}
+interface MicrotransactionQuote extends Omit<MicrotransactionPurchaseInput, 'channel'> {
+    id: string;
+    product_version: number;
+    subtotal_minor: number;
+    tax_minor: number;
+    total_minor: number;
+    commission_minor: number;
+    commission_basis_points: 1200;
+    expires_at: string;
+}
+interface MicrotransactionEntitlement {
+    key: string;
+    kind: 'durable' | 'consumable' | 'pass';
+    balance: number;
+    environment: MicrotransactionEnvironment;
+    updated_at: string;
+    expires_at?: string | null;
+}
+interface MicrotransactionOrder {
+    id: string;
+    /** Opaque owning Glitch player ID; no email or billing identity is exposed. */
+    player_id?: string;
+    checkout_session_id: string | null;
+    title_id: string;
+    product_id: string;
+    quantity: number;
+    environment: MicrotransactionEnvironment;
+    currency: string;
+    country: string;
+    subtotal_minor: number;
+    tax_minor: number;
+    total_minor: number;
+    commission_minor: number;
+    /** Null until actual costs are reconciled; never confuse an estimate with a payout. */
+    provider_fee_minor: number | null;
+    payment_status: MicrotransactionPaymentStatus;
+    fulfillment_status: MicrotransactionFulfillmentStatus;
+    provider: 'stripe' | 'xsolla' | null;
+    created_at: string;
+    paid_at: string | null;
+    refunded_minor: number;
+    items: MicrotransactionGrant[];
+    entitlements?: MicrotransactionEntitlement[];
+}
+type MicrotransactionGrantUsageStatus = 'unused' | 'partially_used' | 'used_up' | 'owned' | 'expired' | 'revoked' | 'not_delivered' | 'unavailable';
+/** One purchase's server-calculated grant lot, not the player's aggregate inventory balance. */
+interface MicrotransactionGrantUsage {
+    /** Null when the captured purchase has not produced an actual grant lot. */
+    grant_id: string | null;
+    key: string;
+    kind: 'durable' | 'consumable' | 'pass';
+    /** Promised units from the frozen grant quantity multiplied by order quantity, not money. */
+    purchased_quantity: number;
+    /** Actual granted units; zero when no lot exists, even if promised units are positive. */
+    granted_quantity: number;
+    /** Alias of actual granted_quantity, not the promised purchased_quantity. */
+    acquired_quantity: number;
+    /** Units remaining in the lot; expired/unavailable lots may still have raw remaining units. */
+    remaining_quantity: number;
+    /** acquired_quantity - remaining_quantity - revoked_quantity. Includes unrecoverable consumed units. */
+    consumed_quantity: number;
+    /** Units actually recovered/revoked by a refund; not gameplay consumption. */
+    revoked_quantity: number;
+    /** Bounded revoked_quantity + unrecoverable_quantity. This overlaps consumed quantity; do not subtract twice. */
+    refunded_quantity: number;
+    /** Refunded units that could not be recovered because already consumed. Overlaps consumed_quantity. */
+    unrecoverable_quantity: number;
+    expires_at: string | null;
+    expired: boolean;
+    /** Server-calculated usable units after expiry and payment/fulfillment restrictions. */
+    usable_quantity: number;
+    /** Consumable usage only. Durable/pass grants return null; ownership is not proof of gameplay use. */
+    is_used: boolean | null;
+    usage_status: MicrotransactionGrantUsageStatus;
+}
+interface MicrotransactionPlayerPurchase extends MicrotransactionOrder {
+    /** Always present on authenticated self-history, unlike older generic order DTOs. */
+    player_id: string;
+    /** Product snapshot for this purchase, not a replacement for the current catalog. */
+    product: {
+        id: string;
+        sku: string | null;
+        name: string | null;
+        type: MicrotransactionProductType | null;
+        version: number | null;
+    };
+    grant_usage: MicrotransactionGrantUsage[];
+    has_consumed_grants: boolean;
+    has_usable_grants: boolean;
+}
+interface MicrotransactionPurchasePagination {
+    page: number;
+    per_page: number;
+    total: number;
+    last_page: number;
+    has_more_pages: boolean;
+}
+/** Captured own-player purchases, including later refunds/disputes/quarantine; unpaid attempts are excluded. */
+interface MicrotransactionMyPurchases {
+    title_id: string;
+    player_id: string;
+    environment: MicrotransactionEnvironment;
+    purchases: MicrotransactionPlayerPurchase[];
+    pagination: MicrotransactionPurchasePagination;
+}
+interface MicrotransactionCreatedCheckoutSession {
+    id: string;
+    checkout_session_id: string;
+    intent: 'purchase' | 'restore';
+    /** Short-lived capability: never log, send to analytics, or put in a URL query. */
+    session_token: string;
+    hosted_url: string;
+    expires_at: string;
+    status: 'authentication_required' | 'ready';
+    nonce: string;
+}
+interface MicrotransactionCheckoutSession {
+    id: string;
+    checkout_session_id: string;
+    title_id: string;
+    intent: 'purchase' | 'restore';
+    title: {
+        id: string;
+        name: string;
+    };
+    branding: MicrotransactionBranding;
+    product: MicrotransactionProduct | null;
+    quantity: number;
+    country: string;
+    currency: string;
+    environment: MicrotransactionEnvironment;
+    status: string;
+    expires_at: string;
+    authenticated: boolean;
+    order: MicrotransactionOrder | null;
+    return_origin: string;
+    nonce: string;
+    support_email: string | null;
+}
+interface MicrotransactionCheckoutInput {
+    /** UUID retained for retries of the same purchase, never reused for different goods. */
+    idempotency_key: string;
+    accept_terms: true;
+}
+interface MicrotransactionCheckoutResult {
+    order: MicrotransactionOrder;
+    checkout_url: string | null;
+    status: MicrotransactionPaymentStatus;
+    provider: 'stripe' | 'xsolla';
+    quote: MicrotransactionQuote;
+    /** Provider's limited embedded-checkout secret if this route supports embedded checkout. */
+    client_secret?: string | null;
+    /** Public provider key only. Never a Stripe secret key. */
+    publishable_key?: string | null;
+    ui_mode: 'embedded' | 'xsolla';
+}
+interface MicrotransactionHandoff {
+    event: {
+        type: 'glitch.microtransaction.updated';
+        version: 1;
+        title_id: string;
+        checkout_session_id: string;
+        order_id: string;
+        nonce: string;
+        /** One-time claim only; never an account JWT. */
+        claim_code: string;
+    };
+    target_origin: string;
+    expires_at: string;
+}
+interface MicrotransactionHandoffClaimInput {
+    claim_code: string;
+    nonce: string;
+    return_origin: string;
+    checkout_session_id: string;
+}
+interface MicrotransactionHandoffClaim {
+    title_id: string;
+    checkout_session_id: string;
+    order_id: string;
+    player_id: string;
+    entitlements: MicrotransactionEntitlement[];
+    /** 15-minute title/player/environment-scoped token, stored in memory only. */
+    player_token: string;
+    expires_at: string;
+}
+interface MicrotransactionConsumeInput {
+    key: string;
+    quantity: number;
+    action_id: string;
+    environment: MicrotransactionEnvironment;
+}
+interface MicrotransactionRefund {
+    refund_id: string;
+    status: string;
+    order_id: string;
+    refund_allocation?: 'pro_rata_all_grants';
+}
+interface MicrotransactionRefundRequest {
+    id: string;
+    order_id: string;
+    status: 'requested';
+}
+interface MicrotransactionEarnings {
+    currency_balances: Array<{
+        currency: string;
+        pending_minor: number;
+        available_minor: number;
+        paid_minor: number;
+        commission_minor: number;
+        provider_fees_minor: number;
+        /** Transfer to a connected provider balance is NOT a confirmed bank payout. */
+        transferred_minor?: number;
+        bank_payout_status?: 'provider_managed_not_reconciled';
+    }>;
+    payouts_enabled: boolean;
+    reserve_days?: number;
+}
+type MicrotransactionOperation = 'settings.get' | 'settings.update' | 'products.list' | 'products.create' | 'products.update' | 'products.archive' | 'providers.list' | 'readiness.get' | 'orders.list' | 'orders.get' | 'earnings.get' | 'refunds.request' | 'deliveries.replay' | 'integration.get' | 'integration.verify';
+interface MicrotransactionOperationCapability {
+    operation: MicrotransactionOperation;
+    description: string;
+    ability: MicrotransactionAbility;
+    input_schema: Record<string, unknown>;
+    requires_confirmation: boolean;
+    requires_human_approval: boolean;
+    examples: Array<Record<string, unknown>>;
+    output_description: string;
+}
+interface MicrotransactionCapabilities {
+    schema_version: number;
+    title_id: string;
+    operations: MicrotransactionOperationCapability[];
+    [key: string]: unknown;
+}
+/**
+ * Provider-neutral, title-scoped commerce. Configure with user JWT; purchases
+ * use a recoverable user account and limited checkout capability. Install/title
+ * tokens cannot authorize money, ownership, refunds, or catalog changes.
+ *
+ * Each result preserves payment versus fulfillment versus settlement. Redirects
+ * and postMessage events only trigger an authoritative refresh. A timeout is
+ * unknown; reconcile the original attempt instead of charging another provider.
+ */
+declare class Microtransactions {
+    /**
+     * Upload an image/video through existing Glitch Media processing with title
+     * and actor ownership. Attach its returned Media ID to products/branding.
+     * Does not create a social-library post, scheduler, or new payment product.
+     */
+    static uploadMedia(title_id: string, media: File | Blob, onUploadProgress?: (event: AxiosProgressEvent) => void, options?: Pick<AxiosRequestConfig, 'signal' | 'timeout'>): AxiosPromise<MicrotransactionResponse<MicrotransactionMedia>>;
+    /** Same title-authorized Media pipeline using the caller's MCP credential and commerce:write ability. */
+    static mcpUploadMedia(title_id: string, media: File | Blob, onUploadProgress?: (event: AxiosProgressEvent) => void, options?: Pick<AxiosRequestConfig, 'signal' | 'timeout'>): AxiosPromise<MicrotransactionResponse<MicrotransactionMedia>>;
+    /** Admin settings, including immutable 1200bp commission and readiness blockers. */
+    static settings(title_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionSettings>>;
+    /** Atomic policy update. Sandbox/off by default. Cannot disable the final working revenue model. */
+    static updateSettings(title_id: string, data: MicrotransactionSettingsInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionSettings>>;
+    /** Read-only country/provider/approval readiness; never enables a provider. */
+    static readiness(title_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionReadiness>>;
+    /** Admin list includes drafts and archives. Player clients should use catalog(). */
+    static listProducts(title_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+        products: MicrotransactionProduct[];
+    }>>;
+    /** Save a catalog product. Prices use integer minor units and attached media must belong to the title. */
+    static createProduct(title_id: string, data: MicrotransactionProductInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionProduct>>;
+    /** Update a product version. Existing order snapshots remain unchanged. */
+    static updateProduct(title_id: string, product_id: string, data: Partial<MicrotransactionProductInput>, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionProduct>>;
+    /** Archive, never delete financial history. Requires explicit confirmation. */
+    static archiveProduct(title_id: string, product_id: string, data: {
+        confirm: true;
+    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionProduct>>;
+    /** Public provider metadata only. Credentials and commercial approvals are platform-managed. */
+    static providers(title_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+        providers: MicrotransactionProvider[];
+    }>>;
+    /** Admin read of separate-currency balances; pending is not withdrawable revenue. */
+    static earnings(title_id: string, params?: MicrotransactionEnvironmentFilter, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionEarnings>>;
+    /** Admin list, bounded to the server's most recent 100 redacted orders. */
+    static listOrders(title_id: string, params?: MicrotransactionEnvironmentFilter, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+        orders: MicrotransactionOrder[];
+    }>>;
+    /** Owner JWT/scoped player token or title admin. An arbitrary order UUID grants no access. */
+    static getOrder(title_id: string, order_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionOrder>>;
+    /** Financial admin only; original provider and human approval. Omit amount_minor for remaining full refund; partial amounts are bounded and allocated pro rata. */
+    static refundOrder(title_id: string, order_id: string, data: {
+        reason: string;
+        confirm: true;
+        amount_minor?: number;
+    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionRefund>>;
+    /** Replay the same immutable event. Receiver must deduplicate event_id. This cannot mint goods. */
+    static replayDelivery(title_id: string, delivery_id: string, data: {
+        confirm: true;
+    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<Record<string, unknown>>>;
+    /** Public eligible catalog. Sandbox is restricted by backend environment/admin policy. */
+    static catalog(title_id: string, params?: MicrotransactionCatalogFilter, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionCatalog>>;
+    /** User-authenticated quote. Clients select product/quantity, never monetary values or seller accounts. */
+    static createQuote(title_id: string, data: MicrotransactionPurchaseInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionQuote>>;
+    /** Anonymous-safe opening step only. The hosted UI creates/logs into an account before payment. */
+    static createCheckoutSession(title_id: string, data: MicrotransactionCheckoutSessionInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionCreatedCheckoutSession>>;
+    /** Anonymous-safe inventory recovery. Opens an in-game hosted sign-in overlay, never creates a charge or requires the game's account JWT. */
+    static createRestoreSession(title_id: string, data: {
+        return_origin: string;
+        nonce: string;
+        environment: MicrotransactionEnvironment;
+    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionCreatedCheckoutSession>>;
+    /** Read the session using its limited capability. Cannot mutate user identity or declare payment. */
+    static getCheckoutSession(title_id: string, session_id: string, options: MicrotransactionSessionOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionCheckoutSession>>;
+    /** Anonymous, read-only embedding policy: server-approved frame ancestors only, no player/session capability data. */
+    static getCheckoutFramePolicy(title_id: string, session_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionFramePolicy>>;
+    /** Anonymous title-wide approved embedding policy for trusted hosted account pages; no player data. */
+    static getFramePolicy(title_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionFramePolicy>>;
+    /** Bind once to the existing authenticated account. Cannot reassign another player's purchase. */
+    static authenticateCheckoutSession(title_id: string, session_id: string, options: MicrotransactionSessionOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionCheckoutSession>>;
+    /** Bound-user JWT + session capability. Reuse the idempotency key after a network timeout. */
+    static checkout(title_id: string, session_id: string, data: MicrotransactionCheckoutInput, options: MicrotransactionSessionOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionCheckoutResult>>;
+    /** Query original provider; never creates another charge. Pending/unknown remains non-terminal. */
+    static reconcileCheckoutSession(title_id: string, session_id: string, options: MicrotransactionSessionOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionOrder>>;
+    /** Hosted checkout only. Server issues an expiring one-time game handoff after verified fulfillment. */
+    static createHandoff(title_id: string, session_id: string, options: MicrotransactionSessionOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionHandoff>>;
+    /** Game exchanges a verified popup code. Browser Origin must match return_origin; code is consumed once. */
+    static claimHandoff(title_id: string, data: MicrotransactionHandoffClaimInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionHandoffClaim>>;
+    /**
+     * Authenticated hosted Glitch account only: restore a previous purchase into a
+     * NEW nonce-bound session/handoff after the game's 15-minute token expires or
+     * storage is cleared. Does not create another payment. Return to the game via
+     * verified source/origin and a new bridge bound to event.checkout_session_id.
+     */
+    static restoreHandoff(title_id: string, data: {
+        order_id: string;
+        return_origin: string;
+        nonce: string;
+    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionHandoff>>;
+    /** Record integration proof from a genuinely paid, fulfilled sandbox order with a claimed game handoff. */
+    static verifyIntegration(title_id: string, data: {
+        order_id: string;
+        confirm: true;
+    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionReadiness>>;
+    /** Restore authoritative durable ownership/current consumable balances, never mutable cloud-save balances. */
+    static listEntitlements(title_id: string, params?: MicrotransactionEnvironmentFilter, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+        entitlements: MicrotransactionEntitlement[];
+    }>>;
+    /**
+     * Optional self-only purchase/usage history. A user JWT selects that user; a
+     * scoped playerToken selects its bound title/player/environment and requires
+     * the exact approved game Origin. No MCP/install token or caller-selected
+     * user_id/player_id is accepted. JWT environment defaults to live; scoped
+     * tokens default to their bound environment. Admin listOrders stays separate.
+     *
+     * Read response.data.data.purchases and .pagination. Use grant_usage for lot
+     * consumption/refund/expiry status, listEntitlements for current aggregate
+     * inventory, and consume for explicit gameplay spending. History never grants
+     * inventory and durable/pass is_used is null rather than a guessed boolean.
+     */
+    static listMyPurchases(title_id: string, filters?: MicrotransactionMyPurchasesFilters, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionMyPurchases>>;
+    /** Atomic tracked spending. Reuse action_id for retries; a new gameplay action needs a new ID. */
+    static consume(title_id: string, data: MicrotransactionConsumeInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+        entitlement: MicrotransactionEntitlement;
+        replayed: boolean;
+    }>>;
+    /** Owning user asks support to review a refund. This does not execute payment reversal. */
+    static requestRefund(title_id: string, data: {
+        order_id: string;
+        reason: string;
+    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionRefundRequest>>;
+    /** Trusted title server with commerce:fulfill or admin JWT acknowledges the immutable event. */
+    static acknowledgeDelivery(title_id: string, delivery_id: string, data: {
+        event_id: string;
+    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<Record<string, unknown>>>;
+    /** Title MCP token, never a runtime install token. Describes every argument/schema/ability/approval gate. */
+    static mcpCapabilities(title_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionCapabilities>>;
+    /** Execute only an operation discovered in mcpCapabilities. confirm is not financial approval. */
+    static mcpOperation<T = Record<string, unknown>>(title_id: string, operation: MicrotransactionOperation, data: {
+        arguments: Record<string, unknown>;
+        confirm?: boolean;
+    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+        operation: MicrotransactionOperation;
+        result: T;
+    }>>;
+    private static call;
+}
+
+/** A one-time notification, never a receipt or authorization to grant goods. */
+interface MicrotransactionPurchaseMessage {
+    type: 'glitch.microtransaction.updated';
+    version: 1;
+    title_id: string;
+    checkout_session_id: string;
+    order_id: string;
+    /** Cryptographically random value bound to the checkout session at creation. */
+    nonce: string;
+    /** Server-issued one-time code; not an account or player bearer token. */
+    claim_code: string;
+}
+/** Exact authoritative /handoffs/claim response, not the hosted session DTO. */
+type MicrotransactionVerifiedSession = MicrotransactionHandoffClaim;
+interface MicrotransactionBridgeOptions<T extends MicrotransactionVerifiedSession> {
+    titleId: string;
+    checkoutSessionId: string;
+    /** Exact trusted Glitch checkout origin, with no path, wildcard, or credentials. */
+    checkoutOrigin: string;
+    /** The actual Window returned by window.open or the checkout iframe.contentWindow. */
+    checkoutWindow: Window;
+    /** At least 128 bits of randomness; use createMicrotransactionNonce(). */
+    nonce: string;
+    /**
+     * Exchange message.claim_code at Glitch using claimHandoff(titleId,
+     * {claim_code, nonce, return_origin: window.location.origin,
+     * checkout_session_id}). Return response.data.data, the actual claim DTO.
+     * The message has already passed source/origin/nonce checks but is still NOT
+     * proof of payment. The server validates and consumes the one-time code.
+     * Never exchange a site-wide login token with the game or put credentials in
+     * postMessage, analytics, logs, or query strings.
+     */
+    verify: (message: MicrotransactionPurchaseMessage) => Promise<T>;
+    /**
+     * Restore using the previously verified scoped token plus getOrder and
+     * listEntitlements. Return the claim identity/token with current inventory.
+     * Never redeem the code again. When its token expires, return the player to
+     * the authenticated hosted flow to obtain a fresh scoped handoff.
+     */
+    refresh?: (previous: T) => Promise<T>;
+    /** Refresh display/inventory from the verified result. Make local effects idempotent. */
+    onVerified: (result: T) => void | Promise<void>;
+    /** A failed refresh is not a failed payment. Keep the same session and retry. */
+    onError?: (error: unknown) => void;
+    /** Explicit local development only; production checkout must use HTTPS. */
+    allowLocalDevelopment?: boolean;
+    /** Defaults to window. Useful for browser integration tests. */
+    eventTarget?: Pick<Window, 'addEventListener' | 'removeEventListener'>;
+}
+/** Restore authenticates an existing receipt in Glitch and creates a new session. */
+interface MicrotransactionRestoreBridgeOptions<T extends MicrotransactionVerifiedSession> extends Omit<MicrotransactionBridgeOptions<T>, 'checkoutSessionId'> {
+    /** Previously verified receipt/order ID. This, not the old expired session ID, is pinned. */
+    orderId: string;
+}
+interface MicrotransactionBridge {
+    /**
+     * Refresh only after a successful claim, using options.refresh and its scoped
+     * token. Concurrent refreshes share one request. A lost first-claim response
+     * requires a fresh handoff from the authenticated hosted page, not code replay
+     * or a new payment. No automatic polling or token refresh is performed.
+     */
+    refresh(): Promise<void>;
+    /** Remove the listener. In-flight results cannot call onVerified after disposal. */
+    dispose(): void;
+}
+/** Generate a 256-bit browser nonce. Fails closed without secure Web Crypto. */
+declare function createMicrotransactionNonce(): string;
+/**
+ * Listen for Glitch-hosted, game-branded checkout changes with strict origin,
+ * source, title, session, and nonce binding. Message data cannot grant an item.
+ * The caller always verifies the session at Glitch before updating inventory.
+ *
+ * Prefer openMicrotransactionOverlay with the exact server-returned URL. The
+ * game stays mounted; no top-level navigation fallback is permitted. If an
+ * embedded flow is unavailable, show retry/close and preserve the game state.
+ * refresh() requires an already verified claim. Keep
+ * secrets in memory/session storage or a URL fragment, never query parameters.
+ * Dispose on game unmount/account change. Reconnect restores ownership through
+ * the authenticated entitlement API, not a saved "purchase successful" flag.
+ */
+declare function createMicrotransactionBridge<T extends MicrotransactionVerifiedSession>(options: MicrotransactionBridgeOptions<T>): MicrotransactionBridge;
+/**
+ * Restore-only bridge for /games/:titleId/purchases/restore. Pin the prior order,
+ * fresh nonce, exact Glitch origin and opened window. The hosted signed-in page
+ * creates a NEW session; the server-verified claim must match that new session
+ * and the pinned order. This does not relax purchase-session binding.
+ *
+ * Open the hosted restore page, never request the account JWT in the game.
+ * verify(message) exchanges the code using message.checkout_session_id. All
+ * duplicate-code, expiry and same-player refresh safeguards still apply.
+ */
+declare function createMicrotransactionRestoreBridge<T extends MicrotransactionVerifiedSession>(options: MicrotransactionRestoreBridgeOptions<T>): MicrotransactionBridge;
+
+interface MicrotransactionOverlayOptions {
+    titleId: string;
+    /** Exact configured Glitch HTTPS origin, never taken from postMessage data. */
+    checkoutOrigin: string;
+    /** Result of createCheckoutSession or createRestoreSession; keep its capability private. */
+    session: MicrotransactionCreatedCheckoutSession;
+    /** Replace displayed inventory from verified backend data; never increment blindly. */
+    onVerified: (claim: MicrotransactionHandoffClaim) => void | Promise<void>;
+    /** Pause game input/audio here. The SDK never unmounts or resets the game. */
+    onOpen?: () => void;
+    /** Resume game input/audio here. Called once, even on escape/error cleanup. */
+    onClose?: (reason: 'dismissed' | 'completed' | 'unavailable') => void;
+    /** Receipt/status-only update after close; this callback does not authorize item grants. */
+    onOrderUpdate?: (order: MicrotransactionOrder | null) => void | Promise<void>;
+    onError?: (error: unknown) => void;
+    label?: string;
+    /** Permit HTTP loopback/.test origins only for explicit local development. */
+    allowLocalDevelopment?: boolean;
+    /** Defaults to the caller's document, including when the game itself is embedded. */
+    document?: Document;
+    /** Bounded network timeout; defaults to 15 seconds. */
+    timeoutMs?: number;
+    /** Per-phase iframe load/application-ready timeout; 1–60 seconds, defaults to 20 seconds. */
+    frameLoadTimeoutMs?: number;
+}
+/** Hosted page signals usable checkout/account UI, never payment or inventory authority. */
+interface MicrotransactionReadyMessage {
+    type: 'glitch.microtransaction.ready';
+    version: 1;
+    title_id: string;
+    checkout_session_id: string;
+    nonce: string;
+}
+interface MicrotransactionOverlay {
+    readonly element: HTMLDialogElement;
+    readonly iframe: HTMLIFrameElement;
+    /** Refresh verified inventory, or limited receipt status before the first claim. */
+    refresh(): Promise<void>;
+    /** Removes only this modal, restores focus/input, and refreshes authoritative state. */
+    close(reason?: 'dismissed' | 'completed' | 'unavailable'): Promise<void>;
+    /** Reload only the same checkout iframe/session. Never starts another payment. */
+    retry(): void;
+}
+/**
+ * Mount Glitch checkout IN the running game. The game document, URL and session
+ * stay intact. Uses a modal dialog with focus restore and a sandboxed payment
+ * iframe. No top-navigation permission or top-level/popup-blocked fallback exists.
+ * Only bank/OAuth verification may open a controlled provider window from inside
+ * the frame. If embedding is unavailable, show retry/close instead of navigating.
+ *
+ * Receipt messages must originate from this exact iframe.contentWindow and pass
+ * origin/title/session/nonce checks. The SDK redeems the one-time claim at Glitch
+ * and uses the returned scoped player token only on commerce requests. Closing
+ * does not cancel an uncertain payment, grant goods, or discard the game state.
+ */
+declare function openMicrotransactionOverlay(options: MicrotransactionOverlayOptions): MicrotransactionOverlay;
+/** Same in-game modal for anonymous-safe restore sessions; never opens a new payment. */
+declare function openMicrotransactionRestoreOverlay(options: MicrotransactionOverlayOptions): MicrotransactionOverlay;
+
 interface Route {
     url: string;
     method: string;
@@ -11918,13 +12912,15 @@ declare class Requests {
     static put<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static patch<T>(url: string, data: any, params?: Record<string, any>): AxiosPromise<Response<T>>;
     static delete<T>(url: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
-    static uploadFile<T>(url: string, filename: string, file: File | Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
+    static uploadFile<T>(url: string, filename: string, file: File | Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void, options?: Pick<AxiosRequestConfig, 'signal' | 'timeout'>): AxiosPromise<Response<T>>;
     static postFormData<T>(url: string, formData: FormData, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     static uploadBlob<T>(url: string, filename: string, blob: Blob, data?: any, params?: Record<string, any>, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): AxiosPromise<Response<T>>;
     static uploadFileInChunks<T>(file: File, uploadUrl: string, onProgress?: (totalSize: number, amountUploaded: number) => void, data?: any, chunkSize?: number): Promise<void>;
     static processRoute<T>(route: Route, data?: object, routeReplace?: {
         [key: string]: any;
-    }, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    }, params?: Record<string, any>, options?: Pick<AxiosRequestConfig, 'signal' | 'timeout' | 'headers'> & {
+        excludeCommunityContext?: boolean;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Parser {
@@ -12238,6 +13234,7 @@ declare class Glitch {
         Newsletters: typeof Newsletters;
         PlayTests: typeof PlayTests;
         Media: typeof Media;
+        FestivalNetworking: typeof FestivalNetworking;
         Scheduler: typeof Scheduler;
         RedditSubreddits: typeof RedditSubreddits;
         Funnel: typeof Funnel;
@@ -12263,6 +13260,7 @@ declare class Glitch {
         GameAdvertising: typeof GameAdvertising;
         Hosting: typeof Hosting;
         GameDesign: typeof GameDesign;
+        Microtransactions: typeof Microtransactions;
     };
     static util: {
         Requests: typeof Requests;
@@ -12352,4 +13350,4 @@ declare class Glitch {
     };
 }
 
-export { Glitch as default };
+export { type FestivalApplicationInput, type FestivalApplicationState, type FestivalConversation, type FestivalMediaUpload, type FestivalNetworkingFilters, type FestivalNetworkingProfile, type FestivalNetworkingResponse, type FestivalNetworkingSettings, type FestivalPost, type FestivalPostInput, type FestivalPostKind, type FestivalPostState, type FestivalPreferences, type FestivalReportInput, type FestivalRequestOptions, type FestivalWorkType, type MicrotransactionAbility, type MicrotransactionBranding, type MicrotransactionBridge, type MicrotransactionBridgeOptions, type MicrotransactionCapabilities, type MicrotransactionCatalog, type MicrotransactionCatalogFilter, type MicrotransactionCheckoutInput, type MicrotransactionCheckoutResult, type MicrotransactionCheckoutSession, type MicrotransactionCheckoutSessionInput, type MicrotransactionConsumeInput, type MicrotransactionCreatedCheckoutSession, type MicrotransactionCurrency, type MicrotransactionEarnings, type MicrotransactionEntitlement, type MicrotransactionEnvironment, type MicrotransactionEnvironmentFilter, type MicrotransactionError, type MicrotransactionErrorCode, type MicrotransactionFramePolicy, type MicrotransactionFulfillmentStatus, type MicrotransactionGrant, type MicrotransactionGrantUsage, type MicrotransactionGrantUsageStatus, type MicrotransactionHandoff, type MicrotransactionHandoffClaim, type MicrotransactionHandoffClaimInput, type MicrotransactionMedia, type MicrotransactionMyPurchases, type MicrotransactionMyPurchasesFilters, type MicrotransactionOperation, type MicrotransactionOperationCapability, type MicrotransactionOrder, type MicrotransactionOverlay, type MicrotransactionOverlayOptions, type MicrotransactionPaymentStatus, type MicrotransactionPlayerPurchase, type MicrotransactionPrice, type MicrotransactionProduct, type MicrotransactionProductInput, type MicrotransactionProductStatus, type MicrotransactionProductType, type MicrotransactionProvider, type MicrotransactionPurchaseInput, type MicrotransactionPurchaseMessage, type MicrotransactionPurchasePagination, type MicrotransactionQuote, type MicrotransactionReadiness, type MicrotransactionReadyMessage, type MicrotransactionRefund, type MicrotransactionRefundRequest, type MicrotransactionRequestOptions, type MicrotransactionResponse, type MicrotransactionRestoreBridgeOptions, type MicrotransactionSessionOptions, type MicrotransactionSettings, type MicrotransactionSettingsInput, type MicrotransactionVerifiedSession, createMicrotransactionBridge, createMicrotransactionNonce, createMicrotransactionRestoreBridge, Glitch as default, openMicrotransactionOverlay, openMicrotransactionRestoreOverlay };

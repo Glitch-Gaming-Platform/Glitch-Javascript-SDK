@@ -5883,7 +5883,7 @@
           }
           return Requests.request('DELETE', url);
       }
-      static uploadFile(url, filename, file, data, params, onUploadProgress) {
+      static uploadFile(url, filename, file, data, params, onUploadProgress, options) {
           // Process URL and params
           if (params && Object.keys(params).length > 0) {
               const queryString = Object.entries(params)
@@ -5914,6 +5914,8 @@
               data: formData,
               headers,
               onUploadProgress,
+              signal: options === null || options === void 0 ? void 0 : options.signal,
+              timeout: options === null || options === void 0 ? void 0 : options.timeout,
           });
       }
       static postFormData(url, formData, params, onUploadProgress) {
@@ -6027,12 +6029,20 @@
               }
           });
       }
-      static processRoute(route, data, routeReplace, params) {
+      static processRoute(route, data, routeReplace, params, options) {
           let url = route.url;
           if (routeReplace) {
               for (let key in routeReplace) {
                   url = url.replace("{" + key + "}", routeReplace[key]);
               }
+          }
+          if (options) {
+              const query = Object.assign(Object.assign({}, params), (Requests.community_id && !options.excludeCommunityContext ? { community_id: Requests.community_id } : {}));
+              return axios({
+                  method: route.method, url: Requests.buildUrl(url, query), data,
+                  headers: Object.assign(Object.assign({ 'Content-Type': 'application/json' }, (Requests.authToken ? { Authorization: `Bearer ${Requests.authToken}` } : {})), options.headers),
+                  signal: options.signal, timeout: options.timeout,
+              });
           }
           if (route.method == HTTP_METHODS.GET) {
               return Requests.get(url, params);

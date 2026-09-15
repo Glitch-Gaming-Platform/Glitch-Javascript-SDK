@@ -25,6 +25,8 @@ import { Influencers } from "./api";
 import { Games } from "./api";
 import { Publications } from "./api";
 import { GameShows } from "./api";
+import FestivalNetworking from './api/FestivalNetworking';
+export * from './api/FestivalNetworking';
 import { Newsletters } from "./api";
 import { PlayTests } from "./api";
 import { Media } from "./api";
@@ -54,6 +56,10 @@ import { MarketResearch } from './api';
 import { GameAdvertising } from './api';
 import { Hosting } from './api';
 import { GameDesign } from './api';
+import { Microtransactions } from './api';
+export * from './api/Microtransactions';
+export * from './util/MicrotransactionBridge';
+export * from './util/MicrotransactionOverlay';
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
 import Session from "./util/Session";
@@ -104,6 +110,7 @@ declare class Glitch {
         Newsletters: typeof Newsletters;
         PlayTests: typeof PlayTests;
         Media: typeof Media;
+        FestivalNetworking: typeof FestivalNetworking;
         Scheduler: typeof Scheduler;
         RedditSubreddits: typeof RedditSubreddits;
         Funnel: typeof Funnel;
@@ -129,6 +136,7 @@ declare class Glitch {
         GameAdvertising: typeof GameAdvertising;
         Hosting: typeof Hosting;
         GameDesign: typeof GameDesign;
+        Microtransactions: typeof Microtransactions;
     };
     static util: {
         Requests: typeof Requests;

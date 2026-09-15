@@ -16,6 +16,10 @@ export default [
       {
         dir: packageJson.main.replace('/index.js', ''),
         format: "cjs",
+        exports: "named",
+        // Preserve legacy require('glitch-javascript-sdk').api while exposing
+        // new named browser helpers and an interoperable .default reference.
+        footer: "module.exports = Object.assign(exports.default, exports);",
         sourcemap: true,
       }
     ],

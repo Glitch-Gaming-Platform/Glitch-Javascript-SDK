@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 var require$$1 = require('util');
 var stream = require('stream');
 var require$$1$1 = require('path');
@@ -15442,7 +15444,7 @@ var transitionalDefaults = {
   validateStatusUndefinedResolves: true,
 };
 
-var URLSearchParams = require$$5.URLSearchParams;
+var URLSearchParams$1 = require$$5.URLSearchParams;
 
 const ALPHA = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -15469,7 +15471,7 @@ const generateString = (size = 16, alphabet = ALPHABET.ALPHA_DIGIT) => {
 var platform$1 = {
   isNode: true,
   classes: {
-    URLSearchParams,
+    URLSearchParams: URLSearchParams$1,
     FormData: FormData$2,
     Blob: (typeof Blob !== 'undefined' && Blob) || null,
   },
@@ -23524,7 +23526,7 @@ var Requests = /** @class */ (function () {
         }
         return Requests.request('DELETE', url);
     };
-    Requests.uploadFile = function (url, filename, file, data, params, onUploadProgress) {
+    Requests.uploadFile = function (url, filename, file, data, params, onUploadProgress, options) {
         // Process URL and params
         if (params && Object.keys(params).length > 0) {
             var queryString = Object.entries(params)
@@ -23558,6 +23560,8 @@ var Requests = /** @class */ (function () {
             data: formData,
             headers: headers,
             onUploadProgress: onUploadProgress,
+            signal: options === null || options === void 0 ? void 0 : options.signal,
+            timeout: options === null || options === void 0 ? void 0 : options.timeout,
         });
     };
     Requests.postFormData = function (url, formData, params, onUploadProgress) {
@@ -23699,12 +23703,21 @@ var Requests = /** @class */ (function () {
             });
         });
     };
-    Requests.processRoute = function (route, data, routeReplace, params) {
+    Requests.processRoute = function (route, data, routeReplace, params, options) {
         var url = route.url;
         if (routeReplace) {
             for (var key in routeReplace) {
                 url = url.replace("{" + key + "}", routeReplace[key]);
             }
+        }
+        if (options) {
+            var query = __assign(__assign({}, params), (Requests.community_id && !options.excludeCommunityContext ? { community_id: Requests.community_id } : {}));
+            return axios({
+                method: route.method, url: Requests.buildUrl(url, query),
+                data: data,
+                headers: __assign(__assign({ 'Content-Type': 'application/json' }, (Requests.authToken ? { Authorization: "Bearer ".concat(Requests.authToken) } : {})), options.headers),
+                signal: options.signal, timeout: options.timeout,
+            });
         }
         if (route.method == HTTP_METHODS.GET) {
             return Requests.get(url, params);
@@ -32642,7 +32655,10 @@ var Messages = /** @class */ (function () {
         return Requests.processRoute(MessagesRoute.routes.listMessageThreads, undefined, undefined, params);
     };
     /**
-     * Send a new message that will be added to a thread
+     * Send a new message that will be added to a thread. Festival-scoped threads
+     * enforce current admission, blocking and read-only state server-side.
+     * Include an optional client_message_id UUID and reuse it when retrying a
+     * timed-out request to prevent duplicate messages and notifications.
      *
      * @see https://api.glitch.fun/api/documentation#/Messages/storeMessage
      *
@@ -39671,6 +39687,847 @@ var GameDesign = /** @class */ (function () {
     return GameDesign;
 }());
 
+/** Participant-only festival networking; all access checks are enforced by the API. */
+var FestivalNetworkingRoute = /** @class */ (function () {
+    function FestivalNetworkingRoute() {
+    }
+    FestivalNetworkingRoute.routes = {
+        settings: { url: '/gameshows/{show_id}/networking/settings', method: HTTP_METHODS.GET },
+        updateSettings: { url: '/gameshows/{show_id}/networking/settings', method: HTTP_METHODS.PUT },
+        listPosts: { url: '/gameshows/{show_id}/networking/posts', method: HTTP_METHODS.GET },
+        createPost: { url: '/gameshows/{show_id}/networking/posts', method: HTTP_METHODS.POST },
+        getPost: { url: '/gameshows/{show_id}/networking/posts/{post_id}', method: HTTP_METHODS.GET },
+        updatePost: { url: '/gameshows/{show_id}/networking/posts/{post_id}', method: HTTP_METHODS.PUT },
+        listComments: { url: '/gameshows/{show_id}/networking/posts/{post_id}/comments', method: HTTP_METHODS.GET },
+        createComment: { url: '/gameshows/{show_id}/networking/posts/{post_id}/comments', method: HTTP_METHODS.POST },
+        setInteraction: { url: '/gameshows/{show_id}/networking/posts/{post_id}/interaction', method: HTTP_METHODS.PUT },
+        apply: { url: '/gameshows/{show_id}/networking/posts/{post_id}/apply', method: HTTP_METHODS.POST },
+        matches: { url: '/gameshows/{show_id}/networking/posts/{post_id}/matches', method: HTTP_METHODS.GET },
+        report: { url: '/gameshows/{show_id}/networking/posts/{post_id}/report', method: HTTP_METHODS.POST },
+        applications: { url: '/gameshows/{show_id}/networking/applications', method: HTTP_METHODS.GET },
+        updateApplication: { url: '/gameshows/{show_id}/networking/applications/{application_id}', method: HTTP_METHODS.PUT },
+        conversation: { url: '/gameshows/{show_id}/networking/applications/{application_id}/conversation', method: HTTP_METHODS.POST },
+        moderation: { url: '/gameshows/{show_id}/networking/moderation', method: HTTP_METHODS.GET },
+        moderatePost: { url: '/gameshows/{show_id}/networking/moderation/posts/{post_id}', method: HTTP_METHODS.PUT },
+        resolveReport: { url: '/gameshows/{show_id}/networking/moderation/{report_id}', method: HTTP_METHODS.PUT },
+        restrictMember: { url: '/gameshows/{show_id}/networking/members/{user_id}', method: HTTP_METHODS.PUT },
+        preferences: { url: '/gameshows/{show_id}/networking/preferences', method: HTTP_METHODS.GET },
+        updatePreferences: { url: '/gameshows/{show_id}/networking/preferences', method: HTTP_METHODS.PUT },
+        media: { url: '/gameshows/{show_id}/networking/media', method: HTTP_METHODS.GET },
+        uploadMedia: { url: '/gameshows/{show_id}/networking/media', method: HTTP_METHODS.POST },
+        organizations: { url: '/gameshows/{show_id}/networking/organizations', method: HTTP_METHODS.GET },
+        analytics: { url: '/gameshows/{show_id}/networking/analytics', method: HTTP_METHODS.GET },
+    };
+    return FestivalNetworkingRoute;
+}());
+
+/** Festival-scoped discussions, talent, jobs, moderation and new owned media uploads. */
+var FestivalNetworking = /** @class */ (function () {
+    function FestivalNetworking() {
+    }
+    FestivalNetworking.request = function (name, show_id, data, ids, params, options) {
+        if (ids === void 0) { ids = {}; }
+        var replacements = Object.fromEntries(Object.entries(__assign({ show_id: show_id }, ids)).map(function (_a) {
+            var key = _a[0], id = _a[1];
+            return [key, encodeURIComponent(id)];
+        }));
+        return Requests.processRoute(FestivalNetworkingRoute.routes[name], data, replacements, params, options);
+    };
+    /** Read enabled tools and the current account's registration/ticket access. */
+    FestivalNetworking.settings = function (id, options) { return this.request('settings', id, undefined, {}, undefined, options); };
+    /** Organizer-only settings update; admission remains mandatory. */
+    FestivalNetworking.updateSettings = function (id, data) { return this.request('updateSettings', id, data); };
+    /** Search posts; compensation comparisons require currency and period. */
+    FestivalNetworking.listPosts = function (id, params, options) { return this.request('listPosts', id, undefined, {}, params, options); };
+    /** Create a post with rich HTML and optional newly uploaded UserMedia IDs. */
+    FestivalNetworking.createPost = function (id, data) { return this.request('createPost', id, data); };
+    /** Direct links still require admission and content visibility permission. */
+    FestivalNetworking.getPost = function (id, post_id, options) { return this.request('getPost', id, undefined, { post_id: post_id }, undefined, options); };
+    /** Edit or soft-delete via state; omit media_ids to preserve current attachments. */
+    FestivalNetworking.updatePost = function (id, post_id, data) { return this.request('updatePost', id, data, { post_id: post_id }); };
+    /** Paginated direct replies; fetch children to expand a thread. */
+    FestivalNetworking.listComments = function (id, post_id, params, options) { return this.request('listComments', id, undefined, { post_id: post_id }, params, options); };
+    /** Add a rich-text reply, subject to locking and five-level nesting. */
+    FestivalNetworking.createComment = function (id, post_id, data) { return this.request('createComment', id, data, { post_id: post_id }); };
+    /** Set, replace, or remove a vote/save/hide idempotently. */
+    FestivalNetworking.setInteraction = function (id, post_id, data) { return this.request('setInteraction', id, data, { post_id: post_id }); };
+    /** Apply or express interest once; the original listing is snapshotted. */
+    FestivalNetworking.apply = function (id, post_id, data) { return this.request('apply', id, data, { post_id: post_id }); };
+    /** Discovery matches for the current user's own job/talent listing. */
+    FestivalNetworking.matches = function (id, post_id, params, options) { return this.request('matches', id, undefined, { post_id: post_id }, params, options); };
+    /** Report suspicious content privately to festival moderators. */
+    FestivalNetworking.report = function (id, post_id, data) { return this.request('report', id, data, { post_id: post_id }); };
+    /** Only the applicant and listing owner receive application records. */
+    FestivalNetworking.applications = function (id, params, options) { return this.request('applications', id, undefined, {}, params, options); };
+    /** Applicant withdrawal or owner-managed status changes. */
+    FestivalNetworking.updateApplication = function (id, application_id, data) { return this.request('updateApplication', id, data, { application_id: application_id }); };
+    /** Open the application/talent inquiry's private shared-inbox conversation, creating it once for legacy applications. Only the applicant and original listing owner may call this. Use Messages.getThread/sendMessage for subsequent conversation activity. */
+    FestivalNetworking.conversation = function (id, application_id) { return this.request('conversation', id, {}, { application_id: application_id }); };
+    /** Moderator-only report queue and audit history. */
+    FestivalNetworking.moderation = function (id, params, options) { return this.request('moderation', id, undefined, {}, params, options); };
+    /** Moderation remains available even while the board is disabled. */
+    FestivalNetworking.moderatePost = function (id, post_id, data) { return this.request('moderatePost', id, data, { post_id: post_id }); };
+    /** Resolve, dismiss or begin reviewing a report. */
+    FestivalNetworking.resolveReport = function (id, report_id, data) { return this.request('resolveReport', id, data, { report_id: report_id }); };
+    /** Moderator-only participant restrictions. */
+    FestivalNetworking.restrictMember = function (id, user_id, data) { return this.request('restrictMember', id, data, { user_id: user_id }); };
+    /** Current user's privacy and notification preferences. */
+    FestivalNetworking.preferences = function (id, options) { return this.request('preferences', id, undefined, {}, undefined, options); };
+    /** Set notification opt-out and blocked participants/companies. */
+    FestivalNetworking.updatePreferences = function (id, data) { return this.request('updatePreferences', id, data); };
+    /** Uploaded festival attachments only; not the gameplay clip library. */
+    FestivalNetworking.media = function (id, params, options) { return this.request('media', id, undefined, {}, params, options); };
+    /**
+     * Upload a new image (10 MB max) or video (100 MB max), using the existing media pipeline.
+     * The response ID is an owned UserMedia ID for createPost/updatePost media_ids.
+     * @param file New file selected by the attendee; supported images exclude SVG.
+     * @param data Which enabled board the upload is for.
+     * @param onUploadProgress Transfer progress; 100% may still require conversion before completion.
+     */
+    FestivalNetworking.uploadMedia = function (id, file, data, onUploadProgress, options) {
+        return Requests.uploadFile(FestivalNetworkingRoute.routes.uploadMedia.url.replace('{show_id}', encodeURIComponent(id)), 'media', file, data, undefined, onUploadProgress, options);
+    };
+    /** Organizations the authenticated user is authorized to represent. */
+    FestivalNetworking.organizations = function (id, options) { return this.request('organizations', id, undefined, {}, undefined, options); };
+    /** Organizer-only aggregate participation metrics. */
+    FestivalNetworking.analytics = function (id, options) { return this.request('analytics', id, undefined, {}, undefined, options); };
+    return FestivalNetworking;
+}());
+
+/** Consumer-facing commerce routes. Signed provider webhooks are deliberately not client APIs. */
+var MicrotransactionsRoute = /** @class */ (function () {
+    function MicrotransactionsRoute() {
+    }
+    MicrotransactionsRoute.routes = {
+        uploadMedia: { url: '/titles/{title_id}/microtransactions/media', method: HTTP_METHODS.POST },
+        mcpUploadMedia: { url: '/mcp/v1/titles/{title_id}/microtransactions/media', method: HTTP_METHODS.POST },
+        settings: { url: '/titles/{title_id}/microtransactions/settings', method: HTTP_METHODS.GET },
+        updateSettings: { url: '/titles/{title_id}/microtransactions/settings', method: HTTP_METHODS.PUT },
+        readiness: { url: '/titles/{title_id}/microtransactions/readiness', method: HTTP_METHODS.GET },
+        products: { url: '/titles/{title_id}/microtransactions/products', method: HTTP_METHODS.GET },
+        createProduct: { url: '/titles/{title_id}/microtransactions/products', method: HTTP_METHODS.POST },
+        updateProduct: { url: '/titles/{title_id}/microtransactions/products/{product_id}', method: HTTP_METHODS.PUT },
+        archiveProduct: { url: '/titles/{title_id}/microtransactions/products/{product_id}/archive', method: HTTP_METHODS.POST },
+        providers: { url: '/titles/{title_id}/microtransactions/providers', method: HTTP_METHODS.GET },
+        earnings: { url: '/titles/{title_id}/microtransactions/earnings', method: HTTP_METHODS.GET },
+        orders: { url: '/titles/{title_id}/microtransactions/orders', method: HTTP_METHODS.GET },
+        order: { url: '/titles/{title_id}/microtransactions/orders/{order_id}', method: HTTP_METHODS.GET },
+        refund: { url: '/titles/{title_id}/microtransactions/orders/{order_id}/refund', method: HTTP_METHODS.POST },
+        replayDelivery: { url: '/titles/{title_id}/microtransactions/deliveries/{delivery_id}/replay', method: HTTP_METHODS.POST },
+        catalog: { url: '/titles/{title_id}/microtransactions/catalog', method: HTTP_METHODS.GET },
+        createQuote: { url: '/titles/{title_id}/microtransactions/quotes', method: HTTP_METHODS.POST },
+        createCheckoutSession: { url: '/titles/{title_id}/microtransactions/checkout-sessions', method: HTTP_METHODS.POST },
+        createRestoreSession: { url: '/titles/{title_id}/microtransactions/restore-sessions', method: HTTP_METHODS.POST },
+        checkoutSession: { url: '/titles/{title_id}/microtransactions/checkout-sessions/{session_id}', method: HTTP_METHODS.GET },
+        checkoutFramePolicy: { url: '/titles/{title_id}/microtransactions/checkout-sessions/{session_id}/frame-policy', method: HTTP_METHODS.GET },
+        framePolicy: { url: '/titles/{title_id}/microtransactions/frame-policy', method: HTTP_METHODS.GET },
+        authenticateCheckoutSession: { url: '/titles/{title_id}/microtransactions/checkout-sessions/{session_id}/authenticate', method: HTTP_METHODS.POST },
+        checkout: { url: '/titles/{title_id}/microtransactions/checkout-sessions/{session_id}/checkout', method: HTTP_METHODS.POST },
+        reconcileCheckout: { url: '/titles/{title_id}/microtransactions/checkout-sessions/{session_id}/reconcile', method: HTTP_METHODS.POST },
+        createHandoff: { url: '/titles/{title_id}/microtransactions/checkout-sessions/{session_id}/handoff', method: HTTP_METHODS.POST },
+        claimHandoff: { url: '/titles/{title_id}/microtransactions/handoffs/claim', method: HTTP_METHODS.POST },
+        restoreHandoff: { url: '/titles/{title_id}/microtransactions/handoffs/restore', method: HTTP_METHODS.POST },
+        verifyIntegration: { url: '/titles/{title_id}/microtransactions/integration/verify', method: HTTP_METHODS.POST },
+        entitlements: { url: '/titles/{title_id}/microtransactions/entitlements', method: HTTP_METHODS.GET },
+        myPurchases: { url: '/titles/{title_id}/microtransactions/me/purchases', method: HTTP_METHODS.GET },
+        consume: { url: '/titles/{title_id}/microtransactions/consume', method: HTTP_METHODS.POST },
+        requestRefund: { url: '/titles/{title_id}/microtransactions/refund-requests', method: HTTP_METHODS.POST },
+        acknowledgeDelivery: { url: '/titles/{title_id}/microtransactions/deliveries/{delivery_id}/acknowledge', method: HTTP_METHODS.POST },
+        mcpCapabilities: { url: '/mcp/v1/titles/{title_id}/microtransactions/capabilities', method: HTTP_METHODS.GET },
+        mcpOperation: { url: '/mcp/v1/titles/{title_id}/microtransactions/operations/{operation}', method: HTTP_METHODS.POST },
+    };
+    return MicrotransactionsRoute;
+}());
+
+/**
+ * Provider-neutral, title-scoped commerce. Configure with user JWT; purchases
+ * use a recoverable user account and limited checkout capability. Install/title
+ * tokens cannot authorize money, ownership, refunds, or catalog changes.
+ *
+ * Each result preserves payment versus fulfillment versus settlement. Redirects
+ * and postMessage events only trigger an authoritative refresh. A timeout is
+ * unknown; reconcile the original attempt instead of charging another provider.
+ */
+var Microtransactions = /** @class */ (function () {
+    function Microtransactions() {
+    }
+    /**
+     * Upload an image/video through existing Glitch Media processing with title
+     * and actor ownership. Attach its returned Media ID to products/branding.
+     * Does not create a social-library post, scheduler, or new payment product.
+     */
+    Microtransactions.uploadMedia = function (title_id, media, onUploadProgress, options) {
+        if (!/^[A-Za-z0-9_:-]+$/.test(title_id))
+            throw new Error('Invalid commerce title identifier.');
+        return Requests.uploadFile(MicrotransactionsRoute.routes.uploadMedia.url.replace('{title_id}', encodeURIComponent(title_id)), 'media', media, {}, undefined, onUploadProgress, options);
+    };
+    /** Same title-authorized Media pipeline using the caller's MCP credential and commerce:write ability. */
+    Microtransactions.mcpUploadMedia = function (title_id, media, onUploadProgress, options) {
+        if (!/^[A-Za-z0-9_:-]+$/.test(title_id))
+            throw new Error('Invalid commerce title identifier.');
+        return Requests.uploadFile(MicrotransactionsRoute.routes.mcpUploadMedia.url.replace('{title_id}', encodeURIComponent(title_id)), 'media', media, {}, undefined, onUploadProgress, options);
+    };
+    /** Admin settings, including immutable 1200bp commission and readiness blockers. */
+    Microtransactions.settings = function (title_id, options) { return this.call('settings', title_id, undefined, {}, undefined, options); };
+    /** Atomic policy update. Sandbox/off by default. Cannot disable the final working revenue model. */
+    Microtransactions.updateSettings = function (title_id, data, options) { return this.call('updateSettings', title_id, data, {}, undefined, options); };
+    /** Read-only country/provider/approval readiness; never enables a provider. */
+    Microtransactions.readiness = function (title_id, options) { return this.call('readiness', title_id, undefined, {}, undefined, options); };
+    /** Admin list includes drafts and archives. Player clients should use catalog(). */
+    Microtransactions.listProducts = function (title_id, options) { return this.call('products', title_id, undefined, {}, undefined, options); };
+    /** Save a catalog product. Prices use integer minor units and attached media must belong to the title. */
+    Microtransactions.createProduct = function (title_id, data, options) { return this.call('createProduct', title_id, data, {}, undefined, options); };
+    /** Update a product version. Existing order snapshots remain unchanged. */
+    Microtransactions.updateProduct = function (title_id, product_id, data, options) { return this.call('updateProduct', title_id, data, { product_id: product_id }, undefined, options); };
+    /** Archive, never delete financial history. Requires explicit confirmation. */
+    Microtransactions.archiveProduct = function (title_id, product_id, data, options) { return this.call('archiveProduct', title_id, data, { product_id: product_id }, undefined, options); };
+    /** Public provider metadata only. Credentials and commercial approvals are platform-managed. */
+    Microtransactions.providers = function (title_id, options) { return this.call('providers', title_id, undefined, {}, undefined, options); };
+    /** Admin read of separate-currency balances; pending is not withdrawable revenue. */
+    Microtransactions.earnings = function (title_id, params, options) { return this.call('earnings', title_id, undefined, {}, params, options); };
+    /** Admin list, bounded to the server's most recent 100 redacted orders. */
+    Microtransactions.listOrders = function (title_id, params, options) { return this.call('orders', title_id, undefined, {}, params, options); };
+    /** Owner JWT/scoped player token or title admin. An arbitrary order UUID grants no access. */
+    Microtransactions.getOrder = function (title_id, order_id, options) { return this.call('order', title_id, undefined, { order_id: order_id }, undefined, options); };
+    /** Financial admin only; original provider and human approval. Omit amount_minor for remaining full refund; partial amounts are bounded and allocated pro rata. */
+    Microtransactions.refundOrder = function (title_id, order_id, data, options) { return this.call('refund', title_id, data, { order_id: order_id }, undefined, options); };
+    /** Replay the same immutable event. Receiver must deduplicate event_id. This cannot mint goods. */
+    Microtransactions.replayDelivery = function (title_id, delivery_id, data, options) { return this.call('replayDelivery', title_id, data, { delivery_id: delivery_id }, undefined, options); };
+    /** Public eligible catalog. Sandbox is restricted by backend environment/admin policy. */
+    Microtransactions.catalog = function (title_id, params, options) { return this.call('catalog', title_id, undefined, {}, params, options); };
+    /** User-authenticated quote. Clients select product/quantity, never monetary values or seller accounts. */
+    Microtransactions.createQuote = function (title_id, data, options) { return this.call('createQuote', title_id, data, {}, undefined, options); };
+    /** Anonymous-safe opening step only. The hosted UI creates/logs into an account before payment. */
+    Microtransactions.createCheckoutSession = function (title_id, data, options) { return this.call('createCheckoutSession', title_id, data, {}, undefined, options); };
+    /** Anonymous-safe inventory recovery. Opens an in-game hosted sign-in overlay, never creates a charge or requires the game's account JWT. */
+    Microtransactions.createRestoreSession = function (title_id, data, options) { return this.call('createRestoreSession', title_id, data, {}, undefined, options); };
+    /** Read the session using its limited capability. Cannot mutate user identity or declare payment. */
+    Microtransactions.getCheckoutSession = function (title_id, session_id, options) { return this.call('checkoutSession', title_id, undefined, { session_id: session_id }, undefined, options); };
+    /** Anonymous, read-only embedding policy: server-approved frame ancestors only, no player/session capability data. */
+    Microtransactions.getCheckoutFramePolicy = function (title_id, session_id, options) { return this.call('checkoutFramePolicy', title_id, undefined, { session_id: session_id }, undefined, options); };
+    /** Anonymous title-wide approved embedding policy for trusted hosted account pages; no player data. */
+    Microtransactions.getFramePolicy = function (title_id, options) { return this.call('framePolicy', title_id, undefined, {}, undefined, options); };
+    /** Bind once to the existing authenticated account. Cannot reassign another player's purchase. */
+    Microtransactions.authenticateCheckoutSession = function (title_id, session_id, options) { return this.call('authenticateCheckoutSession', title_id, {}, { session_id: session_id }, undefined, options); };
+    /** Bound-user JWT + session capability. Reuse the idempotency key after a network timeout. */
+    Microtransactions.checkout = function (title_id, session_id, data, options) { return this.call('checkout', title_id, data, { session_id: session_id }, undefined, options); };
+    /** Query original provider; never creates another charge. Pending/unknown remains non-terminal. */
+    Microtransactions.reconcileCheckoutSession = function (title_id, session_id, options) { return this.call('reconcileCheckout', title_id, {}, { session_id: session_id }, undefined, options); };
+    /** Hosted checkout only. Server issues an expiring one-time game handoff after verified fulfillment. */
+    Microtransactions.createHandoff = function (title_id, session_id, options) { return this.call('createHandoff', title_id, {}, { session_id: session_id }, undefined, options); };
+    /** Game exchanges a verified popup code. Browser Origin must match return_origin; code is consumed once. */
+    Microtransactions.claimHandoff = function (title_id, data, options) { return this.call('claimHandoff', title_id, data, {}, undefined, options); };
+    /**
+     * Authenticated hosted Glitch account only: restore a previous purchase into a
+     * NEW nonce-bound session/handoff after the game's 15-minute token expires or
+     * storage is cleared. Does not create another payment. Return to the game via
+     * verified source/origin and a new bridge bound to event.checkout_session_id.
+     */
+    Microtransactions.restoreHandoff = function (title_id, data, options) { return this.call('restoreHandoff', title_id, data, {}, undefined, options); };
+    /** Record integration proof from a genuinely paid, fulfilled sandbox order with a claimed game handoff. */
+    Microtransactions.verifyIntegration = function (title_id, data, options) { return this.call('verifyIntegration', title_id, data, {}, undefined, options); };
+    /** Restore authoritative durable ownership/current consumable balances, never mutable cloud-save balances. */
+    Microtransactions.listEntitlements = function (title_id, params, options) { return this.call('entitlements', title_id, undefined, {}, params, options); };
+    /**
+     * Optional self-only purchase/usage history. A user JWT selects that user; a
+     * scoped playerToken selects its bound title/player/environment and requires
+     * the exact approved game Origin. No MCP/install token or caller-selected
+     * user_id/player_id is accepted. JWT environment defaults to live; scoped
+     * tokens default to their bound environment. Admin listOrders stays separate.
+     *
+     * Read response.data.data.purchases and .pagination. Use grant_usage for lot
+     * consumption/refund/expiry status, listEntitlements for current aggregate
+     * inventory, and consume for explicit gameplay spending. History never grants
+     * inventory and durable/pass is_used is null rather than a guessed boolean.
+     */
+    Microtransactions.listMyPurchases = function (title_id, filters, options) {
+        if (filters === void 0) { filters = {}; }
+        var allowed = ['environment', 'page', 'per_page'];
+        if (Object.keys(filters).some(function (key) { return !allowed.includes(key); }))
+            throw new Error('Own purchase history supports only environment, page and per_page; identity cannot be selected.');
+        if (filters.environment !== undefined && !['sandbox', 'live'].includes(filters.environment))
+            throw new Error('Invalid purchase-history environment.');
+        if (filters.page !== undefined && (!Number.isInteger(filters.page) || filters.page < 1 || filters.page > 10000))
+            throw new Error('Purchase-history page must be an integer from 1 to 10000.');
+        if (filters.per_page !== undefined && (!Number.isInteger(filters.per_page) || filters.per_page < 1 || filters.per_page > 100))
+            throw new Error('Purchase-history per_page must be an integer from 1 to 100.');
+        return this.call('myPurchases', title_id, undefined, {}, filters, options);
+    };
+    /** Atomic tracked spending. Reuse action_id for retries; a new gameplay action needs a new ID. */
+    Microtransactions.consume = function (title_id, data, options) { return this.call('consume', title_id, data, {}, undefined, options); };
+    /** Owning user asks support to review a refund. This does not execute payment reversal. */
+    Microtransactions.requestRefund = function (title_id, data, options) { return this.call('requestRefund', title_id, data, {}, undefined, options); };
+    /** Trusted title server with commerce:fulfill or admin JWT acknowledges the immutable event. */
+    Microtransactions.acknowledgeDelivery = function (title_id, delivery_id, data, options) { return this.call('acknowledgeDelivery', title_id, data, { delivery_id: delivery_id }, undefined, options); };
+    /** Title MCP token, never a runtime install token. Describes every argument/schema/ability/approval gate. */
+    Microtransactions.mcpCapabilities = function (title_id, options) { return this.call('mcpCapabilities', title_id, undefined, {}, undefined, options); };
+    /** Execute only an operation discovered in mcpCapabilities. confirm is not financial approval. */
+    Microtransactions.mcpOperation = function (title_id, operation, data, options) { return this.call('mcpOperation', title_id, data, { operation: operation }, undefined, options); };
+    Microtransactions.call = function (route, title_id, data, ids, params, options) {
+        if (ids === void 0) { ids = {}; }
+        var replacements = {};
+        for (var _i = 0, _a = Object.entries(__assign({ title_id: title_id }, ids)); _i < _a.length; _i++) {
+            var _b = _a[_i], key = _b[0], value = _b[1];
+            if (!value || !/^[A-Za-z0-9_.:-]+$/.test(value) || value === '.' || value === '..')
+                throw new Error("Invalid commerce route identifier: ".concat(key));
+            replacements[key] = encodeURIComponent(value);
+        }
+        var headers = {};
+        if (options === null || options === void 0 ? void 0 : options.playerToken)
+            headers.Authorization = "Bearer ".concat(options.playerToken);
+        if (options && 'checkoutToken' in options) {
+            if (!options.checkoutToken)
+                throw new Error('A checkout capability is required.');
+            headers['X-Checkout-Token'] = options.checkoutToken;
+        }
+        return Requests.processRoute(MicrotransactionsRoute.routes[route], data, replacements, params, {
+            signal: options === null || options === void 0 ? void 0 : options.signal, timeout: options === null || options === void 0 ? void 0 : options.timeout,
+            headers: headers,
+            // Self-history accepts only its explicit filters, not global community scope.
+            excludeCommunityContext: route === 'myPurchases',
+        });
+    };
+    return Microtransactions;
+}());
+
+/** Generate a 256-bit browser nonce. Fails closed without secure Web Crypto. */
+function createMicrotransactionNonce() {
+    var _a;
+    if (typeof ((_a = globalThis.crypto) === null || _a === void 0 ? void 0 : _a.getRandomValues) !== 'function') {
+        throw new Error('Secure Web Crypto is required for a checkout nonce.');
+    }
+    var bytes = new Uint8Array(32);
+    globalThis.crypto.getRandomValues(bytes);
+    return Array.from(bytes, function (value) { return value.toString(16).padStart(2, '0'); }).join('');
+}
+/**
+ * Listen for Glitch-hosted, game-branded checkout changes with strict origin,
+ * source, title, session, and nonce binding. Message data cannot grant an item.
+ * The caller always verifies the session at Glitch before updating inventory.
+ *
+ * Prefer openMicrotransactionOverlay with the exact server-returned URL. The
+ * game stays mounted; no top-level navigation fallback is permitted. If an
+ * embedded flow is unavailable, show retry/close and preserve the game state.
+ * refresh() requires an already verified claim. Keep
+ * secrets in memory/session storage or a URL fragment, never query parameters.
+ * Dispose on game unmount/account change. Reconnect restores ownership through
+ * the authenticated entitlement API, not a saved "purchase successful" flag.
+ */
+function createMicrotransactionBridge(options) {
+    if (!options.checkoutSessionId)
+        throw new Error('The original checkout session is required.');
+    return createBridge(options, options.checkoutSessionId);
+}
+/**
+ * Restore-only bridge for /games/:titleId/purchases/restore. Pin the prior order,
+ * fresh nonce, exact Glitch origin and opened window. The hosted signed-in page
+ * creates a NEW session; the server-verified claim must match that new session
+ * and the pinned order. This does not relax purchase-session binding.
+ *
+ * Open the hosted restore page, never request the account JWT in the game.
+ * verify(message) exchanges the code using message.checkout_session_id. All
+ * duplicate-code, expiry and same-player refresh safeguards still apply.
+ */
+function createMicrotransactionRestoreBridge(options) {
+    if (!/^[A-Za-z0-9_:-]{1,160}$/.test(options.orderId))
+        throw new Error('The original verified order is required for restore.');
+    return createBridge(options, undefined, options.orderId);
+}
+function createBridge(options, checkoutSessionId, expectedOrderId) {
+    var _this = this;
+    var _a;
+    var origin = new URL(options.checkoutOrigin);
+    var local = ['localhost', '127.0.0.1', '[::1]'].includes(origin.hostname) || origin.hostname.endsWith('.test') || (origin.hostname === 'www.glitch.local' && origin.port === '3000');
+    if (origin.origin !== options.checkoutOrigin || origin.username || origin.password ||
+        (origin.protocol !== 'https:' && !(options.allowLocalDevelopment && local && origin.protocol === 'http:'))) {
+        throw new Error('Checkout requires an exact trusted HTTPS origin.');
+    }
+    if (!options.checkoutWindow || !options.titleId ||
+        !/^[A-Za-z0-9_-]{22,128}$/.test(options.nonce)) {
+        throw new Error('Checkout window, title, session, and secure nonce are required.');
+    }
+    var target = (_a = options.eventTarget) !== null && _a !== void 0 ? _a : window;
+    var disposed = false;
+    var inFlight;
+    var verified;
+    var attemptedCodes = new Set();
+    var accept = function (result, orderId, sessionId) { return __awaiter$1(_this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (disposed)
+                        return [2 /*return*/];
+                    if (result.title_id !== options.titleId || result.checkout_session_id !== sessionId || result.order_id !== orderId ||
+                        (verified && verified.player_id !== result.player_id) ||
+                        typeof result.player_id !== 'string' || !result.player_id || typeof result.player_token !== 'string' || !result.player_token ||
+                        !Array.isArray(result.entitlements) || !Number.isFinite(Date.parse(result.expires_at)) || Date.parse(result.expires_at) <= Date.now()) {
+                        throw new Error('Checkout verification returned an invalid or differently bound claim.');
+                    }
+                    verified = result;
+                    return [4 /*yield*/, options.onVerified(result)];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    var refresh = function () {
+        if (disposed)
+            return Promise.resolve();
+        if (inFlight)
+            return inFlight;
+        if (!verified || !options.refresh)
+            return Promise.reject(new Error('A verified claim and scoped-token refresh callback are required.'));
+        var previous = verified;
+        inFlight = Promise.resolve().then(function () { return options.refresh(previous); }).then(function (result) { return accept(result, previous.order_id, previous.checkout_session_id); }).finally(function () { inFlight = undefined; });
+        return inFlight;
+    };
+    var listener = function (event) {
+        if (disposed || event.origin !== options.checkoutOrigin || event.source !== options.checkoutWindow)
+            return;
+        var value = event.data;
+        if (!value || typeof value !== 'object')
+            return;
+        var message = value;
+        if (message.type !== 'glitch.microtransaction.updated' || message.version !== 1 || message.title_id !== options.titleId ||
+            (checkoutSessionId && message.checkout_session_id !== checkoutSessionId) || message.nonce !== options.nonce ||
+            typeof message.checkout_session_id !== 'string' || !/^[A-Za-z0-9_:-]{1,160}$/.test(message.checkout_session_id) ||
+            (expectedOrderId && message.order_id !== expectedOrderId) ||
+            typeof message.order_id !== 'string' || !/^[A-Za-z0-9_:-]{1,160}$/.test(message.order_id) ||
+            typeof message.claim_code !== 'string' || !/^[A-Za-z0-9_-]{40,128}$/.test(message.claim_code))
+            return;
+        if (inFlight || attemptedCodes.has(message.claim_code) || attemptedCodes.size >= 8)
+            return;
+        if (verified && (verified.order_id !== message.order_id || verified.checkout_session_id !== message.checkout_session_id))
+            return;
+        // Mark BEFORE network I/O. Even a timeout can mean the server consumed it.
+        attemptedCodes.add(message.claim_code);
+        var handoff = message;
+        inFlight = Promise.resolve().then(function () { return options.verify(handoff); }).then(function (result) { return accept(result, handoff.order_id, handoff.checkout_session_id); }).finally(function () { inFlight = undefined; });
+        void inFlight.catch(function (error) {
+            var _a;
+            if (!disposed)
+                (_a = options.onError) === null || _a === void 0 ? void 0 : _a.call(options, error);
+        });
+    };
+    target.addEventListener('message', listener);
+    return {
+        refresh: refresh,
+        dispose: function () {
+            disposed = true;
+            verified = undefined;
+            attemptedCodes.clear();
+            target.removeEventListener('message', listener);
+        },
+    };
+}
+
+var overlaySequence = 0;
+var activeOverlays = new WeakMap();
+/**
+ * Mount Glitch checkout IN the running game. The game document, URL and session
+ * stay intact. Uses a modal dialog with focus restore and a sandboxed payment
+ * iframe. No top-navigation permission or top-level/popup-blocked fallback exists.
+ * Only bank/OAuth verification may open a controlled provider window from inside
+ * the frame. If embedding is unavailable, show retry/close instead of navigating.
+ *
+ * Receipt messages must originate from this exact iframe.contentWindow and pass
+ * origin/title/session/nonce checks. The SDK redeems the one-time claim at Glitch
+ * and uses the returned scoped player token only on commerce requests. Closing
+ * does not cancel an uncertain payment, grant goods, or discard the game state.
+ */
+function openMicrotransactionOverlay(options) {
+    var _this = this;
+    var _a, _b, _c, _d;
+    var doc = (_a = options.document) !== null && _a !== void 0 ? _a : document;
+    var win = doc.defaultView;
+    if (!win || !doc.body)
+        throw new Error('A mounted game document is required.');
+    if (activeOverlays.has(doc))
+        throw new Error('A checkout is already open. Resume or close that same purchase first.');
+    var session = options.session;
+    var parsed = new URL(session.hosted_url);
+    var path = "/games/".concat(encodeURIComponent(options.titleId), "/checkout/").concat(encodeURIComponent(session.id));
+    if (parsed.origin !== options.checkoutOrigin || parsed.pathname !== path || parsed.search || parsed.username || parsed.password ||
+        new URLSearchParams(parsed.hash.slice(1)).get('token') !== session.session_token || !session.session_token ||
+        (session.checkout_session_id && session.checkout_session_id !== session.id)) {
+        throw new Error('The hosted checkout URL does not match its title, session and capability.');
+    }
+    var timeout = Math.min(60000, Math.max(1000, (_b = options.timeoutMs) !== null && _b !== void 0 ? _b : 15000));
+    var requestedFrameTimeout = (_c = options.frameLoadTimeoutMs) !== null && _c !== void 0 ? _c : 20000;
+    var frameTimeout = Number.isFinite(requestedFrameTimeout) ? Math.min(60000, Math.max(1000, requestedFrameTimeout)) : 20000;
+    var beforeFocus = doc.activeElement;
+    var beforeOverflow = doc.body.style.overflow;
+    var dialog = doc.createElement('dialog');
+    var id = "glitch-commerce-modal-".concat(++overlaySequence);
+    dialog.id = id;
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.setAttribute('aria-labelledby', "".concat(id, "-title"));
+    dialog.setAttribute('role', 'dialog');
+    dialog.style.cssText = 'position:fixed;inset:16px;margin:auto;padding:0;border:1px solid #cbd5e1;border-radius:16px;width:min(1100px,calc(100vw - 32px));height:min(850px,calc(100dvh - 32px));max-width:none;max-height:none;background:#fff;color:#172033;box-shadow:0 24px 90px #0008;z-index:2147483647;overflow:hidden;';
+    var style = doc.createElement('style');
+    style.textContent = "#".concat(id, "::backdrop{background:rgba(8,16,32,.72)}#").concat(id, " button:focus-visible{outline:3px solid #4263eb;outline-offset:3px}@media(max-width:600px){#").concat(id, "{inset:0!important;width:100vw!important;height:100dvh!important;border-radius:0!important}}");
+    var header = doc.createElement('div');
+    header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;border-bottom:1px solid #e2e8f0;height:56px;box-sizing:border-box;';
+    var heading = doc.createElement('h2');
+    heading.id = "".concat(id, "-title");
+    heading.textContent = options.label || (session.intent === 'restore' ? 'Restore game purchases' : 'Secure game checkout');
+    heading.style.cssText = 'margin:0;font:600 17px/1.3 system-ui,sans-serif;color:#172033;';
+    var closeButton = doc.createElement('button');
+    closeButton.type = 'button';
+    closeButton.textContent = 'Close';
+    closeButton.setAttribute('aria-label', 'Close checkout and return to game');
+    closeButton.style.cssText = 'border:1px solid #cbd5e1;border-radius:8px;padding:7px 14px;background:#fff;color:#172033;font:600 14px system-ui,sans-serif;cursor:pointer;';
+    var retryButton = doc.createElement('button');
+    retryButton.type = 'button';
+    retryButton.textContent = 'Retry';
+    retryButton.setAttribute('aria-label', 'Reload this same checkout without starting another purchase');
+    retryButton.style.cssText = closeButton.style.cssText;
+    var controls = doc.createElement('div');
+    controls.style.cssText = 'display:flex;gap:8px;';
+    controls.append(retryButton, closeButton);
+    header.append(heading, controls);
+    var status = doc.createElement('div');
+    status.setAttribute('role', 'status');
+    status.style.cssText = 'padding:6px 16px;font:12px/1.4 system-ui,sans-serif;background:#f1f5f9;color:#172033;min-height:28px;box-sizing:border-box;';
+    status.textContent = 'Your game stays open. Loading secure checkout…';
+    var iframe = doc.createElement('iframe');
+    iframe.title = heading.textContent;
+    iframe.setAttribute('allow', 'payment');
+    iframe.setAttribute('sandbox', 'allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox');
+    iframe.referrerPolicy = 'no-referrer';
+    iframe.style.cssText = 'display:block;width:100%;height:calc(100% - 84px);border:0;background:#fff;';
+    iframe.src = session.hosted_url;
+    dialog.append(style, header, status, iframe);
+    doc.body.append(dialog);
+    var frameWindow = iframe.contentWindow;
+    if (!frameWindow) {
+        dialog.remove();
+        throw new Error('In-game checkout embedding is unavailable. Your game has not navigated.');
+    }
+    var closed = false;
+    var closing;
+    var verified;
+    var bridge;
+    var frameLoadTimer;
+    var appReadyTimer;
+    var applicationReady = false;
+    var blocked = [];
+    var report = function (error) { var _a; try {
+        (_a = options.onError) === null || _a === void 0 ? void 0 : _a.call(options, error);
+    }
+    catch ( /* Consumer error handlers cannot prevent modal cleanup. */_b) { /* Consumer error handlers cannot prevent modal cleanup. */ } };
+    var clearWatchdogs = function () {
+        if (frameLoadTimer !== undefined)
+            win.clearTimeout(frameLoadTimer);
+        if (appReadyTimer !== undefined)
+            win.clearTimeout(appReadyTimer);
+        frameLoadTimer = undefined;
+        appReadyTimer = undefined;
+    };
+    var unavailable = function (reason) {
+        if (closed)
+            return;
+        clearWatchdogs();
+        status.setAttribute('role', 'alert');
+        status.textContent = reason === 'ready'
+            ? 'Checkout did not become ready. Retry this same checkout or Close; your game remains open.'
+            : 'Checkout could not load here. Retry this same checkout or Close; your game remains open.';
+        report(new Error(reason === 'ready'
+            ? 'Embedded checkout readiness timed out; no navigation or new payment was attempted.'
+            : 'Embedded checkout loading unavailable; no navigation or new payment was attempted.'));
+    };
+    var markApplicationReady = function () {
+        if (closed)
+            return;
+        applicationReady = true;
+        clearWatchdogs();
+        status.setAttribute('role', 'status');
+        status.textContent = 'Checkout is ready. Your game remains open underneath.';
+    };
+    var armLoadWatchdog = function () {
+        clearWatchdogs();
+        applicationReady = false;
+        frameLoadTimer = win.setTimeout(function () { return unavailable('load'); }, frameTimeout);
+    };
+    var receipt = function () { return __awaiter$1(_this, void 0, void 0, function () {
+        var response, current;
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, Microtransactions.getCheckoutSession(options.titleId, session.id, { checkoutToken: session.session_token, timeout: timeout })];
+                case 1:
+                    response = _b.sent();
+                    current = response.data.data;
+                    if (current.id !== session.id || current.title.id !== options.titleId)
+                        throw new Error('Checkout status returned a different title or session.');
+                    return [4 /*yield*/, ((_a = options.onOrderUpdate) === null || _a === void 0 ? void 0 : _a.call(options, current.order))];
+                case 2:
+                    _b.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    try {
+        bridge = createMicrotransactionBridge({
+            titleId: options.titleId, checkoutSessionId: session.id, checkoutOrigin: options.checkoutOrigin,
+            checkoutWindow: frameWindow, nonce: session.nonce, eventTarget: win,
+            allowLocalDevelopment: options.allowLocalDevelopment,
+            verify: function (message) { return __awaiter$1(_this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, Microtransactions.claimHandoff(options.titleId, {
+                                claim_code: message.claim_code, checkout_session_id: session.id, nonce: session.nonce, return_origin: win.location.origin,
+                            }, { timeout: timeout })];
+                        case 1: return [2 /*return*/, (_a.sent()).data.data];
+                    }
+                });
+            }); },
+            refresh: function (previous) { return __awaiter$1(_this, void 0, void 0, function () {
+                var auth, order, inventory;
+                var _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            auth = { playerToken: previous.player_token, timeout: timeout };
+                            return [4 /*yield*/, Microtransactions.getOrder(options.titleId, previous.order_id, auth)];
+                        case 1:
+                            order = (_b.sent()).data.data;
+                            if (order.id !== previous.order_id || order.title_id !== options.titleId)
+                                throw new Error('Restored order identity mismatch.');
+                            return [4 /*yield*/, Microtransactions.listEntitlements(options.titleId, undefined, auth)];
+                        case 2:
+                            inventory = (_b.sent()).data.data;
+                            return [4 /*yield*/, ((_a = options.onOrderUpdate) === null || _a === void 0 ? void 0 : _a.call(options, order))];
+                        case 3:
+                            _b.sent();
+                            return [2 /*return*/, __assign(__assign({}, previous), { entitlements: inventory.entitlements })];
+                    }
+                });
+            }); },
+            onVerified: function (result) { return __awaiter$1(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        markApplicationReady();
+                        verified = result;
+                        return [4 /*yield*/, options.onVerified(result)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            }); }); },
+            onError: report,
+        });
+    }
+    catch (error) {
+        dialog.remove();
+        throw error;
+    }
+    var refresh = function () { return __awaiter$1(_this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!verified) return [3 /*break*/, 2];
+                    return [4 /*yield*/, bridge.refresh()];
+                case 1:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, receipt()];
+                case 3:
+                    _a.sent();
+                    _a.label = 4;
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); };
+    var onKey = function (event) {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            void overlay.close();
+        }
+        if (event.key === 'Tab' && !closed) {
+            if (event.shiftKey && doc.activeElement === retryButton) {
+                event.preventDefault();
+                iframe.focus();
+            }
+            else if (!event.shiftKey && doc.activeElement === iframe) {
+                event.preventDefault();
+                retryButton.focus();
+            }
+        }
+    };
+    var onCancel = function (event) { event.preventDefault(); void overlay.close(); };
+    var onCloseMessage = function (event) {
+        if (closed || event.origin !== options.checkoutOrigin || event.source !== frameWindow || !event.data || typeof event.data !== 'object')
+            return;
+        var message = event.data;
+        if (message.version !== 1 || message.title_id !== options.titleId ||
+            message.checkout_session_id !== session.id || message.nonce !== session.nonce)
+            return;
+        if (message.type === 'glitch.microtransaction.ready') {
+            markApplicationReady();
+            return;
+        }
+        if (message.type !== 'glitch.microtransaction.close')
+            return;
+        void overlay.close(verified ? 'completed' : 'dismissed');
+    };
+    var onFrameError = function () { unavailable('error'); };
+    var onFrameLoad = function () {
+        if (closed)
+            return;
+        if (frameLoadTimer !== undefined)
+            win.clearTimeout(frameLoadTimer);
+        frameLoadTimer = undefined;
+        if (applicationReady)
+            return;
+        status.setAttribute('role', 'status');
+        status.textContent = 'Checkout document loaded. Waiting for the secure checkout interface…';
+        // A document load is not proof the app rendered. Repeated loads cannot
+        // indefinitely extend this bounded wait; only explicit Retry resets it.
+        if (appReadyTimer === undefined)
+            appReadyTimer = win.setTimeout(function () { return unavailable('ready'); }, frameTimeout);
+    };
+    var overlay = {
+        element: dialog,
+        iframe: iframe,
+        refresh: refresh,
+        retry: function () {
+            if (closed)
+                return;
+            status.textContent = 'Retrying the same secure checkout. Your game stays open.';
+            status.setAttribute('role', 'status');
+            armLoadWatchdog();
+            iframe.src = session.hosted_url;
+        },
+        close: function (reason) {
+            if (reason === void 0) { reason = 'dismissed'; }
+            if (closing)
+                return closing;
+            if (closed)
+                return Promise.resolve();
+            closed = true;
+            clearWatchdogs();
+            status.textContent = 'Finishing secure purchase verification. Your game stays open.';
+            closing = (function () { return __awaiter$1(_this, void 0, void 0, function () {
+                var error_1, error_2, _i, blocked_1, item, error_3;
+                var _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            _b.trys.push([0, 5, 6, 11]);
+                            _b.label = 1;
+                        case 1:
+                            _b.trys.push([1, 3, , 4]);
+                            return [4 /*yield*/, bridge.refresh()];
+                        case 2:
+                            _b.sent();
+                            return [3 /*break*/, 4];
+                        case 3:
+                            error_1 = _b.sent();
+                            if (verified)
+                                throw error_1;
+                            return [3 /*break*/, 4];
+                        case 4: return [3 /*break*/, 11];
+                        case 5:
+                            error_2 = _b.sent();
+                            report(error_2);
+                            return [3 /*break*/, 11];
+                        case 6:
+                            win.removeEventListener('keydown', onKey, true);
+                            win.removeEventListener('message', onCloseMessage);
+                            dialog.removeEventListener('cancel', onCancel);
+                            iframe.removeEventListener('load', onFrameLoad);
+                            iframe.removeEventListener('error', onFrameError);
+                            dialog.remove();
+                            doc.body.style.overflow = beforeOverflow;
+                            for (_i = 0, blocked_1 = blocked; _i < blocked_1.length; _i++) {
+                                item = blocked_1[_i];
+                                item.element.inert = item.inert;
+                                if (item.ariaHidden === null)
+                                    item.element.removeAttribute('aria-hidden');
+                                else
+                                    item.element.setAttribute('aria-hidden', item.ariaHidden);
+                            }
+                            activeOverlays.delete(doc);
+                            (beforeFocus === null || beforeFocus === void 0 ? void 0 : beforeFocus.isConnected) && beforeFocus.focus();
+                            try {
+                                (_a = options.onClose) === null || _a === void 0 ? void 0 : _a.call(options, reason);
+                            }
+                            catch (error) {
+                                report(error);
+                            }
+                            if (!!verified) return [3 /*break*/, 10];
+                            _b.label = 7;
+                        case 7:
+                            _b.trys.push([7, 9, , 10]);
+                            return [4 /*yield*/, receipt()];
+                        case 8:
+                            _b.sent();
+                            return [3 /*break*/, 10];
+                        case 9:
+                            error_3 = _b.sent();
+                            report(error_3);
+                            return [3 /*break*/, 10];
+                        case 10:
+                            bridge.dispose();
+                            return [7 /*endfinally*/];
+                        case 11: return [2 /*return*/];
+                    }
+                });
+            }); })();
+            return closing;
+        },
+    };
+    closeButton.addEventListener('click', function () { void overlay.close(); });
+    retryButton.addEventListener('click', overlay.retry);
+    iframe.addEventListener('error', onFrameError);
+    iframe.addEventListener('load', onFrameLoad);
+    dialog.addEventListener('cancel', onCancel);
+    win.addEventListener('keydown', onKey, true);
+    win.addEventListener('message', onCloseMessage);
+    doc.body.style.overflow = 'hidden';
+    if (typeof dialog.showModal === 'function') {
+        try {
+            dialog.showModal();
+        }
+        catch (error) {
+            void overlay.close('unavailable');
+            throw error;
+        }
+    }
+    else {
+        dialog.setAttribute('open', '');
+        for (var _i = 0, _e = Array.from(doc.body.children); _i < _e.length; _i++) {
+            var child = _e[_i];
+            if (child !== dialog && child instanceof win.HTMLElement) {
+                var element = child;
+                blocked.push({ element: element, inert: element.inert, ariaHidden: element.getAttribute('aria-hidden') });
+                element.inert = true;
+                element.setAttribute('aria-hidden', 'true');
+            }
+        }
+    }
+    activeOverlays.set(doc, overlay);
+    closeButton.focus();
+    try {
+        (_d = options.onOpen) === null || _d === void 0 ? void 0 : _d.call(options);
+    }
+    catch (error) {
+        void overlay.close('unavailable');
+        throw error;
+    }
+    if (!closed)
+        armLoadWatchdog();
+    return overlay;
+}
+/** Same in-game modal for anonymous-safe restore sessions; never opens a new payment. */
+function openMicrotransactionRestoreOverlay(options) {
+    if (options.session.intent !== 'restore')
+        throw new Error('Create a restore session before opening purchase recovery.');
+    return openMicrotransactionOverlay(options);
+}
+
 var Parser = /** @class */ (function () {
     function Parser() {
     }
@@ -40198,6 +41055,7 @@ var Glitch = /** @class */ (function () {
         Newsletters: Newsletters,
         PlayTests: PlayTests,
         Media: Media,
+        FestivalNetworking: FestivalNetworking,
         Scheduler: Scheduler,
         RedditSubreddits: RedditSubreddits,
         Funnel: Funnel,
@@ -40223,6 +41081,7 @@ var Glitch = /** @class */ (function () {
         GameAdvertising: GameAdvertising,
         Hosting: Hosting,
         GameDesign: GameDesign,
+        Microtransactions: Microtransactions,
     };
     Glitch.util = {
         Requests: Requests,
@@ -40252,5 +41111,11 @@ var Glitch = /** @class */ (function () {
     return Glitch;
 }());
 
-module.exports = Glitch;
+exports.createMicrotransactionBridge = createMicrotransactionBridge;
+exports.createMicrotransactionNonce = createMicrotransactionNonce;
+exports.createMicrotransactionRestoreBridge = createMicrotransactionRestoreBridge;
+exports.default = Glitch;
+exports.openMicrotransactionOverlay = openMicrotransactionOverlay;
+exports.openMicrotransactionRestoreOverlay = openMicrotransactionRestoreOverlay;
+module.exports = Object.assign(exports.default, exports);
 //# sourceMappingURL=index.js.map

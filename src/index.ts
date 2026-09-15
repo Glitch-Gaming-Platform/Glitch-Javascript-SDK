@@ -29,6 +29,8 @@ import {Influencers} from "./api";
 import {Games} from "./api";
 import {Publications} from "./api";
 import {GameShows} from "./api";
+import FestivalNetworking from './api/FestivalNetworking';
+export * from './api/FestivalNetworking';
 import {Newsletters} from "./api";
 import {PlayTests} from "./api";
 import {Media} from "./api";
@@ -58,6 +60,10 @@ import {MarketResearch} from './api';
 import {GameAdvertising} from './api';
 import {Hosting} from './api';
 import {GameDesign} from './api';
+import {Microtransactions} from './api';
+export * from './api/Microtransactions';
+export * from './util/MicrotransactionBridge';
+export * from './util/MicrotransactionOverlay';
 
 import Requests from "./util/Requests";
 import Parser from "./util/Parser";
@@ -120,6 +126,7 @@ class Glitch {
         Newsletters : Newsletters,
         PlayTests : PlayTests,
         Media : Media,
+        FestivalNetworking: FestivalNetworking,
         Scheduler : Scheduler,
         RedditSubreddits : RedditSubreddits,
         Funnel: Funnel,
@@ -145,6 +152,7 @@ class Glitch {
         GameAdvertising: GameAdvertising,
         Hosting: Hosting,
         GameDesign: GameDesign,
+        Microtransactions: Microtransactions,
     }
 
     public static util = {
