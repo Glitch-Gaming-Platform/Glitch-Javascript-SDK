@@ -1,5 +1,6 @@
 import { Config } from "../config";
 import Storage from "./Storage";
+import CryptoJS from 'crypto-js';
 
 // Type declarations for crypto functionality
 interface HmacInterface {
@@ -16,7 +17,7 @@ class BrowserCrypto implements CryptoInterface {
   private CryptoJS: any;
 
   constructor() {
-    this.CryptoJS = require('crypto-js');
+    this.CryptoJS = CryptoJS;
   }
 
   createHmac(algorithm: string, secret: string): HmacInterface {

@@ -1,12 +1,16 @@
 import { AxiosProgressEvent, AxiosPromise, AxiosRequestConfig } from 'axios';
 export type MicrotransactionEnvironment = 'sandbox' | 'live';
+export type MicrotransactionProviderName = 'stripe' | 'xsolla';
 export type MicrotransactionProductType = 'durable' | 'consumable' | 'currency' | 'bundle' | 'pass';
 export type MicrotransactionCurrency = 'USD' | 'EUR' | 'GBP' | 'CAD' | 'AUD' | 'JPY' | 'BRL' | 'INR' | 'KRW';
 export type MicrotransactionProductStatus = 'draft' | 'active' | 'archived';
-export type MicrotransactionPaymentStatus = 'created' | 'action_required' | 'pending' | 'unknown' | 'paid' | 'failed' | 'canceled' | 'refund_pending' | 'partially_refunded' | 'refunded' | 'disputed' | 'quarantined';
+export type MicrotransactionPaymentStatus = 'created' | 'action_required' | 'pending' | 'unknown' | 'paid' | 'failed' | 'canceled' | 'refund_pending' | 'partially_refunded' | 'refunded' | 'disputed' | 'quarantined' | 'refund_review';
+export type MicrotransactionRefundStatus = 'requested' | 'linked' | 'unknown' | 'pending' | 'submitted' | 'succeeded' | 'failed' | 'canceled';
+export type MicrotransactionDeliveryStatus = 'pending' | 'retrying' | 'processing' | 'acknowledged' | 'failed' | 'superseded';
+export type MicrotransactionPayoutStatus = 'pending' | 'transferred' | 'bank_paid' | 'bank_pending' | 'bank_failed' | 'transfer_reversed';
 export type MicrotransactionFulfillmentStatus = 'not_ready' | 'pending' | 'delivered' | 'retrying' | 'failed' | 'revoked' | 'partially_recovered';
 export type MicrotransactionAbility = 'commerce:read' | 'commerce:write' | 'commerce:finance' | 'commerce:fulfill';
-export type MicrotransactionErrorCode = 'authentication_required' | 'permission_denied' | 'human_approval_required' | 'not_found' | 'not_eligible' | 'quote_expired' | 'already_owned' | 'idempotency_conflict' | 'payment_unknown' | 'rate_limited' | 'invalid_revenue_configuration' | 'fulfillment_pending' | 'provider_unavailable';
+export type MicrotransactionErrorCode = 'authentication_required' | 'permission_denied' | 'not_found' | 'not_eligible' | 'quote_expired' | 'already_owned' | 'idempotency_conflict' | 'payment_unknown' | 'rate_limited' | 'invalid_revenue_configuration' | 'fulfillment_pending' | 'provider_unavailable';
 /** The backend's JSON envelope; Axios returns this envelope in response.data. */
 export interface MicrotransactionResponse<T> {
     data: T;
@@ -28,6 +32,41 @@ export interface MicrotransactionSessionOptions extends MicrotransactionRequestO
 }
 export interface MicrotransactionEnvironmentFilter {
     environment?: MicrotransactionEnvironment;
+}
+/** Catalog discovery defaults to 200 records per page; absence on page one is not proof a SKU is unused. */
+export interface MicrotransactionProductListFilters {
+    page?: number;
+    per_page?: number;
+    status?: MicrotransactionProductStatus;
+    /** Exact SKU, not a substring search. */
+    sku?: string;
+}
+/** Administrative lists default to page 1 / 25 records and are scoped to the authorized title. */
+export interface MicrotransactionManagementListFilters extends MicrotransactionEnvironmentFilter {
+    page?: number;
+    per_page?: number;
+    status?: string;
+}
+export interface MicrotransactionOrderListFilters extends MicrotransactionManagementListFilters {
+    product_id?: string;
+    status?: MicrotransactionPaymentStatus;
+    payment_status?: MicrotransactionPaymentStatus;
+}
+export interface MicrotransactionRelatedListFilters extends MicrotransactionManagementListFilters {
+    order_id?: string;
+}
+export interface MicrotransactionRefundListFilters extends MicrotransactionRelatedListFilters {
+    status?: MicrotransactionRefundStatus;
+}
+export interface MicrotransactionDeliveryListFilters extends MicrotransactionRelatedListFilters {
+    status?: MicrotransactionDeliveryStatus;
+}
+export interface MicrotransactionPayoutListFilters extends MicrotransactionRelatedListFilters {
+    status?: MicrotransactionPayoutStatus;
+}
+/** @deprecated Optional compatibility field only; no confirmation or human-approval gate is enforced. */
+export interface MicrotransactionLegacyConfirmation {
+    confirm?: boolean;
 }
 /** Self-only purchase-history filters. Identity comes from authentication, never a user_id argument. */
 export interface MicrotransactionMyPurchasesFilters extends MicrotransactionEnvironmentFilter {
@@ -88,7 +127,7 @@ export interface MicrotransactionProductInput {
     starts_at?: string | null;
     ends_at?: string | null;
     max_per_order?: number;
-    /** Required for publishing/changing published goods; live approvals also enforced server-side. */
+    /** @deprecated Ignored compatibility field. Title authorization and immutable-data validation remain required. */
     confirm?: boolean;
 }
 export interface MicrotransactionProduct extends Omit<MicrotransactionProductInput, 'confirm' | 'status' | 'media_ids'> {
@@ -102,14 +141,149 @@ export interface MicrotransactionProduct extends Omit<MicrotransactionProductInp
     updated_at: string;
 }
 export interface MicrotransactionProvider {
-    provider: 'stripe' | 'xsolla';
+    provider: MicrotransactionProviderName;
     environment: MicrotransactionEnvironment;
     configured: boolean;
-    approved: boolean;
+    /** Actual external provider/account capability, not a manual approval flag. */
+    available: boolean;
+    enabled: boolean;
+    priority: number;
     countries: string[];
     currencies: string[];
+    minimum_amounts: Record<string, number>;
     channels: string[];
-    reason?: string;
+    payment_methods: string[];
+    configuration: MicrotransactionProviderConfiguration;
+    account: {
+        id: string;
+        country: string | null;
+        charges_enabled: boolean;
+        payouts_enabled: boolean;
+        requirements_due: string[];
+    } | null;
+    /** The game's payout target. Do not substitute the platform processing account's payouts_enabled. */
+    payout_account: {
+        source: 'platform' | 'user' | 'community' | 'managed';
+        id: string | null;
+        available: boolean;
+        country: string | null;
+        transfers_active: boolean;
+        payouts_enabled: boolean;
+        requirements_due: string[];
+        reasons: string[];
+    };
+    tax: {
+        status: string;
+        missing_fields: string[];
+    };
+    reasons: string[];
+    checked_at: string | null;
+    revision?: number;
+}
+export interface MicrotransactionProviderSku {
+    /** Provider SKU, 1–100 characters. */
+    sku: string;
+    currency: MicrotransactionCurrency;
+    amount_minor: number;
+}
+export interface MicrotransactionProviderConfiguration {
+    tax_mode: 'automatic' | 'disabled';
+    /** Stripe tax code txcd_ followed by exactly eight digits. */
+    tax_code: string | null;
+    payout_source: 'platform' | 'user' | 'community' | 'managed';
+    /** Xsolla public project ID, 1–20 decimal digits. */
+    project_id: string | null;
+    /** Maximum 200 mappings. */
+    sku_map: Record<string, MicrotransactionProviderSku>;
+}
+/** Developer preferences and an optional new owned Xsolla webhook secret only; never platform credentials, arbitrary payees, or availability facts. */
+export interface MicrotransactionProviderInput extends Partial<MicrotransactionProviderConfiguration>, MicrotransactionLegacyConfirmation {
+    environment: MicrotransactionEnvironment;
+    enabled?: boolean;
+    priority?: number;
+    countries?: string[];
+    currencies?: MicrotransactionCurrency[];
+    minimum_amounts?: Record<string, number>;
+    /** Write-only NEW owned Xsolla project secret, 16–512 chars, finance scope. Never a platform API key or MCP token; never returned/logged or put in game code. Existing platform/historical bindings cannot be overwritten. */
+    webhook_secret?: string;
+}
+export interface MicrotransactionProviderOnboardingInput extends MicrotransactionLegacyConfirmation {
+    environment: MicrotransactionEnvironment;
+    country: string;
+    /** Stable caller-created key. Reuse with identical input after uncertain retries; never generate inside a retry. */
+    idempotency_key: string;
+}
+export interface MicrotransactionProviderOnboarding {
+    title_id: string;
+    provider: 'stripe';
+    environment: MicrotransactionEnvironment;
+    account_id: string;
+    /** Single-use provider onboarding URL on connect.stripe.com; do not log or persist it. */
+    onboarding_url: string;
+    expires_at: string;
+    status: 'requires_provider_onboarding';
+    reused: boolean;
+}
+export interface MicrotransactionDeliverySettings {
+    title_id: string;
+    environment: MicrotransactionEnvironment;
+    enabled: boolean;
+    url: string | null;
+    signature_algorithm: 'ed25519' | 'hmac-sha256';
+    /** Public verification material only. The private signing key never leaves the server. */
+    verification_public_key: string | null;
+    key_id: string | null;
+    revision: number;
+    configured: boolean;
+}
+export interface MicrotransactionDeliverySettingsInput extends MicrotransactionLegacyConfirmation {
+    environment: MicrotransactionEnvironment;
+    enabled?: boolean;
+    url?: string | null;
+}
+export interface MicrotransactionDelivery {
+    id: string;
+    order_id: string;
+    event_type: string;
+    status: MicrotransactionDeliveryStatus;
+    attempts: number;
+    next_attempt_at: string | null;
+    acknowledged_at: string | null;
+    created_at: string;
+    updated_at: string;
+}
+/** Replay/acknowledgement return only this safe subset, not the list's timestamps. */
+export type MicrotransactionDeliveryResult = Pick<MicrotransactionDelivery, 'id' | 'order_id' | 'status' | 'event_type' | 'attempts' | 'acknowledged_at'>;
+export interface MicrotransactionRefundRecord {
+    id: string;
+    order_id: string;
+    status: MicrotransactionRefundStatus;
+    amount_minor: number;
+    reason: string;
+    idempotency_key: string | null;
+    record_type: 'request' | 'execution';
+    execution_refund_id: string | null;
+    execution_status: MicrotransactionRefundStatus | null;
+    request_resolution: 'linked_to_execution' | 'not_executed' | null;
+    order_refunded_minor: number | null;
+    failure_code: string | null;
+    created_at: string;
+    updated_at: string;
+}
+export interface MicrotransactionPayout {
+    id: string;
+    order_id: string;
+    status: MicrotransactionPayoutStatus;
+    amount_minor: number;
+    provider_reference: string | null;
+    created_at: string;
+    updated_at: string;
+}
+export interface MicrotransactionRefundInput extends MicrotransactionLegacyConfirmation {
+    reason: string;
+    amount_minor?: number;
+    /** REQUIRED stable operation key, scoped to title/order. Reuse identical input on retry; changes conflict. */
+    idempotency_key: string;
 }
 export interface MicrotransactionReadiness {
     status: 'disabled' | 'draft' | 'sandbox' | 'ready' | 'live' | 'degraded' | 'suspended';
@@ -133,8 +307,9 @@ export interface MicrotransactionSettingsInput {
     currencies?: MicrotransactionCurrency[];
     branding?: Omit<MicrotransactionBranding, 'logo_media'>;
     support_email?: string | null;
+    /** @deprecated Legacy delivery alias requiring BOTH commerce:write and commerce:fulfill; prefer updateDeliverySettings/getDeliverySettings. */
     webhook_url?: string | null;
-    /** Required for policy/live changes; cannot replace recorded platform approval. */
+    /** @deprecated Ignored compatibility field. Authorized title editors save directly; actual provider/sales restrictions remain. */
     confirm?: boolean;
 }
 export interface MicrotransactionSettings extends Omit<Required<MicrotransactionSettingsInput>, 'confirm'> {
@@ -214,6 +389,13 @@ export interface MicrotransactionOrder {
     refunded_minor: number;
     items: MicrotransactionGrant[];
     entitlements?: MicrotransactionEntitlement[];
+}
+export interface MicrotransactionOrderDetail extends MicrotransactionOrder {
+    /** Optional, permission-scoped management relationships. Omission is not proof no records exist. */
+    refunds?: Array<Pick<MicrotransactionRefundRecord, 'id' | 'order_id' | 'status'> & Partial<MicrotransactionRefundRecord>>;
+    deliveries?: MicrotransactionDelivery[];
+    payouts?: Array<Pick<MicrotransactionPayout, 'id' | 'order_id' | 'status'> & Partial<MicrotransactionPayout>>;
+    financial_details_included?: boolean;
 }
 export type MicrotransactionGrantUsageStatus = 'unused' | 'partially_used' | 'used_up' | 'owned' | 'expired' | 'revoked' | 'not_delivered' | 'unavailable';
 /** One purchase's server-calculated grant lot, not the player's aggregate inventory balance. */
@@ -365,8 +547,10 @@ export interface MicrotransactionConsumeInput {
 }
 export interface MicrotransactionRefund {
     refund_id: string;
-    status: string;
+    status: MicrotransactionRefundStatus;
     order_id: string;
+    idempotency_key: string;
+    failure_code: string | null;
     refund_allocation?: 'pro_rata_all_grants';
 }
 export interface MicrotransactionRefundRequest {
@@ -389,14 +573,16 @@ export interface MicrotransactionEarnings {
     payouts_enabled: boolean;
     reserve_days?: number;
 }
-export type MicrotransactionOperation = 'settings.get' | 'settings.update' | 'products.list' | 'products.create' | 'products.update' | 'products.archive' | 'providers.list' | 'readiness.get' | 'orders.list' | 'orders.get' | 'earnings.get' | 'refunds.request' | 'deliveries.replay' | 'integration.get' | 'integration.verify';
+export type MicrotransactionOperation = 'settings.get' | 'settings.update' | 'products.list' | 'products.create' | 'products.update' | 'products.archive' | 'providers.list' | 'providers.update' | 'providers.refresh' | 'providers.onboarding' | 'readiness.get' | 'orders.list' | 'orders.get' | 'orders.reconcile' | 'earnings.get' | 'refunds.list' | 'refunds.get' | 'refunds.create' | 'refunds.request' | 'refunds.reconcile' | 'delivery.settings.get' | 'delivery.settings.update' | 'deliveries.list' | 'deliveries.replay' | 'deliveries.acknowledge' | 'payouts.list' | 'integration.get' | 'integration.verify';
 export interface MicrotransactionOperationCapability {
     operation: MicrotransactionOperation;
     description: string;
     ability: MicrotransactionAbility;
     input_schema: Record<string, unknown>;
-    requires_confirmation: boolean;
-    requires_human_approval: boolean;
+    http_method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    mutates: boolean;
+    requires_confirmation: false;
+    requires_human_approval: false;
     examples: Array<Record<string, unknown>>;
     output_description: string;
 }
@@ -428,42 +614,78 @@ declare class Microtransactions {
     static settings(title_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionSettings>>;
     /** Atomic policy update. Sandbox/off by default. Cannot disable the final working revenue model. */
     static updateSettings(title_id: string, data: MicrotransactionSettingsInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionSettings>>;
-    /** Read-only country/provider/approval readiness; never enables a provider. */
+    /** Read-only current country/provider capability and revenue readiness; never fabricates availability. */
     static readiness(title_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionReadiness>>;
-    /** Admin list includes drafts and archives. Player clients should use catalog(). */
+    /** Paginated admin catalog including drafts/archives. Default 200, per_page 1–200/page 1–10000. Use exact sku to resolve uncertain creates. */
+    static listProducts(title_id: string, params?: MicrotransactionProductListFilters, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+        products: MicrotransactionProduct[];
+        pagination: MicrotransactionPurchasePagination;
+    }>>;
+    /** @deprecated Compatibility overload for the earlier second-argument request options. */
     static listProducts(title_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
         products: MicrotransactionProduct[];
+        pagination: MicrotransactionPurchasePagination;
     }>>;
     /** Save a catalog product. Prices use integer minor units and attached media must belong to the title. */
     static createProduct(title_id: string, data: MicrotransactionProductInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionProduct>>;
     /** Update a product version. Existing order snapshots remain unchanged. */
     static updateProduct(title_id: string, product_id: string, data: Partial<MicrotransactionProductInput>, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionProduct>>;
-    /** Archive, never delete financial history. Requires explicit confirmation. */
-    static archiveProduct(title_id: string, product_id: string, data: {
-        confirm: true;
-    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionProduct>>;
-    /** Public provider metadata only. Credentials and commercial approvals are platform-managed. */
+    /** Direct authorized archive. Never deletes financial history or bypasses the last-revenue-model rule. */
+    static archiveProduct(title_id: string, product_id: string, data?: MicrotransactionLegacyConfirmation, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionProduct>>;
+    /** Actual provider configuration/capability facts; no credentials or manual approval flag. */
+    static providers(title_id: string, params?: MicrotransactionEnvironmentFilter, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+        providers: MicrotransactionProvider[];
+    }>>;
+    /** @deprecated Compatibility overload for the earlier second-argument request options. */
     static providers(title_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
         providers: MicrotransactionProvider[];
     }>>;
+    /** Direct commerce:finance configuration. Saving preferences does not fabricate external capability; inspect available/reasons. */
+    static updateProvider(title_id: string, provider: MicrotransactionProviderName, data: MicrotransactionProviderInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionProvider>>;
+    /** Refresh authenticated external provider facts. May update cached state; never creates a payment or invents eligibility. */
+    static refreshProvider(title_id: string, provider: MicrotransactionProviderName, data: {
+        environment: MicrotransactionEnvironment;
+    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionProvider>>;
+    /** Start/reuse owned Stripe Connect onboarding with one stable key. Provider KYC is factual setup, not a Glitch approval workflow. */
+    static createProviderOnboarding(title_id: string, data: MicrotransactionProviderOnboardingInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionProviderOnboarding>>;
+    /** Read title/environment delivery settings and the Ed25519 PUBLIC verification key. */
+    static getDeliverySettings(title_id: string, params?: MicrotransactionEnvironmentFilter, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionDeliverySettings>>;
+    /** Direct commerce:fulfill setup. Private/metadata network targets and private-key inputs remain forbidden. */
+    static updateDeliverySettings(title_id: string, data: MicrotransactionDeliverySettingsInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionDeliverySettings>>;
+    /** Discover safe event IDs/statuses before replay or acknowledge. Page 1–10000, per_page 1–100, default 25. */
+    static listDeliveries(title_id: string, params?: MicrotransactionDeliveryListFilters, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+        deliveries: MicrotransactionDelivery[];
+        pagination: MicrotransactionPurchasePagination;
+    }>>;
+    /** Financially scoped refund operation discovery; pending/unknown is not completed. */
+    static listRefunds(title_id: string, params?: MicrotransactionRefundListFilters, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+        refunds: MicrotransactionRefundRecord[];
+        pagination: MicrotransactionPurchasePagination;
+    }>>;
+    /** Inspect one same-title refund operation. */
+    static getRefund(title_id: string, refund_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionRefundRecord>>;
+    /** Query/retry the original persisted refund with its existing identity, never generate a new refund key. */
+    static reconcileRefund(title_id: string, refund_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionRefundRecord>>;
+    /** Discover provider transfer/payout records; transferred funds are not automatically a verified bank payout. */
+    static listPayouts(title_id: string, params?: MicrotransactionPayoutListFilters, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+        payouts: MicrotransactionPayout[];
+        pagination: MicrotransactionPurchasePagination;
+    }>>;
     /** Admin read of separate-currency balances; pending is not withdrawable revenue. */
     static earnings(title_id: string, params?: MicrotransactionEnvironmentFilter, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionEarnings>>;
-    /** Admin list, bounded to the server's most recent 100 redacted orders. */
-    static listOrders(title_id: string, params?: MicrotransactionEnvironmentFilter, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
+    /** Admin paginated redacted orders. Page 1–10000/per_page 1–100 (default 25); own-player history is separate. */
+    static listOrders(title_id: string, params?: MicrotransactionOrderListFilters, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
         orders: MicrotransactionOrder[];
+        pagination: MicrotransactionPurchasePagination;
     }>>;
     /** Owner JWT/scoped player token or title admin. An arbitrary order UUID grants no access. */
-    static getOrder(title_id: string, order_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionOrder>>;
-    /** Financial admin only; original provider and human approval. Omit amount_minor for remaining full refund; partial amounts are bounded and allocated pro rata. */
-    static refundOrder(title_id: string, order_id: string, data: {
-        reason: string;
-        confirm: true;
-        amount_minor?: number;
-    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionRefund>>;
+    static getOrder(title_id: string, order_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionOrderDetail>>;
+    /** Financially scoped original-provider reconciliation. Does not reroute or start a different purchase. */
+    static reconcileOrder(title_id: string, order_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionOrderDetail>>;
+    /** Direct commerce:finance refund. REQUIRED stable idempotency_key; omission is an error, never auto-filled. Same-key changed input conflicts. */
+    static refundOrder(title_id: string, order_id: string, data: MicrotransactionRefundInput, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionRefund>>;
     /** Replay the same immutable event. Receiver must deduplicate event_id. This cannot mint goods. */
-    static replayDelivery(title_id: string, delivery_id: string, data: {
-        confirm: true;
-    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<Record<string, unknown>>>;
+    static replayDelivery(title_id: string, delivery_id: string, data?: MicrotransactionLegacyConfirmation, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionDeliveryResult>>;
     /** Public eligible catalog. Sandbox is restricted by backend environment/admin policy. */
     static catalog(title_id: string, params?: MicrotransactionCatalogFilter, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionCatalog>>;
     /** User-authenticated quote. Clients select product/quantity, never monetary values or seller accounts. */
@@ -506,7 +728,7 @@ declare class Microtransactions {
     /** Record integration proof from a genuinely paid, fulfilled sandbox order with a claimed game handoff. */
     static verifyIntegration(title_id: string, data: {
         order_id: string;
-        confirm: true;
+        confirm?: boolean;
     }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionReadiness>>;
     /** Restore authoritative durable ownership/current consumable balances, never mutable cloud-save balances. */
     static listEntitlements(title_id: string, params?: MicrotransactionEnvironmentFilter, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<{
@@ -538,10 +760,10 @@ declare class Microtransactions {
     /** Trusted title server with commerce:fulfill or admin JWT acknowledges the immutable event. */
     static acknowledgeDelivery(title_id: string, delivery_id: string, data: {
         event_id: string;
-    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<Record<string, unknown>>>;
-    /** Title MCP token, never a runtime install token. Describes every argument/schema/ability/approval gate. */
+    }, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionDeliveryResult>>;
+    /** Title MCP token, never a runtime install token. Describes arguments, abilities, mutation semantics and provider facts. */
     static mcpCapabilities(title_id: string, options?: MicrotransactionRequestOptions): AxiosPromise<MicrotransactionResponse<MicrotransactionCapabilities>>;
-    /** Execute only an operation discovered in mcpCapabilities. confirm is not financial approval. */
+    /** Execute a discovered authorized operation directly. Legacy confirm is ignored and not forwarded. */
     static mcpOperation<T = Record<string, unknown>>(title_id: string, operation: MicrotransactionOperation, data: {
         arguments: Record<string, unknown>;
         confirm?: boolean;

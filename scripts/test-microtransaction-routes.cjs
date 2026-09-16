@@ -45,10 +45,21 @@ test('every new route executes with its exact method/path, envelope and per-requ
     ['updateProduct', () => Microtransactions.updateProduct(title, 'product-1', { name: 'New cape' })],
     ['archiveProduct', () => Microtransactions.archiveProduct(title, 'product-1', { confirm: true })],
     ['providers', () => Microtransactions.providers(title)],
+    ['updateProvider', () => Microtransactions.updateProvider(title, 'stripe', { environment: 'sandbox', enabled: true, priority: 25 })],
+    ['refreshProvider', () => Microtransactions.refreshProvider(title, 'stripe', { environment: 'sandbox' })],
+    ['createProviderOnboarding', () => Microtransactions.createProviderOnboarding(title, { environment: 'sandbox', country: 'US', idempotency_key: 'fixed-onboarding-intent' })],
+    ['deliverySettings', () => Microtransactions.getDeliverySettings(title, { environment: 'sandbox' })],
+    ['updateDeliverySettings', () => Microtransactions.updateDeliverySettings(title, { environment: 'sandbox', enabled: false })],
+    ['deliveries', () => Microtransactions.listDeliveries(title, { environment: 'sandbox', order_id: 'order-1', page: 1, per_page: 25 })],
+    ['refunds', () => Microtransactions.listRefunds(title, { environment: 'sandbox', order_id: 'order-1' })],
+    ['refundDetail', () => Microtransactions.getRefund(title, 'refund-1')],
+    ['reconcileRefund', () => Microtransactions.reconcileRefund(title, 'refund-1')],
+    ['payouts', () => Microtransactions.listPayouts(title, { environment: 'sandbox', order_id: 'order-1' })],
     ['earnings', () => Microtransactions.earnings(title, { environment: 'sandbox' })],
     ['orders', () => Microtransactions.listOrders(title, { environment: 'sandbox' })],
     ['order', () => Microtransactions.getOrder(title, 'order-1', { playerToken: 'test-player-token' })],
-    ['refund', () => Microtransactions.refundOrder(title, 'order-1', { reason: 'test refund', confirm: true })],
+    ['reconcileOrder', () => Microtransactions.reconcileOrder(title, 'order-1')],
+    ['refund', () => Microtransactions.refundOrder(title, 'order-1', { reason: 'test refund', idempotency_key: 'fixed-refund-intent-1' })],
     ['replayDelivery', () => Microtransactions.replayDelivery(title, 'delivery-1', { confirm: true })],
     ['catalog', () => Microtransactions.catalog(title, { country: 'US', currency: 'USD', environment: 'sandbox', channel: 'web' })],
     ['createQuote', () => Microtransactions.createQuote(title, purchase)],
@@ -78,7 +89,7 @@ test('every new route executes with its exact method/path, envelope and per-requ
     const response = await run();
     assert.equal(response.data.data.accepted, true);
     const config = requests.at(-1);
-    const expected = Routes[route].url.replace('{title_id}', title).replace('{product_id}', 'product-1').replace('{order_id}', 'order-1').replace('{session_id}', 'session-1').replace('{delivery_id}', 'delivery-1').replace('{operation}', 'settings.get');
+    const expected = Routes[route].url.replace('{title_id}', title).replace('{product_id}', 'product-1').replace('{order_id}', 'order-1').replace('{session_id}', 'session-1').replace('{delivery_id}', 'delivery-1').replace('{refund_id}', 'refund-1').replace('{provider}', 'stripe').replace('{operation}', 'settings.get');
     assert.equal(new URL(config.url).pathname, `/api${expected}`, route);
     assert.equal(config.method.toUpperCase(), Routes[route].method, route);
     assert(!config.url.includes('test-checkout-capability'));
@@ -136,17 +147,80 @@ test('own purchase history preserves page/lot DTOs, uses only per-request identi
   try {
     await Promise.all([
       Microtransactions.listMyPurchases(title, { page: 1 }, { playerToken: 'isolated-history-token' }),
-      Microtransactions.settings(title),
+      Requests.processRoute({ url: '/ordinary/context', method: 'GET' }, undefined, {}, undefined, {}),
     ]);
     assert.equal(new URL(requests[2].url).search, '?page=1', 'Self-history must exclude inherited community_id');
     assert.equal(requests[2].headers.get('Authorization'), 'Bearer isolated-history-token');
-    assert.equal(new URL(requests[3].url).searchParams.get('community_id'), 'community-current', 'Concurrent normal routes retain global community context');
+    assert.equal(new URL(requests[3].url).searchParams.get('community_id'), 'community-current', 'Concurrent non-commerce routes retain global community context');
     assert.equal(requests[3].headers.get('Authorization'), 'Bearer test-account-jwt', 'Concurrent normal routes retain original account token');
   } finally { Requests.setCommunityID(undefined); }
   for (const filters of [{ user_id: 'other' }, { player_id: 'other' }, { cursor: 'legacy' }, { product_id: 'other' }, { page: 0 }, { page: 10001 }, { page: 1.5 }, { per_page: 0 }, { per_page: 101 }, { environment: 'production' }]) {
     assert.throws(() => Microtransactions.listMyPurchases(title, filters), /history|identity|environment/);
   }
   assert.equal(requests.length, 4, 'Invalid self-history selectors are rejected before network transport');
+});
+
+test('direct management never leaks global community context and refunds keep their caller key', async () => {
+  const requests = [];
+  Requests.setAuthToken('test-account-jwt'); Requests.setCommunityID('selected-global-community');
+  axios.defaults.adapter = async config => { requests.push(config); return { status: 200, statusText: 'OK', headers: {}, config, data: { data: { status: 'unknown', refund_id: 'refund-1' } } }; };
+  try {
+    await Promise.all([
+      Microtransactions.providers(title, { environment: 'sandbox' }),
+      Microtransactions.updateProvider(title, 'stripe', { environment: 'sandbox', enabled: false }),
+      Microtransactions.refreshProvider(title, 'stripe', { environment: 'sandbox' }),
+      Microtransactions.updateDeliverySettings(title, { environment: 'sandbox', enabled: false }),
+      Microtransactions.uploadMedia(title, new Blob(['test'], { type: 'image/png' })),
+      Requests.processRoute({ url: '/ordinary/context', method: 'GET' }, undefined, {}, undefined, {}),
+    ]);
+    for (const request of requests.slice(0, 5)) assert.equal(new URL(request.url).searchParams.has('community_id'), false);
+    assert.deepEqual([...requests[4].data.keys()], ['media'], 'Commerce uploads must not inherit communities form fields');
+    assert.equal(new URL(requests[5].url).searchParams.get('community_id'), 'selected-global-community');
+    const data = { reason: 'Buyer refund', amount_minor: 99, idempotency_key: 'one-stable-refund-operation' };
+    await Microtransactions.refundOrder(title, 'order-1', data);
+    await Microtransactions.refundOrder(title, 'order-1', data);
+    assert.equal(JSON.parse(requests[6].data).idempotency_key, data.idempotency_key);
+    assert.deepEqual(JSON.parse(requests[6].data), JSON.parse(requests[7].data));
+    assert.throws(() => Microtransactions.refundOrder(title, 'order-1', { reason: 'Missing key' }), /stable.*idempotency_key/);
+    assert.equal(requests.length, 8);
+    await Microtransactions.providers(title, { timeout: 1234 });
+    assert.equal(requests[8].timeout, 1234, 'Legacy provider request-options overload remains valid');
+    assert.equal(new URL(requests[8].url).search, '');
+    await Microtransactions.getOrder(title, 'order-1', { playerToken: 'player-receipt-token' });
+    assert.equal(requests[9].headers.get('Authorization'), 'Bearer player-receipt-token', 'Existing player receipt request is not forced into admin auth');
+  } finally { Requests.setCommunityID(undefined); }
+});
+
+test('partial provider edits never select or default a payout recipient', async () => {
+  const requests = [];
+  axios.defaults.adapter = async config => {
+    requests.push(config);
+    return { status: 200, statusText: 'OK', headers: {}, config, data: { data: { provider: 'stripe' } } };
+  };
+  const input = Object.freeze({ environment: 'sandbox', priority: 17 });
+  await Microtransactions.updateProvider(title, 'stripe', input);
+  assert.deepEqual(JSON.parse(requests[0].data), input);
+  assert.equal(Object.hasOwn(JSON.parse(requests[0].data), 'payout_source'), false);
+  await Microtransactions.updateProvider(title, 'stripe', { ...input, payout_source: 'managed' });
+  assert.deepEqual(JSON.parse(requests[1].data), { ...input, payout_source: 'managed' });
+});
+
+test('catalog discovery supports later pages and exact SKU without changing legacy request options', async () => {
+  const requests = [];
+  const data = { products: [{ id: 'older-product', sku: 'older.exact-sku' }], pagination: { page: 2, per_page: 1, total: 3, last_page: 3, has_more_pages: true } };
+  axios.defaults.adapter = async config => {
+    requests.push(config);
+    return { status: 200, statusText: 'OK', headers: {}, config, data: { data } };
+  };
+  const response = await Microtransactions.listProducts(title, { page: 2, per_page: 1, status: 'archived', sku: 'older.exact-sku' }, { timeout: 1500 });
+  assert.deepEqual(response.data.data, data);
+  assert.equal(new URL(requests[0].url).search, '?page=2&per_page=1&status=archived&sku=older.exact-sku');
+  assert.equal(requests[0].timeout, 1500);
+  await Microtransactions.listProducts(title, { timeout: 1501 });
+  assert.equal(new URL(requests[1].url).search, '');
+  assert.equal(requests[1].timeout, 1501);
+  await Microtransactions.listProducts(title);
+  assert.equal(new URL(requests[2].url).search, '', 'No-argument callers retain backend defaults');
 });
 
 test('rejects wrong origin/window/title/session/nonce/version and malformed claim codes before any verification', async () => {

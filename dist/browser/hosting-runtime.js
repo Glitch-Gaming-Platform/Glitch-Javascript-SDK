@@ -5894,7 +5894,7 @@
           // Prepare FormData
           const formData = new FormData();
           formData.append(filename, file);
-          if (Requests.community_id) {
+          if (Requests.community_id && !(options === null || options === void 0 ? void 0 : options.excludeCommunityContext)) {
               data = Object.assign(Object.assign({}, data), { communities: [Requests.community_id] });
           }
           for (let key in data) {

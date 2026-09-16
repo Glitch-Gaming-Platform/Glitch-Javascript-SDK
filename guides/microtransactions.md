@@ -1,12 +1,11 @@
 # Game microtransactions
 
-**Minimum SDK for this guide: `3.15.0`.** Use a confirmed published `3.15.0+`
-release or an approved local package. Registry verification on September 15, 2026
-showed public latest `3.10.8`, which lacks commerce; a plain public npm install at
-that point cannot run this callback/history example. Until `3.15.0` is actually
-published, use only the reviewed local `glitch-javascript-sdk-3.15.0.tgz` for testing.
-Do not change a production dependency to an unpublished version or assume that
-local build success means public publication has happened.
+**Player checkout/history minimum: SDK `3.15.0`, which is published.** The new
+administrative direct-management API below is a **major SDK `4.0.0` migration**.
+Verify usable published versions independently before installing; a reviewed
+local4.0 candidate is not proof of publication. Server-side MCP catalog/provider
+setup does not require installing or publishing the game SDK, so do not block
+authorized server configuration while runtime package work is pending.
 
 The SDK entry point is `Glitch.api.Microtransactions`. All HTTP methods return an
 Axios response whose `response.data.data` contains the typed commerce result.
@@ -16,7 +15,8 @@ Never put a developer/MCP/install token into a shipped browser game.
 ## Developer setup
 
 1. Read `settings`, `readiness`, `providers` and `listProducts` with a signed-in
-   title administrator. Start disabled/sandbox. Approvals are server-controlled.
+   title administrator or scoped MCP caller. Use sandbox for development. Authorized
+   commerce operations execute directly; no custom confirmation/human-review gate.
    The **Enable in-game purchases** and **Show ads** switches live only on the
    game's Pricing/monetization page. Microtransactions is for products, media,
    prices, orders and integration—not a second location for those switches.
@@ -38,9 +38,89 @@ Never put a developer/MCP/install token into a shipped browser game.
    (12%) of discounted pre-tax subtotal. Actual provider costs are separate.
    Taxes are separate; pending earnings are not a verified available payout.
 6. Run a real approved provider sandbox purchase, verify game delivery/claim,
-   then call `verifyIntegration(titleId, {order_id, confirm:true})`. This records
-   real evidence, not a self-certified integration checkbox. Launch still needs
-   independent seller/tax/provider approvals. MCP confirm alone cannot supply them.
+   then call `verifyIntegration(titleId, {order_id})`. This records
+   real evidence, not a self-certified integration checkbox. Actual external
+   provider/account/tax capability and global sales emergency controls still apply.
+
+## SDK4.0 administrative migration
+
+Player checkout, restore, inventory and self-history routes remain compatible with
+SDK3.15. The administrative changes are deliberately major:
+
+- `refundOrder(titleId,orderId,{reason,amount_minor?,idempotency_key},options?)`
+  now requires a stable caller key. The SDK never generates it. Legacy `confirm`
+  is optional/ignored, not authorization. Keep one refund intent outside retries;
+  same key + changed payload conflicts, and unknown outcomes stay pinned.
+- `providers(titleId,{environment}?,options?)` returns factual `configured` and
+  `available` values instead of an `approved` badge. `account` is the platform
+  processor; `payout_account` is the game's target and must be evaluated separately.
+  The older second-argument request-options overload remains compatible.
+- `listProducts(titleId,{page,per_page,status,sku}?,options?)` now discovers the
+  complete catalog. `sku` matches exactly; status is draft/active/archived. Product
+  pages default to 200 records (1–200), unlike financial/history lists below.
+  Follow `pagination.has_more_pages`; absence on page one is not proof a SKU is
+  unused. Query the exact SKU after an uncertain create before retrying it.
+  The no-filter call and older request-options overload remain compatible.
+- `updateProvider`, `refreshProvider` and `createProviderOnboarding` manage routes
+  and owned Stripe onboarding. Onboarding also requires a stable key and returns
+  `onboarding_url` for the same owned account on retry, not an arbitrary payee ID.
+- `getDeliverySettings`/`updateDeliverySettings` expose enabled/URL and only public
+  verification material. Private signing keys remain server-side. Actual DNS/IP,
+  HTTPS and provider requirements are validated without an approval workflow.
+  Legacy `updateSettings.webhook_url` additionally requires commerce:fulfill as
+  well as commerce:write; prefer the dedicated delivery-settings methods.
+- `listOrders`, `listRefunds`, `listDeliveries` and `listPayouts` use page1–10000,
+  per_page1–100(default25) and return arrays plus pagination. Get IDs from discovery.
+  `getOrder` retains the player receipt path; management relationships are optional
+  and can be finance-redacted. Omitted fields do not prove no records exist.
+- `reconcileOrder`, `getRefund` and `reconcileRefund` inspect/recover the original
+  provider operations. A linked refund request or pending/unknown execution is not
+  a completed refund. Keep `execution_refund_id`, `execution_status` and actual
+  `order_refunded_minor` distinct. Transfers are not automatically bank-paid payouts.
+- All commerce calls omit unrelated global community context without mutating the
+  stored community/auth state. Other SDK features retain their own context behavior.
+
+Example stable refund intent (authorized commerce:finance only):
+
+```ts
+const refundIntent = {
+  reason: 'Customer refund', amount_minor: 199,
+  idempotency_key: crypto.randomUUID(), // ONCE for this intent, outside retries.
+};
+async function submitOrRetryRefund() {
+  return Glitch.api.Microtransactions.refundOrder(titleId, orderId, refundIntent);
+}
+// If response is unknown/lost, keep refundIntent. Inspect/reconcile its original
+// operation instead of making another key or blindly starting another refund.
+```
+
+Provider configuration reuses existing platform credentials; never send platform
+Stripe/Xsolla API keys or MCP credentials as settings. A new owned title/environment
+Xsolla `webhook_secret` is write-only(16–512 chars) under finance scope, encrypted
+server-side and never returned/audited. Existing platform/historical bindings cannot
+be overwritten. Keep this out of runtime game code, logs and raw JSON editors.
+Missing external setup returns factual reasons; saving configuration is not proof
+that a provider can accept payments. Global sales-off may block new purchases while
+authorized configuration and historical refunds remain available.
+
+### Signed server-delivery receiver
+
+[The complete Node24+ receiver example](commerce-delivery-receiver.mjs) verifies
+the exact raw body before parsing and durably queues event IDs without applying
+embedded inventory. Pin `title_id`, environment, `key_id` and the base64 raw32-byte
+`verification_public_key` from authenticated delivery settings, never from a message.
+Require algorithm `ed25519`, `X-Glitch-Key-Id`, UNIX-second `X-Glitch-Timestamp`
+within300 seconds, and `X-Glitch-Event-Id === body.id`. `X-Glitch-Signature` is base64
+raw64 bytes over timestamp + `.` + exact raw JSON bytes. ACK2xx `{event_id}` only
+after durable handling/commit. Duplicate IDs stay deduped across restarts.
+
+Do not increment inventory or replace aggregate balances from webhook snapshots:
+cross-order notifications can arrive out of order. An authorized game/player
+refreshes current `listEntitlements`, or a real server adapter uses monotonic
+inventory revisions. Legacy HMAC delivery is a separate configured algorithm;
+leave its original secrets unchanged and reject message-selected algorithm/key
+downgrades. The example needs Node24 only; it does not change the core SDK/MCP
+runtime requirement or replace actual payment/browser3DS verification.
 
 Product limits: SKU/grant key 1–100 alphanumeric/underscore/dot/hyphen characters;
 name 255 characters; description 4000; 10 distinct Media UUIDs; 50 prices; 30
@@ -360,12 +440,12 @@ hosted-account flows, not the default anonymous-game recovery path.
 - Earnings `transferred_minor` means money transferred to a provider balance,
   not a confirmed bank deposit. Preserve `bank_payout_status` and reserve/reconciliation
   fields; never relabel pending or transferred balances as paid bank payouts.
-- `requestRefund` is an owning account's support request. `refundOrder` requires
-  a separately approved financial administrator; pending/unknown is not completed.
+- `requestRefund` is an owning account's support request. `refundOrder` executes
+  directly for an authorized finance caller with a stable key; pending/unknown is not completed.
   Preserve historical orders and reverse commission proportionately. Refunds
   use the original provider/account, not the currently preferred payment route.
 - Handle HTTP 401/403 for account/scope, 404 for unavailable or cross-title IDs,
-  409 for idempotency/state/approval conflicts, 410 for expired sessions/claims,
+  409 for idempotency/state/invariant conflicts, 410 for expired sessions/claims,
   422 for invalid inputs/revenue policy, 429 for rate limits and 503 for provider
   coverage. Do not retry a hard decline/fraud block through another provider.
 - Ads-off is an actual per-title delivery policy. The backend rejects removing
@@ -374,12 +454,13 @@ hosted-account flows, not the default anonymous-game recovery path.
 
 ## MCP
 
-Use `mcpCapabilities` to discover exact schemas, abilities, approval flags and
+Use `mcpCapabilities` to discover exact schemas, abilities, mutation metadata and
 examples. `mcpOperation` always targets the authenticated MCP facade; it never
 uses a game's runtime token. `mcpUploadMedia` uses the same authorized Media
 pipeline. The companion `glitch-mcp` package supplies explicit tools, a
 `glitch://microtransactions/setup` resource, dynamic title schema resources and
-the `glitch_setup_microtransactions` prompt. A model must not auto-approve live
-prices, provider activation, financial actions or disabling the last revenue model.
+the `glitch_setup_microtransactions` prompt. Authorized title-scoped MCP management
+executes directly without confirmation/proposal/approval workflows. Permissions,
+actual provider facts and the last-revenue-model/financial invariants remain enforced.
 Developer MCP read tools do not impersonate players. The self-only runtime purchase
 history API is documented for game code, not exposed as an arbitrary-player MCP tool.

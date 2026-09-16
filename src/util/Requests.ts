@@ -227,7 +227,7 @@ class Requests {
     data?: any,
     params?: Record<string, any>,
     onUploadProgress?: (progressEvent: AxiosProgressEvent) => void,
-    options?: Pick<AxiosRequestConfig, 'signal' | 'timeout'>
+    options?: Pick<AxiosRequestConfig, 'signal' | 'timeout'> & { excludeCommunityContext?: boolean }
   ): AxiosPromise<Response<T>> {
     // Process URL and params
     if (params && Object.keys(params).length > 0) {
@@ -241,7 +241,7 @@ class Requests {
     const formData = new FormData();
     formData.append(filename, file);
 
-    if (Requests.community_id) {
+    if (Requests.community_id && !options?.excludeCommunityContext) {
       data = {
         ...data,
         communities: [Requests.community_id],

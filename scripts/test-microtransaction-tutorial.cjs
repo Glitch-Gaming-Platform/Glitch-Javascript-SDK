@@ -7,9 +7,9 @@ const ts = require('typescript');
 const { JSDOM } = require('jsdom');
 
 const guide = fs.readFileSync('guides/microtransactions.md', 'utf8');
-assert(guide.includes('Minimum SDK for this guide: `3.15.0`'));
-assert(guide.includes('approved local package'));
-assert(guide.includes('3.10.8`, which lacks commerce'));
+assert(guide.includes('Player checkout/history minimum: SDK `3.15.0`'));
+assert(guide.includes('major SDK `4.0.0` migration'));
+assert(guide.includes('does not require installing or publishing the game SDK'));
 const example = guide.match(/```js\n([\s\S]*?)\n```/)?.[1];
 assert(example, 'The beginner guide must contain the complete runnable example');
 const compiled = ts.transpileModule(example, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText;
@@ -98,7 +98,7 @@ for (const failure of ['consume', 'inventory']) {
 
 test('purchase-history TypeScript contracts preserve nullable legacy snapshots and forbid identity/cursor selectors', () => {
   const filename = path.resolve('scripts/__virtual_commerce_history_types.ts');
-  const source = `import Microtransactions, { MicrotransactionPlayerPurchase, MicrotransactionOrder, MicrotransactionGrantUsage, MicrotransactionMyPurchases } from '../src/api/Microtransactions';
+  const source = `import Microtransactions, { MicrotransactionPlayerPurchase, MicrotransactionOrder, MicrotransactionGrantUsage, MicrotransactionMyPurchases, MicrotransactionOrderDetail, MicrotransactionProvider, MicrotransactionDeliverySettings, MicrotransactionProviderOnboarding } from '../src/api/Microtransactions';
 declare const purchase: MicrotransactionPlayerPurchase;
 declare const order: MicrotransactionOrder;
 declare const lot: MicrotransactionGrantUsage;
@@ -108,6 +108,36 @@ const optionalOwner: string | undefined = order.player_id;
 const grantId: string | null = lot.grant_id;
 const oldProduct: MicrotransactionPlayerPurchase['product'] = { id: 'legacy', sku: null, name: null, type: null, version: null };
 const total: number = history.pagination.total;
+declare const detail: MicrotransactionOrderDetail;
+const optionalRefundAmount: number | undefined = detail.refunds?.[0]?.amount_minor;
+declare const provider: MicrotransactionProvider;
+const gamePayoutReady: boolean = provider.payout_account.available;
+declare const delivery: MicrotransactionDeliverySettings;
+const publicKey: string | null = delivery.verification_public_key;
+const keyId: string | null = delivery.key_id;
+const algorithm: 'ed25519' | 'hmac-sha256' = delivery.signature_algorithm;
+declare const onboarding: MicrotransactionProviderOnboarding;
+const onboardingUrl: string = onboarding.onboarding_url;
+Microtransactions.updateProvider('title', 'stripe', { environment: 'sandbox', minimum_amounts: { USD: 50 } });
+Microtransactions.listProducts('title', { page: 2, per_page: 200, status: 'archived', sku: 'exact.sku' }, { timeout: 1000 });
+Microtransactions.listProducts('title', { timeout: 1000 });
+Microtransactions.listProducts('title').then(response => { const total: number = response.data.data.pagination.total; });
+Microtransactions.replayDelivery('title', 'delivery').then(response => {
+  const attempts: number = response.data.data.attempts;
+  // @ts-expect-error Replay returns a safe subset, not list-only timestamps.
+  const createdAt: string = response.data.data.created_at;
+});
+// @ts-expect-error Product catalog has no environment filter.
+Microtransactions.listProducts('title', { environment: 'sandbox' });
+Microtransactions.refundOrder('title', 'order', { reason: 'Buyer refund', idempotency_key: 'one-persisted-refund-key' });
+// @ts-expect-error Direct refunds must provide a stable caller key.
+Microtransactions.refundOrder('title', 'order', { reason: 'Buyer refund' });
+// @ts-expect-error Actual provider capability is server-owned, not writable.
+Microtransactions.updateProvider('title', 'stripe', { environment: 'sandbox', available: true });
+// @ts-expect-error Private signing keys cannot be configured through the SDK.
+Microtransactions.updateDeliverySettings('title', { environment: 'sandbox', private_key: 'forbidden' });
+// @ts-expect-error Player receipt callers cannot assume financial relationships are included.
+const allRefunds: number = detail.refunds.length;
 Microtransactions.listMyPurchases('title', { environment: 'sandbox', page: 1, per_page: 20 }, { playerToken: 'test' });
 // @ts-expect-error Runtime history cannot select another user.
 Microtransactions.listMyPurchases('title', { user_id: 'other' });
