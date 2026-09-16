@@ -247,7 +247,12 @@ export interface MicrotransactionRefundInput extends MicrotransactionLegacyConfi
 }
 export interface MicrotransactionReadiness {
   status: 'disabled' | 'draft' | 'sandbox' | 'ready' | 'live' | 'degraded' | 'suspended';
+  /** Configuration readiness only; not proof of payment, delivery, claim or browser 3DS. */
   ready: boolean;
+  /** Optional on older backends; retains the same configuration meaning as ready. */
+  configuration_ready?: boolean;
+  /** Stored sandbox paid + fulfilled + claimed evidence. Absent means unknown; not browser/3DS certification. */
+  integration_verified?: boolean;
   blockers: string[];
   providers: MicrotransactionProvider[];
   commission_basis_points: 1200;
@@ -523,8 +528,9 @@ export interface MicrotransactionCapabilities {
 }
 
 /**
- * Provider-neutral, title-scoped commerce. Configure with user JWT; purchases
- * use a recoverable user account and limited checkout capability. Install/title
+ * Provider-neutral, title-scoped commerce. Guest games configure only the API
+ * base URL, never global account/admin auth. Hosted account pages use their own
+ * user JWT and limited checkout capability; playerToken overrides auth per request. Install/title
  * tokens cannot authorize money, ownership, refunds, or catalog changes.
  *
  * Each result preserves payment versus fulfillment versus settlement. Redirects
@@ -609,13 +615,13 @@ class Microtransactions {
   }
   /** Replay the same immutable event. Receiver must deduplicate event_id. This cannot mint goods. */
   static replayDelivery(title_id: string, delivery_id: string, data: MicrotransactionLegacyConfirmation = {}, options?: MicrotransactionRequestOptions) { return this.call<MicrotransactionDeliveryResult>('replayDelivery', title_id, data, { delivery_id }, undefined, options); }
-  /** Public eligible catalog. Sandbox is restricted by backend environment/admin policy. */
+  /** Guest catalog on the exact approved game Origin. Sandbox requires enabled sandbox settings; the backend enforces environment policy. */
   static catalog(title_id: string, params?: MicrotransactionCatalogFilter, options?: MicrotransactionRequestOptions) { return this.call<MicrotransactionCatalog>('catalog', title_id, undefined, {}, params, options); }
   /** User-authenticated quote. Clients select product/quantity, never monetary values or seller accounts. */
   static createQuote(title_id: string, data: MicrotransactionPurchaseInput, options?: MicrotransactionRequestOptions) { return this.call<MicrotransactionQuote>('createQuote', title_id, data, {}, undefined, options); }
-  /** Anonymous-safe opening step only. The hosted UI creates/logs into an account before payment. */
+  /** Guest opening only: browser Origin must equal approved return_origin. Inherits configured global auth; use an isolated credential-free game context. Hosted UI authenticates before payment. */
   static createCheckoutSession(title_id: string, data: MicrotransactionCheckoutSessionInput, options?: MicrotransactionRequestOptions) { return this.call<MicrotransactionCreatedCheckoutSession>('createCheckoutSession', title_id, data, {}, undefined, options); }
-  /** Anonymous-safe inventory recovery. Opens an in-game hosted sign-in overlay, never creates a charge or requires the game's account JWT. */
+  /** Guest entry to hosted recovery, not inventory access. Exact approved Origin/return_origin required. Owning-account bind remains mandatory, including when commerce is off. Never install an account JWT in the game. */
   static createRestoreSession(title_id: string, data: { return_origin: string; nonce: string; environment: MicrotransactionEnvironment }, options?: MicrotransactionRequestOptions) { return this.call<MicrotransactionCreatedCheckoutSession>('createRestoreSession', title_id, data, {}, undefined, options); }
   /** Read the session using its limited capability. Cannot mutate user identity or declare payment. */
   static getCheckoutSession(title_id: string, session_id: string, options: MicrotransactionSessionOptions) { return this.call<MicrotransactionCheckoutSession>('checkoutSession', title_id, undefined, { session_id }, undefined, options); }

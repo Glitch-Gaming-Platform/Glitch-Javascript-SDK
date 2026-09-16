@@ -21752,8 +21752,9 @@ MicrotransactionsRoute.routes = {
 };
 
 /**
- * Provider-neutral, title-scoped commerce. Configure with user JWT; purchases
- * use a recoverable user account and limited checkout capability. Install/title
+ * Provider-neutral, title-scoped commerce. Guest games configure only the API
+ * base URL, never global account/admin auth. Hosted account pages use their own
+ * user JWT and limited checkout capability; playerToken overrides auth per request. Install/title
  * tokens cannot authorize money, ownership, refunds, or catalog changes.
  *
  * Each result preserves payment versus fulfillment versus settlement. Redirects
@@ -21833,13 +21834,13 @@ class Microtransactions {
     }
     /** Replay the same immutable event. Receiver must deduplicate event_id. This cannot mint goods. */
     static replayDelivery(title_id, delivery_id, data = {}, options) { return this.call('replayDelivery', title_id, data, { delivery_id }, undefined, options); }
-    /** Public eligible catalog. Sandbox is restricted by backend environment/admin policy. */
+    /** Guest catalog on the exact approved game Origin. Sandbox requires enabled sandbox settings; the backend enforces environment policy. */
     static catalog(title_id, params, options) { return this.call('catalog', title_id, undefined, {}, params, options); }
     /** User-authenticated quote. Clients select product/quantity, never monetary values or seller accounts. */
     static createQuote(title_id, data, options) { return this.call('createQuote', title_id, data, {}, undefined, options); }
-    /** Anonymous-safe opening step only. The hosted UI creates/logs into an account before payment. */
+    /** Guest opening only: browser Origin must equal approved return_origin. Inherits configured global auth; use an isolated credential-free game context. Hosted UI authenticates before payment. */
     static createCheckoutSession(title_id, data, options) { return this.call('createCheckoutSession', title_id, data, {}, undefined, options); }
-    /** Anonymous-safe inventory recovery. Opens an in-game hosted sign-in overlay, never creates a charge or requires the game's account JWT. */
+    /** Guest entry to hosted recovery, not inventory access. Exact approved Origin/return_origin required. Owning-account bind remains mandatory, including when commerce is off. Never install an account JWT in the game. */
     static createRestoreSession(title_id, data, options) { return this.call('createRestoreSession', title_id, data, {}, undefined, options); }
     /** Read the session using its limited capability. Cannot mutate user identity or declare payment. */
     static getCheckoutSession(title_id, session_id, options) { return this.call('checkoutSession', title_id, undefined, { session_id }, undefined, options); }

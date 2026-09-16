@@ -15,17 +15,22 @@ assert(example, 'The beginner guide must contain the complete runnable example')
 const compiled = ts.transpileModule(example, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText;
 const flush = () => new Promise(resolve => setImmediate(resolve));
 
-function tutorialFixture(failure = 'consume') {
+function tutorialFixture(failure = 'consume', overrides = {}) {
   const dom = new JSDOM('<!doctype html><body><main id="game">Existing game</main></body>', { url: 'https://game.example.test' });
   const calls = { consume: [], history: [], inventory: [], session: [] };
   let overlayOptions; let nonce = 0; let failed = false;
-  const timber = balance => [{ key: 'timber', kind: 'consumable', balance, environment: 'sandbox' }];
+  const key = overrides.timberGrantKey ?? 'wotw.resource.timber';
+  // Independent title fixtures: timber may be consumable in one title and
+  // durable in the WOTW-like fixture. Never emit two kinds for one title/key.
+  const timber = (balance, kind = 'consumable') => [
+    ...(key === 'timber' ? [] : [{ key: 'timber', kind: 'durable', balance: 1, environment: 'sandbox' }]),
+    { key, kind, balance, environment: 'sandbox' }];
   const api = {
     createCheckoutSession: async (...args) => { calls.session.push(args); return { data: { data: { id: 'session-1', intent: 'purchase' } } }; },
     createRestoreSession: async (...args) => { calls.session.push(args); return { data: { data: { id: 'restore-1', intent: 'restore' } } }; },
     listMyPurchases: async (...args) => {
       calls.history.push(args);
-      return { data: { data: { purchases: [{ id: 'legacy-order', product: { id: 'legacy-product', sku: null, name: null, type: null, version: null }, grant_usage: [{ key: 'timber', usage_status: 'partially_used', purchased_quantity: 100, granted_quantity: 100, consumed_quantity: 10, usable_quantity: 90 }] }], pagination: { page: 1, per_page: 20, total: 1, last_page: 1, has_more_pages: false } } } };
+      return { data: { data: { purchases: [{ id: 'legacy-order', product: { id: 'legacy-product', sku: null, name: null, type: null, version: null }, grant_usage: [{ key, usage_status: 'partially_used', purchased_quantity: 100, granted_quantity: 100, consumed_quantity: 10, usable_quantity: 90 }] }], pagination: { page: 1, per_page: 20, total: 1, last_page: 1, has_more_pages: false } } } };
     },
     consume: async (...args) => {
       calls.consume.push(args);
@@ -44,11 +49,14 @@ function tutorialFixture(failure = 'consume') {
     openMicrotransactionRestoreOverlay: options => { overlayOptions = options; options.onOpen(); return { close: () => options.onClose() }; },
   };
   const exports = {};
-  vm.runInNewContext(compiled, { exports, require: name => { assert.equal(name, 'glitch-javascript-sdk'); return sdk; }, document: dom.window.document, window: dom.window, Date, Error });
-  const game = exports.installTimberShop({ titleId: 'title-1', productId: 'timber-100', apiBaseUrl: 'https://api.example.test/api', checkoutOrigin: 'https://checkout.example.test' });
+  vm.runInNewContext(compiled, { exports, require: name => { assert.equal(name, 'glitch-javascript-sdk'); return sdk; }, document: dom.window.document, window: dom.window, Date, Error, URL });
+  let game;
+  try {
+    game = exports.installTimberShop({ titleId: 'title-1', productId: 'timber-100', apiBaseUrl: 'https://api.example.test/api', checkoutOrigin: 'https://checkout.example.test', gameOrigin: 'https://game.example.test', timberGrantKey: 'wotw.resource.timber', ...overrides });
+  } catch (error) { dom.window.close(); throw error; }
   return { dom, game, calls, get overlay() { return overlayOptions; },
     click: async label => { const button = [...dom.window.document.querySelectorAll('button')].find(b => b.textContent === label); assert(button, label); button.click(); await flush(); await flush(); },
-    verify: (player = 'player-1') => overlayOptions.onVerified({ player_id: player, player_token: 'test-scoped-' + player, expires_at: new Date(Date.now() + 900000).toISOString(), entitlements: timber(100) }),
+    verify: (player = 'player-1', kind = 'consumable') => overlayOptions.onVerified({ player_id: player, player_token: 'test-scoped-' + player, expires_at: new Date(Date.now() + 900000).toISOString(), entitlements: timber(100, kind) }),
   };
 }
 
@@ -60,6 +68,9 @@ test('copyable tutorial binds profile and replaces verified inventory without au
   assert.equal(f.game.playerId, 'player-1');
   assert.equal(f.dom.window.document.querySelector('output').textContent, 'Timber: 100', 'Repeated callback must not add product quantity');
   assert.equal(f.calls.consume.length, 0);
+  assert.equal(f.calls.session[0].length, 2, 'Guest creation does not supply any credential option');
+  assert.equal(f.calls.session[0][1].return_origin, 'https://game.example.test');
+  assert.equal(f.game.inventory.find(row => row.key === 'timber').kind, 'durable');
   f.overlay.onClose();
   await f.click('My purchases');
   assert.equal(f.calls.history[0][0], 'title-1');
@@ -68,6 +79,55 @@ test('copyable tutorial binds profile and replaces verified inventory without au
   assert.match(f.dom.window.document.querySelector('pre').textContent, /Purchase legacy-order/);
   assert.equal(f.dom.window.document.getElementById('game').textContent, 'Existing game');
   f.dom.window.close();
+});
+
+test('starter requires exact approved game origin and an explicit key using the existing grammar', () => {
+  for (const gameOrigin of ['https://other.example.test', 'https://game.example.test/game-path']) {
+    assert.throws(() => tutorialFixture('consume', { gameOrigin }), /exact approved gameOrigin/);
+  }
+  for (const timberGrantKey of [undefined, null, 42, {}, '', 'a'.repeat(101), ' timber', 'timber ', 'timber/wood', 'timber:wood', 'timber\n', 'timbér']) {
+    assert.throws(() => tutorialFixture('consume', { timberGrantKey }), /explicit grant key/);
+  }
+});
+
+for (const timberGrantKey of ['timber', 'gold', 'Wood_01-pack', 'wotw.resource.timber', 'a'.repeat(100)]) {
+  test(`starter accepts the actual consumable key ${timberGrantKey.slice(0, 30)} without a namespace rule`, async () => {
+    const f = tutorialFixture('none', { timberGrantKey });
+    try {
+      await f.click('Buy 100 Timber'); f.verify(); f.overlay.onClose();
+      await f.click('Use 10 Timber');
+      assert.equal(f.calls.consume.length, 1);
+      assert.equal(f.calls.consume[0][1].key, timberGrantKey, 'Use the exact caller key, never rename it');
+      assert.equal(f.game.inventory.find(row => row.key === timberGrantKey).kind, 'consumable');
+      assert.equal(f.dom.window.document.querySelector('output').textContent, 'Timber: 90');
+      if (timberGrantKey !== 'timber') assert.equal(f.game.inventory.find(row => row.key === 'timber').kind, 'durable');
+    } finally { f.dom.window.close(); }
+  });
+}
+
+for (const timberGrantKey of ['timber', 'wotw.resource.timber']) {
+  test(`starter rejects canonical durable ${timberGrantKey}, not its spelling`, async () => {
+    const f = tutorialFixture('none', { timberGrantKey });
+    try {
+      await f.click('Buy 100 Timber');
+      assert.throws(() => f.verify('player-1', 'durable'), /kind mismatch/);
+      assert.equal(f.game.inventory.length, 0, 'Durable ownership is never converted to spendable units');
+      assert.equal(f.game.playerId, null, 'A mismatched mapping cannot partially accept the account');
+      f.overlay.onClose(); await f.click('Use 10 Timber');
+      assert.equal(f.calls.consume.length, 0);
+    } finally { f.dom.window.close(); }
+  });
+}
+
+test('public guide scopes the WOTW proposal to its title and has no task-specific approval gate', () => {
+  assert.match(guide, /WOTW-specific migration proposal/);
+  assert.match(guide, /title ID prefix `ad467`/);
+  assert.match(guide, /another game[\s\S]*may already use `timber` as consumable/);
+  assert.match(guide, /namespacing is optional/);
+  assert.match(guide, /proposal does not create\/publish products or prices or\s+authorize a catalog mutation/);
+  assert.doesNotMatch(guide, /parent review|parent-owned|let the parent|to the parent/i);
+  assert.match(guide, /Unreleased additive follow-up/);
+  assert.match(guide, /no hosted backend deployment was performed/i);
 });
 
 test('tutorial explains no_purchases_to_restore without granting items or assuming a new token', async () => {
@@ -90,6 +150,7 @@ for (const failure of ['consume', 'inventory']) {
     assert.equal(f.calls.consume.length, 2);
     assert.equal(f.calls.consume[0][1].action_id, f.calls.consume[1][1].action_id, 'A retry must not create a fresh action ID');
     assert.equal(f.calls.consume[0][1].quantity, 10);
+    assert.equal(f.calls.consume[0][1].key, 'wotw.resource.timber', 'Spending uses the explicit mapping, never durable timber');
     assert.equal(f.calls.consume[1][2].playerToken, 'test-scoped-player-1');
     assert.equal(f.dom.window.document.querySelector('output').textContent, 'Timber: 90');
     f.dom.window.close();
@@ -98,7 +159,12 @@ for (const failure of ['consume', 'inventory']) {
 
 test('purchase-history TypeScript contracts preserve nullable legacy snapshots and forbid identity/cursor selectors', () => {
   const filename = path.resolve('scripts/__virtual_commerce_history_types.ts');
-  const source = `import Microtransactions, { MicrotransactionPlayerPurchase, MicrotransactionOrder, MicrotransactionGrantUsage, MicrotransactionMyPurchases, MicrotransactionOrderDetail, MicrotransactionProvider, MicrotransactionDeliverySettings, MicrotransactionProviderOnboarding } from '../src/api/Microtransactions';
+  const source = `import Microtransactions, { MicrotransactionReadiness, MicrotransactionPlayerPurchase, MicrotransactionOrder, MicrotransactionGrantUsage, MicrotransactionMyPurchases, MicrotransactionOrderDetail, MicrotransactionProvider, MicrotransactionDeliverySettings, MicrotransactionProviderOnboarding } from '../src/api/Microtransactions';
+const oldReady: MicrotransactionReadiness = { status: 'ready', ready: true, blockers: [], providers: [], commission_basis_points: 1200 };
+const newReady: MicrotransactionReadiness = { ...oldReady, configuration_ready: true, integration_verified: false };
+const proof: boolean | undefined = newReady.integration_verified;
+// @ts-expect-error An older server can omit integration evidence; callers must handle unknown.
+const assumedProof: boolean = oldReady.integration_verified;
 declare const purchase: MicrotransactionPlayerPurchase;
 declare const order: MicrotransactionOrder;
 declare const lot: MicrotransactionGrantUsage;

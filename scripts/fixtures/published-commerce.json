@@ -1,0 +1,25 @@
+{
+  "verified_on": "2026-09-16",
+  "packages": [
+    {
+      "version": "3.15.0",
+      "integrity": "sha512-hcxfEJy4bAGN/uYvCyaOFzCpoNt9uHBTYvCnuYdqVYqQKAzIZu7/Aj+Iy+SESzQm4AzSzNP9W5sftVM/HQXfPg==",
+      "legacy_community_query": true
+    },
+    {
+      "version": "4.0.0",
+      "integrity": "sha512-hSxRBxZNzyRQc33XD5QSyvwCvwJYLzwxAvs8GRC/R0xSrurNJz99ZLGVSP4CYZoTm3++R5CFm+XEmgd1j4MW8A==",
+      "legacy_community_query": false
+    }
+  ],
+  "game_origin": "https://game.example.test",
+  "catalog_query": { "country": "US", "currency": "USD", "environment": "sandbox", "channel": "web" },
+  "checkout_body": {
+    "product_id": "product-1", "quantity": 1, "country": "US", "currency": "USD",
+    "environment": "sandbox", "channel": "web", "return_origin": "https://game.example.test",
+    "nonce": "0123456789abcdef0123456789abcdef"
+  },
+  "restore_body": {
+    "return_origin": "https://game.example.test", "nonce": "0123456789abcdef0123456789abcdef", "environment": "sandbox"
+  }
+}

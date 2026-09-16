@@ -2,15 +2,83 @@
 
 **Player checkout/history minimum: SDK `3.15.0`, which is published.** The new
 administrative direct-management API below is a **major SDK `4.0.0` migration**.
-Verify usable published versions independently before installing; a reviewed
-local4.0 candidate is not proof of publication. Server-side MCP catalog/provider
+Registry verification on September 16, 2026 confirmed SDK `3.15.0`, SDK `4.0.0`
+and MCP `0.5.0` published. SDK4 is not required just for the guest player flow.
+The additive readiness and tutorial corrections below are unreleased. Validation
+is local; no hosted backend deployment was performed for this update.
+Server-side MCP catalog/provider
 setup does not require installing or publishing the game SDK, so do not block
 authorized server configuration while runtime package work is pending.
 
 The SDK entry point is `Glitch.api.Microtransactions`. All HTTP methods return an
 Axios response whose `response.data.data` contains the typed commerce result.
 Configure the ordinary API base once using the existing Glitch configuration.
-Never put a developer/MCP/install token into a shipped browser game.
+Never put administrative/developer credentials, MCP tokens or provider secrets
+into a shipped browser game. Existing supported **install-purpose runtime tokens**
+are a separate capability: use them only for their documented install, validation,
+heartbeat and telemetry endpoints. They do not authenticate commerce or prove paid
+ownership, and must not be injected into the guest commerce context.
+
+## Guest authentication and supported test origins
+
+A fresh SDK context has no default auth token. Setting only the API base URL does
+not log in, read credentials from storage, or add a Bearer token. However,
+`Config.setAuthToken` and `Requests.setAuthToken` configure shared global auth:
+`Requests.processRoute` automatically includes that Authorization header, including
+on `catalog`, `createCheckoutSession` and `createRestoreSession`. A per-request
+`{playerToken}` overrides it; `{checkoutToken}` adds only `X-Checkout-Token` and
+does NOT suppress global auth. The published 3.15.0 also appends a selected global
+`community_id` query on these routes (not a body field); 4.0.0 excludes community
+context for commerce. Neither commerce implementation mutates global auth/context.
+
+Keep guest commerce in its own credential-free SDK context. Do not initialize it
+with an admin JWT, MCP credential or shared Axios Authorization default/interceptor.
+This does not require removing an unrelated allowed install-purpose token from
+the game's existing install/validation/heartbeat flow or changing global SDK auth.
+Preserve that supported integration; do not reuse its token as commerce auth or
+temporarily clear/replace another context's global auth to make a guest request.
+Keep the owning account JWT inside Glitch's hosted account page, and use
+the verified short-lived player token only in per-request player options. Adding
+an admin JWT to a guest request is not a fix for a hosted sandbox 401.
+
+The local backend guest-entry change applies only to `catalog`, `checkout-sessions`
+and `restore-sessions`: use the exact configured browser **gameOrigin**, and for
+session creation set `return_origin` equal to it. Hosted testing requires approved
+**HTTPS** game/API/checkout endpoints. Sandbox catalog/checkout require enabled
+sandbox title settings; sandbox is a payment environment, not a relaxed Origin
+policy. Historical restore entry may remain available with commerce off, but
+the hosted owning-account bind still controls access. Quote/pay/inventory/finance
+do not become anonymous. This contract must be verified on the target backend;
+an SDK transport test alone does not establish that the server fix is deployed.
+
+HTTP loopback is only for an explicitly configured **local/testing backend** and
+its approved local game/checkout origins. `allowLocalDevelopment:true` relaxes a
+client helper check only; it cannot authorize localhost against hosted services.
+Published helpers also recognize some development hostnames; that does not make
+those hostnames supported by a hosted backend. Browsers supply `Origin`; never
+spoof it in game code. Use `window.location.origin`, not the full page URL.
+
+An origin is scheme + host + port. Paths are NOT an origin boundary: games at
+`https://shared.example/games/a` and `/games/b` have the same origin. Shared S3 or
+CDN hostnames with per-game paths cannot isolate tenants via an origin allowlist.
+Use an independently approved per-game hostname/origin; do not expand an allowlist
+or silently substitute a path to make testing pass.
+
+## Configuration readiness versus verified integration
+
+`ready` and optional `configuration_ready` describe configuration only. Optional
+`readiness.integration_verified` means stored sandbox **paid + fulfilled + claimed**
+evidence. Older responses may omit the new field: absence means unknown, not true
+and not false. `settings.integration_verified` already exists separately. Neither
+a configuration save, a ready flag, nor an iframe-ready event proves a new payment,
+current inventory delivery or successful claim. Integration evidence is not browser
+3DS certification; record challenge success/cancel/failure separately. Do not call
+`verifyIntegration` or perform a test purchase without authorization.
+
+MCP tool discovery is not credential scope. A visible tool can still return 403
+for a missing title ability; that is separate from a guest-entry 401. Preserve the
+status/code and check the effective connection's credential abilities. Do not change
+global connector credentials or broaden permissions as a runtime workaround.
 
 ## Developer setup
 
@@ -43,6 +111,45 @@ Never put a developer/MCP/install token into a shipped browser game.
    provider/account/tax capability and global sales emergency controls still apply.
 
 ## SDK4.0 administrative migration
+
+### Unreleased additive follow-up
+
+This follow-up adds optional `configuration_ready` and `integration_verified`
+readiness fields; it does not change routes, auth precedence or required player
+request fields. Existing typed DTO literals and older servers remain valid.
+Callers must handle an absent integration flag as unknown. The copyable starter
+now additionally requires `gameOrigin` and `timberGrantKey` (example function
+parameters, not new SDK/API parameters). These additions are not part of the
+published baseline; local tests do not establish hosted backend deployment.
+
+Published SDK3.15.0 CJS and its explicit CommonJS/bundler-interoperable ESM path
+support the guest/account payloads. Its raw native ESM entry contains a legacy
+`require('crypto-js')` during initialization, so it is not a standalone browser
+script-module guarantee. SDK4 CJS and native ESM pass the runtime tests. This
+packaging distinction is separate from backend 401 and does not require an
+already-working SDK3.15 game to upgrade just for player checkout.
+
+Local verification (no backend/provider calls):
+
+```sh
+npm test
+npx tsc --noEmit
+npm run build
+npm run build-docs
+npm run test:package
+npm run test:commerce-compat -- --published
+```
+
+The last command fetches only public npm registry tarballs into memory, verifies
+the pinned SHA-512 values in `scripts/fixtures/published-commerce.json`, and runs
+their unmodified CJS/ESM bundles with an in-memory browser HTTP transport. It also
+records the SDK3.15 raw-ESM caveat separately rather than hiding it with a shim.
+It asserts exact guest bodies/query, no default auth, legacy community injection,
+hosted account-bind and scoped credentials, and old/new readiness response
+pass-through. It does not prove deployed backend authorization, catalog availability,
+payment, fulfillment, claim execution or browser 3DS. Ordinary package tests run
+the local-build part offline. The normal build/build-docs pipeline generates
+artifacts; never hand-edit `dist` or generated API docs.
 
 Player checkout, restore, inventory and self-history routes remain compatible with
 SDK3.15. The administrative changes are deliberately major:
@@ -131,14 +238,25 @@ Server capability schemas remain authoritative.
 Required product fields are **SKU\***, **Name\***, **Type\***, **Prices\*** and
 **Grants\***; each price needs currency, country and integer minor-unit amount,
 and each grant needs key, quantity and kind. A pass also needs duration in seconds.
-For a pack of **100 Timber** spent building things, choose product type `currency`
-(or `consumable`) and grant `{key:'timber',quantity:100,kind:'consumable'}`. A durable
-grant means lasting ownership and cannot be spent; it is wrong for building Timber.
+For a pack of **100 Timber** spent building things, use that title's actual
+consumable grant key. Keys are title-scoped, not globally reserved: another game
+may already use `timber` as consumable and should pass that exact key. The starter
+requires an explicit key using the existing 1–100 character grammar above;
+namespacing is optional. Validate its canonical grant kind from the title's catalog
+and server-verified inventory, never from the display name. Preserve the per-title
+key/kind invariant and all old grants/orders; never convert durable ownership.
+
+**WOTW-specific migration proposal:** WOTW (title ID prefix `ad467`, abbreviated)
+already has durable `timber`. That title needs a coordinated new consumable key
+and game-resource mapping; a new SKU alone cannot retype its existing key.
+`wotw.resource.timber` is one possible new key, not an existing catalog fact or a
+global naming rule. This proposal does not create/publish products or prices or
+authorize a catalog mutation. It does not restrict other titles' consumable keys.
 
 ## Hosted checkout and account creation
 
 `createCheckoutSession(titleId, {product_id,quantity,country,currency,environment,
-channel:'web',return_origin,nonce})` is anonymous-safe and only opens the purchase
+channel:'web',return_origin,nonce})` supports guest entry and only opens the purchase
 flow. Use `createMicrotransactionNonce()` to generate the nonce and retain it in
 the game. `hosted_url` points to Glitch's game-branded checkout with the session
 secret in a `#token` fragment, never a query parameter.
@@ -204,9 +322,10 @@ event. Closing checkout without a successful claim does not call this a purchase
 ### Minimal working Timber shop
 
 Copy this JavaScript module into your game's browser bundle. Call
-`installTimberShop` with the title/product IDs and API/checkout origins shown by
-your game integration settings. For local testing use your approved local origins
-and `allowLocalDevelopment:true`; for production use approved HTTPS endpoints.
+`installTimberShop` with the title/product IDs, exact approved `gameOrigin`,
+API/checkout origins and actual consumable `timberGrantKey` from that title's catalog.
+Use approved HTTPS origins for hosted sandbox testing. HTTP loopback with
+`allowLocalDevelopment:true` additionally requires a local/testing backend.
 The example creates its own small UI, so no undefined HTML elements or game helper
 functions are required. It never takes the player away from the game.
 
@@ -217,8 +336,16 @@ import Glitch, {
   openMicrotransactionRestoreOverlay,
 } from 'glitch-javascript-sdk';
 
-export function installTimberShop({ titleId, productId, apiBaseUrl, checkoutOrigin,
+export function installTimberShop({ titleId, productId, apiBaseUrl, checkoutOrigin, gameOrigin, timberGrantKey,
   environment = 'sandbox', allowLocalDevelopment = false }) {
+  if (new URL(gameOrigin).origin !== gameOrigin || window.location.origin !== gameOrigin) {
+    throw new Error('Open the game on its exact approved gameOrigin; a path is not an origin.');
+  }
+  if (typeof timberGrantKey !== 'string' || timberGrantKey.length < 1 || timberGrantKey.length > 100
+      || /[^A-Za-z0-9_.-]/.test(timberGrantKey)) {
+    throw new Error('Supply an explicit grant key: 1–100 letters, numbers, underscores, dots or hyphens.');
+  }
+  // This game bundle must not configure global account/admin/MCP auth.
   Glitch.util.Requests.setBaseUrl(apiBaseUrl); // Set API location, NOT global auth.
   const api = Glitch.api.Microtransactions;
   const game = { playerId: null, inventory: [], paused: false };
@@ -232,15 +359,17 @@ export function installTimberShop({ titleId, productId, apiBaseUrl, checkoutOrig
   const say = text => { status.textContent = text; };
 
   function replaceInventoryInYourGame(entitlements) {
+    const resource = entitlements.find(x => x.key === timberGrantKey);
+    if (resource && resource.kind !== 'consumable') throw new Error('Timber grant kind mismatch.');
     game.inventory = entitlements; // REPLACE the snapshot. Never add 100 here.
-    timber.textContent = 'Timber: ' + (entitlements.find(x => x.key === 'timber')?.balance ?? 0);
+    timber.textContent = 'Timber: ' + (resource?.balance ?? 0);
   }
   function setGamePaused(paused) { game.paused = paused; }
   function onVerified(result) {
+    replaceInventoryInYourGame(result.entitlements); // Validate canonical kind before accepting this account.
     game.playerId = result.player_id; // Associate the game's profile with this player.
     playerToken = result.player_token; // Memory only; never a URL or global auth token.
     tokenExpiresAt = Date.parse(result.expires_at);
-    replaceInventoryInYourGame(result.entitlements); // Already verified by Glitch.
     say('Account connected. Your current inventory is ready.');
   }
   function playerOptions() {
@@ -261,7 +390,7 @@ export function installTimberShop({ titleId, productId, apiBaseUrl, checkoutOrig
     if (opening || overlay) return;
     opening = true;
     try {
-      const context = { return_origin: window.location.origin,
+      const context = { return_origin: gameOrigin,
         nonce: createMicrotransactionNonce(), environment };
       const response = restore
         ? await api.createRestoreSession(titleId, context)
@@ -291,12 +420,14 @@ export function installTimberShop({ titleId, productId, apiBaseUrl, checkoutOrig
   async function useTenTimber() {
     if (spending || game.paused) return;
     const options = playerOptions();
+    const resource = game.inventory.find(x => x.key === timberGrantKey);
+    if (!resource || resource.kind !== 'consumable') throw new Error('A verified consumable grant is required.');
     if (pendingUse && pendingUse.playerId !== game.playerId) {
       throw new Error('Restore the original account before retrying its pending action.');
     }
     // Create ONCE for this gameplay intent. A failed retry keeps this same object.
     pendingUse ??= { playerId: game.playerId, action_id: createMicrotransactionNonce(),
-      key: 'timber', quantity: 10 };
+      key: timberGrantKey, quantity: 10 };
     spending = true;
     try {
       await api.consume(titleId, { key: pendingUse.key, quantity: pendingUse.quantity,
@@ -323,11 +454,15 @@ export function installTimberShop({ titleId, productId, apiBaseUrl, checkoutOrig
 ```
 
 Call `installTimberShop({titleId: YOUR_TITLE_ID, productId: YOUR_TIMBER_PRODUCT_ID,
-apiBaseUrl: YOUR_API_BASE, checkoutOrigin: YOUR_CHECKOUT_ORIGIN})` from your existing
-game initialization. These four capitalized names describe your configuration;
+apiBaseUrl: YOUR_API_BASE, checkoutOrigin: YOUR_CHECKOUT_ORIGIN,
+gameOrigin: YOUR_APPROVED_GAME_ORIGIN, timberGrantKey: YOUR_CONSUMABLE_GRANT_KEY})`
+from your existing game initialization. These names describe your configuration;
 replace them with the actual values, not credentials. `environment` is optional
 and defaults to sandbox. The example assumes an eligible US/USD price; choose a
 server-supported country/currency for your real player instead of guessing from IP.
+Pass `timberGrantKey:'timber'` when that title's canonical `timber` is consumable.
+The starter checks the returned entitlement kind before accepting an account or
+spending; backend validation remains authoritative. It never changes a grant kind.
 
 **`replaceInventoryInYourGame` and `setGamePaused` are example game functions, not
 SDK APIs.** Their working demo bodies update the displayed Timber and `game`
