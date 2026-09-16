@@ -4,7 +4,8 @@
 administrative direct-management API below is a **major SDK `4.0.0` migration**.
 Registry verification on September 16, 2026 confirmed SDK `3.15.0`, SDK `4.0.0`
 and MCP `0.5.0` published. SDK4 is not required just for the guest player flow.
-The additive readiness and tutorial corrections below are unreleased. Validation
+SDK `4.0.1` includes the additive readiness and tax-collection types, checkout
+overlay retry/layout fixes, and tutorial corrections below. Release validation
 is local; no hosted backend deployment was performed for this update.
 Server-side MCP catalog/provider
 setup does not require installing or publishing the game SDK, so do not block
@@ -112,15 +113,15 @@ global connector credentials or broaden permissions as a runtime workaround.
 
 ## SDK4.0 administrative migration
 
-### Unreleased additive follow-up
+### SDK 4.0.1 additive follow-up
 
 This follow-up adds optional `configuration_ready` and `integration_verified`
 readiness fields; it does not change routes, auth precedence or required player
 request fields. Existing typed DTO literals and older servers remain valid.
 Callers must handle an absent integration flag as unknown. The copyable starter
 now additionally requires `gameOrigin` and `timberGrantKey` (example function
-parameters, not new SDK/API parameters). These additions are not part of the
-published baseline; local tests do not establish hosted backend deployment.
+parameters, not new SDK/API parameters). These additions follow the SDK `4.0.0`
+baseline; local tests do not establish hosted backend deployment.
 
 Published SDK3.15.0 CJS and its explicit CommonJS/bundler-interoperable ESM path
 support the guest/account payloads. Its raw native ESM entry contains a legacy
@@ -279,6 +280,15 @@ that checkout rendered. The hosted page sends
 only after its valid-session account/checkout UI is usable. Exact origin/source/
 session/nonce checks protect this signal, and it never grants inventory. Retry
 resets timers; verified readiness and close clear them.
+
+Retry first commits `about:blank` inside the existing iframe, then restores the
+exact original hosted URL after that blank document loads. This avoids a
+fragment-only navigation after checkout removes `#token` from its visible URL.
+The iframe and its WindowProxy stay the same, so the existing exact
+origin/source/title/session/nonce bridge remains pinned. No query parameter,
+new checkout session or payment is created. Repeated Retry clicks during this
+navigation are coalesced; each phase has a bounded watchdog, and Close still
+cleans up while navigation or a verified claim is pending.
 
 The read-only `getCheckoutFramePolicy(titleId,sessionId)` returns only approved
 `frame_ancestors` and expiry; the hosted document uses that server-owned policy.

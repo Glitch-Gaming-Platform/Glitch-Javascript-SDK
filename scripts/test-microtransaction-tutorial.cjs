@@ -126,7 +126,7 @@ test('public guide scopes the WOTW proposal to its title and has no task-specifi
   assert.match(guide, /namespacing is optional/);
   assert.match(guide, /proposal does not create\/publish products or prices or\s+authorize a catalog mutation/);
   assert.doesNotMatch(guide, /parent review|parent-owned|let the parent|to the parent/i);
-  assert.match(guide, /Unreleased additive follow-up/);
+  assert.match(guide, /SDK 4\.0\.1 additive follow-up/);
   assert.match(guide, /no hosted backend deployment was performed/i);
 });
 

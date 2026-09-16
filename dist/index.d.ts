@@ -12320,6 +12320,17 @@ interface MicrotransactionProduct extends Omit<MicrotransactionProductInput, 'co
     created_at: string;
     updated_at: string;
 }
+/** Read-only collection facts, not tax exemption or a determination of tax owed. */
+interface MicrotransactionTaxCollection {
+    /** Configured intent stays automatic during a known pending-setup fallback. */
+    requested_mode: 'automatic' | 'disabled';
+    /** Pending setup may disable collection for a NEW order; unknown facts are null and block new automatic checkout. */
+    effective_mode: 'automatic' | 'disabled' | null;
+    status: string;
+    missing_fields: string[];
+    fallback_reason: 'stripe_tax_setup_incomplete' | null;
+    warnings: string[];
+}
 interface MicrotransactionProvider {
     provider: MicrotransactionProviderName;
     environment: MicrotransactionEnvironment;
@@ -12340,6 +12351,7 @@ interface MicrotransactionProvider {
         charges_enabled: boolean;
         payouts_enabled: boolean;
         requirements_due: string[];
+        merchant_name?: string | null;
     } | null;
     /** The game's payout target. Do not substitute the platform processing account's payouts_enabled. */
     payout_account: {
@@ -12356,6 +12368,10 @@ interface MicrotransactionProvider {
         status: string;
         missing_fields: string[];
     };
+    /** Current route facts only. Never use these to reinterpret an existing order's frozen decision. */
+    tax_collection?: MicrotransactionTaxCollection | null;
+    /** Non-blocking collection warnings, separate from reasons and payout_account availability. */
+    warnings?: string[];
     reasons: string[];
     checked_at: string | null;
     revision?: number;
@@ -12367,6 +12383,7 @@ interface MicrotransactionProviderSku {
     amount_minor: number;
 }
 interface MicrotransactionProviderConfiguration {
+    /** Requested configuration. Explicit disabled is sandbox-only; pending-setup fallback does not change live configuration to disabled. */
     tax_mode: 'automatic' | 'disabled';
     /** Stripe tax code txcd_ followed by exactly eight digits. */
     tax_code: string | null;
@@ -12573,6 +12590,8 @@ interface MicrotransactionOrder {
     paid_at: string | null;
     refunded_minor: number;
     items: MicrotransactionGrant[];
+    /** Frozen decision, also returned inside checkout/session.order. Null/absent for legacy orders; never infer from current provider facts. Warnings do not imply zero tax owed. */
+    tax_collection?: MicrotransactionTaxCollection | null;
     entitlements?: MicrotransactionEntitlement[];
 }
 interface MicrotransactionOrderDetail extends MicrotransactionOrder {
@@ -13580,4 +13599,4 @@ declare class Glitch {
     };
 }
 
-export { type FestivalApplicationInput, type FestivalApplicationState, type FestivalConversation, type FestivalMediaUpload, type FestivalNetworkingFilters, type FestivalNetworkingProfile, type FestivalNetworkingResponse, type FestivalNetworkingSettings, type FestivalPost, type FestivalPostInput, type FestivalPostKind, type FestivalPostState, type FestivalPreferences, type FestivalReportInput, type FestivalRequestOptions, type FestivalWorkType, type MicrotransactionAbility, type MicrotransactionBranding, type MicrotransactionBridge, type MicrotransactionBridgeOptions, type MicrotransactionCapabilities, type MicrotransactionCatalog, type MicrotransactionCatalogFilter, type MicrotransactionCheckoutInput, type MicrotransactionCheckoutResult, type MicrotransactionCheckoutSession, type MicrotransactionCheckoutSessionInput, type MicrotransactionConsumeInput, type MicrotransactionCreatedCheckoutSession, type MicrotransactionCurrency, type MicrotransactionDelivery, type MicrotransactionDeliveryListFilters, type MicrotransactionDeliveryResult, type MicrotransactionDeliverySettings, type MicrotransactionDeliverySettingsInput, type MicrotransactionDeliveryStatus, type MicrotransactionEarnings, type MicrotransactionEntitlement, type MicrotransactionEnvironment, type MicrotransactionEnvironmentFilter, type MicrotransactionError, type MicrotransactionErrorCode, type MicrotransactionFramePolicy, type MicrotransactionFulfillmentStatus, type MicrotransactionGrant, type MicrotransactionGrantUsage, type MicrotransactionGrantUsageStatus, type MicrotransactionHandoff, type MicrotransactionHandoffClaim, type MicrotransactionHandoffClaimInput, type MicrotransactionLegacyConfirmation, type MicrotransactionManagementListFilters, type MicrotransactionMedia, type MicrotransactionMyPurchases, type MicrotransactionMyPurchasesFilters, type MicrotransactionOperation, type MicrotransactionOperationCapability, type MicrotransactionOrder, type MicrotransactionOrderDetail, type MicrotransactionOrderListFilters, type MicrotransactionOverlay, type MicrotransactionOverlayOptions, type MicrotransactionPaymentStatus, type MicrotransactionPayout, type MicrotransactionPayoutListFilters, type MicrotransactionPayoutStatus, type MicrotransactionPlayerPurchase, type MicrotransactionPrice, type MicrotransactionProduct, type MicrotransactionProductInput, type MicrotransactionProductListFilters, type MicrotransactionProductStatus, type MicrotransactionProductType, type MicrotransactionProvider, type MicrotransactionProviderConfiguration, type MicrotransactionProviderInput, type MicrotransactionProviderName, type MicrotransactionProviderOnboarding, type MicrotransactionProviderOnboardingInput, type MicrotransactionProviderSku, type MicrotransactionPurchaseInput, type MicrotransactionPurchaseMessage, type MicrotransactionPurchasePagination, type MicrotransactionQuote, type MicrotransactionReadiness, type MicrotransactionReadyMessage, type MicrotransactionRefund, type MicrotransactionRefundInput, type MicrotransactionRefundListFilters, type MicrotransactionRefundRecord, type MicrotransactionRefundRequest, type MicrotransactionRefundStatus, type MicrotransactionRelatedListFilters, type MicrotransactionRequestOptions, type MicrotransactionResponse, type MicrotransactionRestoreBridgeOptions, type MicrotransactionSessionOptions, type MicrotransactionSettings, type MicrotransactionSettingsInput, type MicrotransactionVerifiedSession, createMicrotransactionBridge, createMicrotransactionNonce, createMicrotransactionRestoreBridge, Glitch as default, openMicrotransactionOverlay, openMicrotransactionRestoreOverlay };
+export { type FestivalApplicationInput, type FestivalApplicationState, type FestivalConversation, type FestivalMediaUpload, type FestivalNetworkingFilters, type FestivalNetworkingProfile, type FestivalNetworkingResponse, type FestivalNetworkingSettings, type FestivalPost, type FestivalPostInput, type FestivalPostKind, type FestivalPostState, type FestivalPreferences, type FestivalReportInput, type FestivalRequestOptions, type FestivalWorkType, type MicrotransactionAbility, type MicrotransactionBranding, type MicrotransactionBridge, type MicrotransactionBridgeOptions, type MicrotransactionCapabilities, type MicrotransactionCatalog, type MicrotransactionCatalogFilter, type MicrotransactionCheckoutInput, type MicrotransactionCheckoutResult, type MicrotransactionCheckoutSession, type MicrotransactionCheckoutSessionInput, type MicrotransactionConsumeInput, type MicrotransactionCreatedCheckoutSession, type MicrotransactionCurrency, type MicrotransactionDelivery, type MicrotransactionDeliveryListFilters, type MicrotransactionDeliveryResult, type MicrotransactionDeliverySettings, type MicrotransactionDeliverySettingsInput, type MicrotransactionDeliveryStatus, type MicrotransactionEarnings, type MicrotransactionEntitlement, type MicrotransactionEnvironment, type MicrotransactionEnvironmentFilter, type MicrotransactionError, type MicrotransactionErrorCode, type MicrotransactionFramePolicy, type MicrotransactionFulfillmentStatus, type MicrotransactionGrant, type MicrotransactionGrantUsage, type MicrotransactionGrantUsageStatus, type MicrotransactionHandoff, type MicrotransactionHandoffClaim, type MicrotransactionHandoffClaimInput, type MicrotransactionLegacyConfirmation, type MicrotransactionManagementListFilters, type MicrotransactionMedia, type MicrotransactionMyPurchases, type MicrotransactionMyPurchasesFilters, type MicrotransactionOperation, type MicrotransactionOperationCapability, type MicrotransactionOrder, type MicrotransactionOrderDetail, type MicrotransactionOrderListFilters, type MicrotransactionOverlay, type MicrotransactionOverlayOptions, type MicrotransactionPaymentStatus, type MicrotransactionPayout, type MicrotransactionPayoutListFilters, type MicrotransactionPayoutStatus, type MicrotransactionPlayerPurchase, type MicrotransactionPrice, type MicrotransactionProduct, type MicrotransactionProductInput, type MicrotransactionProductListFilters, type MicrotransactionProductStatus, type MicrotransactionProductType, type MicrotransactionProvider, type MicrotransactionProviderConfiguration, type MicrotransactionProviderInput, type MicrotransactionProviderName, type MicrotransactionProviderOnboarding, type MicrotransactionProviderOnboardingInput, type MicrotransactionProviderSku, type MicrotransactionPurchaseInput, type MicrotransactionPurchaseMessage, type MicrotransactionPurchasePagination, type MicrotransactionQuote, type MicrotransactionReadiness, type MicrotransactionReadyMessage, type MicrotransactionRefund, type MicrotransactionRefundInput, type MicrotransactionRefundListFilters, type MicrotransactionRefundRecord, type MicrotransactionRefundRequest, type MicrotransactionRefundStatus, type MicrotransactionRelatedListFilters, type MicrotransactionRequestOptions, type MicrotransactionResponse, type MicrotransactionRestoreBridgeOptions, type MicrotransactionSessionOptions, type MicrotransactionSettings, type MicrotransactionSettingsInput, type MicrotransactionTaxCollection, type MicrotransactionVerifiedSession, createMicrotransactionBridge, createMicrotransactionNonce, createMicrotransactionRestoreBridge, Glitch as default, openMicrotransactionOverlay, openMicrotransactionRestoreOverlay };

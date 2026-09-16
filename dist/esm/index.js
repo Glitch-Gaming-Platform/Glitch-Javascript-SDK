@@ -22073,6 +22073,8 @@ function openMicrotransactionOverlay(options) {
     if (activeOverlays.has(doc))
         throw new Error('A checkout is already open. Resume or close that same purchase first.');
     const session = options.session;
+    // Older purchase-session creation responses need not include an intent.
+    const restoring = session.intent === 'restore';
     const parsed = new URL(session.hosted_url);
     const path = `/games/${encodeURIComponent(options.titleId)}/checkout/${encodeURIComponent(session.id)}`;
     if (parsed.origin !== options.checkoutOrigin || parsed.pathname !== path || parsed.search || parsed.username || parsed.password ||
@@ -22091,41 +22093,55 @@ function openMicrotransactionOverlay(options) {
     dialog.setAttribute('aria-modal', 'true');
     dialog.setAttribute('aria-labelledby', `${id}-title`);
     dialog.setAttribute('role', 'dialog');
-    dialog.style.cssText = 'position:fixed;inset:16px;margin:auto;padding:0;border:1px solid #cbd5e1;border-radius:16px;width:min(1100px,calc(100vw - 32px));height:min(850px,calc(100dvh - 32px));max-width:none;max-height:none;background:#fff;color:#172033;box-shadow:0 24px 90px #0008;z-index:2147483647;overflow:hidden;';
+    dialog.style.cssText = 'position:fixed;inset:0;margin:auto;padding:0;border:1px solid #cbd5e1;border-radius:16px;box-sizing:border-box;display:flex;flex-direction:column;width:min(1100px,calc(100vw - 32px));height:min(850px,calc(100vh - 32px));min-width:0;min-height:0;max-width:none;max-height:none;background:#fff;color:#172033;box-shadow:0 24px 90px #0008;z-index:2147483647;overflow:hidden;';
     const style = doc.createElement('style');
-    style.textContent = `#${id}::backdrop{background:rgba(8,16,32,.72)}#${id} button:focus-visible{outline:3px solid #4263eb;outline-offset:3px}@media(max-width:600px){#${id}{inset:0!important;width:100vw!important;height:100dvh!important;border-radius:0!important}}`;
+    style.textContent = `
+    #${id}::backdrop{background:rgba(8,16,32,.72)}
+    #${id} button:focus-visible{outline:3px solid #4263eb;outline-offset:3px}
+    @supports(height:100dvh){#${id}{height:min(850px,calc(100dvh - 32px))!important}}
+    @media(max-width:600px),(max-height:500px){
+      #${id}{width:100%!important;height:100vh!important;border:0!important;border-radius:0!important;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)!important}
+      @supports(height:100dvh){#${id}{height:100dvh!important}}
+    }`;
+    // Natural-height chrome can wrap/scroll without consuming the entire frame.
+    // No fixed header/status subtraction; the iframe owns all remaining space.
+    const chrome = doc.createElement('div');
+    chrome.style.cssText = 'flex:0 1 auto;min-width:0;min-height:0;max-height:50%;overflow:auto;overscroll-behavior:contain;';
     const header = doc.createElement('div');
-    header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;border-bottom:1px solid #e2e8f0;height:56px;box-sizing:border-box;';
+    header.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding:12px 16px;border-bottom:1px solid #e2e8f0;box-sizing:border-box;min-width:0;';
     const heading = doc.createElement('h2');
     heading.id = `${id}-title`;
-    heading.textContent = options.label || (session.intent === 'restore' ? 'Restore game purchases' : 'Secure game checkout');
-    heading.style.cssText = 'margin:0;font:600 17px/1.3 system-ui,sans-serif;color:#172033;';
+    heading.textContent = options.label || (restoring ? 'Restore game purchases' : 'Secure game checkout');
+    heading.style.cssText = 'flex:1 1 10rem;min-width:0;margin:0;font:600 17px/1.3 system-ui,sans-serif;color:#172033;white-space:normal;overflow-wrap:anywhere;';
     const closeButton = doc.createElement('button');
     closeButton.type = 'button';
     closeButton.textContent = 'Close';
-    closeButton.setAttribute('aria-label', 'Close checkout and return to game');
-    closeButton.style.cssText = 'border:1px solid #cbd5e1;border-radius:8px;padding:7px 14px;background:#fff;color:#172033;font:600 14px system-ui,sans-serif;cursor:pointer;';
+    closeButton.setAttribute('aria-label', restoring ? 'Close restore and return to game' : 'Close checkout and return to game');
+    closeButton.style.cssText = 'box-sizing:border-box;flex:1 1 auto;min-width:44px;min-height:44px;max-width:100%;height:auto;margin:0;border:1px solid #cbd5e1;border-radius:8px;padding:10px 14px;background:#fff;color:#172033;font:600 14px/1.4 system-ui,sans-serif;white-space:normal;overflow-wrap:anywhere;cursor:pointer;';
     const retryButton = doc.createElement('button');
     retryButton.type = 'button';
     retryButton.textContent = 'Retry';
-    retryButton.setAttribute('aria-label', 'Reload this same checkout without starting another purchase');
+    retryButton.setAttribute('aria-label', restoring ? 'Reload this same restore session' : 'Reload this same checkout without starting another purchase');
     retryButton.style.cssText = closeButton.style.cssText;
+    closeButton.style.background = '#172033';
+    closeButton.style.color = '#fff';
     const controls = doc.createElement('div');
-    controls.style.cssText = 'display:flex;gap:8px;';
+    controls.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;min-width:0;max-width:100%;margin-left:auto;';
     controls.append(retryButton, closeButton);
     header.append(heading, controls);
     const status = doc.createElement('div');
     status.setAttribute('role', 'status');
-    status.style.cssText = 'padding:6px 16px;font:12px/1.4 system-ui,sans-serif;background:#f1f5f9;color:#172033;min-height:28px;box-sizing:border-box;';
-    status.textContent = 'Your game stays open. Loading secure checkout…';
+    status.style.cssText = 'padding:6px 16px;font:12px/1.4 system-ui,sans-serif;background:#f1f5f9;color:#172033;box-sizing:border-box;white-space:normal;overflow-wrap:anywhere;';
+    status.textContent = restoring ? 'Your game stays open. Loading secure restore…' : 'Your game stays open. Loading secure checkout…';
     const iframe = doc.createElement('iframe');
     iframe.title = heading.textContent;
     iframe.setAttribute('allow', 'payment');
     iframe.setAttribute('sandbox', 'allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox');
     iframe.referrerPolicy = 'no-referrer';
-    iframe.style.cssText = 'display:block;width:100%;height:calc(100% - 84px);border:0;background:#fff;';
+    iframe.style.cssText = 'display:block;flex:1 1 0%;min-width:0;min-height:0;width:100%;height:100%;margin:0;padding:0;border:0;background:#fff;';
     iframe.src = session.hosted_url;
-    dialog.append(style, header, status, iframe);
+    chrome.append(header, status);
+    dialog.append(style, chrome, iframe);
     doc.body.append(dialog);
     const frameWindow = iframe.contentWindow;
     if (!frameWindow) {
@@ -22139,6 +22155,19 @@ function openMicrotransactionOverlay(options) {
     let frameLoadTimer;
     let appReadyTimer;
     let applicationReady = false;
+    let retryPhase = 'idle';
+    let retryReady = false;
+    const isBlankDocument = () => {
+        var _a;
+        // about:blank inherits our origin. A src attribute alone says nothing about
+        // which document emitted load; an old checkout load can still be queued.
+        try {
+            return ((_a = iframe.contentDocument) === null || _a === void 0 ? void 0 : _a.URL) === 'about:blank' && iframe.contentDocument.readyState === 'complete';
+        }
+        catch (_b) {
+            return false;
+        }
+    };
     const blocked = [];
     const report = (error) => { var _a; try {
         (_a = options.onError) === null || _a === void 0 ? void 0 : _a.call(options, error);
@@ -22156,21 +22185,32 @@ function openMicrotransactionOverlay(options) {
         if (closed)
             return;
         clearWatchdogs();
+        if (retryPhase !== 'idle') {
+            retryPhase = 'failed';
+            retryReady = false;
+        }
         status.setAttribute('role', 'alert');
+        const flow = restoring ? 'Restore' : 'Checkout';
         status.textContent = reason === 'ready'
-            ? 'Checkout did not become ready. Retry this same checkout or Close; your game remains open.'
-            : 'Checkout could not load here. Retry this same checkout or Close; your game remains open.';
-        report(new Error(reason === 'ready'
-            ? 'Embedded checkout readiness timed out; no navigation or new payment was attempted.'
-            : 'Embedded checkout loading unavailable; no navigation or new payment was attempted.'));
+            ? `${flow} did not become ready. Retry this same session or Close; your game remains open.`
+            : `${flow} could not load here. Retry this same session or Close; your game remains open.`;
+        report(new Error(restoring
+            ? `Embedded restore ${reason === 'ready' ? 'readiness timed out' : 'loading unavailable'}; no navigation was attempted.`
+            : reason === 'ready'
+                ? 'Embedded checkout readiness timed out; no navigation or new payment was attempted.'
+                : 'Embedded checkout loading unavailable; no navigation or new payment was attempted.'));
     };
     const markApplicationReady = () => {
         if (closed)
             return;
+        // A verified claim from the previous document may finish while Retry is
+        // navigating. Keep that claim, but it cannot certify the new document UI.
+        if (retryPhase !== 'idle')
+            return;
         applicationReady = true;
         clearWatchdogs();
         status.setAttribute('role', 'status');
-        status.textContent = 'Checkout is ready. Your game remains open underneath.';
+        status.textContent = restoring ? 'Restore is ready. Your game remains open underneath.' : 'Checkout is ready. Your game remains open underneath.';
     };
     const armLoadWatchdog = () => {
         clearWatchdogs();
@@ -22224,7 +22264,8 @@ function openMicrotransactionOverlay(options) {
             event.preventDefault();
             void overlay.close();
         }
-        if (event.key === 'Tab' && !closed) {
+        // Keep the trap while close waits for an in-flight claim/inventory callback.
+        if (event.key === 'Tab' && dialog.isConnected) {
             if (event.shiftKey && doc.activeElement === retryButton) {
                 event.preventDefault();
                 iframe.focus();
@@ -22236,6 +22277,8 @@ function openMicrotransactionOverlay(options) {
         }
     };
     const onCancel = (event) => { event.preventDefault(); void overlay.close(); };
+    // Keyboard events inside the cross-origin document do not reach onKey.
+    // The hosted UI forwards Escape via this existing, strictly bound close message.
     const onCloseMessage = (event) => {
         if (closed || event.origin !== options.checkoutOrigin || event.source !== frameWindow || !event.data || typeof event.data !== 'object')
             return;
@@ -22244,24 +22287,53 @@ function openMicrotransactionOverlay(options) {
             message.checkout_session_id !== session.id || message.nonce !== session.nonce)
             return;
         if (message.type === 'glitch.microtransaction.ready') {
-            markApplicationReady();
+            if (retryPhase === 'checkout' && !isBlankDocument())
+                retryReady = true;
+            else if (retryPhase === 'idle')
+                markApplicationReady();
             return;
         }
         if (message.type !== 'glitch.microtransaction.close')
             return;
         void overlay.close(verified ? 'completed' : 'dismissed');
     };
-    const onFrameError = () => { unavailable('error'); };
+    const onFrameError = () => {
+        // Events from the document being left cannot fail the blank navigation.
+        // Its watchdog still bounds a missing/failed intermediate load.
+        if (retryPhase === 'blank' || (retryPhase === 'checkout' && isBlankDocument()))
+            return;
+        unavailable('error');
+    };
     const onFrameLoad = () => {
         if (closed)
             return;
+        if (retryPhase === 'failed')
+            return;
+        if (retryPhase === 'blank') {
+            if (!isBlankDocument())
+                return;
+            retryPhase = 'checkout';
+            armLoadWatchdog();
+            iframe.src = session.hosted_url;
+            return;
+        }
+        if (retryPhase === 'checkout') {
+            if (isBlankDocument())
+                return;
+            retryPhase = 'idle';
+            if (retryReady) {
+                retryReady = false;
+                markApplicationReady();
+                return;
+            }
+        }
         if (frameLoadTimer !== undefined)
             win.clearTimeout(frameLoadTimer);
         frameLoadTimer = undefined;
         if (applicationReady)
             return;
         status.setAttribute('role', 'status');
-        status.textContent = 'Checkout document loaded. Waiting for the secure checkout interface…';
+        status.textContent = restoring ? 'Restore document loaded. Waiting for the secure restore interface…' : 'Checkout document loaded. Waiting for the secure checkout interface…';
         // A document load is not proof the app rendered. Repeated loads cannot
         // indefinitely extend this bounded wait; only explicit Retry resets it.
         if (appReadyTimer === undefined)
@@ -22270,12 +22342,18 @@ function openMicrotransactionOverlay(options) {
     const overlay = {
         element: dialog, iframe, refresh,
         retry: () => {
-            if (closed)
+            if (closed || retryPhase === 'blank' || retryPhase === 'checkout')
                 return;
-            status.textContent = 'Retrying the same secure checkout. Your game stays open.';
+            status.textContent = restoring ? 'Retrying the same secure restore session. Your game stays open.' : 'Retrying the same secure checkout. Your game stays open.';
             status.setAttribute('role', 'status');
+            retryPhase = 'blank';
+            retryReady = false;
             armLoadWatchdog();
-            iframe.src = session.hosted_url;
+            // Bootstrap removes #token with replaceState. Reassigning the original
+            // URL then only changes the fragment; it does not reload checkout/API.
+            // Commit a harmless blank document first, then navigate this SAME iframe
+            // to the exact original capability URL. Its WindowProxy/bridge stay pinned.
+            iframe.src = 'about:blank';
         },
         close: (reason = 'dismissed') => {
             if (closing)
@@ -22284,7 +22362,10 @@ function openMicrotransactionOverlay(options) {
                 return Promise.resolve();
             closed = true;
             clearWatchdogs();
-            status.textContent = 'Finishing secure purchase verification. Your game stays open.';
+            retryPhase = 'failed';
+            retryReady = false;
+            status.setAttribute('role', 'status');
+            status.textContent = restoring ? 'Finishing secure restore verification. Your game stays open.' : 'Finishing secure purchase verification. Your game stays open.';
             closing = (() => __awaiter(this, void 0, void 0, function* () {
                 var _a;
                 try {

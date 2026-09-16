@@ -3,6 +3,46 @@ const { test } = require('node:test');
 const fs = require('node:fs');
 const ts = require('typescript');
 
+test('tax collection DTO additions typecheck without changing legacy provider or order literals', () => {
+  const path = require('node:path');
+  const filename = path.resolve(__dirname, '../src/commerce-tax-dto-typecheck.ts');
+  const source = `
+    import type { MicrotransactionProvider, MicrotransactionOrder, MicrotransactionTaxCollection } from './api/Microtransactions';
+    const legacyProvider: MicrotransactionProvider = {
+      provider: 'stripe', environment: 'sandbox', configured: true, available: true, enabled: true, priority: 50,
+      countries: ['US'], currencies: ['USD'], minimum_amounts: { USD: 50 }, channels: ['web'], payment_methods: ['card'],
+      configuration: { tax_mode: 'automatic', tax_code: null, payout_source: 'platform', project_id: null, sku_map: {} },
+      account: { id: 'acct_fixture', country: 'US', charges_enabled: true, payouts_enabled: false, requirements_due: [] },
+      payout_account: { source: 'platform', id: null, available: false, country: null, transfers_active: false, payouts_enabled: false, requirements_due: [], reasons: ['payout_account_not_connected'] },
+      tax: { status: 'pending', missing_fields: ['head_office'] }, reasons: [], checked_at: null,
+    };
+    const legacyOrder: MicrotransactionOrder = {
+      id: 'order', checkout_session_id: null, title_id: 'title', product_id: 'product', quantity: 1, environment: 'sandbox', currency: 'USD', country: 'US',
+      subtotal_minor: 500, tax_minor: 0, total_minor: 500, commission_minor: 60, provider_fee_minor: null, payment_status: 'action_required',
+      fulfillment_status: 'not_ready', provider: 'stripe', created_at: '', paid_at: null, refunded_minor: 0, items: [],
+    };
+    const fallback: MicrotransactionTaxCollection = { requested_mode: 'automatic', effective_mode: 'disabled', status: 'pending', missing_fields: ['head_office'], fallback_reason: 'stripe_tax_setup_incomplete', warnings: ['stripe_tax_setup_incomplete'] };
+    const active: MicrotransactionTaxCollection = { ...fallback, effective_mode: 'automatic', status: 'active', missing_fields: [], fallback_reason: null, warnings: [] };
+    const unknown: MicrotransactionTaxCollection = { ...active, effective_mode: null, status: 'unavailable' };
+    const providers: MicrotransactionProvider[] = [legacyProvider, { ...legacyProvider, tax_collection: fallback, warnings: fallback.warnings, account: { ...legacyProvider.account!, merchant_name: null } }, { ...legacyProvider, tax_collection: active }, { ...legacyProvider, tax_collection: unknown }, { ...legacyProvider, tax_collection: null }];
+    const orders: MicrotransactionOrder[] = [legacyOrder, { ...legacyOrder, tax_collection: fallback }, { ...legacyOrder, tax_collection: null }];
+    // @ts-expect-error A boolean is not an effective collection mode.
+    const invalidMode: MicrotransactionTaxCollection = { ...fallback, effective_mode: false };
+    // @ts-expect-error Warning codes are strings, not inferred tax amounts.
+    const invalidWarnings: MicrotransactionTaxCollection = { ...fallback, warnings: [0] };
+  `;
+  const options = { strict: true, noEmit: true, skipLibCheck: true, esModuleInterop: true, resolveJsonModule: true,
+    target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.CommonJS, moduleResolution: ts.ModuleResolutionKind.NodeJs };
+  const host = ts.createCompilerHost(options);
+  const getSourceFile = host.getSourceFile.bind(host);
+  host.getSourceFile = (file, ...args) => file === filename ? ts.createSourceFile(file, source, options.target, true) : getSourceFile(file, ...args);
+  const program = ts.createProgram([filename], options, host);
+  const diagnostics = ts.getPreEmitDiagnostics(program);
+  assert.equal(diagnostics.length, 0, ts.formatDiagnosticsWithColorAndContext(diagnostics, {
+    getCurrentDirectory: () => process.cwd(), getCanonicalFileName: file => file, getNewLine: () => '\n',
+  }));
+});
+
 // Execute actual source modules before the release build, not string-presence assertions.
 require.extensions['.ts'] = (module, filename) => {
   const result = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {

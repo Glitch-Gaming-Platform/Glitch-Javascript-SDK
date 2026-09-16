@@ -80,4 +80,4 @@ paid ownership. Do not inject them into guest commerce, remove the game's unrela
 allowed token, or change global SDK auth as a commerce workaround. SDK3.15.0
 supports the player flow; SDK4 management is separate. The guide documents exact
 hosted HTTPS versus local/testing origins, optional integration evidence, the
-published-version compatibility tests and the unpublished follow-up migration.
+published-version compatibility tests and the SDK 4.0.1 follow-up.

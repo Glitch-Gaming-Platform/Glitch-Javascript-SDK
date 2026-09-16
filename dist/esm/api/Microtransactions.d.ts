@@ -140,6 +140,17 @@ export interface MicrotransactionProduct extends Omit<MicrotransactionProductInp
     created_at: string;
     updated_at: string;
 }
+/** Read-only collection facts, not tax exemption or a determination of tax owed. */
+export interface MicrotransactionTaxCollection {
+    /** Configured intent stays automatic during a known pending-setup fallback. */
+    requested_mode: 'automatic' | 'disabled';
+    /** Pending setup may disable collection for a NEW order; unknown facts are null and block new automatic checkout. */
+    effective_mode: 'automatic' | 'disabled' | null;
+    status: string;
+    missing_fields: string[];
+    fallback_reason: 'stripe_tax_setup_incomplete' | null;
+    warnings: string[];
+}
 export interface MicrotransactionProvider {
     provider: MicrotransactionProviderName;
     environment: MicrotransactionEnvironment;
@@ -160,6 +171,7 @@ export interface MicrotransactionProvider {
         charges_enabled: boolean;
         payouts_enabled: boolean;
         requirements_due: string[];
+        merchant_name?: string | null;
     } | null;
     /** The game's payout target. Do not substitute the platform processing account's payouts_enabled. */
     payout_account: {
@@ -176,6 +188,10 @@ export interface MicrotransactionProvider {
         status: string;
         missing_fields: string[];
     };
+    /** Current route facts only. Never use these to reinterpret an existing order's frozen decision. */
+    tax_collection?: MicrotransactionTaxCollection | null;
+    /** Non-blocking collection warnings, separate from reasons and payout_account availability. */
+    warnings?: string[];
     reasons: string[];
     checked_at: string | null;
     revision?: number;
@@ -187,6 +203,7 @@ export interface MicrotransactionProviderSku {
     amount_minor: number;
 }
 export interface MicrotransactionProviderConfiguration {
+    /** Requested configuration. Explicit disabled is sandbox-only; pending-setup fallback does not change live configuration to disabled. */
     tax_mode: 'automatic' | 'disabled';
     /** Stripe tax code txcd_ followed by exactly eight digits. */
     tax_code: string | null;
@@ -393,6 +410,8 @@ export interface MicrotransactionOrder {
     paid_at: string | null;
     refunded_minor: number;
     items: MicrotransactionGrant[];
+    /** Frozen decision, also returned inside checkout/session.order. Null/absent for legacy orders; never infer from current provider facts. Warnings do not imply zero tax owed. */
+    tax_collection?: MicrotransactionTaxCollection | null;
     entitlements?: MicrotransactionEntitlement[];
 }
 export interface MicrotransactionOrderDetail extends MicrotransactionOrder {
