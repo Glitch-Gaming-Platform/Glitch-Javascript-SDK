@@ -1,6 +1,94 @@
 # Game microtransactions
 
-**Player checkout/history minimum: SDK `3.15.0`, which is published.** The new
+## Start with direct REST (recommended for AI/LLM setup)
+
+Prefer native fetch/HTTP for a new game integration. **No npm install, SDK import
+or SDK version is a prerequisite.** MCP configures the server directly and the
+runtime REST contract below works without a JavaScript library. The SDK remains
+an optional convenience; preserve existing working SDK-based frontend code.
+
+The complete dependency-free modal/verified-callback starter is published in the
+MCP `glitch://microtransactions/setup` resource and the
+`glitch_setup_microtransactions` prompt, also used by the game's AI setup export.
+Use the starter rather than granting inventory in an unchecked message listener.
+The following browser fetch example demonstrates guest transport only:
+
+```js
+// apiBaseUrl ends in /api; titleId is the configured title, not message input.
+const base = apiBaseUrl.replace(/\/$/, '') + '/titles/'
+  + encodeURIComponent(titleId) + '/microtransactions';
+async function guest(path, body) {
+  const response = await fetch(base + path, {
+    method: body === undefined ? 'GET' : 'POST', credentials: 'omit', redirect: 'error',
+    headers: { Accept: 'application/json', ...(body === undefined ? {} : { 'Content-Type': 'application/json' }) },
+    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+  }); // Browser supplies Origin automatically; no Authorization or manual Origin.
+  const payload = await response.json();
+  if (!response.ok || !payload.data) throw new Error('Commerce unavailable: ' + response.status);
+  return payload.data; // ONE JSON envelope, unlike an Axios response.data.data wrapper.
+}
+const catalog = await guest('/catalog?environment=sandbox&country=US&currency=USD');
+// Call once for this purchase intent, not on every retry/callback.
+const nonce = crypto.randomUUID();
+const session = await guest('/checkout-sessions', {
+  product_id: productId, quantity: 1, country: 'US', currency: 'USD', environment: 'sandbox',
+  channel: 'web', return_origin: window.location.origin, nonce,
+});
+// Validate the configured checkout origin/path/session/#token, then mount the starter's
+// modal iframe with session.hosted_url. Never assign window.location or grant here.
+```
+
+For shell diagnostics only, curl can send `Origin`; browser fetch cannot set it:
+
+```sh
+curl --fail-with-body \
+  "$API_BASE_URL/titles/$TITLE_ID/microtransactions/catalog?environment=sandbox&country=US&currency=USD" \
+  -H 'Accept: application/json' -H "Origin: $APPROVED_GAME_ORIGIN"
+```
+
+The variables above are nonsecret integration configuration. Sandbox catalog
+requires enabled sandbox settings and an exact approved Origin. Checkout session
+creation requires enabled matching environment and `return_origin` equal to the
+browser Origin. Live catalog is public but does not authorize payment. Restore
+entry uses `POST /restore-sessions` with environment/return_origin/fresh nonce and
+can remain available after sales stop. Hosted HTTPS policy is not relaxed by
+`environment:sandbox`; HTTP development origins require a local/testing backend.
+
+Keep checkout inside the game's accessible modal iframe with pause/resume and
+focus restoration, no top navigation, and bounded Retry/Close for the same
+session. Pin exact checkout origin, actual iframe `contentWindow`, title/session
+and nonce on ready/close/updated messages. `glitch.microtransaction.updated`
+version1 supplies a one-use `claim_code`, not a paid entitlement. Exchange it at
+`POST /handoffs/claim` with `{claim_code,nonce,return_origin,checkout_session_id}`
+using guest headers; deduplicate repeated/in-flight messages. Validate returned
+title/session/order/player and future token expiry, then use the scoped token in
+per-request Authorization to read own `GET /orders/{order_id}` and
+`GET /entitlements?environment=...`. Recheck receipt ownership/status and replace
+inventory. Never increment by product quantity. Defer close until claim and
+inventory work finishes; an uncertain/lost exchange needs restore, not blind replay.
+
+Glitch's hosted page handles account creation/login and embedded Stripe/3DS.
+The account JWT never enters the game. `X-Checkout-Token` permits limited session
+status only. Keep the claimed player token in memory, not global auth/storage.
+Own history is `GET /me/purchases?environment=...&page=1&per_page=20`; it does not
+grant items. Explicit spending is `POST /consume` with key/quantity/environment
+and one stable action_id retained across retry, followed by fresh inventory.
+Restore may return `no_purchases_to_restore` for fully refunded-only accounts;
+do not promise a token or repurchase as a history workaround. UI-ready/client
+completion/authorization never proves capture, fulfillment or browser3DS success.
+
+Media uploaded with `POST /titles/{title_id}/microtransactions/media` (multipart
+`media`, commerce:write) is **commerce-only**, even though it reuses processing.
+It must not populate title/game previews, galleries, cover or social imagery.
+Attach only same-title commerce Media IDs to products/branding; generic/gallery/
+social assets require separate commerce upload, not relinking. MCP management
+still executes authorized writes without a custom human-confirmation workflow.
+
+## Optional JavaScript SDK reference
+
+The remainder documents the optional SDK. These versions and imports are not
+requirements for the REST flow above. **Optional player checkout/history minimum:
+SDK `3.15.0`, which is published.** The new
 administrative direct-management API below is a **major SDK `4.0.0` migration**.
 Registry verification on September 16, 2026 confirmed SDK `3.15.0`, SDK `4.0.0`
 and MCP `0.5.0` published. SDK4 is not required just for the guest player flow.
@@ -67,10 +155,17 @@ or silently substitute a path to make testing pass.
 
 ## Configuration readiness versus verified integration
 
+Sandbox proof is **optional QA, not required to enable purchases or activate live
+sales**. Authorized developers can enable purchases through normal settings
+without a sandbox order or `integration.verify` call. Actual provider/account,
+market/tax, revenue, payment and fulfillment rules remain enforced.
+
 `ready` and optional `configuration_ready` describe configuration only. Optional
 `readiness.integration_verified` means stored sandbox **paid + fulfilled + claimed**
 evidence. Older responses may omit the new field: absence means unknown, not true
-and not false. `settings.integration_verified` already exists separately. Neither
+and not false. `settings.integration_verified` already exists separately. A false
+or absent proof flag is not an activation prerequisite and enabling purchases must
+not manufacture a true flag. Neither
 a configuration save, a ready flag, nor an iframe-ready event proves a new payment,
 current inventory delivery or successful claim. Integration evidence is not browser
 3DS certification; record challenge success/cancel/failure separately. Do not call
@@ -89,9 +184,11 @@ global connector credentials or broaden permissions as a runtime workaround.
    The **Enable in-game purchases** and **Show ads** switches live only on the
    game's Pricing/monetization page. Microtransactions is for products, media,
    prices, orders and integration—not a second location for those switches.
-2. `uploadMedia(titleId, file, onProgress?)` reuses existing Glitch Media with
-   trusted title/actor ownership. Attach returned `id` to `media_ids` or
-   `branding.logo_media_id`. No scheduler or social-library post is created.
+2. Optional SDK `uploadMedia(titleId, file, onProgress?)` uses the same commerce-only
+   Media route and trusted title/actor ownership. Attach returned `id` to
+   `media_ids` or `branding.logo_media_id`. It does not populate title/game preview,
+   gallery, cover or social imagery. Generic/gallery/social media cannot be
+   relinked; upload separately via commerce. No scheduler post is created.
 3. Create a product draft using `createProduct`. Prices use integer minor units,
    not floating-point money: USD 499 means $4.99; JPY 499 means ¥499. Supported
    currencies are USD/EUR/GBP/CAD/AUD/JPY/BRL/INR/KRW; provider coverage can be
@@ -106,12 +203,43 @@ global connector credentials or broaden permissions as a runtime workaround.
    game name/accent/logo with `updateSettings`. The fixed commission is 1200bp
    (12%) of discounted pre-tax subtotal. Actual provider costs are separate.
    Taxes are separate; pending earnings are not a verified available payout.
-6. Run a real approved provider sandbox purchase, verify game delivery/claim,
-   then call `verifyIntegration(titleId, {order_id})`. This records
-   real evidence, not a self-certified integration checkbox. Actual external
-   provider/account/tax capability and global sales emergency controls still apply.
+6. **Optional QA:** if you choose to test, use a real authorized sandbox purchase
+   and verified delivery/claim, then optionally call
+   `verifyIntegration(titleId, {order_id})`. This still requires real evidence,
+   not a self-certified checkbox. It is not required to enable purchases or
+   activate live sales. Actual provider/account/tax capability and global sales
+   emergency controls still apply; no live test charge is implied by setup.
 
 ## SDK4.0 administrative migration
+
+### Stripe Tax setup is a platform-account workflow
+
+Use the [official setup instructions](https://docs.stripe.com/tax/set-up).
+Glitch Checkout and `tax.settings` use the platform processing account, not the
+connected account that receives game proceeds. A personal Stripe account link
+or a `payout_source` change does not fix platform Tax configuration.
+
+An unavailable payout recipient does not block otherwise-eligible customer payment
+collection. Proceeds remain held under existing ledger/payout rules after the 12%
+commission and actual fees. Payout onboarding is not tax setup and does not
+reassign historical recipients or release old held funds automatically.
+
+Saving `tax_mode:automatic` is a Glitch-managed preference, not self-service Tax
+activation. Read `tax.status`/`missing_fields`; pending `head_office` or
+`platform_tax_settings` needs Glitch platform operations/support. The operator
+must configure the actual processing account with legitimate head-office details,
+preset product classification/default tax behavior, applicable registrations and
+separate filing/remittance setup. Supply support with title/environment and safe
+status information, never invented credentials, addresses or registrations.
+
+After that external setup, use the existing provider refresh operation and reread
+the facts. MCP/REST/SDK management can read facts, save preferences and refresh;
+it cannot write platform Tax settings. Optional `tax_code` is route-wide product
+classification, not a registration ID; omitted/null uses the platform default
+when available. Preserve requested/effective `tax_collection` modes and fallback
+reasons. Active tax status does not certify registrations, filing or liability;
+zero collected tax is not necessarily failure or zero tax owed. Payout onboarding
+stays separate. Xsolla is distinct; do not apply Stripe-specific tax assumptions.
 
 ### SDK 4.0.1 additive follow-up
 
@@ -313,6 +441,26 @@ key through authentication. `action_required`, provider authorization, redirect,
 and client completion are not paid/delivered proof. Call
 `reconcileCheckoutSession(titleId, sessionId, options)` to query the original
 attempt; never charge another provider after an uncertain submission.
+
+### Optional saved cards: hosted form only, rollout gated
+
+After the `commerce_customer_bindings` migration and matching backend rollout,
+new marked Stripe orders may show native optional save/remove controls inside
+Glitch-hosted payment. [Provider reference](https://docs.stripe.com/payments/checkout/save-during-payment?payment-ui=embedded-page).
+This adds no SDK route or game payment-method API and is not required for enabling
+purchases. Do not promise availability on older deployments or legacy orders.
+
+The server binds a customer to the Glitch user/provider/actual processing account/
+environment. Same-user cross-game reuse stays within that scope. Preparing the
+binding may call the provider Customer API but is not a charge; the customer and
+payment payload are frozen before submission. Existing orders/retries remain
+unchanged, and a deleted customer may be replaced only for a new purchase.
+
+Saving requires the player's explicit opt-in in the hosted form. It is not
+permission for off-session/autopay; later purchases require user confirmation and
+may require 3DS. Cards cannot cross providers/environments. No Xsolla support is
+implied, and raw card data, customer IDs or payment methods never belong in game,
+admin or MCP APIs. Do not implement card storage in this SDK/game example.
 
 ## Verified game/account handoff
 
