@@ -72,7 +72,11 @@ async function load(code, format, env) {
 
 async function checkStarter(sdk, env, timberGrantKey) {
   const dom = new JSDOM('<!doctype html><body><main id="game">Existing game</main></body>', { url: fixture.game_origin });
-  const source = fs.readFileSync(path.join(root, 'guides/microtransactions.md'), 'utf8').match(/```js\n([\s\S]*?)\n```/)[1];
+  const guide = fs.readFileSync(path.join(root, 'guides/microtransactions.md'), 'utf8');
+  const source = [...guide.matchAll(/```js\n([\s\S]*?)\n```/g)]
+    .map(match => match[1])
+    .find(candidate => candidate.includes('export function installTimberShop'));
+  assert(source, 'The guide must contain the runnable installTimberShop example');
   const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText;
   let overlay;
   const open = options => { overlay = options; options.onOpen(); return { close: () => options.onClose() }; };

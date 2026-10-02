@@ -57,7 +57,9 @@ import { GameAdvertising } from './api';
 import { Hosting } from './api';
 import { GameDesign } from './api';
 import { Microtransactions } from './api';
+import { Preorders } from './api';
 export * from './api/Microtransactions';
+export * from './api/Preorders';
 export * from './util/MicrotransactionBridge';
 export * from './util/MicrotransactionOverlay';
 import Requests from "./util/Requests";
@@ -137,6 +139,7 @@ declare class Glitch {
         Hosting: typeof Hosting;
         GameDesign: typeof GameDesign;
         Microtransactions: typeof Microtransactions;
+        Preorders: typeof Preorders;
     };
     static util: {
         Requests: typeof Requests;

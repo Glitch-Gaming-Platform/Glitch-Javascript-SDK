@@ -21927,6 +21927,112 @@ class Microtransactions {
     }
 }
 
+class PreordersRoute {
+}
+PreordersRoute.routes = {
+    catalog: { url: '/titles/{title_id}/preorders', method: HTTP_METHODS.GET },
+    purchase: { url: '/titles/{title_id}/preorders/{offer_id}/purchase', method: HTTP_METHODS.POST },
+    myOrders: { url: '/titles/{title_id}/preorders/me/orders', method: HTTP_METHODS.GET },
+    order: { url: '/titles/{title_id}/preorders/orders/{order_id}', method: HTTP_METHODS.GET },
+    refundMine: { url: '/titles/{title_id}/preorders/orders/{order_id}/refund', method: HTTP_METHODS.POST },
+    resendMine: { url: '/titles/{title_id}/preorders/orders/{order_id}/resend-access', method: HTTP_METHODS.POST },
+    settings: { url: '/titles/{title_id}/preorders/settings', method: HTTP_METHODS.GET },
+    updateSettings: { url: '/titles/{title_id}/preorders/settings', method: HTTP_METHODS.PUT },
+    offers: { url: '/titles/{title_id}/preorders/admin/offers', method: HTTP_METHODS.GET },
+    createOffer: { url: '/titles/{title_id}/preorders/admin/offers', method: HTTP_METHODS.POST },
+    offer: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}', method: HTTP_METHODS.GET },
+    updateOffer: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}', method: HTTP_METHODS.PUT },
+    activateOffer: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/activate', method: HTTP_METHODS.POST },
+    pauseOffer: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/pause', method: HTTP_METHODS.POST },
+    archiveOffer: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/archive', method: HTTP_METHODS.POST },
+    inventory: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/keys', method: HTTP_METHODS.GET },
+    importKeys: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/keys/import', method: HTTP_METHODS.POST },
+    retireKey: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/keys/{key_id}/retire', method: HTTP_METHODS.POST },
+    adminOrders: { url: '/titles/{title_id}/preorders/admin/orders', method: HTTP_METHODS.GET },
+    readiness: { url: '/titles/{title_id}/preorders/admin/readiness', method: HTTP_METHODS.GET },
+    adminOrderAction: { url: '/titles/{title_id}/preorders/admin/orders/{order_id}/{action}', method: HTTP_METHODS.POST },
+    mcpCapabilities: { url: '/mcp/v1/titles/{title_id}/preorders/capabilities', method: HTTP_METHODS.GET },
+    mcpOperation: { url: '/mcp/v1/titles/{title_id}/preorders/operations/{operation}', method: HTTP_METHODS.POST },
+};
+
+class Preorders {
+    static catalog(title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.catalog, undefined, { title_id }, undefined, options);
+    }
+    static purchase(title_id, offer_id, data, options) {
+        return Requests.processRoute(PreordersRoute.routes.purchase, data, { title_id, offer_id }, undefined, options);
+    }
+    static myOrders(title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.myOrders, undefined, { title_id }, undefined, options);
+    }
+    static order(title_id, order_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.order, undefined, { title_id, order_id }, undefined, options);
+    }
+    static refundMine(title_id, order_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.refundMine, {}, { title_id, order_id }, undefined, options);
+    }
+    static resendMine(title_id, order_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.resendMine, {}, { title_id, order_id }, undefined, options);
+    }
+    static settings(title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.settings, undefined, { title_id }, undefined, options);
+    }
+    static updateSettings(title_id, data, options) {
+        return Requests.processRoute(PreordersRoute.routes.updateSettings, data, { title_id }, undefined, options);
+    }
+    static offers(title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.offers, undefined, { title_id }, undefined, options);
+    }
+    static offer(title_id, offer_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.offer, undefined, { title_id, offer_id }, undefined, options);
+    }
+    static createOffer(title_id, data, options) {
+        return Requests.processRoute(PreordersRoute.routes.createOffer, data, { title_id }, undefined, options);
+    }
+    static updateOffer(title_id, offer_id, data, options) {
+        return Requests.processRoute(PreordersRoute.routes.updateOffer, data, { title_id, offer_id }, undefined, options);
+    }
+    static activateOffer(title_id, offer_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.activateOffer, {}, { title_id, offer_id }, undefined, options);
+    }
+    static pauseOffer(title_id, offer_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.pauseOffer, {}, { title_id, offer_id }, undefined, options);
+    }
+    static archiveOffer(title_id, offer_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.archiveOffer, {}, { title_id, offer_id }, undefined, options);
+    }
+    static inventory(title_id, offer_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.inventory, undefined, { title_id, offer_id }, undefined, options);
+    }
+    static importKeys(title_id, offer_id, keys, options) {
+        return Requests.processRoute(PreordersRoute.routes.importKeys, { keys }, { title_id, offer_id }, undefined, options);
+    }
+    static importKeyFile(title_id, offer_id, file) {
+        const url = PreordersRoute.routes.importKeys.url
+            .replace('{title_id}', title_id)
+            .replace('{offer_id}', offer_id);
+        return Requests.uploadFile(url, 'key_file', file, {}, undefined, undefined, { excludeCommunityContext: true });
+    }
+    static retireKey(title_id, offer_id, key_id, reason, options) {
+        return Requests.processRoute(PreordersRoute.routes.retireKey, { reason }, { title_id, offer_id, key_id }, undefined, options);
+    }
+    static adminOrders(title_id, filters, options) {
+        return Requests.processRoute(PreordersRoute.routes.adminOrders, undefined, { title_id }, filters, options);
+    }
+    static readiness(title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.readiness, undefined, { title_id }, undefined, options);
+    }
+    static adminOrderAction(title_id, order_id, action, options) {
+        return Requests.processRoute(PreordersRoute.routes.adminOrderAction, {}, { title_id, order_id, action }, undefined, options);
+    }
+    static mcpCapabilities(title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.mcpCapabilities, undefined, { title_id }, undefined, options);
+    }
+    static mcpOperation(title_id, operation, argumentsData = {}, options) {
+        return Requests.processRoute(PreordersRoute.routes.mcpOperation, { arguments: argumentsData }, { title_id, operation }, undefined, options);
+    }
+}
+
 /** Generate a 256-bit browser nonce. Fails closed without secure Web Crypto. */
 function createMicrotransactionNonce() {
     var _a;
@@ -30475,6 +30581,7 @@ Glitch.api = {
     Hosting: Hosting,
     GameDesign: GameDesign,
     Microtransactions: Microtransactions,
+    Preorders: Preorders,
 };
 Glitch.util = {
     Requests: Requests,

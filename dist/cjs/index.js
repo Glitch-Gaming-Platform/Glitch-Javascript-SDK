@@ -17324,13 +17324,18 @@ function requireNode () {
  * treat as a browser.
  */
 
-if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
-	src$1.exports = requireBrowser();
-} else {
-	src$1.exports = requireNode();
-}
+var hasRequiredSrc;
 
-var srcExports = src$1.exports;
+function requireSrc () {
+	if (hasRequiredSrc) return src$1.exports;
+	hasRequiredSrc = 1;
+	if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
+		src$1.exports = requireBrowser();
+	} else {
+		src$1.exports = requireNode();
+	}
+	return src$1.exports;
+}
 
 var promisify$1 = {};
 
@@ -17355,7 +17360,7 @@ var __importDefault$3 = (commonjsGlobal && commonjsGlobal.__importDefault) || fu
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const events_1 = require$$0$3;
-const debug_1$3 = __importDefault$3(srcExports);
+const debug_1$3 = __importDefault$3(requireSrc());
 const promisify_1 = __importDefault$3(promisify$1);
 const debug$4 = debug_1$3.default('agent-base');
 function isAgent(v) {
@@ -17559,7 +17564,7 @@ var __importDefault$2 = (commonjsGlobal && commonjsGlobal.__importDefault) || fu
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(parseProxyResponse$1, "__esModule", { value: true });
-const debug_1$2 = __importDefault$2(srcExports);
+const debug_1$2 = __importDefault$2(requireSrc());
 const debug$3 = debug_1$2.default('https-proxy-agent:parse-proxy-response');
 function parseProxyResponse(socket) {
     return new Promise((resolve, reject) => {
@@ -17637,7 +17642,7 @@ const net_1 = __importDefault$1(require$$0$4);
 const tls_1 = __importDefault$1(require$$1$2);
 const url_1 = __importDefault$1(require$$5);
 const assert_1 = __importDefault$1(require$$3);
-const debug_1$1 = __importDefault$1(srcExports);
+const debug_1$1 = __importDefault$1(requireSrc());
 const agent_base_1 = src;
 const parse_proxy_response_1 = __importDefault$1(parseProxyResponse$1);
 const debug$2 = debug_1$1.default('https-proxy-agent:agent');
@@ -17820,7 +17825,7 @@ var debug_1 = function () {
   if (!debug$1) {
     try {
       /* eslint global-require: off */
-      debug$1 = srcExports("follow-redirects");
+      debug$1 = requireSrc()("follow-redirects");
     }
     catch (error) { /* */ }
     if (typeof debug$1 !== "function") {
@@ -40039,6 +40044,119 @@ var Microtransactions = /** @class */ (function () {
     return Microtransactions;
 }());
 
+var PreordersRoute = /** @class */ (function () {
+    function PreordersRoute() {
+    }
+    PreordersRoute.routes = {
+        catalog: { url: '/titles/{title_id}/preorders', method: HTTP_METHODS.GET },
+        purchase: { url: '/titles/{title_id}/preorders/{offer_id}/purchase', method: HTTP_METHODS.POST },
+        myOrders: { url: '/titles/{title_id}/preorders/me/orders', method: HTTP_METHODS.GET },
+        order: { url: '/titles/{title_id}/preorders/orders/{order_id}', method: HTTP_METHODS.GET },
+        refundMine: { url: '/titles/{title_id}/preorders/orders/{order_id}/refund', method: HTTP_METHODS.POST },
+        resendMine: { url: '/titles/{title_id}/preorders/orders/{order_id}/resend-access', method: HTTP_METHODS.POST },
+        settings: { url: '/titles/{title_id}/preorders/settings', method: HTTP_METHODS.GET },
+        updateSettings: { url: '/titles/{title_id}/preorders/settings', method: HTTP_METHODS.PUT },
+        offers: { url: '/titles/{title_id}/preorders/admin/offers', method: HTTP_METHODS.GET },
+        createOffer: { url: '/titles/{title_id}/preorders/admin/offers', method: HTTP_METHODS.POST },
+        offer: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}', method: HTTP_METHODS.GET },
+        updateOffer: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}', method: HTTP_METHODS.PUT },
+        activateOffer: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/activate', method: HTTP_METHODS.POST },
+        pauseOffer: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/pause', method: HTTP_METHODS.POST },
+        archiveOffer: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/archive', method: HTTP_METHODS.POST },
+        inventory: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/keys', method: HTTP_METHODS.GET },
+        importKeys: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/keys/import', method: HTTP_METHODS.POST },
+        retireKey: { url: '/titles/{title_id}/preorders/admin/offers/{offer_id}/keys/{key_id}/retire', method: HTTP_METHODS.POST },
+        adminOrders: { url: '/titles/{title_id}/preorders/admin/orders', method: HTTP_METHODS.GET },
+        readiness: { url: '/titles/{title_id}/preorders/admin/readiness', method: HTTP_METHODS.GET },
+        adminOrderAction: { url: '/titles/{title_id}/preorders/admin/orders/{order_id}/{action}', method: HTTP_METHODS.POST },
+        mcpCapabilities: { url: '/mcp/v1/titles/{title_id}/preorders/capabilities', method: HTTP_METHODS.GET },
+        mcpOperation: { url: '/mcp/v1/titles/{title_id}/preorders/operations/{operation}', method: HTTP_METHODS.POST },
+    };
+    return PreordersRoute;
+}());
+
+var Preorders = /** @class */ (function () {
+    function Preorders() {
+    }
+    Preorders.catalog = function (title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.catalog, undefined, { title_id: title_id }, undefined, options);
+    };
+    Preorders.purchase = function (title_id, offer_id, data, options) {
+        return Requests.processRoute(PreordersRoute.routes.purchase, data, { title_id: title_id, offer_id: offer_id }, undefined, options);
+    };
+    Preorders.myOrders = function (title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.myOrders, undefined, { title_id: title_id }, undefined, options);
+    };
+    Preorders.order = function (title_id, order_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.order, undefined, { title_id: title_id, order_id: order_id }, undefined, options);
+    };
+    Preorders.refundMine = function (title_id, order_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.refundMine, {}, { title_id: title_id, order_id: order_id }, undefined, options);
+    };
+    Preorders.resendMine = function (title_id, order_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.resendMine, {}, { title_id: title_id, order_id: order_id }, undefined, options);
+    };
+    Preorders.settings = function (title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.settings, undefined, { title_id: title_id }, undefined, options);
+    };
+    Preorders.updateSettings = function (title_id, data, options) {
+        return Requests.processRoute(PreordersRoute.routes.updateSettings, data, { title_id: title_id }, undefined, options);
+    };
+    Preorders.offers = function (title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.offers, undefined, { title_id: title_id }, undefined, options);
+    };
+    Preorders.offer = function (title_id, offer_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.offer, undefined, { title_id: title_id, offer_id: offer_id }, undefined, options);
+    };
+    Preorders.createOffer = function (title_id, data, options) {
+        return Requests.processRoute(PreordersRoute.routes.createOffer, data, { title_id: title_id }, undefined, options);
+    };
+    Preorders.updateOffer = function (title_id, offer_id, data, options) {
+        return Requests.processRoute(PreordersRoute.routes.updateOffer, data, { title_id: title_id, offer_id: offer_id }, undefined, options);
+    };
+    Preorders.activateOffer = function (title_id, offer_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.activateOffer, {}, { title_id: title_id, offer_id: offer_id }, undefined, options);
+    };
+    Preorders.pauseOffer = function (title_id, offer_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.pauseOffer, {}, { title_id: title_id, offer_id: offer_id }, undefined, options);
+    };
+    Preorders.archiveOffer = function (title_id, offer_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.archiveOffer, {}, { title_id: title_id, offer_id: offer_id }, undefined, options);
+    };
+    Preorders.inventory = function (title_id, offer_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.inventory, undefined, { title_id: title_id, offer_id: offer_id }, undefined, options);
+    };
+    Preorders.importKeys = function (title_id, offer_id, keys, options) {
+        return Requests.processRoute(PreordersRoute.routes.importKeys, { keys: keys }, { title_id: title_id, offer_id: offer_id }, undefined, options);
+    };
+    Preorders.importKeyFile = function (title_id, offer_id, file) {
+        var url = PreordersRoute.routes.importKeys.url
+            .replace('{title_id}', title_id)
+            .replace('{offer_id}', offer_id);
+        return Requests.uploadFile(url, 'key_file', file, {}, undefined, undefined, { excludeCommunityContext: true });
+    };
+    Preorders.retireKey = function (title_id, offer_id, key_id, reason, options) {
+        return Requests.processRoute(PreordersRoute.routes.retireKey, { reason: reason }, { title_id: title_id, offer_id: offer_id, key_id: key_id }, undefined, options);
+    };
+    Preorders.adminOrders = function (title_id, filters, options) {
+        return Requests.processRoute(PreordersRoute.routes.adminOrders, undefined, { title_id: title_id }, filters, options);
+    };
+    Preorders.readiness = function (title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.readiness, undefined, { title_id: title_id }, undefined, options);
+    };
+    Preorders.adminOrderAction = function (title_id, order_id, action, options) {
+        return Requests.processRoute(PreordersRoute.routes.adminOrderAction, {}, { title_id: title_id, order_id: order_id, action: action }, undefined, options);
+    };
+    Preorders.mcpCapabilities = function (title_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.mcpCapabilities, undefined, { title_id: title_id }, undefined, options);
+    };
+    Preorders.mcpOperation = function (title_id, operation, argumentsData, options) {
+        if (argumentsData === void 0) { argumentsData = {}; }
+        return Requests.processRoute(PreordersRoute.routes.mcpOperation, { arguments: argumentsData }, { title_id: title_id, operation: operation }, undefined, options);
+    };
+    return Preorders;
+}());
+
 /** Generate a 256-bit browser nonce. Fails closed without secure Web Crypto. */
 function createMicrotransactionNonce() {
     var _a;
@@ -48632,6 +48750,7 @@ var Glitch = /** @class */ (function () {
         Hosting: Hosting,
         GameDesign: GameDesign,
         Microtransactions: Microtransactions,
+        Preorders: Preorders,
     };
     Glitch.util = {
         Requests: Requests,

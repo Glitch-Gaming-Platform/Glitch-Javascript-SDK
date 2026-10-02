@@ -61,7 +61,9 @@ import {GameAdvertising} from './api';
 import {Hosting} from './api';
 import {GameDesign} from './api';
 import {Microtransactions} from './api';
+import {Preorders} from './api';
 export * from './api/Microtransactions';
+export * from './api/Preorders';
 export * from './util/MicrotransactionBridge';
 export * from './util/MicrotransactionOverlay';
 
@@ -153,6 +155,7 @@ class Glitch {
         Hosting: Hosting,
         GameDesign: GameDesign,
         Microtransactions: Microtransactions,
+        Preorders: Preorders,
     }
 
     public static util = {

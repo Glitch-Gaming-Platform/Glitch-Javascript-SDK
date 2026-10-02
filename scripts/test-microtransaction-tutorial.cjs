@@ -7,11 +7,12 @@ const ts = require('typescript');
 const { JSDOM } = require('jsdom');
 
 const guide = fs.readFileSync('guides/microtransactions.md', 'utf8');
-assert(guide.includes('Player checkout/history minimum: SDK `3.15.0`'));
+assert(/player checkout\/history minimum:\s+SDK `3\.15\.0`/i.test(guide));
 assert(guide.includes('major SDK `4.0.0` migration'));
 assert(guide.includes('does not require installing or publishing the game SDK'));
-const example = guide.match(/```js\n([\s\S]*?)\n```/)?.[1];
-assert(example, 'The beginner guide must contain the complete runnable example');
+const examples = [...guide.matchAll(/```js\n([\s\S]*?)\n```/g)].map(match => match[1]);
+const example = examples.find(source => source.includes('export function installTimberShop'));
+assert(example, 'The beginner guide must contain the complete runnable installTimberShop example');
 const compiled = ts.transpileModule(example, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText;
 const flush = () => new Promise(resolve => setImmediate(resolve));
 

@@ -112,3 +112,4 @@ export { Hosting };
 export { GameDesign };
 export { default as FestivalNetworking } from './FestivalNetworking';
 export { default as Microtransactions } from './Microtransactions';
+export { default as Preorders } from './Preorders';
