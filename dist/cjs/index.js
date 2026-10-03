@@ -17324,13 +17324,18 @@ function requireNode () {
  * treat as a browser.
  */
 
-if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
-	src$1.exports = requireBrowser();
-} else {
-	src$1.exports = requireNode();
-}
+var hasRequiredSrc;
 
-var srcExports = src$1.exports;
+function requireSrc () {
+	if (hasRequiredSrc) return src$1.exports;
+	hasRequiredSrc = 1;
+	if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
+		src$1.exports = requireBrowser();
+	} else {
+		src$1.exports = requireNode();
+	}
+	return src$1.exports;
+}
 
 var promisify$1 = {};
 
@@ -17355,7 +17360,7 @@ var __importDefault$3 = (commonjsGlobal && commonjsGlobal.__importDefault) || fu
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const events_1 = require$$0$3;
-const debug_1$3 = __importDefault$3(srcExports);
+const debug_1$3 = __importDefault$3(requireSrc());
 const promisify_1 = __importDefault$3(promisify$1);
 const debug$4 = debug_1$3.default('agent-base');
 function isAgent(v) {
@@ -17559,7 +17564,7 @@ var __importDefault$2 = (commonjsGlobal && commonjsGlobal.__importDefault) || fu
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(parseProxyResponse$1, "__esModule", { value: true });
-const debug_1$2 = __importDefault$2(srcExports);
+const debug_1$2 = __importDefault$2(requireSrc());
 const debug$3 = debug_1$2.default('https-proxy-agent:parse-proxy-response');
 function parseProxyResponse(socket) {
     return new Promise((resolve, reject) => {
@@ -17637,7 +17642,7 @@ const net_1 = __importDefault$1(require$$0$4);
 const tls_1 = __importDefault$1(require$$1$2);
 const url_1 = __importDefault$1(require$$5);
 const assert_1 = __importDefault$1(require$$3);
-const debug_1$1 = __importDefault$1(srcExports);
+const debug_1$1 = __importDefault$1(requireSrc());
 const agent_base_1 = src;
 const parse_proxy_response_1 = __importDefault$1(parseProxyResponse$1);
 const debug$2 = debug_1$1.default('https-proxy-agent:agent');
@@ -17820,7 +17825,7 @@ var debug_1 = function () {
   if (!debug$1) {
     try {
       /* eslint global-require: off */
-      debug$1 = srcExports("follow-redirects");
+      debug$1 = requireSrc()("follow-redirects");
     }
     catch (error) { /* */ }
     if (typeof debug$1 !== "function") {
