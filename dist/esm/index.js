@@ -21930,6 +21930,17 @@ class Microtransactions {
 class PreordersRoute {
 }
 PreordersRoute.routes = {
+    hostedCatalog: { url: '/hosting/preorders/catalog', method: HTTP_METHODS.GET },
+    createHostedSession: { url: '/hosting/preorders/checkout-sessions', method: HTTP_METHODS.POST },
+    createHostedRestoreSession: { url: '/hosting/preorders/restore-sessions', method: HTTP_METHODS.POST },
+    hostedSession: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}', method: HTTP_METHODS.GET },
+    hostedMine: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/me', method: HTTP_METHODS.GET },
+    hostedAuthenticate: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/authenticate', method: HTTP_METHODS.POST },
+    hostedCheckout: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/checkout', method: HTTP_METHODS.POST },
+    hostedReconcile: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/reconcile', method: HTTP_METHODS.POST },
+    hostedRetry: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/retry', method: HTTP_METHODS.POST },
+    hostedRefund: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/refund', method: HTTP_METHODS.POST },
+    hostedResendAccess: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/resend-access', method: HTTP_METHODS.POST },
     catalog: { url: '/titles/{title_id}/preorders', method: HTTP_METHODS.GET },
     purchase: { url: '/titles/{title_id}/preorders/{offer_id}/purchase', method: HTTP_METHODS.POST },
     myOrders: { url: '/titles/{title_id}/preorders/me/orders', method: HTTP_METHODS.GET },
@@ -21956,6 +21967,42 @@ PreordersRoute.routes = {
 };
 
 class Preorders {
+    static hostedOptions(checkoutToken, options) {
+        return Object.assign(Object.assign({}, options), { headers: Object.assign(Object.assign({}, ((options === null || options === void 0 ? void 0 : options.headers) || {})), { 'X-Checkout-Token': checkoutToken }) });
+    }
+    static hostedCatalog(options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedCatalog, undefined, undefined, undefined, options);
+    }
+    static createHostedSession(data, options) {
+        return Requests.processRoute(PreordersRoute.routes.createHostedSession, data, undefined, undefined, options);
+    }
+    static createHostedRestoreSession(data, options) {
+        return Requests.processRoute(PreordersRoute.routes.createHostedRestoreSession, data, undefined, undefined, options);
+    }
+    static hostedSession(title_id, session_id, checkoutToken, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedSession, undefined, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    }
+    static hostedMine(title_id, session_id, checkoutToken, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedMine, undefined, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    }
+    static authenticateHostedSession(title_id, session_id, checkoutToken, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedAuthenticate, {}, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    }
+    static checkoutHostedSession(title_id, session_id, checkoutToken, data, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedCheckout, data, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    }
+    static reconcileHostedSession(title_id, session_id, checkoutToken, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedReconcile, {}, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    }
+    static retryHostedSession(title_id, session_id, checkoutToken, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedRetry, {}, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    }
+    static refundHostedOrder(title_id, session_id, checkoutToken, order_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedRefund, { order_id }, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    }
+    static resendHostedAccess(title_id, session_id, checkoutToken, order_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedResendAccess, { order_id }, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    }
     static catalog(title_id, options) {
         return Requests.processRoute(PreordersRoute.routes.catalog, undefined, { title_id }, undefined, options);
     }

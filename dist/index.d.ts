@@ -12984,7 +12984,7 @@ type PreorderOfferStatus = 'draft' | 'active' | 'paused' | 'ended' | 'archived';
 type PreorderDerivedState = 'draft' | 'available' | 'scheduled' | 'sold_out' | 'paused' | 'ended' | 'released' | 'archived';
 type PreorderPaymentStatus = 'created' | 'requires_action' | 'processing' | 'paid' | 'failed' | 'canceled' | 'refunded' | 'disputed' | 'unknown';
 type PreorderFulfillmentStatus = 'waiting_for_release' | 'ready' | 'processing' | 'fulfilled' | 'blocked_missing_build' | 'blocked_missing_key' | 'canceled' | 'failed';
-interface PreorderRequestOptions extends Pick<AxiosRequestConfig, 'signal' | 'timeout'> {
+interface PreorderRequestOptions extends Pick<AxiosRequestConfig, 'signal' | 'timeout' | 'headers'> {
 }
 interface PreorderPrice {
     country: string;
@@ -13028,6 +13028,7 @@ interface PreorderOffer extends Omit<PreorderOfferInput, 'status'> {
 }
 interface PreorderSettings {
     enabled: boolean;
+    hosted_checkout_enabled: boolean;
     timezone: string;
     readiness?: PreorderReadiness;
 }
@@ -13042,6 +13043,64 @@ interface PreorderPurchaseInput {
     idempotency_key: string;
     payment_method_id?: string;
     payment_intent_id?: string;
+}
+interface HostedPreorderCatalog extends PreorderCatalog {
+    hosted_checkout_enabled: boolean;
+    title: {
+        id: string;
+        name: string;
+    };
+    hosting: {
+        site_id: string;
+        hostname: string;
+        origin: string;
+    };
+    checkout_origin: string;
+    embed_script_url: string;
+    version: number;
+}
+interface HostedPreorderSessionInput {
+    offer_id: string;
+    return_origin: string;
+    nonce: string;
+    country?: string;
+    currency?: string;
+}
+interface HostedPreorderRestoreInput {
+    return_origin: string;
+    nonce: string;
+    country?: string;
+    currency?: string;
+}
+interface HostedPreorderPaymentState {
+    status: string;
+    requires_action?: boolean;
+    client_secret?: string | null;
+    payment_intent_id?: string | null;
+    retryable_same_request?: boolean;
+}
+interface HostedPreorderSession {
+    id: string;
+    checkout_session_id: string;
+    intent: 'preorder' | 'preorder_restore';
+    title: {
+        id: string;
+        name: string;
+    };
+    hosting_site_id: string;
+    offer?: PreorderOffer | null;
+    country: string;
+    currency: string;
+    return_origin: string;
+    nonce: string;
+    expires_at: string;
+    authenticated: boolean;
+    status: string;
+    order?: PreorderOrder | null;
+    orders?: PreorderOrder[];
+    payment?: HostedPreorderPaymentState | null;
+    session_token?: string;
+    hosted_url?: string;
 }
 interface PreorderOrder {
     id: string;
@@ -13094,6 +13153,24 @@ interface PreorderAdminOrderFilters {
 }
 type PreorderAdminOrderAction = 'refund' | 'reconcile' | 'fulfill' | 'resend_receipt' | 'resend_access';
 declare class Preorders {
+    private static hostedOptions;
+    static hostedCatalog(options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderCatalog>>;
+    static createHostedSession(data: HostedPreorderSessionInput, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>>;
+    static createHostedRestoreSession(data: HostedPreorderRestoreInput, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>>;
+    static hostedSession(title_id: string, session_id: string, checkoutToken: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>>;
+    static hostedMine(title_id: string, session_id: string, checkoutToken: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>>;
+    static authenticateHostedSession(title_id: string, session_id: string, checkoutToken: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>>;
+    static checkoutHostedSession(title_id: string, session_id: string, checkoutToken: string, data: {
+        accept_terms: boolean;
+        payment_method_id?: string;
+        payment_intent_id?: string;
+    }, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>>;
+    static reconcileHostedSession(title_id: string, session_id: string, checkoutToken: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>>;
+    static retryHostedSession(title_id: string, session_id: string, checkoutToken: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>>;
+    static refundHostedOrder(title_id: string, session_id: string, checkoutToken: string, order_id: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>>;
+    static resendHostedAccess(title_id: string, session_id: string, checkoutToken: string, order_id: string, options?: PreorderRequestOptions): AxiosPromise<Response<{
+        resent: boolean;
+    }>>;
     static catalog(title_id: string, options?: PreorderRequestOptions): AxiosPromise<Response<PreorderCatalog>>;
     static purchase(title_id: string, offer_id: string, data: PreorderPurchaseInput, options?: PreorderRequestOptions): AxiosPromise<Response<PreorderOrder>>;
     static myOrders(title_id: string, options?: PreorderRequestOptions): AxiosPromise<Response<{
@@ -13105,7 +13182,7 @@ declare class Preorders {
         resent: boolean;
     }>>;
     static settings(title_id: string, options?: PreorderRequestOptions): AxiosPromise<Response<PreorderSettings>>;
-    static updateSettings(title_id: string, data: Partial<Pick<PreorderSettings, 'enabled' | 'timezone'>>, options?: PreorderRequestOptions): AxiosPromise<Response<PreorderSettings>>;
+    static updateSettings(title_id: string, data: Partial<Pick<PreorderSettings, 'enabled' | 'hosted_checkout_enabled' | 'timezone'>>, options?: PreorderRequestOptions): AxiosPromise<Response<PreorderSettings>>;
     static offers(title_id: string, options?: PreorderRequestOptions): AxiosPromise<Response<{
         offers: PreorderOffer[];
     }>>;
@@ -13760,4 +13837,4 @@ declare class Glitch {
     };
 }
 
-export { type FestivalApplicationInput, type FestivalApplicationState, type FestivalConversation, type FestivalMediaUpload, type FestivalNetworkingFilters, type FestivalNetworkingProfile, type FestivalNetworkingResponse, type FestivalNetworkingSettings, type FestivalPost, type FestivalPostInput, type FestivalPostKind, type FestivalPostState, type FestivalPreferences, type FestivalReportInput, type FestivalRequestOptions, type FestivalWorkType, type MicrotransactionAbility, type MicrotransactionBranding, type MicrotransactionBridge, type MicrotransactionBridgeOptions, type MicrotransactionCapabilities, type MicrotransactionCatalog, type MicrotransactionCatalogFilter, type MicrotransactionCheckoutInput, type MicrotransactionCheckoutResult, type MicrotransactionCheckoutSession, type MicrotransactionCheckoutSessionInput, type MicrotransactionConsumeInput, type MicrotransactionCreatedCheckoutSession, type MicrotransactionCurrency, type MicrotransactionDelivery, type MicrotransactionDeliveryListFilters, type MicrotransactionDeliveryResult, type MicrotransactionDeliverySettings, type MicrotransactionDeliverySettingsInput, type MicrotransactionDeliveryStatus, type MicrotransactionEarnings, type MicrotransactionEntitlement, type MicrotransactionEnvironment, type MicrotransactionEnvironmentFilter, type MicrotransactionError, type MicrotransactionErrorCode, type MicrotransactionFramePolicy, type MicrotransactionFulfillmentStatus, type MicrotransactionGrant, type MicrotransactionGrantUsage, type MicrotransactionGrantUsageStatus, type MicrotransactionHandoff, type MicrotransactionHandoffClaim, type MicrotransactionHandoffClaimInput, type MicrotransactionLegacyConfirmation, type MicrotransactionManagementListFilters, type MicrotransactionMedia, type MicrotransactionMyPurchases, type MicrotransactionMyPurchasesFilters, type MicrotransactionOperation, type MicrotransactionOperationCapability, type MicrotransactionOrder, type MicrotransactionOrderDetail, type MicrotransactionOrderListFilters, type MicrotransactionOverlay, type MicrotransactionOverlayOptions, type MicrotransactionPaymentStatus, type MicrotransactionPayout, type MicrotransactionPayoutListFilters, type MicrotransactionPayoutStatus, type MicrotransactionPlayerPurchase, type MicrotransactionPrice, type MicrotransactionProduct, type MicrotransactionProductInput, type MicrotransactionProductListFilters, type MicrotransactionProductStatus, type MicrotransactionProductType, type MicrotransactionProvider, type MicrotransactionProviderConfiguration, type MicrotransactionProviderInput, type MicrotransactionProviderName, type MicrotransactionProviderOnboarding, type MicrotransactionProviderOnboardingInput, type MicrotransactionProviderSku, type MicrotransactionPurchaseInput, type MicrotransactionPurchaseMessage, type MicrotransactionPurchasePagination, type MicrotransactionQuote, type MicrotransactionReadiness, type MicrotransactionReadyMessage, type MicrotransactionRefund, type MicrotransactionRefundInput, type MicrotransactionRefundListFilters, type MicrotransactionRefundRecord, type MicrotransactionRefundRequest, type MicrotransactionRefundStatus, type MicrotransactionRelatedListFilters, type MicrotransactionRequestOptions, type MicrotransactionResponse, type MicrotransactionRestoreBridgeOptions, type MicrotransactionSessionOptions, type MicrotransactionSettings, type MicrotransactionSettingsInput, type MicrotransactionTaxCollection, type MicrotransactionVerifiedSession, type PreorderAdminOrderAction, type PreorderAdminOrderFilters, type PreorderCatalog, type PreorderDerivedState, type PreorderFulfillmentStatus, type PreorderFulfillmentType, type PreorderInventory, type PreorderOffer, type PreorderOfferInput, type PreorderOfferStatus, type PreorderOrder, type PreorderPaymentStatus, type PreorderPrice, type PreorderPurchaseInput, type PreorderReadiness, type PreorderReadinessIssue, type PreorderRequestOptions, type PreorderSettings, createMicrotransactionBridge, createMicrotransactionNonce, createMicrotransactionRestoreBridge, Glitch as default, openMicrotransactionOverlay, openMicrotransactionRestoreOverlay };
+export { type FestivalApplicationInput, type FestivalApplicationState, type FestivalConversation, type FestivalMediaUpload, type FestivalNetworkingFilters, type FestivalNetworkingProfile, type FestivalNetworkingResponse, type FestivalNetworkingSettings, type FestivalPost, type FestivalPostInput, type FestivalPostKind, type FestivalPostState, type FestivalPreferences, type FestivalReportInput, type FestivalRequestOptions, type FestivalWorkType, type HostedPreorderCatalog, type HostedPreorderPaymentState, type HostedPreorderRestoreInput, type HostedPreorderSession, type HostedPreorderSessionInput, type MicrotransactionAbility, type MicrotransactionBranding, type MicrotransactionBridge, type MicrotransactionBridgeOptions, type MicrotransactionCapabilities, type MicrotransactionCatalog, type MicrotransactionCatalogFilter, type MicrotransactionCheckoutInput, type MicrotransactionCheckoutResult, type MicrotransactionCheckoutSession, type MicrotransactionCheckoutSessionInput, type MicrotransactionConsumeInput, type MicrotransactionCreatedCheckoutSession, type MicrotransactionCurrency, type MicrotransactionDelivery, type MicrotransactionDeliveryListFilters, type MicrotransactionDeliveryResult, type MicrotransactionDeliverySettings, type MicrotransactionDeliverySettingsInput, type MicrotransactionDeliveryStatus, type MicrotransactionEarnings, type MicrotransactionEntitlement, type MicrotransactionEnvironment, type MicrotransactionEnvironmentFilter, type MicrotransactionError, type MicrotransactionErrorCode, type MicrotransactionFramePolicy, type MicrotransactionFulfillmentStatus, type MicrotransactionGrant, type MicrotransactionGrantUsage, type MicrotransactionGrantUsageStatus, type MicrotransactionHandoff, type MicrotransactionHandoffClaim, type MicrotransactionHandoffClaimInput, type MicrotransactionLegacyConfirmation, type MicrotransactionManagementListFilters, type MicrotransactionMedia, type MicrotransactionMyPurchases, type MicrotransactionMyPurchasesFilters, type MicrotransactionOperation, type MicrotransactionOperationCapability, type MicrotransactionOrder, type MicrotransactionOrderDetail, type MicrotransactionOrderListFilters, type MicrotransactionOverlay, type MicrotransactionOverlayOptions, type MicrotransactionPaymentStatus, type MicrotransactionPayout, type MicrotransactionPayoutListFilters, type MicrotransactionPayoutStatus, type MicrotransactionPlayerPurchase, type MicrotransactionPrice, type MicrotransactionProduct, type MicrotransactionProductInput, type MicrotransactionProductListFilters, type MicrotransactionProductStatus, type MicrotransactionProductType, type MicrotransactionProvider, type MicrotransactionProviderConfiguration, type MicrotransactionProviderInput, type MicrotransactionProviderName, type MicrotransactionProviderOnboarding, type MicrotransactionProviderOnboardingInput, type MicrotransactionProviderSku, type MicrotransactionPurchaseInput, type MicrotransactionPurchaseMessage, type MicrotransactionPurchasePagination, type MicrotransactionQuote, type MicrotransactionReadiness, type MicrotransactionReadyMessage, type MicrotransactionRefund, type MicrotransactionRefundInput, type MicrotransactionRefundListFilters, type MicrotransactionRefundRecord, type MicrotransactionRefundRequest, type MicrotransactionRefundStatus, type MicrotransactionRelatedListFilters, type MicrotransactionRequestOptions, type MicrotransactionResponse, type MicrotransactionRestoreBridgeOptions, type MicrotransactionSessionOptions, type MicrotransactionSettings, type MicrotransactionSettingsInput, type MicrotransactionTaxCollection, type MicrotransactionVerifiedSession, type PreorderAdminOrderAction, type PreorderAdminOrderFilters, type PreorderCatalog, type PreorderDerivedState, type PreorderFulfillmentStatus, type PreorderFulfillmentType, type PreorderInventory, type PreorderOffer, type PreorderOfferInput, type PreorderOfferStatus, type PreorderOrder, type PreorderPaymentStatus, type PreorderPrice, type PreorderPurchaseInput, type PreorderReadiness, type PreorderReadinessIssue, type PreorderRequestOptions, type PreorderSettings, createMicrotransactionBridge, createMicrotransactionNonce, createMicrotransactionRestoreBridge, Glitch as default, openMicrotransactionOverlay, openMicrotransactionRestoreOverlay };

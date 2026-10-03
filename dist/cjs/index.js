@@ -17324,18 +17324,13 @@ function requireNode () {
  * treat as a browser.
  */
 
-var hasRequiredSrc;
-
-function requireSrc () {
-	if (hasRequiredSrc) return src$1.exports;
-	hasRequiredSrc = 1;
-	if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
-		src$1.exports = requireBrowser();
-	} else {
-		src$1.exports = requireNode();
-	}
-	return src$1.exports;
+if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
+	src$1.exports = requireBrowser();
+} else {
+	src$1.exports = requireNode();
 }
+
+var srcExports = src$1.exports;
 
 var promisify$1 = {};
 
@@ -17360,7 +17355,7 @@ var __importDefault$3 = (commonjsGlobal && commonjsGlobal.__importDefault) || fu
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const events_1 = require$$0$3;
-const debug_1$3 = __importDefault$3(requireSrc());
+const debug_1$3 = __importDefault$3(srcExports);
 const promisify_1 = __importDefault$3(promisify$1);
 const debug$4 = debug_1$3.default('agent-base');
 function isAgent(v) {
@@ -17564,7 +17559,7 @@ var __importDefault$2 = (commonjsGlobal && commonjsGlobal.__importDefault) || fu
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(parseProxyResponse$1, "__esModule", { value: true });
-const debug_1$2 = __importDefault$2(requireSrc());
+const debug_1$2 = __importDefault$2(srcExports);
 const debug$3 = debug_1$2.default('https-proxy-agent:parse-proxy-response');
 function parseProxyResponse(socket) {
     return new Promise((resolve, reject) => {
@@ -17642,7 +17637,7 @@ const net_1 = __importDefault$1(require$$0$4);
 const tls_1 = __importDefault$1(require$$1$2);
 const url_1 = __importDefault$1(require$$5);
 const assert_1 = __importDefault$1(require$$3);
-const debug_1$1 = __importDefault$1(requireSrc());
+const debug_1$1 = __importDefault$1(srcExports);
 const agent_base_1 = src;
 const parse_proxy_response_1 = __importDefault$1(parseProxyResponse$1);
 const debug$2 = debug_1$1.default('https-proxy-agent:agent');
@@ -17825,7 +17820,7 @@ var debug_1 = function () {
   if (!debug$1) {
     try {
       /* eslint global-require: off */
-      debug$1 = requireSrc()("follow-redirects");
+      debug$1 = srcExports("follow-redirects");
     }
     catch (error) { /* */ }
     if (typeof debug$1 !== "function") {
@@ -40048,6 +40043,17 @@ var PreordersRoute = /** @class */ (function () {
     function PreordersRoute() {
     }
     PreordersRoute.routes = {
+        hostedCatalog: { url: '/hosting/preorders/catalog', method: HTTP_METHODS.GET },
+        createHostedSession: { url: '/hosting/preorders/checkout-sessions', method: HTTP_METHODS.POST },
+        createHostedRestoreSession: { url: '/hosting/preorders/restore-sessions', method: HTTP_METHODS.POST },
+        hostedSession: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}', method: HTTP_METHODS.GET },
+        hostedMine: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/me', method: HTTP_METHODS.GET },
+        hostedAuthenticate: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/authenticate', method: HTTP_METHODS.POST },
+        hostedCheckout: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/checkout', method: HTTP_METHODS.POST },
+        hostedReconcile: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/reconcile', method: HTTP_METHODS.POST },
+        hostedRetry: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/retry', method: HTTP_METHODS.POST },
+        hostedRefund: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/refund', method: HTTP_METHODS.POST },
+        hostedResendAccess: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/resend-access', method: HTTP_METHODS.POST },
         catalog: { url: '/titles/{title_id}/preorders', method: HTTP_METHODS.GET },
         purchase: { url: '/titles/{title_id}/preorders/{offer_id}/purchase', method: HTTP_METHODS.POST },
         myOrders: { url: '/titles/{title_id}/preorders/me/orders', method: HTTP_METHODS.GET },
@@ -40078,6 +40084,42 @@ var PreordersRoute = /** @class */ (function () {
 var Preorders = /** @class */ (function () {
     function Preorders() {
     }
+    Preorders.hostedOptions = function (checkoutToken, options) {
+        return __assign(__assign({}, options), { headers: __assign(__assign({}, ((options === null || options === void 0 ? void 0 : options.headers) || {})), { 'X-Checkout-Token': checkoutToken }) });
+    };
+    Preorders.hostedCatalog = function (options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedCatalog, undefined, undefined, undefined, options);
+    };
+    Preorders.createHostedSession = function (data, options) {
+        return Requests.processRoute(PreordersRoute.routes.createHostedSession, data, undefined, undefined, options);
+    };
+    Preorders.createHostedRestoreSession = function (data, options) {
+        return Requests.processRoute(PreordersRoute.routes.createHostedRestoreSession, data, undefined, undefined, options);
+    };
+    Preorders.hostedSession = function (title_id, session_id, checkoutToken, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedSession, undefined, { title_id: title_id, session_id: session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    };
+    Preorders.hostedMine = function (title_id, session_id, checkoutToken, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedMine, undefined, { title_id: title_id, session_id: session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    };
+    Preorders.authenticateHostedSession = function (title_id, session_id, checkoutToken, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedAuthenticate, {}, { title_id: title_id, session_id: session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    };
+    Preorders.checkoutHostedSession = function (title_id, session_id, checkoutToken, data, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedCheckout, data, { title_id: title_id, session_id: session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    };
+    Preorders.reconcileHostedSession = function (title_id, session_id, checkoutToken, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedReconcile, {}, { title_id: title_id, session_id: session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    };
+    Preorders.retryHostedSession = function (title_id, session_id, checkoutToken, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedRetry, {}, { title_id: title_id, session_id: session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    };
+    Preorders.refundHostedOrder = function (title_id, session_id, checkoutToken, order_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedRefund, { order_id: order_id }, { title_id: title_id, session_id: session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    };
+    Preorders.resendHostedAccess = function (title_id, session_id, checkoutToken, order_id, options) {
+        return Requests.processRoute(PreordersRoute.routes.hostedResendAccess, { order_id: order_id }, { title_id: title_id, session_id: session_id }, undefined, this.hostedOptions(checkoutToken, options));
+    };
     Preorders.catalog = function (title_id, options) {
         return Requests.processRoute(PreordersRoute.routes.catalog, undefined, { title_id: title_id }, undefined, options);
     };
