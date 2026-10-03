@@ -1,4 +1,5 @@
 node_modules/*
 
-# Local npm auth token (do not commit)
+# Local npm auth tokens and per-developer environment (do not commit)
 .npmrc
+.env.local
