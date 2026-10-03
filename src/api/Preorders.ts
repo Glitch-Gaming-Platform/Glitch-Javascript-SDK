@@ -9,7 +9,7 @@ export type PreorderDerivedState = 'draft' | 'available' | 'scheduled' | 'sold_o
 export type PreorderPaymentStatus = 'created' | 'requires_action' | 'processing' | 'paid' | 'failed' | 'canceled' | 'refunded' | 'disputed' | 'unknown';
 export type PreorderFulfillmentStatus = 'waiting_for_release' | 'ready' | 'processing' | 'fulfilled' | 'blocked_missing_build' | 'blocked_missing_key' | 'canceled' | 'failed';
 
-export interface PreorderRequestOptions extends Pick<AxiosRequestConfig, 'signal' | 'timeout'> {}
+export interface PreorderRequestOptions extends Pick<AxiosRequestConfig, 'signal' | 'timeout' | 'headers'> {}
 
 export interface PreorderPrice {
   country: string;
@@ -57,6 +57,7 @@ export interface PreorderOffer extends Omit<PreorderOfferInput, 'status'> {
 
 export interface PreorderSettings {
   enabled: boolean;
+  hosted_checkout_enabled: boolean;
   timezone: string;
   readiness?: PreorderReadiness;
 }
@@ -73,6 +74,59 @@ export interface PreorderPurchaseInput {
   idempotency_key: string;
   payment_method_id?: string;
   payment_intent_id?: string;
+}
+
+export interface HostedPreorderCatalog extends PreorderCatalog {
+  hosted_checkout_enabled: boolean;
+  title: { id: string; name: string };
+  hosting: { site_id: string; hostname: string; origin: string };
+  checkout_origin: string;
+  embed_script_url: string;
+  version: number;
+}
+
+export interface HostedPreorderSessionInput {
+  offer_id: string;
+  return_origin: string;
+  nonce: string;
+  country?: string;
+  currency?: string;
+}
+
+export interface HostedPreorderRestoreInput {
+  return_origin: string;
+  nonce: string;
+  country?: string;
+  currency?: string;
+}
+
+export interface HostedPreorderPaymentState {
+  status: string;
+  requires_action?: boolean;
+  client_secret?: string | null;
+  payment_intent_id?: string | null;
+  retryable_same_request?: boolean;
+}
+
+export interface HostedPreorderSession {
+  id: string;
+  checkout_session_id: string;
+  intent: 'preorder' | 'preorder_restore';
+  title: { id: string; name: string };
+  hosting_site_id: string;
+  offer?: PreorderOffer | null;
+  country: string;
+  currency: string;
+  return_origin: string;
+  nonce: string;
+  expires_at: string;
+  authenticated: boolean;
+  status: string;
+  order?: PreorderOrder | null;
+  orders?: PreorderOrder[];
+  payment?: HostedPreorderPaymentState | null;
+  session_token?: string;
+  hosted_url?: string;
 }
 
 export interface PreorderOrder {
@@ -131,6 +185,60 @@ export interface PreorderAdminOrderFilters {
 export type PreorderAdminOrderAction = 'refund' | 'reconcile' | 'fulfill' | 'resend_receipt' | 'resend_access';
 
 class Preorders {
+  private static hostedOptions(checkoutToken: string, options?: PreorderRequestOptions): PreorderRequestOptions {
+    return {
+      ...options,
+      headers: {
+        ...((options?.headers || {}) as Record<string, string>),
+        'X-Checkout-Token': checkoutToken,
+      },
+    };
+  }
+
+  public static hostedCatalog(options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderCatalog>> {
+    return Requests.processRoute(PreordersRoute.routes.hostedCatalog, undefined, undefined, undefined, options);
+  }
+
+  public static createHostedSession(data: HostedPreorderSessionInput, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>> {
+    return Requests.processRoute(PreordersRoute.routes.createHostedSession, data, undefined, undefined, options);
+  }
+
+  public static createHostedRestoreSession(data: HostedPreorderRestoreInput, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>> {
+    return Requests.processRoute(PreordersRoute.routes.createHostedRestoreSession, data, undefined, undefined, options);
+  }
+
+  public static hostedSession(title_id: string, session_id: string, checkoutToken: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>> {
+    return Requests.processRoute(PreordersRoute.routes.hostedSession, undefined, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+  }
+
+  public static hostedMine(title_id: string, session_id: string, checkoutToken: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>> {
+    return Requests.processRoute(PreordersRoute.routes.hostedMine, undefined, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+  }
+
+  public static authenticateHostedSession(title_id: string, session_id: string, checkoutToken: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>> {
+    return Requests.processRoute(PreordersRoute.routes.hostedAuthenticate, {}, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+  }
+
+  public static checkoutHostedSession(title_id: string, session_id: string, checkoutToken: string, data: { accept_terms: boolean; payment_method_id?: string; payment_intent_id?: string }, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>> {
+    return Requests.processRoute(PreordersRoute.routes.hostedCheckout, data, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+  }
+
+  public static reconcileHostedSession(title_id: string, session_id: string, checkoutToken: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>> {
+    return Requests.processRoute(PreordersRoute.routes.hostedReconcile, {}, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+  }
+
+  public static retryHostedSession(title_id: string, session_id: string, checkoutToken: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>> {
+    return Requests.processRoute(PreordersRoute.routes.hostedRetry, {}, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+  }
+
+  public static refundHostedOrder(title_id: string, session_id: string, checkoutToken: string, order_id: string, options?: PreorderRequestOptions): AxiosPromise<Response<HostedPreorderSession>> {
+    return Requests.processRoute(PreordersRoute.routes.hostedRefund, { order_id }, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+  }
+
+  public static resendHostedAccess(title_id: string, session_id: string, checkoutToken: string, order_id: string, options?: PreorderRequestOptions): AxiosPromise<Response<{ resent: boolean }>> {
+    return Requests.processRoute(PreordersRoute.routes.hostedResendAccess, { order_id }, { title_id, session_id }, undefined, this.hostedOptions(checkoutToken, options));
+  }
+
   public static catalog(title_id: string, options?: PreorderRequestOptions): AxiosPromise<Response<PreorderCatalog>> {
     return Requests.processRoute(PreordersRoute.routes.catalog, undefined, { title_id }, undefined, options);
   }
@@ -159,7 +267,7 @@ class Preorders {
     return Requests.processRoute(PreordersRoute.routes.settings, undefined, { title_id }, undefined, options);
   }
 
-  public static updateSettings(title_id: string, data: Partial<Pick<PreorderSettings, 'enabled' | 'timezone'>>, options?: PreorderRequestOptions): AxiosPromise<Response<PreorderSettings>> {
+  public static updateSettings(title_id: string, data: Partial<Pick<PreorderSettings, 'enabled' | 'hosted_checkout_enabled' | 'timezone'>>, options?: PreorderRequestOptions): AxiosPromise<Response<PreorderSettings>> {
     return Requests.processRoute(PreordersRoute.routes.updateSettings, data, { title_id }, undefined, options);
   }
 

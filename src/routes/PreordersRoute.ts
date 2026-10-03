@@ -3,6 +3,18 @@ import HTTP_METHODS from '../constants/HttpMethods';
 
 class PreordersRoute {
   public static routes: { [key: string]: Route } = {
+    hostedCatalog: { url: '/hosting/preorders/catalog', method: HTTP_METHODS.GET },
+    createHostedSession: { url: '/hosting/preorders/checkout-sessions', method: HTTP_METHODS.POST },
+    createHostedRestoreSession: { url: '/hosting/preorders/restore-sessions', method: HTTP_METHODS.POST },
+    hostedSession: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}', method: HTTP_METHODS.GET },
+    hostedMine: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/me', method: HTTP_METHODS.GET },
+    hostedAuthenticate: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/authenticate', method: HTTP_METHODS.POST },
+    hostedCheckout: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/checkout', method: HTTP_METHODS.POST },
+    hostedReconcile: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/reconcile', method: HTTP_METHODS.POST },
+    hostedRetry: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/retry', method: HTTP_METHODS.POST },
+    hostedRefund: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/refund', method: HTTP_METHODS.POST },
+    hostedResendAccess: { url: '/titles/{title_id}/preorders/hosted/checkout-sessions/{session_id}/resend-access', method: HTTP_METHODS.POST },
+
     catalog: { url: '/titles/{title_id}/preorders', method: HTTP_METHODS.GET },
     purchase: { url: '/titles/{title_id}/preorders/{offer_id}/purchase', method: HTTP_METHODS.POST },
     myOrders: { url: '/titles/{title_id}/preorders/me/orders', method: HTTP_METHODS.GET },
