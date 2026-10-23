@@ -20878,6 +20878,11 @@ McpRoute.routes = {
     listTitles: { url: "/mcp/v1/titles", method: HTTP_METHODS.GET },
     titleContext: { url: "/mcp/v1/titles/{title_id}/context", method: HTTP_METHODS.GET },
     billing: { url: "/mcp/v1/titles/{title_id}/billing", method: HTTP_METHODS.GET },
+    socialCapabilities: { url: "/mcp/v1/titles/{title_id}/social/capabilities", method: HTTP_METHODS.GET },
+    socialOperation: { url: "/mcp/v1/titles/{title_id}/social/operations/{operation}", method: HTTP_METHODS.POST },
+    marketingCapabilities: { url: "/mcp/v1/titles/{title_id}/marketing/capabilities", method: HTTP_METHODS.GET },
+    marketingOperation: { url: "/mcp/v1/titles/{title_id}/marketing/operations/{operation}", method: HTTP_METHODS.POST },
+    influencerCampaignOperation: { url: "/mcp/v1/titles/{title_id}/influencer-campaigns/{operation}", method: HTTP_METHODS.POST },
     startRun: { url: "/mcp/v1/titles/{title_id}/runs", method: HTTP_METHODS.POST },
     viewRun: { url: "/mcp/v1/titles/{title_id}/runs/{run_id}", method: HTTP_METHODS.GET },
     runEvents: { url: "/mcp/v1/titles/{title_id}/runs/{run_id}/events", method: HTTP_METHODS.GET },
@@ -20920,6 +20925,24 @@ class Mcp {
     /** Check subscription, trial, plan, and credit state for a title. */
     static billing(title_id, params) {
         return Requests.processRoute(McpRoute.routes.billing, {}, { title_id }, params);
+    }
+    /** Discover title-scoped social operations for ordinary and eligible Agent subscriptions. */
+    static socialCapabilities(title_id, params) {
+        return Requests.processRoute(McpRoute.routes.socialCapabilities, {}, { title_id }, params);
+    }
+    static socialOperation(title_id, operation, args, confirm = false, params) {
+        return Requests.processRoute(McpRoute.routes.socialOperation, { arguments: args, confirm }, { title_id, operation }, params);
+    }
+    /** Discover full advertising and conversion tracking operations. */
+    static marketingCapabilities(title_id, params) {
+        return Requests.processRoute(McpRoute.routes.marketingCapabilities, {}, { title_id }, params);
+    }
+    /** Run a title-scoped advertising or conversion operation; mutations require confirmation. */
+    static marketingOperation(title_id, operation, args, confirm = false, params) {
+        return Requests.processRoute(McpRoute.routes.marketingOperation, { arguments: args, confirm }, { title_id, operation }, params);
+    }
+    static influencerCampaignOperation(title_id, operation, fields, campaign_id, confirm = false, params) {
+        return Requests.processRoute(McpRoute.routes.influencerCampaignOperation, { fields, campaign_id, confirm }, { title_id, operation }, params);
     }
     /** Start a paid Glitch Agent run for a title. */
     static startRun(title_id, data, params) {

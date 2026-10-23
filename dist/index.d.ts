@@ -10721,6 +10721,14 @@ declare class Mcp {
     static titleContext<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** Check subscription, trial, plan, and credit state for a title. */
     static billing<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Discover title-scoped social operations for ordinary and eligible Agent subscriptions. */
+    static socialCapabilities<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static socialOperation<T>(title_id: string, operation: string, args: Record<string, unknown>, confirm?: boolean, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Discover full advertising and conversion tracking operations. */
+    static marketingCapabilities<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Run a title-scoped advertising or conversion operation; mutations require confirmation. */
+    static marketingOperation<T>(title_id: string, operation: string, args: Record<string, unknown>, confirm?: boolean, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    static influencerCampaignOperation<T>(title_id: string, operation: string, fields?: Record<string, unknown>, campaign_id?: string, confirm?: boolean, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** Start a paid Glitch Agent run for a title. */
     static startRun<T>(title_id: string, data?: McpStartRunRequest, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /** Fetch a durable run with status, actions, guidance, events, files, and report. */

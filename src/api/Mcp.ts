@@ -43,6 +43,29 @@ class Mcp {
     return Requests.processRoute(McpRoute.routes.billing, {}, { title_id }, params);
   }
 
+  /** Discover title-scoped social operations for ordinary and eligible Agent subscriptions. */
+  public static socialCapabilities<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(McpRoute.routes.socialCapabilities, {}, { title_id }, params);
+  }
+
+  public static socialOperation<T>(title_id: string, operation: string, args: Record<string, unknown>, confirm = false, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(McpRoute.routes.socialOperation, { arguments: args, confirm }, { title_id, operation }, params);
+  }
+
+  /** Discover full advertising and conversion tracking operations. */
+  public static marketingCapabilities<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(McpRoute.routes.marketingCapabilities, {}, { title_id }, params);
+  }
+
+  /** Run a title-scoped advertising or conversion operation; mutations require confirmation. */
+  public static marketingOperation<T>(title_id: string, operation: string, args: Record<string, unknown>, confirm = false, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(McpRoute.routes.marketingOperation, { arguments: args, confirm }, { title_id, operation }, params);
+  }
+
+  public static influencerCampaignOperation<T>(title_id: string, operation: string, fields?: Record<string, unknown>, campaign_id?: string, confirm = false, params?: Record<string, any>): AxiosPromise<Response<T>> {
+    return Requests.processRoute(McpRoute.routes.influencerCampaignOperation, { fields, campaign_id, confirm }, { title_id, operation }, params);
+  }
+
   /** Start a paid Glitch Agent run for a title. */
   public static startRun<T>(title_id: string, data?: McpStartRunRequest, params?: Record<string, any>): AxiosPromise<Response<T>> {
     return Requests.processRoute(McpRoute.routes.startRun, data ?? {}, { title_id }, params);

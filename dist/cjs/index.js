@@ -38920,6 +38920,11 @@ var McpRoute = /** @class */ (function () {
         listTitles: { url: "/mcp/v1/titles", method: HTTP_METHODS.GET },
         titleContext: { url: "/mcp/v1/titles/{title_id}/context", method: HTTP_METHODS.GET },
         billing: { url: "/mcp/v1/titles/{title_id}/billing", method: HTTP_METHODS.GET },
+        socialCapabilities: { url: "/mcp/v1/titles/{title_id}/social/capabilities", method: HTTP_METHODS.GET },
+        socialOperation: { url: "/mcp/v1/titles/{title_id}/social/operations/{operation}", method: HTTP_METHODS.POST },
+        marketingCapabilities: { url: "/mcp/v1/titles/{title_id}/marketing/capabilities", method: HTTP_METHODS.GET },
+        marketingOperation: { url: "/mcp/v1/titles/{title_id}/marketing/operations/{operation}", method: HTTP_METHODS.POST },
+        influencerCampaignOperation: { url: "/mcp/v1/titles/{title_id}/influencer-campaigns/{operation}", method: HTTP_METHODS.POST },
         startRun: { url: "/mcp/v1/titles/{title_id}/runs", method: HTTP_METHODS.POST },
         viewRun: { url: "/mcp/v1/titles/{title_id}/runs/{run_id}", method: HTTP_METHODS.GET },
         runEvents: { url: "/mcp/v1/titles/{title_id}/runs/{run_id}/events", method: HTTP_METHODS.GET },
@@ -38966,6 +38971,27 @@ var Mcp = /** @class */ (function () {
     /** Check subscription, trial, plan, and credit state for a title. */
     Mcp.billing = function (title_id, params) {
         return Requests.processRoute(McpRoute.routes.billing, {}, { title_id: title_id }, params);
+    };
+    /** Discover title-scoped social operations for ordinary and eligible Agent subscriptions. */
+    Mcp.socialCapabilities = function (title_id, params) {
+        return Requests.processRoute(McpRoute.routes.socialCapabilities, {}, { title_id: title_id }, params);
+    };
+    Mcp.socialOperation = function (title_id, operation, args, confirm, params) {
+        if (confirm === void 0) { confirm = false; }
+        return Requests.processRoute(McpRoute.routes.socialOperation, { arguments: args, confirm: confirm }, { title_id: title_id, operation: operation }, params);
+    };
+    /** Discover full advertising and conversion tracking operations. */
+    Mcp.marketingCapabilities = function (title_id, params) {
+        return Requests.processRoute(McpRoute.routes.marketingCapabilities, {}, { title_id: title_id }, params);
+    };
+    /** Run a title-scoped advertising or conversion operation; mutations require confirmation. */
+    Mcp.marketingOperation = function (title_id, operation, args, confirm, params) {
+        if (confirm === void 0) { confirm = false; }
+        return Requests.processRoute(McpRoute.routes.marketingOperation, { arguments: args, confirm: confirm }, { title_id: title_id, operation: operation }, params);
+    };
+    Mcp.influencerCampaignOperation = function (title_id, operation, fields, campaign_id, confirm, params) {
+        if (confirm === void 0) { confirm = false; }
+        return Requests.processRoute(McpRoute.routes.influencerCampaignOperation, { fields: fields, campaign_id: campaign_id, confirm: confirm }, { title_id: title_id, operation: operation }, params);
     };
     /** Start a paid Glitch Agent run for a title. */
     Mcp.startRun = function (title_id, data, params) {
