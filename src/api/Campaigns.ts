@@ -871,6 +871,14 @@ class Campaigns {
     }
 
     /**
+     * Discover recently streamed look-alikes for Easy Create (minimum five).
+     * Never treat older Twitch activity as currently streaming.
+     */
+    public static sourcingGetActiveStreamLookalikes<T>(campaign_id: string, params: Record<string, any> = {}): AxiosPromise<Response<T>> {
+        return Requests.processRoute(CampaignsRoute.routes.sourcingGetActiveStreamLookalikes, params, { campaign_id });
+    }
+
+    /**
      * Find content creators for selected games. This does not save them to the database.
      * @param campaign_id The UUID of the campaign.
      * @param data The search criteria (source, igdb_ids, etc.).

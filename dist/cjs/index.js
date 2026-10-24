@@ -31394,6 +31394,7 @@ var CampaignsRoute = /** @class */ (function () {
         sendCampaignContractWithDocusign: { url: '/campaigns/{campaign_id}/influencers/{user_id}/docusign', method: HTTP_METHODS.POST },
         sourcingSearchIgdbForCampaignGame: { url: '/campaigns/{campaign_id}/sourcing/search-game', method: HTTP_METHODS.GET },
         sourcingGetSimilarIgdbGames: { url: '/campaigns/{campaign_id}/sourcing/similar-games', method: HTTP_METHODS.GET },
+        sourcingGetActiveStreamLookalikes: { url: '/campaigns/{campaign_id}/sourcing/active-stream-lookalikes', method: HTTP_METHODS.POST },
         sourcingFindCreators: { url: '/campaigns/{campaign_id}/sourcing/find-creators', method: HTTP_METHODS.POST },
         updateSourcingSettings: { url: '/campaigns/{campaign_id}/sourcing/settings', method: HTTP_METHODS.PUT },
         sourcingFindAndSaveCreators: { url: '/campaigns/{campaign_id}/sourcing/find-save-creators', method: HTTP_METHODS.POST },
@@ -32183,6 +32184,14 @@ var Campaigns = /** @class */ (function () {
      */
     Campaigns.sourcingGetSimilarIgdbGames = function (campaign_id, params) {
         return Requests.processRoute(CampaignsRoute.routes.sourcingGetSimilarIgdbGames, undefined, { campaign_id: campaign_id }, params);
+    };
+    /**
+     * Discover recently streamed look-alikes for Easy Create (minimum five).
+     * Never treat older Twitch activity as currently streaming.
+     */
+    Campaigns.sourcingGetActiveStreamLookalikes = function (campaign_id, params) {
+        if (params === void 0) { params = {}; }
+        return Requests.processRoute(CampaignsRoute.routes.sourcingGetActiveStreamLookalikes, params, { campaign_id: campaign_id });
     };
     /**
      * Find content creators for selected games. This does not save them to the database.
