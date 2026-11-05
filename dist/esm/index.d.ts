@@ -27,6 +27,7 @@ import { Publications } from "./api";
 import { GameShows } from "./api";
 import FestivalNetworking from './api/FestivalNetworking';
 export * from './api/FestivalNetworking';
+export type { AegisLicenseType, AegisLicenseDetail, AegisInstallValidation, GameMonetizationSettings } from './api/Titles';
 import { Newsletters } from "./api";
 import { PlayTests } from "./api";
 import { Media } from "./api";
