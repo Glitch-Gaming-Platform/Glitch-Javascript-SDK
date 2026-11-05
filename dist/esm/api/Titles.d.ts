@@ -1,5 +1,49 @@
 import Response from "../util/Response";
 import { AxiosPromise } from "axios";
+export type AegisLicenseType = 'premium' | 'rental' | 'subscription' | 'sponsored' | 'admin' | 'trial' | 'free' | 'demo' | 'playtest' | 'none';
+export interface AegisLicenseDetail {
+    id: string | null;
+    type: AegisLicenseType;
+    source: string | null;
+    status: string;
+    acquired_at: string | null;
+    purchased_at: string | null;
+    expires_at: string | null;
+    is_permanent: boolean;
+    price_paid: {
+        amount: string;
+        currency: string;
+    } | null;
+}
+export interface AegisInstallValidation {
+    valid: boolean;
+    reason?: string;
+    code?: string;
+    user_id?: string | null;
+    user_name?: string;
+    /** Kept for backward compatibility; inspect license.type for the exact category. */
+    license_type?: string;
+    license?: AegisLicenseDetail;
+    access?: {
+        premium_purchase_required: boolean;
+        subscription_alone_sufficient: boolean;
+    };
+    build_type?: 'production' | 'demo' | 'playtest';
+    has_full_access?: boolean;
+    non_revenue_build?: boolean;
+    trial_time_remaining?: number | null;
+    rental_time_remaining?: number | null;
+    server_time?: string;
+}
+export interface GameMonetizationSettings {
+    is_premium: boolean;
+    premium_price: string | number | null;
+    is_rental: boolean;
+    rental_price: string | number | null;
+    rental_duration_hours: number;
+    is_subscription_eligible: boolean;
+    premium_purchase_required_for_full_game: boolean;
+}
 export type GameReviewRecommendation = 'recommended' | 'not_recommended' | 'neutral';
 export type GameReviewSentiment = 'positive' | 'mixed' | 'negative';
 export type GameReviewVoteType = 'helpful' | 'funny' | 'detailed' | 'not_helpful';
@@ -90,6 +134,13 @@ declare class Titles {
      * @returns promise
      */
     static update<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** View public title monetization settings. For mutation use authenticated title admin. */
+    static getGameMonetization<T = GameMonetizationSettings>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Update publisher monetization including premium_purchase_required_for_full_game.
+     * Requires a title administrator JWT; backend validates premium/subscription/rental compatibility.
+     */
+    static updateGameMonetization<T = GameMonetizationSettings>(title_id: string, settings: Partial<GameMonetizationSettings>): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single title.
      *
@@ -585,9 +636,13 @@ declare class Titles {
      *
      * @param title_id The UUID of the game title.
      * @param install_id The UUID of the specific install/session.
-     * @returns AxiosPromise containing { valid: boolean, user_name: string, license_type: string }
+     * @returns Access result with a backward-compatible license_type and exact license
+     * metadata: type, status, source, acquired_at, purchased_at, expires_at and
+     * verified price_paid (null when no authoritative historical price exists).
+     * Production requests may return PREMIUM_PURCHASE_REQUIRED (403).
+     * The caller must block gameplay when valid is false.
      */
-    static validateInstall<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
+    static validateInstall<T = AegisInstallValidation>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
     /**
      * List all builds/deployments for a specific title.
      * @param title_id The UUID of the title.

@@ -12488,6 +12488,17 @@ class Titles {
     static update(title_id, data, params) {
         return Requests.processRoute(TitlesRoute.routes.update, data, { title_id: title_id }, params);
     }
+    /** View public title monetization settings. For mutation use authenticated title admin. */
+    static getGameMonetization(title_id) {
+        return Titles.view(title_id);
+    }
+    /**
+     * Update publisher monetization including premium_purchase_required_for_full_game.
+     * Requires a title administrator JWT; backend validates premium/subscription/rental compatibility.
+     */
+    static updateGameMonetization(title_id, settings) {
+        return Titles.update(title_id, settings);
+    }
     /**
      * Retrieve the information for a single title.
      *
@@ -13129,7 +13140,11 @@ class Titles {
      *
      * @param title_id The UUID of the game title.
      * @param install_id The UUID of the specific install/session.
-     * @returns AxiosPromise containing { valid: boolean, user_name: string, license_type: string }
+     * @returns Access result with a backward-compatible license_type and exact license
+     * metadata: type, status, source, acquired_at, purchased_at, expires_at and
+     * verified price_paid (null when no authoritative historical price exists).
+     * Production requests may return PREMIUM_PURCHASE_REQUIRED (403).
+     * The caller must block gameplay when valid is false.
      */
     static validateInstall(title_id, install_id) {
         return Requests.processRoute(TitlesRoute.routes.validateInstall, {}, { title_id: title_id, install_id: install_id });
@@ -17303,7 +17318,9 @@ class Scheduler {
         return Requests.processRoute(SchedulerRoute.routes.getCampaignFundingInstruments, undefined, { scheduler_id }, params);
     }
     /**
-     * List Google Ads conversion actions available to a scheduler account.
+     * List provider conversion actions (Google), Pixel sources (Meta, TikTok, Reddit), or X website-event tags
+     * for the scheduler's connected advertising account. The Reddit result
+     * does not establish delivery of conversion events.
      * GET /schedulers/{scheduler_id}/conversion-actions
      */
     static listConversionActions(scheduler_id, params) {

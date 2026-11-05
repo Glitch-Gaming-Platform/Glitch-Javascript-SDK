@@ -3,6 +3,44 @@ import Requests from "../util/Requests";
 import Response from "../util/Response";
 import { AxiosPromise } from "axios";
 
+export type AegisLicenseType = 'premium' | 'rental' | 'subscription' | 'sponsored' | 'admin' | 'trial' | 'free' | 'demo' | 'playtest' | 'none';
+export interface AegisLicenseDetail {
+    id: string | null;
+    type: AegisLicenseType;
+    source: string | null;
+    status: string;
+    acquired_at: string | null;
+    purchased_at: string | null;
+    expires_at: string | null;
+    is_permanent: boolean;
+    price_paid: { amount: string; currency: string } | null;
+}
+export interface AegisInstallValidation {
+    valid: boolean;
+    reason?: string;
+    code?: string;
+    user_id?: string | null;
+    user_name?: string;
+    /** Kept for backward compatibility; inspect license.type for the exact category. */
+    license_type?: string;
+    license?: AegisLicenseDetail;
+    access?: { premium_purchase_required: boolean; subscription_alone_sufficient: boolean };
+    build_type?: 'production' | 'demo' | 'playtest';
+    has_full_access?: boolean;
+    non_revenue_build?: boolean;
+    trial_time_remaining?: number | null;
+    rental_time_remaining?: number | null;
+    server_time?: string;
+}
+export interface GameMonetizationSettings {
+    is_premium: boolean;
+    premium_price: string | number | null;
+    is_rental: boolean;
+    rental_price: string | number | null;
+    rental_duration_hours: number;
+    is_subscription_eligible: boolean;
+    premium_purchase_required_for_full_game: boolean;
+}
 export type GameReviewRecommendation = 'recommended' | 'not_recommended' | 'neutral';
 export type GameReviewSentiment = 'positive' | 'mixed' | 'negative';
 export type GameReviewVoteType = 'helpful' | 'funny' | 'detailed' | 'not_helpful';
@@ -83,9 +121,9 @@ class Titles {
 
     /**
      * List all the Titles.
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/edab2e3b061347b06c82258622d239e2
-     * 
+     *
      * @returns promise
      */
     public static list<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -94,11 +132,11 @@ class Titles {
 
     /**
      * Create a new title.
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/storeTitle
-     * 
+     *
      * @param data The data to be passed when creating a title.
-     * 
+     *
      * @returns Promise
      */
     public static create<T>(data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -108,12 +146,12 @@ class Titles {
 
     /**
      * Update a title.
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/updateTitle
-     * 
+     *
      * @param title_id The id of the title to update.
      * @param data The data to update.
-     * 
+     *
      * @returns promise
      */
     public static update<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -121,13 +159,29 @@ class Titles {
         return Requests.processRoute(TitlesRoute.routes.update, data, { title_id: title_id }, params);
     }
 
+    /** View public title monetization settings. For mutation use authenticated title admin. */
+    public static getGameMonetization<T = GameMonetizationSettings>(title_id: string): AxiosPromise<Response<T>> {
+        return Titles.view<T>(title_id);
+    }
+
+    /**
+     * Update publisher monetization including premium_purchase_required_for_full_game.
+     * Requires a title administrator JWT; backend validates premium/subscription/rental compatibility.
+     */
+    public static updateGameMonetization<T = GameMonetizationSettings>(
+        title_id: string,
+        settings: Partial<GameMonetizationSettings>
+    ): AxiosPromise<Response<T>> {
+        return Titles.update<T>(title_id, settings);
+    }
+
     /**
      * Retrieve the information for a single title.
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/getTitleByUUID
-     * 
+     *
      * @param title_id The id fo the title to retrieve.
-     * 
+     *
      * @returns promise
      */
     public static view<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -137,9 +191,9 @@ class Titles {
 
     /**
      * Deletes a title.
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/deleteTitle
-     * 
+     *
      * @param title_id The id of the title to delete.
      * @returns promise
      */
@@ -150,11 +204,11 @@ class Titles {
 
     /**
      * Approve a title
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/approveTitle
-     * 
+     *
      * @param data The data to be passed when creating a title.
-     * 
+     *
      * @returns Promise
      */
     public static approve<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -164,11 +218,11 @@ class Titles {
 
     /**
      * Reject a title
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/rejectTitle
-     * 
+     *
      * @param data The data to be passed when creating a title.
-     * 
+     *
      * @returns Promise
      */
     public static reject<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -178,11 +232,11 @@ class Titles {
 
     /**
      * Add a user as an administrator to a title
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/addTitleAdministrator
-     * 
+     *
      * @param data The data to be passed when creating a title.
-     * 
+     *
      * @returns Promise
      */
     public static addAdministrator<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -192,11 +246,11 @@ class Titles {
 
     /**
      * Remove a user as an administrator toa  tile
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/removeTitleAdministrator
-     * 
+     *
      * @param data The data to be passed when creating a title.
-     * 
+     *
      * @returns Promise
      */
     public static removeAdministrator<T>(title_id: string, user_id: string, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -206,12 +260,12 @@ class Titles {
 
     /**
        * Updates the main image for the title using a File object.
-       * 
+       *
        * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleMainImage
-       * 
+       *
        * @param file The file object to upload.
        * @param data Any additional data to pass along to the upload.
-       * 
+       *
        * @returns promise
        */
     public static uploadMainImageFile<T>(title_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -223,12 +277,12 @@ class Titles {
 
     /**
      * Updates the main image for the title using a Blob.
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleMainImage
-     * 
+     *
      * @param blob The blob to upload.
      * @param data Any additional data to pass along to the upload
-     * 
+     *
      * @returns promise
      */
     public static uploadMainImageBlob<T>(title_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -240,12 +294,12 @@ class Titles {
 
     /**
      * Updates the banner image for the title using a File object.
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleBannerImage
-     * 
+     *
      * @param file The file object to upload.
      * @param data Any additional data to pass along to the upload.
-     * 
+     *
      * @returns promise
      */
     public static uploadBannerImageFile<T>(title_id: string, file: File, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -257,12 +311,12 @@ class Titles {
 
     /**
      * Updates the banner image for the title using a Blob.
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/uploadTitleBannerImage
-     * 
+     *
      * @param blob The blob to upload.
      * @param data Any additional data to pass along to the upload
-     * 
+     *
      * @returns promise
      */
     public static uploadBannerImageBlob<T>(title_id: string, blob: Blob, data?: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -307,7 +361,7 @@ class Titles {
 
     /**
      * Upload a CSV/Excel file containing wishlist data for a title.
-     * 
+     *
      * @param title_id The UUID of the title
      * @param file The CSV or Excel file
      * @param data Any additional form data, e.g. platform
@@ -325,7 +379,7 @@ class Titles {
 
     /**
      * Retrieve the wishlist data for a specific title.
-     * 
+     *
      * @param title_id The UUID of the title
      * @param params Optional query params, e.g. { platform: 'steam', start_date: '2025-01-01', end_date: '2025-01-31'}
      * @returns AxiosPromise
@@ -382,9 +436,9 @@ class Titles {
 
     /**
      * Search for Titles using Meilisearch or fallback based on the query and filters.
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/searchTitles
-     * 
+     *
      * @param params Object of query params:
      *   - q?: string, filters?: string,
      *   - sort_by?: string, sort_order?: 'asc'|'desc',
@@ -499,7 +553,7 @@ class Titles {
 
     /**
      * Upload a CSV/Excel file containing daily UTM analytics for a specific title.
-     * 
+     *
      * @param title_id The UUID of the title
      * @param file The CSV or Excel file
      * @param data Optional form fields (if needed)
@@ -518,9 +572,9 @@ class Titles {
 
     /**
      * Retrieve the UTM analytics data for a title (paginated, filterable, sortable).
-     * 
+     *
      * GET /titles/{title_id}/utm
-     * 
+     *
      * @param title_id The UUID of the title
      * @param params Optional query params: start_date, end_date, source, device_type, sort_by, etc.
      * @returns AxiosPromise
@@ -539,11 +593,11 @@ class Titles {
 
     /**
      * Get the web tracking token used for websites.
-     * 
+     *
      * GET /titles/{title_id}/webTrackingToken
-     * 
+     *
      * @param title_id The UUID of the title
-     * @param params Optional query params: 
+     * @param params Optional query params:
      * @returns AxiosPromise
      */
     public static getWebTrackingToken<T>(
@@ -560,9 +614,9 @@ class Titles {
 
     /**
      * Analyze UTM data with optional group_by (source, campaign, medium, device_type, etc.)
-     * 
+     *
      * GET /titles/{title_id}/utm/analysis
-     * 
+     *
      * @param title_id The UUID of the title
      * @param params e.g. ?group_by=source&start_date=YYYY-MM-DD
      * @returns AxiosPromise
@@ -640,9 +694,9 @@ class Titles {
         );
     }
 
-    /**  
-  * List all purchase events for a specific title.  
-  * Matches GET /titles/{title_id}/purchases  
+    /**
+  * List all purchase events for a specific title.
+  * Matches GET /titles/{title_id}/purchases
   */
     public static listPurchases<T>(
         title_id: string,
@@ -656,9 +710,9 @@ class Titles {
         );
     }
 
-    /**  
-     * Retrieve a single purchase record by ID.  
-     * Matches GET /titles/{title_id}/purchases/{purchase_id}  
+    /**
+     * Retrieve a single purchase record by ID.
+     * Matches GET /titles/{title_id}/purchases/{purchase_id}
      */
     public static viewPurchase<T>(
         title_id: string,
@@ -673,9 +727,9 @@ class Titles {
         );
     }
 
-    /**  
-     * Create a new purchase record.  
-     * Matches POST /titles/{title_id}/purchases  
+    /**
+     * Create a new purchase record.
+     * Matches POST /titles/{title_id}/purchases
      */
     public static createPurchase<T>(
         title_id: string,
@@ -690,9 +744,9 @@ class Titles {
         );
     }
 
-    /**  
-     * Get a summary of total revenue, grouped by day or purchase_type.  
-     * Matches GET /titles/{title_id}/purchases/summary  
+    /**
+     * Get a summary of total revenue, grouped by day or purchase_type.
+     * Matches GET /titles/{title_id}/purchases/summary
      */
     public static purchaseSummary<T>(
         title_id: string,
@@ -706,9 +760,9 @@ class Titles {
         );
     }
 
-    /**  
-     * Revenue by time (daily, weekly, or monthly).  
-     * Matches GET /titles/{title_id}/purchases/reports/time  
+    /**
+     * Revenue by time (daily, weekly, or monthly).
+     * Matches GET /titles/{title_id}/purchases/reports/time
      */
     public static purchaseRevenueByTime<T>(
         title_id: string,
@@ -722,9 +776,9 @@ class Titles {
         );
     }
 
-    /**  
-     * 30-day LTV (Lifetime Value) per install.  
-     * Matches GET /titles/{title_id}/purchases/reports/ltv30  
+    /**
+     * 30-day LTV (Lifetime Value) per install.
+     * Matches GET /titles/{title_id}/purchases/reports/ltv30
      */
     public static purchaseLtv30<T>(
         title_id: string,
@@ -738,9 +792,9 @@ class Titles {
         );
     }
 
-    /**  
-     * Show breakdown of revenue per currency, with optional USD conversion.  
-     * Matches GET /titles/{title_id}/purchases/reports/currency  
+    /**
+     * Show breakdown of revenue per currency, with optional USD conversion.
+     * Matches GET /titles/{title_id}/purchases/reports/currency
      */
     public static purchaseCurrencyBreakdown<T>(
         title_id: string,
@@ -754,9 +808,9 @@ class Titles {
         );
     }
 
-    /**  
-     * Distribution of installs by total revenue, plus a histogram array.  
-     * Matches GET /titles/{title_id}/purchases/reports/install-distribution  
+    /**
+     * Distribution of installs by total revenue, plus a histogram array.
+     * Matches GET /titles/{title_id}/purchases/reports/install-distribution
      */
     public static installRevenueDistribution<T>(
         title_id: string,
@@ -770,9 +824,9 @@ class Titles {
         );
     }
 
-    /**  
-     * Stats by item SKU, purchase type, and repeat purchase analysis.  
-     * Matches GET /titles/{title_id}/purchases/reports/item-type-stats  
+    /**
+     * Stats by item SKU, purchase type, and repeat purchase analysis.
+     * Matches GET /titles/{title_id}/purchases/reports/item-type-stats
      */
     public static itemAndPurchaseTypeStats<T>(
         title_id: string,
@@ -811,13 +865,13 @@ class Titles {
 
     /**
      * Update administrator email preferences for a title.
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Titles/updateTitleAdministrator
-     * 
+     *
      * @param title_id The id of the title.
      * @param user_id The id of the user/administrator.
      * @param data The preference data to update (notify_promotion_schedule_reminder_email, notify_weekly_promotion_performance_email).
-     * 
+     *
      * @returns Promise
      */
     public static updateAdministrator<T>(title_id: string, user_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -1071,17 +1125,21 @@ class Titles {
 
     /**
      * The Aegis Handshake: Verify if a player is allowed to play.
-     * 
-     * This is used by the game engine (Unity/Unreal) to confirm that the 
+     *
+     * This is used by the game engine (Unity/Unreal) to confirm that the
      * current session is valid and the user has a proper license.
-     * 
+     *
      * @see https://api.glitch.fun/api/documentation#/Aegis%20Security/validateGameSession
-     * 
+     *
      * @param title_id The UUID of the game title.
      * @param install_id The UUID of the specific install/session.
-     * @returns AxiosPromise containing { valid: boolean, user_name: string, license_type: string }
+     * @returns Access result with a backward-compatible license_type and exact license
+     * metadata: type, status, source, acquired_at, purchased_at, expires_at and
+     * verified price_paid (null when no authoritative historical price exists).
+     * Production requests may return PREMIUM_PURCHASE_REQUIRED (403).
+     * The caller must block gameplay when valid is false.
      */
-    public static validateInstall<T>(title_id: string, install_id: string): AxiosPromise<Response<T>> {
+    public static validateInstall<T = AegisInstallValidation>(title_id: string, install_id: string): AxiosPromise<Response<T>> {
         return Requests.processRoute(
             TitlesRoute.routes.validateInstall,
             {},
@@ -1121,7 +1179,7 @@ class Titles {
     /**
     * Toggle a game on the current user's wishlist.
     * If the game is not wishlisted, it will be added. If it is, it will be removed.
-    * 
+    *
     * @param title_id The UUID of the title.
     * @param data Optional context: { fingerprint_id?: string, short_link_click_id?: string }
     */
@@ -1131,7 +1189,7 @@ class Titles {
 
     /**
      * Record a self-assigned excitement score (1-5) for a wishlisted game.
-     * 
+     *
      * @param title_id The UUID of the title.
      * @param data { score: number } - Must be between 1 and 5.
      */
@@ -1141,7 +1199,7 @@ class Titles {
 
     /**
      * Retrieve the current user's personal wishlist collection.
-     * 
+     *
      * @param params Optional pagination parameters (?page=1&per_page=25)
      */
     public static myWishlists<T>(params?: Record<string, any>): AxiosPromise<Response<T>> {
@@ -1157,7 +1215,7 @@ class Titles {
      * Get Wishlist Intelligence statistics for a title.
      * Includes funnel data and predictive revenue forecasting.
      * Note: Requires Title Administrator permissions.
-     * 
+     *
      * @param title_id The UUID of the title.
      */
     public static wishlistStats<T>(title_id: string): AxiosPromise<Response<T>> {
@@ -1193,7 +1251,7 @@ class Titles {
     /**
  * Proxies a request through the backend to the matchmaker.
  * This avoids HTTPS -> HTTP mixed content blocks.
- * 
+ *
  * @param title_id The UUID of the game title.
  * @returns AxiosPromise containing { signallingServer: string }
  */
@@ -1324,8 +1382,8 @@ class Titles {
 
     /**
      * Get games ranked by community activity (active players).
-     * 
-     * @param params 
+     *
+     * @param params
      *   - window: number (hours, default 24)
      *   - limit: number (default 10)
      *   - is_nsfw: 1 for adult titles only, 0 for safe titles only
@@ -1336,8 +1394,8 @@ class Titles {
 
     /**
      * Get games trending on social media.
-     * 
-     * @param params 
+     *
+     * @param params
      *   - type: 'influencer' (campaigns) or 'organic' (non-paid)
      *   - window: number (hours, default 168)
      *   - limit: number (default 10)
@@ -1349,8 +1407,8 @@ class Titles {
 
     /**
      * Get a personalized discovery queue of games.
-     * 
-     * @param params 
+     *
+     * @param params
      *   - limit: number (default 12)
      *   - device_id: string (highly recommended for guest tracking)
      *   - is_nsfw: 1 for adult titles only, 0 for safe titles only
@@ -1362,9 +1420,9 @@ class Titles {
     /**
     * Get a curated, playable feed for the Swipe interface.
     * This route ensures games have builds and images, and supports seeded randomization.
-    * 
+    *
     * @see https://api.glitch.fun/api/documentation#/Discovery/getSwipeFeed
-    * 
+    *
     * @param params Object of query params:
     *   - seed?: number (For consistent randomization)
     *   - genres?: string[] (Filter by genre names)
@@ -1381,7 +1439,7 @@ class Titles {
     /**
      * Get a consolidated report of all earnings for a title, including
      * playtime payouts, direct premium purchases, and rentals (minus refunds).
-     * 
+     *
      * @param title_id The UUID of the title.
      * @returns AxiosPromise containing the consolidated financial data.
      */

@@ -4103,6 +4103,50 @@ declare class SocialPosts {
     }): AxiosPromise<Response<T>>;
 }
 
+type AegisLicenseType = 'premium' | 'rental' | 'subscription' | 'sponsored' | 'admin' | 'trial' | 'free' | 'demo' | 'playtest' | 'none';
+interface AegisLicenseDetail {
+    id: string | null;
+    type: AegisLicenseType;
+    source: string | null;
+    status: string;
+    acquired_at: string | null;
+    purchased_at: string | null;
+    expires_at: string | null;
+    is_permanent: boolean;
+    price_paid: {
+        amount: string;
+        currency: string;
+    } | null;
+}
+interface AegisInstallValidation {
+    valid: boolean;
+    reason?: string;
+    code?: string;
+    user_id?: string | null;
+    user_name?: string;
+    /** Kept for backward compatibility; inspect license.type for the exact category. */
+    license_type?: string;
+    license?: AegisLicenseDetail;
+    access?: {
+        premium_purchase_required: boolean;
+        subscription_alone_sufficient: boolean;
+    };
+    build_type?: 'production' | 'demo' | 'playtest';
+    has_full_access?: boolean;
+    non_revenue_build?: boolean;
+    trial_time_remaining?: number | null;
+    rental_time_remaining?: number | null;
+    server_time?: string;
+}
+interface GameMonetizationSettings {
+    is_premium: boolean;
+    premium_price: string | number | null;
+    is_rental: boolean;
+    rental_price: string | number | null;
+    rental_duration_hours: number;
+    is_subscription_eligible: boolean;
+    premium_purchase_required_for_full_game: boolean;
+}
 type GameReviewRecommendation = 'recommended' | 'not_recommended' | 'neutral';
 type GameReviewSentiment = 'positive' | 'mixed' | 'negative';
 type GameReviewVoteType = 'helpful' | 'funny' | 'detailed' | 'not_helpful';
@@ -4193,6 +4237,13 @@ declare class Titles {
      * @returns promise
      */
     static update<T>(title_id: string, data: object, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** View public title monetization settings. For mutation use authenticated title admin. */
+    static getGameMonetization<T = GameMonetizationSettings>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Update publisher monetization including premium_purchase_required_for_full_game.
+     * Requires a title administrator JWT; backend validates premium/subscription/rental compatibility.
+     */
+    static updateGameMonetization<T = GameMonetizationSettings>(title_id: string, settings: Partial<GameMonetizationSettings>): AxiosPromise<Response<T>>;
     /**
      * Retrieve the information for a single title.
      *
@@ -4688,9 +4739,13 @@ declare class Titles {
      *
      * @param title_id The UUID of the game title.
      * @param install_id The UUID of the specific install/session.
-     * @returns AxiosPromise containing { valid: boolean, user_name: string, license_type: string }
+     * @returns Access result with a backward-compatible license_type and exact license
+     * metadata: type, status, source, acquired_at, purchased_at, expires_at and
+     * verified price_paid (null when no authoritative historical price exists).
+     * Production requests may return PREMIUM_PURCHASE_REQUIRED (403).
+     * The caller must block gameplay when valid is false.
      */
-    static validateInstall<T>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
+    static validateInstall<T = AegisInstallValidation>(title_id: string, install_id: string): AxiosPromise<Response<T>>;
     /**
      * List all builds/deployments for a specific title.
      * @param title_id The UUID of the title.
@@ -7792,7 +7847,9 @@ declare class Scheduler {
      */
     static listCampaignFundingInstruments<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
     /**
-     * List Google Ads conversion actions available to a scheduler account.
+     * List provider conversion actions (Google), Pixel sources (Meta, TikTok, Reddit), or X website-event tags
+     * for the scheduler's connected advertising account. The Reddit result
+     * does not establish delivery of conversion events.
      * GET /schedulers/{scheduler_id}/conversion-actions
      */
     static listConversionActions<T>(scheduler_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
@@ -13850,4 +13907,4 @@ declare class Glitch {
     };
 }
 
-export { type FestivalApplicationInput, type FestivalApplicationState, type FestivalConversation, type FestivalMediaUpload, type FestivalNetworkingFilters, type FestivalNetworkingProfile, type FestivalNetworkingResponse, type FestivalNetworkingSettings, type FestivalPost, type FestivalPostInput, type FestivalPostKind, type FestivalPostState, type FestivalPreferences, type FestivalReportInput, type FestivalRequestOptions, type FestivalWorkType, type HostedPreorderCatalog, type HostedPreorderPaymentState, type HostedPreorderRestoreInput, type HostedPreorderSession, type HostedPreorderSessionInput, type MicrotransactionAbility, type MicrotransactionBranding, type MicrotransactionBridge, type MicrotransactionBridgeOptions, type MicrotransactionCapabilities, type MicrotransactionCatalog, type MicrotransactionCatalogFilter, type MicrotransactionCheckoutInput, type MicrotransactionCheckoutResult, type MicrotransactionCheckoutSession, type MicrotransactionCheckoutSessionInput, type MicrotransactionConsumeInput, type MicrotransactionCreatedCheckoutSession, type MicrotransactionCurrency, type MicrotransactionDelivery, type MicrotransactionDeliveryListFilters, type MicrotransactionDeliveryResult, type MicrotransactionDeliverySettings, type MicrotransactionDeliverySettingsInput, type MicrotransactionDeliveryStatus, type MicrotransactionEarnings, type MicrotransactionEntitlement, type MicrotransactionEnvironment, type MicrotransactionEnvironmentFilter, type MicrotransactionError, type MicrotransactionErrorCode, type MicrotransactionFramePolicy, type MicrotransactionFulfillmentStatus, type MicrotransactionGrant, type MicrotransactionGrantUsage, type MicrotransactionGrantUsageStatus, type MicrotransactionHandoff, type MicrotransactionHandoffClaim, type MicrotransactionHandoffClaimInput, type MicrotransactionLegacyConfirmation, type MicrotransactionManagementListFilters, type MicrotransactionMedia, type MicrotransactionMyPurchases, type MicrotransactionMyPurchasesFilters, type MicrotransactionOperation, type MicrotransactionOperationCapability, type MicrotransactionOrder, type MicrotransactionOrderDetail, type MicrotransactionOrderListFilters, type MicrotransactionOverlay, type MicrotransactionOverlayOptions, type MicrotransactionPaymentStatus, type MicrotransactionPayout, type MicrotransactionPayoutListFilters, type MicrotransactionPayoutStatus, type MicrotransactionPlayerPurchase, type MicrotransactionPrice, type MicrotransactionProduct, type MicrotransactionProductInput, type MicrotransactionProductListFilters, type MicrotransactionProductStatus, type MicrotransactionProductType, type MicrotransactionProvider, type MicrotransactionProviderConfiguration, type MicrotransactionProviderInput, type MicrotransactionProviderName, type MicrotransactionProviderOnboarding, type MicrotransactionProviderOnboardingInput, type MicrotransactionProviderSku, type MicrotransactionPurchaseInput, type MicrotransactionPurchaseMessage, type MicrotransactionPurchasePagination, type MicrotransactionQuote, type MicrotransactionReadiness, type MicrotransactionReadyMessage, type MicrotransactionRefund, type MicrotransactionRefundInput, type MicrotransactionRefundListFilters, type MicrotransactionRefundRecord, type MicrotransactionRefundRequest, type MicrotransactionRefundStatus, type MicrotransactionRelatedListFilters, type MicrotransactionRequestOptions, type MicrotransactionResponse, type MicrotransactionRestoreBridgeOptions, type MicrotransactionSessionOptions, type MicrotransactionSettings, type MicrotransactionSettingsInput, type MicrotransactionTaxCollection, type MicrotransactionVerifiedSession, type PreorderAdminOrderAction, type PreorderAdminOrderFilters, type PreorderCatalog, type PreorderDerivedState, type PreorderFulfillmentStatus, type PreorderFulfillmentType, type PreorderInventory, type PreorderOffer, type PreorderOfferInput, type PreorderOfferStatus, type PreorderOrder, type PreorderPaymentStatus, type PreorderPrice, type PreorderPurchaseInput, type PreorderReadiness, type PreorderReadinessIssue, type PreorderRequestOptions, type PreorderSettings, createMicrotransactionBridge, createMicrotransactionNonce, createMicrotransactionRestoreBridge, Glitch as default, openMicrotransactionOverlay, openMicrotransactionRestoreOverlay };
+export { type AegisInstallValidation, type AegisLicenseDetail, type AegisLicenseType, type FestivalApplicationInput, type FestivalApplicationState, type FestivalConversation, type FestivalMediaUpload, type FestivalNetworkingFilters, type FestivalNetworkingProfile, type FestivalNetworkingResponse, type FestivalNetworkingSettings, type FestivalPost, type FestivalPostInput, type FestivalPostKind, type FestivalPostState, type FestivalPreferences, type FestivalReportInput, type FestivalRequestOptions, type FestivalWorkType, type GameMonetizationSettings, type HostedPreorderCatalog, type HostedPreorderPaymentState, type HostedPreorderRestoreInput, type HostedPreorderSession, type HostedPreorderSessionInput, type MicrotransactionAbility, type MicrotransactionBranding, type MicrotransactionBridge, type MicrotransactionBridgeOptions, type MicrotransactionCapabilities, type MicrotransactionCatalog, type MicrotransactionCatalogFilter, type MicrotransactionCheckoutInput, type MicrotransactionCheckoutResult, type MicrotransactionCheckoutSession, type MicrotransactionCheckoutSessionInput, type MicrotransactionConsumeInput, type MicrotransactionCreatedCheckoutSession, type MicrotransactionCurrency, type MicrotransactionDelivery, type MicrotransactionDeliveryListFilters, type MicrotransactionDeliveryResult, type MicrotransactionDeliverySettings, type MicrotransactionDeliverySettingsInput, type MicrotransactionDeliveryStatus, type MicrotransactionEarnings, type MicrotransactionEntitlement, type MicrotransactionEnvironment, type MicrotransactionEnvironmentFilter, type MicrotransactionError, type MicrotransactionErrorCode, type MicrotransactionFramePolicy, type MicrotransactionFulfillmentStatus, type MicrotransactionGrant, type MicrotransactionGrantUsage, type MicrotransactionGrantUsageStatus, type MicrotransactionHandoff, type MicrotransactionHandoffClaim, type MicrotransactionHandoffClaimInput, type MicrotransactionLegacyConfirmation, type MicrotransactionManagementListFilters, type MicrotransactionMedia, type MicrotransactionMyPurchases, type MicrotransactionMyPurchasesFilters, type MicrotransactionOperation, type MicrotransactionOperationCapability, type MicrotransactionOrder, type MicrotransactionOrderDetail, type MicrotransactionOrderListFilters, type MicrotransactionOverlay, type MicrotransactionOverlayOptions, type MicrotransactionPaymentStatus, type MicrotransactionPayout, type MicrotransactionPayoutListFilters, type MicrotransactionPayoutStatus, type MicrotransactionPlayerPurchase, type MicrotransactionPrice, type MicrotransactionProduct, type MicrotransactionProductInput, type MicrotransactionProductListFilters, type MicrotransactionProductStatus, type MicrotransactionProductType, type MicrotransactionProvider, type MicrotransactionProviderConfiguration, type MicrotransactionProviderInput, type MicrotransactionProviderName, type MicrotransactionProviderOnboarding, type MicrotransactionProviderOnboardingInput, type MicrotransactionProviderSku, type MicrotransactionPurchaseInput, type MicrotransactionPurchaseMessage, type MicrotransactionPurchasePagination, type MicrotransactionQuote, type MicrotransactionReadiness, type MicrotransactionReadyMessage, type MicrotransactionRefund, type MicrotransactionRefundInput, type MicrotransactionRefundListFilters, type MicrotransactionRefundRecord, type MicrotransactionRefundRequest, type MicrotransactionRefundStatus, type MicrotransactionRelatedListFilters, type MicrotransactionRequestOptions, type MicrotransactionResponse, type MicrotransactionRestoreBridgeOptions, type MicrotransactionSessionOptions, type MicrotransactionSettings, type MicrotransactionSettingsInput, type MicrotransactionTaxCollection, type MicrotransactionVerifiedSession, type PreorderAdminOrderAction, type PreorderAdminOrderFilters, type PreorderCatalog, type PreorderDerivedState, type PreorderFulfillmentStatus, type PreorderFulfillmentType, type PreorderInventory, type PreorderOffer, type PreorderOfferInput, type PreorderOfferStatus, type PreorderOrder, type PreorderPaymentStatus, type PreorderPrice, type PreorderPurchaseInput, type PreorderReadiness, type PreorderReadinessIssue, type PreorderRequestOptions, type PreorderSettings, createMicrotransactionBridge, createMicrotransactionNonce, createMicrotransactionRestoreBridge, Glitch as default, openMicrotransactionOverlay, openMicrotransactionRestoreOverlay };

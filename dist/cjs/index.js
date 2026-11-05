@@ -17324,18 +17324,13 @@ function requireNode () {
  * treat as a browser.
  */
 
-var hasRequiredSrc;
-
-function requireSrc () {
-	if (hasRequiredSrc) return src$1.exports;
-	hasRequiredSrc = 1;
-	if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
-		src$1.exports = requireBrowser();
-	} else {
-		src$1.exports = requireNode();
-	}
-	return src$1.exports;
+if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
+	src$1.exports = requireBrowser();
+} else {
+	src$1.exports = requireNode();
 }
+
+var srcExports = src$1.exports;
 
 var promisify$1 = {};
 
@@ -17360,7 +17355,7 @@ var __importDefault$3 = (commonjsGlobal && commonjsGlobal.__importDefault) || fu
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const events_1 = require$$0$3;
-const debug_1$3 = __importDefault$3(requireSrc());
+const debug_1$3 = __importDefault$3(srcExports);
 const promisify_1 = __importDefault$3(promisify$1);
 const debug$4 = debug_1$3.default('agent-base');
 function isAgent(v) {
@@ -17564,7 +17559,7 @@ var __importDefault$2 = (commonjsGlobal && commonjsGlobal.__importDefault) || fu
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(parseProxyResponse$1, "__esModule", { value: true });
-const debug_1$2 = __importDefault$2(requireSrc());
+const debug_1$2 = __importDefault$2(srcExports);
 const debug$3 = debug_1$2.default('https-proxy-agent:parse-proxy-response');
 function parseProxyResponse(socket) {
     return new Promise((resolve, reject) => {
@@ -17642,7 +17637,7 @@ const net_1 = __importDefault$1(require$$0$4);
 const tls_1 = __importDefault$1(require$$1$2);
 const url_1 = __importDefault$1(require$$5);
 const assert_1 = __importDefault$1(require$$3);
-const debug_1$1 = __importDefault$1(requireSrc());
+const debug_1$1 = __importDefault$1(srcExports);
 const agent_base_1 = src;
 const parse_proxy_response_1 = __importDefault$1(parseProxyResponse$1);
 const debug$2 = debug_1$1.default('https-proxy-agent:agent');
@@ -17825,7 +17820,7 @@ var debug_1 = function () {
   if (!debug$1) {
     try {
       /* eslint global-require: off */
-      debug$1 = requireSrc()("follow-redirects");
+      debug$1 = srcExports("follow-redirects");
     }
     catch (error) { /* */ }
     if (typeof debug$1 !== "function") {
@@ -30346,6 +30341,17 @@ var Titles = /** @class */ (function () {
     Titles.update = function (title_id, data, params) {
         return Requests.processRoute(TitlesRoute.routes.update, data, { title_id: title_id }, params);
     };
+    /** View public title monetization settings. For mutation use authenticated title admin. */
+    Titles.getGameMonetization = function (title_id) {
+        return Titles.view(title_id);
+    };
+    /**
+     * Update publisher monetization including premium_purchase_required_for_full_game.
+     * Requires a title administrator JWT; backend validates premium/subscription/rental compatibility.
+     */
+    Titles.updateGameMonetization = function (title_id, settings) {
+        return Titles.update(title_id, settings);
+    };
     /**
      * Retrieve the information for a single title.
      *
@@ -30987,7 +30993,11 @@ var Titles = /** @class */ (function () {
      *
      * @param title_id The UUID of the game title.
      * @param install_id The UUID of the specific install/session.
-     * @returns AxiosPromise containing { valid: boolean, user_name: string, license_type: string }
+     * @returns Access result with a backward-compatible license_type and exact license
+     * metadata: type, status, source, acquired_at, purchased_at, expires_at and
+     * verified price_paid (null when no authoritative historical price exists).
+     * Production requests may return PREMIUM_PURCHASE_REQUIRED (403).
+     * The caller must block gameplay when valid is false.
      */
     Titles.validateInstall = function (title_id, install_id) {
         return Requests.processRoute(TitlesRoute.routes.validateInstall, {}, { title_id: title_id, install_id: install_id });
@@ -35236,7 +35246,9 @@ var Scheduler = /** @class */ (function () {
         return Requests.processRoute(SchedulerRoute.routes.getCampaignFundingInstruments, undefined, { scheduler_id: scheduler_id }, params);
     };
     /**
-     * List Google Ads conversion actions available to a scheduler account.
+     * List provider conversion actions (Google), Pixel sources (Meta, TikTok, Reddit), or X website-event tags
+     * for the scheduler's connected advertising account. The Reddit result
+     * does not establish delivery of conversion events.
      * GET /schedulers/{scheduler_id}/conversion-actions
      */
     Scheduler.listConversionActions = function (scheduler_id, params) {
