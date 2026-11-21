@@ -12450,6 +12450,19 @@ TitlesRoute.routes = {
     reviewsVote: { url: '/reviews/{review_id}/vote', method: HTTP_METHODS.POST },
     reviewsReport: { url: '/reviews/{review_id}/report', method: HTTP_METHODS.POST },
     reviewsDeveloperResponse: { url: '/reviews/{review_id}/developer-response', method: HTTP_METHODS.POST },
+    // Steamworks Financial API (IPartnerFinancialsService): key, sync, stored data, live read-through.
+    steamFinancialsStatus: { url: '/titles/{title_id}/steam/financials', method: HTTP_METHODS.GET },
+    steamFinancialsConnect: { url: '/titles/{title_id}/steam/financials/key', method: HTTP_METHODS.PUT },
+    steamFinancialsTestKey: { url: '/titles/{title_id}/steam/financials/key/test', method: HTTP_METHODS.POST },
+    steamFinancialsDisconnect: { url: '/titles/{title_id}/steam/financials/key', method: HTTP_METHODS.DELETE },
+    steamFinancialsSync: { url: '/titles/{title_id}/steam/financials/sync', method: HTTP_METHODS.POST },
+    steamFinancialsReports: { url: '/titles/{title_id}/steam/financials/reports', method: HTTP_METHODS.GET },
+    steamFinancialsSales: { url: '/titles/{title_id}/steam/financials/sales', method: HTTP_METHODS.GET },
+    steamFinancialsWishlists: { url: '/titles/{title_id}/steam/financials/wishlists', method: HTTP_METHODS.GET },
+    steamFinancialsLookups: { url: '/titles/{title_id}/steam/financials/lookups', method: HTTP_METHODS.GET },
+    steamFinancialsLiveChangedDates: { url: '/titles/{title_id}/steam/financials/live/changed-dates', method: HTTP_METHODS.GET },
+    steamFinancialsLiveDetailedSales: { url: '/titles/{title_id}/steam/financials/live/detailed-sales', method: HTTP_METHODS.GET },
+    steamFinancialsLiveWishlist: { url: '/titles/{title_id}/steam/financials/live/wishlist', method: HTTP_METHODS.GET },
 };
 
 class Titles {
@@ -13476,6 +13489,82 @@ class Titles {
      */
     static respondToReview(review_id, data) {
         return Requests.processRoute(TitlesRoute.routes.reviewsDeveloperResponse, data, { review_id });
+    }
+    // ----- Steamworks Financial API -----------------------------------------------------
+    /**
+     * Steam Financial API connection and sync status for a title: masked key, partner,
+     * last sync times, stored sales/wishlist date ranges and pending dates.
+     */
+    static steamFinancialsStatus(title_id) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsStatus, undefined, { title_id });
+    }
+    /**
+     * Verify a Steamworks Financial API Group key with Steam and store it (encrypted) on the title.
+     * Queues a full sync unless `sync: false` is passed.
+     *
+     * @param data { api_key: string, sync?: boolean }
+     */
+    static steamFinancialsConnect(title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsConnect, data, { title_id });
+    }
+    /** Check a key (or the stored key when api_key is omitted) with Steam without saving anything. */
+    static steamFinancialsTestKey(title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsTestKey, data || {}, { title_id });
+    }
+    /** Remove the stored key. Pass { purge_data: true } to also delete synced Steam financial data. */
+    static steamFinancialsDisconnect(title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsDisconnect, undefined, { title_id }, params);
+    }
+    /**
+     * Sync sales and/or wishlists from Steam. Queued by default; pass `wait: true` for a short inline run.
+     *
+     * @param data { datasets?: ('sales'|'wishlists')[], full?: boolean, wait?: boolean, max_dates?: number, max_days?: number, from?: string, to?: string, include_view_grants?: boolean }
+     */
+    static steamFinancialsSync(title_id, data) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsSync, data || {}, { title_id });
+    }
+    /**
+     * Report bundle built from synced Steam data: summary, sales over time and by country, region,
+     * product, platform, sale type, discount and price point, key activations, revenue-share tiers,
+     * wishlists over time and by country, region, language and platform, and the wishlist-to-sales funnel.
+     *
+     * @param params { from?: 'YYYY-MM-DD', to?: 'YYYY-MM-DD', report_keys?: string (comma separated), app_scope?: 'title'|'partner', app_id?: number, limit?: number }
+     */
+    static steamFinancialsReports(title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsReports, undefined, { title_id }, params);
+    }
+    /**
+     * Paginated Steam sales line items (every GetDetailedSales field) with product, country,
+     * discount and key-request names attached.
+     *
+     * @param params { from?, to?, app_scope?, app_id?, page?, per_page?, country_code?, platform?, line_item_type?, package_sale_type?, currency?, packageid?, bundleid?, key_request_id?, combined_discount_id? }
+     */
+    static steamFinancialsSales(title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsSales, undefined, { title_id }, params);
+    }
+    /**
+     * Daily Steam wishlist rows; pass dimension 'country' or 'language' for the breakdown rows.
+     *
+     * @param params { from?, to?, app_id?, dimension?: 'country'|'language' }
+     */
+    static steamFinancialsWishlists(title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsWishlists, undefined, { title_id }, params);
+    }
+    /** Names Steam returned with sales: package, app, bundle, discount, combined_discount, key_request, game_item, country, partner. */
+    static steamFinancialsLookups(title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsLookups, undefined, { title_id }, params);
+    }
+    /** Live GetChangedDatesForPartner (nothing stored). */
+    static steamFinancialsLiveChangedDates(title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsLiveChangedDates, undefined, { title_id }, params);
+    }
+    /** Live GetDetailedSales for one date and page (nothing stored). */
+    static steamFinancialsLiveDetailedSales(title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsLiveDetailedSales, undefined, { title_id }, params);
+    }
+    /** Live GetAppWishlistReporting for one date (nothing stored). */
+    static steamFinancialsLiveWishlist(title_id, params) {
+        return Requests.processRoute(TitlesRoute.routes.steamFinancialsLiveWishlist, undefined, { title_id }, params);
     }
 }
 

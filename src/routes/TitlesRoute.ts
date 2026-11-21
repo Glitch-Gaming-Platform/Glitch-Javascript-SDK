@@ -316,6 +316,19 @@ class TitlesRoute {
     reviewsReport: { url: '/reviews/{review_id}/report', method: HTTP_METHODS.POST },
     reviewsDeveloperResponse: { url: '/reviews/{review_id}/developer-response', method: HTTP_METHODS.POST },
 
+    // Steamworks Financial API (IPartnerFinancialsService): key, sync, stored data, live read-through.
+    steamFinancialsStatus: { url: '/titles/{title_id}/steam/financials', method: HTTP_METHODS.GET },
+    steamFinancialsConnect: { url: '/titles/{title_id}/steam/financials/key', method: HTTP_METHODS.PUT },
+    steamFinancialsTestKey: { url: '/titles/{title_id}/steam/financials/key/test', method: HTTP_METHODS.POST },
+    steamFinancialsDisconnect: { url: '/titles/{title_id}/steam/financials/key', method: HTTP_METHODS.DELETE },
+    steamFinancialsSync: { url: '/titles/{title_id}/steam/financials/sync', method: HTTP_METHODS.POST },
+    steamFinancialsReports: { url: '/titles/{title_id}/steam/financials/reports', method: HTTP_METHODS.GET },
+    steamFinancialsSales: { url: '/titles/{title_id}/steam/financials/sales', method: HTTP_METHODS.GET },
+    steamFinancialsWishlists: { url: '/titles/{title_id}/steam/financials/wishlists', method: HTTP_METHODS.GET },
+    steamFinancialsLookups: { url: '/titles/{title_id}/steam/financials/lookups', method: HTTP_METHODS.GET },
+    steamFinancialsLiveChangedDates: { url: '/titles/{title_id}/steam/financials/live/changed-dates', method: HTTP_METHODS.GET },
+    steamFinancialsLiveDetailedSales: { url: '/titles/{title_id}/steam/financials/live/detailed-sales', method: HTTP_METHODS.GET },
+    steamFinancialsLiveWishlist: { url: '/titles/{title_id}/steam/financials/live/wishlist', method: HTTP_METHODS.GET },
   };
 
 }

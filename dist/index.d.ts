@@ -4992,6 +4992,76 @@ declare class Titles {
         linked_patch_note_id?: string;
         issue_marked_fixed?: boolean;
     }): AxiosPromise<Response<T>>;
+    /**
+     * Steam Financial API connection and sync status for a title: masked key, partner,
+     * last sync times, stored sales/wishlist date ranges and pending dates.
+     */
+    static steamFinancialsStatus<T>(title_id: string): AxiosPromise<Response<T>>;
+    /**
+     * Verify a Steamworks Financial API Group key with Steam and store it (encrypted) on the title.
+     * Queues a full sync unless `sync: false` is passed.
+     *
+     * @param data { api_key: string, sync?: boolean }
+     */
+    static steamFinancialsConnect<T>(title_id: string, data: {
+        api_key: string;
+        sync?: boolean;
+    }): AxiosPromise<Response<T>>;
+    /** Check a key (or the stored key when api_key is omitted) with Steam without saving anything. */
+    static steamFinancialsTestKey<T>(title_id: string, data?: {
+        api_key?: string;
+    }): AxiosPromise<Response<T>>;
+    /** Remove the stored key. Pass { purge_data: true } to also delete synced Steam financial data. */
+    static steamFinancialsDisconnect<T>(title_id: string, params?: {
+        purge_data?: boolean;
+    }): AxiosPromise<Response<T>>;
+    /**
+     * Sync sales and/or wishlists from Steam. Queued by default; pass `wait: true` for a short inline run.
+     *
+     * @param data { datasets?: ('sales'|'wishlists')[], full?: boolean, wait?: boolean, max_dates?: number, max_days?: number, from?: string, to?: string, include_view_grants?: boolean }
+     */
+    static steamFinancialsSync<T>(title_id: string, data?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Report bundle built from synced Steam data: summary, sales over time and by country, region,
+     * product, platform, sale type, discount and price point, key activations, revenue-share tiers,
+     * wishlists over time and by country, region, language and platform, and the wishlist-to-sales funnel.
+     *
+     * @param params { from?: 'YYYY-MM-DD', to?: 'YYYY-MM-DD', report_keys?: string (comma separated), app_scope?: 'title'|'partner', app_id?: number, limit?: number }
+     */
+    static steamFinancialsReports<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Paginated Steam sales line items (every GetDetailedSales field) with product, country,
+     * discount and key-request names attached.
+     *
+     * @param params { from?, to?, app_scope?, app_id?, page?, per_page?, country_code?, platform?, line_item_type?, package_sale_type?, currency?, packageid?, bundleid?, key_request_id?, combined_discount_id? }
+     */
+    static steamFinancialsSales<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /**
+     * Daily Steam wishlist rows; pass dimension 'country' or 'language' for the breakdown rows.
+     *
+     * @param params { from?, to?, app_id?, dimension?: 'country'|'language' }
+     */
+    static steamFinancialsWishlists<T>(title_id: string, params?: Record<string, any>): AxiosPromise<Response<T>>;
+    /** Names Steam returned with sales: package, app, bundle, discount, combined_discount, key_request, game_item, country, partner. */
+    static steamFinancialsLookups<T>(title_id: string, params?: {
+        kind?: string;
+    }): AxiosPromise<Response<T>>;
+    /** Live GetChangedDatesForPartner (nothing stored). */
+    static steamFinancialsLiveChangedDates<T>(title_id: string, params?: {
+        highwatermark?: string;
+        include_view_grants?: boolean;
+    }): AxiosPromise<Response<T>>;
+    /** Live GetDetailedSales for one date and page (nothing stored). */
+    static steamFinancialsLiveDetailedSales<T>(title_id: string, params: {
+        date: string;
+        highwatermark_id?: string;
+        include_view_grants?: boolean;
+    }): AxiosPromise<Response<T>>;
+    /** Live GetAppWishlistReporting for one date (nothing stored). */
+    static steamFinancialsLiveWishlist<T>(title_id: string, params: {
+        date: string;
+        app_id?: number;
+    }): AxiosPromise<Response<T>>;
 }
 
 declare class Campaigns {
