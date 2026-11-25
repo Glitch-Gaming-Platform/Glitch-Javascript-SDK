@@ -15,6 +15,16 @@ export interface AegisLicenseDetail {
         currency: string;
     } | null;
 }
+/** Purchases that unlock a title whose full game requires a purchase. */
+export type GamePurchaseType = 'premium' | 'subscription';
+export interface GameAccessPolicy {
+    /** True when the full game is locked until a purchase; demo/playtest builds stay free. */
+    premium_purchase_required: boolean;
+    /** True when an active Glitch Pass unlocks the full game on its own. */
+    subscription_alone_sufficient: boolean;
+    /** Purchases that unlock the full game while locked; null when no lock is active. */
+    accepted_purchase_types?: GamePurchaseType[] | null;
+}
 export interface AegisInstallValidation {
     valid: boolean;
     reason?: string;
@@ -24,10 +34,9 @@ export interface AegisInstallValidation {
     /** Kept for backward compatibility; inspect license.type for the exact category. */
     license_type?: string;
     license?: AegisLicenseDetail;
-    access?: {
-        premium_purchase_required: boolean;
-        subscription_alone_sufficient: boolean;
-    };
+    access?: GameAccessPolicy;
+    /** Present on PREMIUM_PURCHASE_REQUIRED responses: the purchases that unlock the full game. */
+    accepted_purchase_types?: GamePurchaseType[];
     build_type?: 'production' | 'demo' | 'playtest';
     has_full_access?: boolean;
     non_revenue_build?: boolean;
@@ -42,6 +51,12 @@ export interface GameMonetizationSettings {
     rental_price: string | number | null;
     rental_duration_hours: number;
     is_subscription_eligible: boolean;
+    /**
+     * Lock the production build until the player buys the game, or subscribes to
+     * Glitch Pass when is_subscription_eligible is true. No free trial applies;
+     * demo and playtest builds stay free. Requires a valid premium price and
+     * new rentals disabled.
+     */
     premium_purchase_required_for_full_game: boolean;
 }
 export type GameReviewRecommendation = 'recommended' | 'not_recommended' | 'neutral';
@@ -639,7 +654,8 @@ declare class Titles {
      * @returns Access result with a backward-compatible license_type and exact license
      * metadata: type, status, source, acquired_at, purchased_at, expires_at and
      * verified price_paid (null when no authoritative historical price exists).
-     * Production requests may return PREMIUM_PURCHASE_REQUIRED (403).
+     * Production requests may return PREMIUM_PURCHASE_REQUIRED (403) with
+     * accepted_purchase_types (premium and, for Glitch Pass eligible titles, subscription).
      * The caller must block gameplay when valid is false.
      */
     static validateInstall<T = AegisInstallValidation>(title_id: string, install_id: string): AxiosPromise<Response<T>>;

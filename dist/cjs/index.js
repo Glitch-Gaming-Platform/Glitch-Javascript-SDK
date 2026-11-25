@@ -31009,7 +31009,8 @@ var Titles = /** @class */ (function () {
      * @returns Access result with a backward-compatible license_type and exact license
      * metadata: type, status, source, acquired_at, purchased_at, expires_at and
      * verified price_paid (null when no authoritative historical price exists).
-     * Production requests may return PREMIUM_PURCHASE_REQUIRED (403).
+     * Production requests may return PREMIUM_PURCHASE_REQUIRED (403) with
+     * accepted_purchase_types (premium and, for Glitch Pass eligible titles, subscription).
      * The caller must block gameplay when valid is false.
      */
     Titles.validateInstall = function (title_id, install_id) {
